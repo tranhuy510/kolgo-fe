@@ -22,7 +22,6 @@ body {
     padding: 10px 10px;
     display: flex;
     box-sizing: border-box;
-
 }
 
 input {
@@ -33,16 +32,16 @@ input {
     padding: 8px 12px;
 }
 
-form .login-form__control:nth-child(3) {
+.login-form .login-form__control:nth-child(3) {
     flex-direction: row-reverse;
 }
 
-label:hover {
+.forgot-password:hover {
     text-decoration-line: underline;
     cursor: pointer;
 }
 
-.register {
+.register-line {
     margin: 0 auto;
     border: none;
     background-color: #fff;
@@ -50,7 +49,7 @@ label:hover {
     margin-top: 30px;
 }
 
-.register:hover {
+.register-line:hover {
     text-decoration-line: underline;
     cursor: pointer;
 }

@@ -46,6 +46,7 @@ const Login = props => {
             return false;
         }
     }
+
     const checkLogin = (username, password) => {
         const data = users.filter((user) => {
             if (user.username === username) {
@@ -91,12 +92,16 @@ const Login = props => {
         navigate('./forgotpassword')
     }
 
+    const comeRegisterHandler = () => {
+        window.location.replace('http://localhost:3000/register');
+    }
+
     return (
         <div className="login">
             <div className="login__logo">
                 <img className='logo' src={logo} alt="" />
             </div>
-            <form onSubmit={submitFormHandler}>
+            <form onSubmit={submitFormHandler} className="login-form">
                 <div className="login-form__control">
                     <input
                         type="text"
@@ -114,16 +119,15 @@ const Login = props => {
                     ></input>
                 </div>
                 <div className="login-form__control">
-                    <label onClick={forgotPasswordHandler}>Fogot password?</label>
+                    <label className="forgot-password" onClick={forgotPasswordHandler}>Fogot password?</label>
                 </div>
                 <div className="login-form__control">
                     <ButtonFull type="submit">Log in</ButtonFull>
                 </div>
             </form>
             <div className="login-form__control">
-                <button className="register">Register</button>
+                <button onClick={comeRegisterHandler} className="register-line">Register</button>
             </div>
-
         </div>
     )
 }
