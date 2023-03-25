@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../../../components/Layout/Header";
-import SideBar from "../../../components/Layout/SideBar";
+import Header from "../../components/Header/index";
+import SideBar from "../../components/SideBar/index";
 
 const Home = props => {
 

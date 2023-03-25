@@ -12,6 +12,15 @@
     width: 105px;
 }
 
+.icon-logo {
+    position: absolute;
+    width: 85px;
+    height: 83.58px;
+    left: 17px;
+    top: calc(50% - 83.58px/2 + 0.29px);    
+}
+
+
 .header__button {
     display: flex;
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react'
-import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
-import ButtonFull from '../../../assets/style/UI/Button/ButtonFull'
-import { users } from '../../../json/db'
+
+import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
+import ButtonFull from '../../assets/style/UI/Button/ButtonFull'
+import { users } from '../../json/db'
 import './style.css'
 
 const Login = props => {

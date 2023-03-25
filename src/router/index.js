@@ -1,8 +1,8 @@
-import Home from "../pages/User/Home";
-import Campaign from "../pages/User/Campaign";
-import Login from "../pages/User/Login";
-import Register from "../pages/User/Register/Register";
-import ForgotPassword from "../pages/User/ForgotPassword/ForgotPassword";
+import Home from "../pages/Home";
+import Campaign from "../pages/Campaign";
+import Login from "../pages/Login";
+import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 
 export const publicRouters = [
   { path: "/", component: Home },

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import ButtonFull from '../../../assets/style/UI/Button/ButtonFull'
-import RegisterEnterprise from '../../Enterprise/Register/RegisterEnterprise'
-import RegisterKOL from '../../KOL/Register/RegisterKOL'
+import ButtonFull from '../../assets/style/UI/Button/ButtonFull'
+import RegisterEnterprise from './RegisterEnterprise/RegisterEnterprise'
+import RegisterKOL from './RegisterKOL/RegisterKOL'
 
 import './style.css'
-import enterprise from "../../../assets/images/doanhnghiep.png";
-import kol from "../../../assets/images/KOL.png"
+import enterprise from "../../assets/images/doanhnghiep.png";
+import kol from "../../assets/images/KOL.png"
 
 const Register = () => {
     const [typeForm, setTypeForm] = useState(0)

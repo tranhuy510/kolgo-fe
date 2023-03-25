@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import DidLogin from '../../BtnLogin/DidLogin';
-import NotLogin from '../../BtnNotLogin/NotLogin';
+import DidLogin from '../BtnLogin/DidLogin';
+import NotLogin from '../BtnNotLogin/NotLogin';
 import { Spin, Avatar } from "antd";
 
-import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
-import home from '../../../assets/logo/icon-home.svg'
-import campaign from '../../../assets/logo/icon-compaign.svg'
-import chat from '../../../assets/logo/icon-chat.svg'
+import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
+import home from '../../assets/logo/icon-home.svg'
+import campaign from '../../assets/logo/icon-compaign.svg'
+import chat from '../../assets/logo/icon-chat.svg'
 import "./style.css"
 
 const Header = props => {
@@ -37,7 +37,7 @@ const Header = props => {
     return (
         <div className='header'>
             <div className='header__icon'>
-                <a href="/"><img className='logo' src={logo} alt="" /></a>
+                <a href="/"><img className='icon-logo' src={logo} alt="" /></a>
             </div>
             <div className='header__room'>
                 {!user && (
