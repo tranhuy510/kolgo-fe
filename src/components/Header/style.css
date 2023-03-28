@@ -6,6 +6,7 @@
     box-shadow: 5px  0 5px 5px #ccc;
     justify-content: space-between;
     background-color: #fff;
+    position: fixed;
 }
 
 .header__icon {

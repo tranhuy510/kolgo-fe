@@ -7,6 +7,7 @@ import { ProtectedRoute } from "./context/ProtectedRoute.context";
 import { publicRouters } from "./router";
 import useAuth from "./context/useAuth.context";
 import RequestLogin from "./components/UI/Modal/RequestLogin";
+import Login from "./pages/Login";
 
 export default function App() {
   let user = localStorage.getItem("user");
@@ -19,13 +20,8 @@ export default function App() {
           const Page = item?.component;
           if (item.path.includes("/host")) {
             if (!user || !user.token || user.token === "") {
-              return (
-                <Route
-                  key={item.path}
-                  path={item.path}
-                  element={<RequestLogin />}
-                />
-              );
+              const pathNow = window.location.pathname;
+              return <Route key={index} path="/login" element={<Login />} />;
             }
             return (
               <Route key={item.path} path={item.path} element={<Page />} />

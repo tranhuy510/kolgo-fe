@@ -16,7 +16,7 @@ const RequestLogin = () => {
 
     return (
         <>
-            <Modal title="Basic Modal" open={isModalOpen} onOk={onOkHandler} onCancel={onCancelHandler}>
+            <Modal title="Requires login" open={isModalOpen} onOk={onOkHandler} onCancel={onCancelHandler}>
                 <p>Please login to continue</p>
             </Modal>
         </>
