@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { Spin, Avatar } from "antd";
+
 import DidLogin from '../BtnLogin/DidLogin';
 import NotLogin from '../BtnNotLogin/NotLogin';
-import { Spin, Avatar } from "antd";
+import MenuGuest from "./Menu/MenuGuest";
+import MenuKOL from "./Menu/MenuKOL";
+import MenuEnterprise from "./Menu/MenuEnterprise";
 
 import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
 import home from '../../assets/logo/icon-home.svg'
@@ -40,66 +44,9 @@ const Header = props => {
                 <a href="/"><img className='icon-logo' src={logo} alt="" /></a>
             </div>
             <div className='header__room'>
-                {!user && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
-                {user && user[0]?.role === 'kol' && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={chat} alt="" />
-                                <label className="icon-label">Chat</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
-                {user && user[0]?.role === 'enterprise' && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={chat} alt="" />
-                                <label className="icon-label">Chat</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
+                {!user && <MenuGuest icons={[home, campaign]} />}
+                {user && user[0]?.role === 'kol' && <MenuKOL icons={[home, campaign, chat]} />}
+                {user && user[0]?.role === 'enterprise' && <MenuEnterprise icons={[home, campaign, chat]} />}
             </div>
             <div className='header__button'>
                 {user && <div className="avata">

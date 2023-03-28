@@ -1,22 +1,21 @@
 .sidebar::-webkit-scrollbar {
-    display: none; /* cho Chrome, Safari, and Opera */
+    display: none; 
 }
 
 .sidebar {
     width: 250px;
-    height: 820px;
+    height: 700px;
     background-color: #fff;
     box-sizing: border-box;
     position: fixed;
     margin-top: 67px;
-    overflow-y: scroll;  
+    overflow-y: scroll;
 }
 
 .item-sidebar {
     width: 100%;
     box-sizing: border-box;
-    padding: 10px 0;
-    
+    padding: 20px 0;
 }
 
 .box-item {
@@ -25,7 +24,6 @@
     text-decoration: none;
     margin: 0 auto;
     width: 100%;
-    /* justify-content: space-between; */
     box-sizing: border-box;
     padding: 0 20px;
 }

@@ -7,6 +7,7 @@
     justify-content: space-between;
     background-color: #fff;
     position: fixed;
+    z-index: 1;
 }
 
 .header__icon {

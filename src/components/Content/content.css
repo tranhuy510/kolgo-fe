@@ -1,0 +1,32 @@
+.content {
+    margin-left: 250px;
+    padding: 80px 20px 0 20px;
+}
+
+.content-pagination .ant-pagination-options {
+    display: none !important;
+}
+
+.content-pagination .ant-pagination {
+    text-align: center;
+}
+
+.content-middle .content-page {
+    margin: 10px 0;
+}
+
+.content-bottom .content-page {
+    margin: 10px 0;
+}
+
+.content-top {
+    background-color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.content-middle,.content-bottom {
+    background-color: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+}

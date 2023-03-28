@@ -90,7 +90,17 @@ const SideBar = () => {
         key: 1,
         title: "cong viec 1",
         icon: <MenuFoldOutlined />,
-    }]
+    },
+    {
+        key: 3,
+        title: "cong viec 1",
+        icon: <UploadOutlined />,
+    },
+    {
+        key: 3,
+        title: "cong viec 1",
+        icon: <UploadOutlined />,
+    },]
 
     return (
         <div className="sidebar">
