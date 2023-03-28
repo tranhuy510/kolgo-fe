@@ -22,8 +22,8 @@ const Header = props => {
 
     const logOutHandler = () => {
         localStorage.removeItem('account')
-        // window.location.replace('http://localhost:3000/')
-        navigate('./')
+        window.location.replace('http://localhost:3000/')
+        // navigate('./')
     }
 
     const loginHandler = () => {
@@ -45,13 +45,13 @@ const Header = props => {
                         <div className="icon-room-guest">
                             <a href="#" className="icon-home">
                                 <img src={home} alt="" />
-                                <label>Home</label>
+                                <label className="icon-label">Home</label>
                             </a>
                         </div>
                         <div className="icon-room-guest">
                             <a href="#" className="icon-campaign">
                                 <img src={campaign} alt="" />
-                                <label>Campaign</label>
+                                <label className="icon-label">Campaign</label>
                             </a>
                         </div>
                     </div>
@@ -61,19 +61,19 @@ const Header = props => {
                         <div className="icon-room-guest">
                             <a href="#" className="icon-home">
                                 <img src={home} alt="" />
-                                <label>Home</label>
+                                <label className="icon-label">Home</label>
                             </a>
                         </div>
                         <div className="icon-room-guest">
                             <a href="#" className="icon-campaign">
                                 <img src={campaign} alt="" />
-                                <label>Campaign</label>
+                                <label className="icon-label">Campaign</label>
                             </a>
                         </div>
                         <div className="icon-room-guest">
                             <a href="#" className="icon-campaign">
                                 <img src={chat} alt="" />
-                                <label>Chat</label>
+                                <label className="icon-label">Chat</label>
                             </a>
                         </div>
                     </div>
@@ -83,19 +83,19 @@ const Header = props => {
                         <div className="icon-room-guest">
                             <a href="#" className="icon-home">
                                 <img src={home} alt="" />
-                                <label>Home</label>
+                                <label className="icon-label">Home</label>
                             </a>
                         </div>
                         <div className="icon-room-guest">
                             <a href="#" className="icon-campaign">
                                 <img src={campaign} alt="" />
-                                <label>Campaign</label>
+                                <label className="icon-label">Campaign</label>
                             </a>
                         </div>
                         <div className="icon-room-guest">
                             <a href="#" className="icon-campaign">
                                 <img src={chat} alt="" />
-                                <label>Chat</label>
+                                <label className="icon-label">Chat</label>
                             </a>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ButtonFull from '../../assets/style/UI/Button/ButtonFull'
+import ButtonFull from '../../components/UI/Button/ButtonFull'
 import RegisterEnterprise from './RegisterEnterprise/RegisterEnterprise'
 import RegisterKOL from './RegisterKOL/RegisterKOL'
 

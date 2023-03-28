@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import Button from '../../../assets/style/UI/Button/Button'
-import ButtonFull from '../../../assets/style/UI/Button/ButtonFull';
+import Button from '../../../components/UI/Button/Button'
+import ButtonFull from '../../../components/UI/Button/ButtonFull';
 import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
 import './style.css'
 
 
 const RegisterEnterprise = (props) => {
-    const [dataInput, setdataInput] = useState({
+    const [data, setdataInput] = useState({
         username: "",
         password: "",
         reenterpassword: "",

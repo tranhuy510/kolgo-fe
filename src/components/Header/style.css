@@ -74,7 +74,7 @@
     left: 10px;
 }
     
-label {
+.icon-label {
     display: none;
     position: absolute;
     top: 50px;
@@ -87,6 +87,6 @@ label {
     text-align: center;
 }
 
-.icon-room-guest a:hover label {
+.icon-room-guest a:hover .icon-label {
     display: block;
 }
