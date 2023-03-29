@@ -60,3 +60,31 @@
     cursor: pointer;
     text-decoration-line: underline;
 }
+
+.register-form__control {
+    width: 60%;
+    padding: 10px 10px;
+    display: flex;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.register-form__control .input-register {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    line-height: 34px;
+    padding: 8px 12px;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.26);
+    border: none;
+}
+
+/* .register-form {
+    width: 60%;
+    margin: 0 auto;
+} */
+
+.form-top,.form-middle,.form-bottom {
+    width: 100%;
+}

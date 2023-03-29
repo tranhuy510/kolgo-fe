@@ -1,14 +1,35 @@
 import React, { useState } from 'react'
+
 import Button from '../../../components/UI/Button/Button'
 import ButtonFull from '../../../components/UI/Button/ButtonFull';
+import Message from '../../../components/UI/Message/Message';
+import ButtonBack from '../../../components/UI/Button/ButtonBack';
+
+import { Input } from 'antd';
+import { LeftOutlined, LeftCircleOutlined, EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
+
+
 import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
 
 const RegisterKOL = (props) => {
     const [dataInput, setdataInput] = useState({
         username: "",
         password: "",
-        reenterpassword: "",
+        confirmationpassword: "",
     });
+    const [check, setCheck] = useState({
+        status: false,
+        type: '',
+        content: '',
+    })
+
+    const changeMessage = () => {
+        setCheck({
+            status: false,
+            type: '',
+            content: '',
+        })
+    }
 
     const onClickBackHandler = () => {
         props.changeFormHandler(0)
@@ -23,13 +44,56 @@ const RegisterKOL = (props) => {
         });
     };
 
-    const submitFormHandler = () => {
-
+    const submitFormHandler = (event) => {
+        if (event) {
+            event.preventDefault();
+        }
+        if (!dataInput.username) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: `Username can't be empty`,
+            })
+            return;
+        }
+        if (dataInput.username.length < 8) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: 'Username must be more than 8 characters',
+            })
+            return;
+        }
+        if (!dataInput.password) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: `Password can't be empty`,
+            })
+            return;
+        }
+        if (!dataInput.confirmationpassword) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: `Confirmation password can't be empty`,
+            })
+            return;
+        }
+        if (dataInput.password !== dataInput.confirmationpassword) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: 'Password and confirmation password must not be different',
+            })
+            return;
+        }
     }
 
     return (
         <div>
-            <Button onClick={onClickBackHandler}>quay lai</Button>
+            <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
+            <ButtonBack onClickBackHandler={onClickBackHandler}>quay lai</ButtonBack>
             <div className="register__logo">
                 <img className='logo' src={logo} alt="" />
             </div>
@@ -42,23 +106,26 @@ const RegisterKOL = (props) => {
                             name="username"
                             onChange={inputChangeHandler}
                             placeholder='User name'
+                            className='input-register'
                         ></input>
                     </div>
                     <div className="register-form__control">
-                        <input
-                            type="text"
+                        <Input.Password
                             name="password"
                             onChange={inputChangeHandler}
-                            placeholder='Password'
-                        ></input>
+                            placeholder="input password"
+                            className='input-register'
+                            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                        />
                     </div>
                     <div className="register-form__control">
-                        <input
-                            type="text"
-                            name="reenterpassword"
+                        <Input.Password
+                            name="confirmationpassword"
                             onChange={inputChangeHandler}
-                            placeholder='Re-enter password'
-                        ></input>
+                            placeholder="input confirmation password"
+                            className='input-register'
+                            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                        />
                     </div>
                 </div>
                 <div className='form-bottom'>

@@ -20,7 +20,7 @@ export default function App() {
           const Page = item?.component;
           if (item.path.includes("/host")) {
             if (!user || !user.token || user.token === "") {
-              const pathNow = window.location.pathname;
+              // const pathNow = window.location.pathname;
               return <Route key={index} path="/login" element={<Login />} />;
             }
             return (
