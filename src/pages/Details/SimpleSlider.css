@@ -1,0 +1,24 @@
+.slick-slide > div {
+  margin: 0 5px;
+}
+.slick-list {
+  margin: 0 -5px;
+}
+.slick-prev:before {
+  color: gray;
+}
+.slick-next:before {
+  color: gray;
+}
+.detail-simple-slider {
+  height: 100%;
+  width: 80%;
+}
+.detail-simple-slider .image-slider {
+  height: 90px;
+  position: relative;
+}
+
+.detail-simple-slider .image-item {
+  border-radius: 10px;
+}
