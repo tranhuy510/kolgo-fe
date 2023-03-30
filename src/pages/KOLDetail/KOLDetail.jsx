@@ -1,9 +1,14 @@
 import React from 'react'
+import Header from "../../components/Header/index";
 
 const KOLDetail = () => {
     return (
-        <div>
 
+        <div className='KOLdetail'>
+            <Header />
+            <div className='container'>
+
+            </div>
         </div>
     )
 }

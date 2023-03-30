@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react'
 import authApi from '../../api/auth'
 import useAuth from '../../context/useAuth.context'
+
 // import axios from "axios";
 
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal'
@@ -78,94 +79,12 @@ const Login = props => {
         user = JSON.stringify(user);
         setUser(user);
         localStorage.setItem("user", user);
-        return Navigate("/");
+        return window.location.replace('http://localhost:3000/');
     };
 
     const errorHandler = () => {
         setError(null);
     };
-
-    // const checkUserName = (data) => {
-    //     const check = users.filter((user) => {
-    //         return user.userInput === data;
-    //     })
-    //     if (check.length > 0) {
-    //         return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // }
-
-    // const checkPassword = (data) => {
-    //     const check = users.filter((user) => {
-    //         return user.password === data;
-    //     })
-    //     if (check.length > 0) {
-    //         return true;
-    //     }
-    //     else {
-    //         return false;
-    //     }
-    // }
-
-    // const checkLogin = (userInput, password) => {
-    //     const data = users.filter((user) => {
-    //         if (user.useruserInputname === userInput) {
-    //             if (user.password === password) {
-    //                 window.location.replace('http://localhost:3000/');
-    //                 return user;
-    //             }
-    //             else {
-    //                 alert("Mat khau khong dung")
-    //             }
-    //         }
-    //     })
-    //     localStorage.setItem("account", JSON.stringify(data))
-    // }
-
-
-    // const componentDidmount = (event) => {
-    //     event.preventDefault();
-    //     const headers = {
-    //         'Authorization': "Bearer" + accessToken,
-    //     };
-    //     // const headers = {
-    //     //     'Authorization': 'Bearer my-token',
-    //     //     'My-Custom-Header': 'foobar'
-    //     // };
-    //     axios.post('https://reqres.in/api/articles', dataInput, { headers })
-    //         .then(response => {
-    //             if (response.status === 200) {
-    //                 console.log(response);
-    //             }
-    //             else {
-    //                 console.log("loi")
-    //             }
-    //         })
-    //         .catch(error => {
-    //             console.log('error', error)
-    //         });
-    // }
-
-    // const submitFormHandler = (event) => {
-    //     event.preventDefault();
-    //     if (!dataInput.userInput) {
-    //         alert("ten dang nhap trong")
-    //         return;
-    //     }
-    //     if (!dataInput.password) {
-    //         alert("chua nhap mat khau")
-    //         return;
-    //     }
-    //     if (!checkUserName(dataInput.userInput)) {
-    //         alert("Khong co ten hoac gmail nguoi dung")
-    //     }
-    //     if (!checkPassword(dataInput.password)) {
-    //         alert("Mat khau khong dung")
-    //     }
-    //     checkLogin(dataInput.userInput, dataInput.password)
-    // };
 
     const forgotPasswordHandler = () => {
         navigate('./forgotpassword')

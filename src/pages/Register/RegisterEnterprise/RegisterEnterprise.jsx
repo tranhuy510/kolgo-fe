@@ -4,6 +4,7 @@ import Button from '../../../components/UI/Button/Button'
 import ButtonFull from '../../../components/UI/Button/ButtonFull';
 import Message from '../../../components/UI/Message/Message';
 import ButtonBack from '../../../components/UI/Button/ButtonBack';
+import ErrorModal from '../../../components/UI/ErrorModal/ErrorModal'
 
 import { Input } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -16,15 +17,14 @@ const RegisterEnterprise = (props) => {
         username: "",
         password: "",
         confirmationpassword: "",
-        nameenterprise: "",
-        field: "",
-        corporateheadquarters: ""
+        email: "",
     });
     const [check, setCheck] = useState({
         status: false,
         type: '',
         content: '',
     })
+    const [error, setError] = useState();
 
     const changeMessage = () => {
         setCheck({
@@ -91,10 +91,59 @@ const RegisterEnterprise = (props) => {
             })
             return;
         }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json ; charset=UTF-8' },
+            body: JSON.stringify({
+                username: dataInput.username,
+                password: dataInput.password,
+                email: dataInput.email
+            })
+        };
+        fetch('http://localhost:8080/api/auth/register', requestOptions)
+            .then(response => {
+                // if (response.status == 200) {
+                //     return response.json()
+                // }
+                // else {
+                //     // const res = Object.keys(response.json());
+                //     throw Error(response.statusText)
+                //     // console.log(response);
+                //     // return;
+                // }
+                if (!response.ok) {
+                    console.log(response);
+                    throw Error(response.statusText);
+                }
+                // Read the response as json.
+                return response.json();
+            })
+            .then(data => console.log(data))
+            .catch(error => {
+                console.log('Fetch thất bại', error)
+            });
+
+        // setError({
+        //     title: "Error",
+        //     message: "There has been an error"
+        // });
+
     }
+
+    const errorHandler = () => {
+        setError(null);
+    };
 
     return (
         <div>
+            {error && (
+                <ErrorModal
+                    title={error.title}
+                    message={error.message}
+                    onConfirm={errorHandler}
+                />
+            )}
             <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
             <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>
             <div className="register__logo">
@@ -130,18 +179,19 @@ const RegisterEnterprise = (props) => {
                             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         />
                     </div>
-                </div>
-                <div className='form-middle'>
-                    <h1 style={{ textAlign: 'center' }}>Business information</h1>
                     <div className="register-form__control">
                         <input
                             type="text"
-                            name="nameenterprise"
+                            name="email"
                             onChange={inputChangeHandler}
-                            placeholder='Name enterprise'
+                            placeholder='input email'
                             className='input-register'
                         ></input>
                     </div>
+                </div>
+                <div className='form-middle'>
+                    <h1 style={{ textAlign: 'center' }}>Business information</h1>
+
                     <div className="register-form__control">
                         <input
                             type="text"
