@@ -113,21 +113,29 @@ const RegisterEnterprise = (props) => {
                 //     // return;
                 // }
                 if (!response.ok) {
-                    console.log(response);
+                    response.json().then(res => {
+                        console.log(res)
+                        setError({
+                            title: "Error",
+                            message: `${res.error.email}  
+                              ${res.error.username}`
+                        });
+                    })
+
                     throw Error(response.statusText);
                 }
-                // Read the response as json.
+
                 return response.json();
             })
             .then(data => console.log(data))
-            .catch(error => {
-                console.log('Fetch thất bại', error)
+            .catch(err => {
+                console.log('Looks like there was a problem: \n', err)
             });
 
-        // setError({
-        //     title: "Error",
-        //     message: "There has been an error"
-        // });
+        setError({
+            title: "Error",
+            message: "There has been an error"
+        });
 
     }
 

@@ -77,7 +77,7 @@ const Login = props => {
         let user = { ...response.data.user };
         user.token = response.data.token;
         user = JSON.stringify(user);
-        setUser(user);
+        // setUser(user);
         localStorage.setItem("user", user);
         return window.location.replace('http://localhost:3000/');
     };
