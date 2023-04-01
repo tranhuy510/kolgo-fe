@@ -7,10 +7,10 @@ const NotLogin = (props) => {
     return (
         <div>
             <ButtonRadius onClick={props.loginHandler}>
-                Dang nhap
+                Login
             </ButtonRadius>
             <ButtonRadius onClick={props.registerHandler}>
-                Dang ky
+                Register
             </ButtonRadius>
         </div>
 

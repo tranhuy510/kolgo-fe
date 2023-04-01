@@ -3,7 +3,8 @@
     height: 65px;
     width: 100%;
     position: relative;
-    box-shadow: 5px  0 5px 5px #ccc;
+    /* box-shadow: 5px  0 5px 5px #ccc; */
+    border-bottom: 1px solid #ccc;
     justify-content: space-between;
     background-color: #fff;
     position: fixed;
@@ -28,7 +29,12 @@
 }
 
 .avata {
-    margin: 16.5px 0;
+    margin: 12.5px 10px;
+    caret-color: transparent;
+}
+
+.avata:hover {
+    cursor: pointer;
 }
 
 .room-guest {

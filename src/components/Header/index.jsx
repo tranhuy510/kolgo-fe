@@ -8,6 +8,7 @@ import NotLogin from '../BtnNotLogin/NotLogin';
 import MenuGuest from "./Menu/MenuGuest";
 import MenuKOL from "./Menu/MenuKOL";
 import MenuEnterprise from "./Menu/MenuEnterprise";
+import NavBar from "../Navbar/NavBar";
 
 import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
 import home from '../../assets/logo/icon-home.svg'
@@ -21,8 +22,8 @@ const Header = props => {
 
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem("user")));
-        console.log(user);
     }, [])
+    console.log(user);
 
     const logOutHandler = () => {
         localStorage.removeItem('user')
@@ -45,14 +46,16 @@ const Header = props => {
             </div>
             <div className='header__room'>
                 {!user && <MenuGuest icons={[home, campaign]} />}
-                {user && user[0]?.role === 'kol' && <MenuKOL icons={[home, campaign, chat]} />}
-                {user && user[0]?.role === 'enterprise' && <MenuEnterprise icons={[home, campaign, chat]} />}
+                {user && user?.role === 'kol' && <MenuKOL icons={[home, campaign, chat]} />}
+                {user && user?.role === 'enterprise' && <MenuEnterprise icons={[home, campaign, chat]} />}
             </div>
             <div className='header__button'>
                 {user && <div className="avata">
-                    <Avatar src={user[0]?.image}>{user[0]?.image ? '' : user[0]?.name.charAt(0)?.toUpperCase()}</Avatar>
+                    <NavBar logOutHandler={logOutHandler}>
+                        <Avatar size={40} src={user?.image}>{user?.image ? '' : user?.username.charAt(0)?.toUpperCase()}</Avatar>
+                    </NavBar>
                 </div>}
-                {user ? <DidLogin logOutHandler={logOutHandler} /> : <NotLogin loginHandler={loginHandler} registerHandler={registerHandler} />}
+                {!user && < NotLogin loginHandler={loginHandler} registerHandler={registerHandler} />}
             </div>
         </div>
     )
