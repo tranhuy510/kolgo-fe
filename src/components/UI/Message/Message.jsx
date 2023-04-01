@@ -18,7 +18,7 @@ const Message = ({ status, type, content, changeMessage }) => {
     };
     const warning = () => {
         messageApi.open({
-            type: 'error',
+            type: 'warning',
             content: content,
         });
     };

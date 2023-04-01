@@ -9,6 +9,8 @@ import useAuth from '../../context/useAuth.context'
 import ErrorModal from '../../components/UI/ErrorModal/ErrorModal'
 import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
 import ButtonFull from '../../components/UI/Button/ButtonFull'
+import Message from '../../components/UI/Message/Message';
+
 // import { users } from '../../json/db'
 import './style.css'
 
@@ -19,7 +21,20 @@ const Login = props => {
         password: "",
     });
     const [error, setError] = useState();
-    const setUser = useAuth();
+    const [check, setCheck] = useState({
+        status: false,
+        type: '',
+        content: '',
+    })
+    // const setUser = useAuth();
+
+    const changeMessage = () => {
+        setCheck({
+            status: false,
+            type: '',
+            content: '',
+        })
+    }
 
     const inputChangeHandler = (event) => {
         setdataInput((prevState) => {
@@ -61,24 +76,42 @@ const Login = props => {
         } catch (err) {
             console.log(err);
             if (err.response) {
-                return setError({
-                    title: "Error",
-                    message: err.response.data.msg,
-                });
+                if (err.response.data.message)
+                    return setError({
+                        title: "Error",
+                        message: err.response.data.message,
+                    });
             }
             return setError({
                 title: "Error",
-                message: "There has been an error"
+                message: err.message
             });
         }
     };
 
     const setProfile = (response) => {
-        let user = { ...response.data.user };
-        user.token = response.data.token;
+        let accessToken = response.data.token.access_token;
+        accessToken = JSON.stringify(accessToken);
+        localStorage.setItem("accessToken", accessToken);
+
+        let refreshToken = response.data.token.refresh_token;
+        refreshToken = JSON.stringify(refreshToken);
+        localStorage.setItem("refreshToken", refreshToken);
+
+        let user = {
+            id: response.data.id,
+            email: response.data.email,
+            username: response.data.username,
+        };
         user = JSON.stringify(user);
-        // setUser(user);
         localStorage.setItem("user", user);
+
+        setCheck({
+            status: true,
+            type: 'success',
+            content: `Login success`,
+        })
+
         return window.location.replace('http://localhost:3000/');
     };
 
@@ -103,6 +136,7 @@ const Login = props => {
                     onConfirm={errorHandler}
                 />
             )}
+            <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
             <div className="login">
                 <div className="login__logo">
                     <img className='logo' src={logo} alt="" />

@@ -20,12 +20,12 @@ const Header = props => {
     const [user, setUser] = useState(false)
 
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem("account")));
+        setUser(JSON.parse(localStorage.getItem("user")));
         console.log(user);
     }, [])
 
     const logOutHandler = () => {
-        localStorage.removeItem('account')
+        localStorage.removeItem('user')
         window.location.replace('http://localhost:3000/')
         // navigate('./')
     }
@@ -50,7 +50,7 @@ const Header = props => {
             </div>
             <div className='header__button'>
                 {user && <div className="avata">
-                    <Avatar src={user[0]?.image}>{user[0]?.image ? '' : user[0].name.charAt(0)?.toUpperCase()}</Avatar>
+                    <Avatar src={user[0]?.image}>{user[0]?.image ? '' : user[0]?.name.charAt(0)?.toUpperCase()}</Avatar>
                 </div>}
                 {user ? <DidLogin logOutHandler={logOutHandler} /> : <NotLogin loginHandler={loginHandler} registerHandler={registerHandler} />}
             </div>

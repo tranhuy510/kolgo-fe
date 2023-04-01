@@ -11,13 +11,12 @@ import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
 
 import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
 
-
 const RegisterEnterprise = (props) => {
     const [dataInput, setdataInput] = useState({
         username: "",
+        email: "",
         password: "",
         confirmationpassword: "",
-        email: "",
     });
     const [check, setCheck] = useState({
         status: false,
@@ -47,6 +46,10 @@ const RegisterEnterprise = (props) => {
         });
     };
 
+    const errorHandler = () => {
+        setError(null);
+    };
+
     const submitFormHandler = (event) => {
         if (event) {
             event.preventDefault();
@@ -59,11 +62,19 @@ const RegisterEnterprise = (props) => {
             })
             return;
         }
-        if (dataInput.username.length < 8) {
+        if (!dataInput.email) {
             setCheck({
                 status: true,
                 type: 'error',
-                content: 'Username must be more than 8 characters',
+                content: `Email can't be empty`,
+            })
+            return;
+        }
+        if (dataInput.email.indexOf('@gmail.com') < 0) {
+            setCheck({
+                status: true,
+                type: 'error',
+                content: `Email must have '@gmail.com'`,
             })
             return;
         }
@@ -97,51 +108,54 @@ const RegisterEnterprise = (props) => {
             headers: { 'Content-Type': 'application/json ; charset=UTF-8' },
             body: JSON.stringify({
                 username: dataInput.username,
-                password: dataInput.password,
-                email: dataInput.email
+                email: dataInput.email,
+                password: dataInput.password
             })
         };
         fetch('http://localhost:8080/api/auth/register', requestOptions)
             .then(response => {
-                // if (response.status == 200) {
-                //     return response.json()
-                // }
-                // else {
-                //     // const res = Object.keys(response.json());
-                //     throw Error(response.statusText)
-                //     // console.log(response);
-                //     // return;
-                // }
-                if (!response.ok) {
-                    response.json().then(res => {
-                        console.log(res)
-                        setError({
-                            title: "Error",
-                            message: `${res.error.email}  
-                              ${res.error.username}`
-                        });
-                    })
-
-                    throw Error(response.statusText);
-                }
-
                 return response.json();
             })
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    if (data.error.email) {
+                        setError({
+                            title: "Error email",
+                            message: data.error.email
+                        });
+                    }
+                    else if (data.error.password) {
+                        setError({
+                            title: "Error password",
+                            message: data.error.password
+                        });
+                    }
+                    else if (data.error.username) {
+                        setError({
+                            title: "Error username",
+                            message: data.error.username
+                        });
+                    }
+                }
+                else {
+                    setCheck({
+                        status: true,
+                        type: 'success',
+                        content: `Register success`,
+                    })
+                    window.location.replace('http://localhost:3000/login');
+                }
+            })
             .catch(err => {
                 console.log('Looks like there was a problem: \n', err)
+                setCheck({
+                    status: true,
+                    type: 'error',
+                    content: `Register fail`,
+                })
             });
-
-        setError({
-            title: "Error",
-            message: "There has been an error"
-        });
-
     }
-
-    const errorHandler = () => {
-        setError(null);
-    };
 
     return (
         <div>
@@ -159,13 +173,22 @@ const RegisterEnterprise = (props) => {
             </div>
             <form onSubmit={submitFormHandler} className="register-form">
                 <div className='form-top'>
-                    <h1 style={{ textAlign: 'center' }}>Login information</h1>
+                    <h1 style={{ textAlign: 'center' }}>Enterprise register information</h1>
                     <div className="register-form__control">
                         <input
                             type="text"
                             name="username"
                             onChange={inputChangeHandler}
-                            placeholder='User name'
+                            placeholder='input username'
+                            className='input-register'
+                        ></input>
+                    </div>
+                    <div className="register-form__control">
+                        <input
+                            type="text"
+                            name="email"
+                            onChange={inputChangeHandler}
+                            placeholder='input email'
                             className='input-register'
                         ></input>
                     </div>
@@ -186,37 +209,6 @@ const RegisterEnterprise = (props) => {
                             className='input-register'
                             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         />
-                    </div>
-                    <div className="register-form__control">
-                        <input
-                            type="text"
-                            name="email"
-                            onChange={inputChangeHandler}
-                            placeholder='input email'
-                            className='input-register'
-                        ></input>
-                    </div>
-                </div>
-                <div className='form-middle'>
-                    <h1 style={{ textAlign: 'center' }}>Business information</h1>
-
-                    <div className="register-form__control">
-                        <input
-                            type="text"
-                            name="field"
-                            onChange={inputChangeHandler}
-                            placeholder='Field'
-                            className='input-register'
-                        ></input>
-                    </div>
-                    <div className="register-form__control">
-                        <input
-                            type="text"
-                            name="corporateheadquarters"
-                            onChange={inputChangeHandler}
-                            placeholder='Corporate headquarters'
-                            className='input-register'
-                        ></input>
                     </div>
                 </div>
                 <div className='form-bottom'>
