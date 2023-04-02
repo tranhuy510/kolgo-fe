@@ -107,7 +107,8 @@ const RegisterKOL = (props) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json ; charset=UTF-8' },
             body: JSON.stringify({
-                username: dataInput.email,
+                email: dataInput.email,
+                username: dataInput.username,
                 password: dataInput.password
             })
         };
@@ -173,6 +174,15 @@ const RegisterKOL = (props) => {
             <form onSubmit={submitFormHandler} className="register-form">
                 <div className='form__top'>
                     <h1 style={{ textAlign: 'center' }}>KOL register information</h1>
+                    <div className="register-form__control">
+                        <input
+                            type="text"
+                            name="username"
+                            onChange={inputChangeHandler}
+                            placeholder='input username'
+                            className='input-register'
+                        ></input>
+                    </div>
                     <div className="register-form__control">
                         <input
                             type="text"
