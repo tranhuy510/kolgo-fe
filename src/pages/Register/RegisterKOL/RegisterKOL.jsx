@@ -183,9 +183,7 @@ const RegisterKOL = (props) => {
               onChange={inputChangeHandler}
               placeholder="Input Username"
               className="input-register"
-            ></input>
-          </div>
-          <div className="register-form__control">
+            />
             <input
               type="text"
               name="email"
@@ -226,5 +224,3 @@ const RegisterKOL = (props) => {
     </div>
   );
 };
-
-export default RegisterKOL;
