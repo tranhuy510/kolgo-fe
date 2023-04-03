@@ -7,6 +7,7 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
+import Chat from "../pages/Chat";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       { path: "/detail", element: <HomeDetail /> },
+      { path: "/chat", element: <Chat /> },
       {
         path: "profile",
         element: <Profile />,
