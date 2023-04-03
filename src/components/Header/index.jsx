@@ -1,65 +1,73 @@
 import React, { useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Spin, Avatar } from "antd";
 
-import DidLogin from '../BtnLogin/DidLogin';
-import NotLogin from '../BtnNotLogin/NotLogin';
+import DidLogin from "../BtnLogin/DidLogin";
+import NotLogin from "../BtnNotLogin/NotLogin";
 import MenuGuest from "./Menu/MenuGuest";
-import MenuKOL from "./Menu/MenuKOL";
-import MenuEnterprise from "./Menu/MenuEnterprise";
+import MenuUser from "./Menu/MenuUser";
 import NavBar from "../Navbar/NavBar";
 
-import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
-import home from '../../assets/logo/icon-home.svg'
-import campaign from '../../assets/logo/icon-compaign.svg'
-import chat from '../../assets/logo/icon-chat.svg'
-import "./style.css"
+import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
+import home from "../../assets/logo/icon-home.svg";
+import campaign from "../../assets/logo/icon-compaign.svg";
+import chat from "../../assets/logo/icon-chat.svg";
+import "./style.css";
 
-const Header = props => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(false)
+const Header = (props) => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(false);
 
-    useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem("user")));
-    }, [])
-    console.log(user);
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
+  console.log(user);
 
-    const logOutHandler = () => {
-        localStorage.removeItem('user')
-        window.location.replace('http://localhost:3000/')
-        // navigate('./')
-    }
+  const logOutHandler = () => {
+    localStorage.removeItem("user");
+    window.location.replace("http://localhost:3000/");
+    // navigate('./')
+  };
 
-    const loginHandler = () => {
-        navigate('/login')
-    }
+  const loginHandler = () => {
+    navigate("/login");
+  };
 
-    const registerHandler = () => {
-        navigate('/register')
-    }
+  const registerHandler = () => {
+    navigate("/register");
+  };
 
-    return (
-        <div className='header'>
-            <div className='header__icon'>
-                <a href="/"><img className='icon-logo' src={logo} alt="" /></a>
-            </div>
-            <div className='header__room'>
-                {!user && <MenuGuest icons={[home, campaign]} />}
-                {user && user?.role === 'kol' && <MenuKOL icons={[home, campaign, chat]} />}
-                {user && user?.role === 'enterprise' && <MenuEnterprise icons={[home, campaign, chat]} />}
-            </div>
-            <div className='header__button'>
-                {user && <div className="avata">
-                    <NavBar logOutHandler={logOutHandler}>
-                        <Avatar size={40} src={user?.image}>{user?.image ? '' : user?.username.charAt(0)?.toUpperCase()}</Avatar>
-                    </NavBar>
-                </div>}
-                {!user && < NotLogin loginHandler={loginHandler} registerHandler={registerHandler} />}
-            </div>
-        </div>
-    )
-
-}
+  return (
+    <div className="header">
+      <div className="header__icon">
+        <a href="/">
+          <img className="icon-logo" src={logo} alt="" />
+        </a>
+      </div>
+      <div className="header__room">
+        {!user && <MenuGuest icons={[home, campaign]} />}
+        {user && <MenuUser icons={[home, campaign, chat]} />}
+      </div>
+      <div className="header__button">
+        {user && (
+          <div className="avata">
+            <NavBar logOutHandler={logOutHandler}>
+              <Avatar size={40} src={user?.image}>
+                {user?.image ? "" : user?.username.charAt(0)?.toUpperCase()}
+              </Avatar>
+            </NavBar>
+          </div>
+        )}
+        {!user && (
+          <NotLogin
+            loginHandler={loginHandler}
+            registerHandler={registerHandler}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Header;

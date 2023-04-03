@@ -6,8 +6,10 @@ import RegisterKOL from "./RegisterKOL/RegisterKOL";
 import "./style.css";
 import enterprise from "../../assets/images/doanhnghiep.png";
 import kol from "../../assets/images/KOL.png";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [typeForm, setTypeForm] = useState(0);
 
   const changeFormHandler = (value) => {
@@ -15,7 +17,7 @@ const Register = () => {
   };
 
   const comeLoginHandler = () => {
-    window.location.replace("http://localhost:3000/login");
+    navigate("../login");
   };
 
   return (

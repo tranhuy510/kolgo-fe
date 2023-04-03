@@ -1,7 +1,9 @@
 import React from "react";
 
-const Campaign = props => {
-    return <div>Campaign</div>
-}
+import styles from "./Campaign.module.css";
+
+const Campaign = (props) => {
+  return <div className={styles.campaign}>Campaign</div>;
+};
 
 export default Campaign;

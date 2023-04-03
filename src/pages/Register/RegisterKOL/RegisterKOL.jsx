@@ -224,3 +224,5 @@ const RegisterKOL = (props) => {
     </div>
   );
 };
+
+export default RegisterKOL;
