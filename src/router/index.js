@@ -20,6 +20,7 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       { path: "/detail", element: <HomeDetail /> },
+      { path: "/chat", element: <Chat /> },
       {
         path: "profile",
         element: <Profile />,
