@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const MenuGuest = ({ icons }) => {
-  console.log(icons);
+  const [user, setUser] = useState();
+
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
 
   return (
     <ul className="room-guest">
@@ -25,6 +29,17 @@ const MenuGuest = ({ icons }) => {
           <label className="icon-label">Campaign</label>
         </NavLink>
       </li>
+      {user && (
+        <li className="icon-room-guest">
+          <NavLink
+            to="/chat"
+            className={({ isActive }) => (isActive ? "active" : undefined)}
+          >
+            <img src={icons[2]} alt="" />
+            <label className="icon-label">Chat</label>
+          </NavLink>
+        </li>
+      )}
     </ul>
   );
 };
