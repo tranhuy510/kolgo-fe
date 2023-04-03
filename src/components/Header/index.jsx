@@ -1,115 +1,73 @@
 import React, { useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import DidLogin from '../BtnLogin/DidLogin';
-import NotLogin from '../BtnNotLogin/NotLogin';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Spin, Avatar } from "antd";
 
-import logo from '../../assets/logo/logo_KOLgo-removebg.svg'
-import home from '../../assets/logo/icon-home.svg'
-import campaign from '../../assets/logo/icon-compaign.svg'
-import chat from '../../assets/logo/icon-chat.svg'
-import "./style.css"
+import DidLogin from "../BtnLogin/DidLogin";
+import NotLogin from "../BtnNotLogin/NotLogin";
+import MenuGuest from "./Menu/MenuGuest";
+import MenuUser from "./Menu/MenuUser";
+import NavBar from "../Navbar/NavBar";
 
-const Header = props => {
-    const navigate = useNavigate();
-    const [user, setUser] = useState(false)
+import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
+import home from "../../assets/logo/icon-home.svg";
+import campaign from "../../assets/logo/icon-compaign.svg";
+import chat from "../../assets/logo/icon-chat.svg";
+import "./style.css";
 
-    useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem("account")));
-        console.log(user);
-    }, [])
+const Header = (props) => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(false);
 
-    const logOutHandler = () => {
-        localStorage.removeItem('account')
-        window.location.replace('http://localhost:3000/')
-        // navigate('./')
-    }
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user")));
+  }, []);
+  console.log(user);
 
-    const loginHandler = () => {
-        navigate('/login')
-    }
+  const logOutHandler = () => {
+    localStorage.removeItem("user");
+    window.location.replace("http://localhost:3000/");
+    // navigate('./')
+  };
 
-    const registerHandler = () => {
-        navigate('/register')
-    }
+  const loginHandler = () => {
+    navigate("/login");
+  };
 
-    return (
-        <div className='header'>
-            <div className='header__icon'>
-                <a href="/"><img className='icon-logo' src={logo} alt="" /></a>
-            </div>
-            <div className='header__room'>
-                {!user && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
-                {user && user[0]?.role === 'kol' && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={chat} alt="" />
-                                <label className="icon-label">Chat</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
-                {user && user[0]?.role === 'enterprise' && (
-                    <div className="room-guest">
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-home">
-                                <img src={home} alt="" />
-                                <label className="icon-label">Home</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={campaign} alt="" />
-                                <label className="icon-label">Campaign</label>
-                            </a>
-                        </div>
-                        <div className="icon-room-guest">
-                            <a href="#" className="icon-campaign">
-                                <img src={chat} alt="" />
-                                <label className="icon-label">Chat</label>
-                            </a>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className='header__button'>
-                {user && <div className="avata">
-                    <Avatar src={user[0]?.image}>{user[0]?.image ? '' : user[0].name.charAt(0)?.toUpperCase()}</Avatar>
-                </div>}
-                {user ? <DidLogin logOutHandler={logOutHandler} /> : <NotLogin loginHandler={loginHandler} registerHandler={registerHandler} />}
-            </div>
-        </div>
-    )
+  const registerHandler = () => {
+    navigate("/register");
+  };
 
-}
+  return (
+    <div className="header">
+      <div className="header__icon">
+        <a href="/">
+          <img className="icon-logo" src={logo} alt="" />
+        </a>
+      </div>
+      <div className="header__room">
+        {!user && <MenuGuest icons={[home, campaign]} />}
+        {user && <MenuUser icons={[home, campaign, chat]} />}
+      </div>
+      <div className="header__button">
+        {user && (
+          <div className="avata">
+            <NavBar logOutHandler={logOutHandler}>
+              <Avatar size={40} src={user?.image}>
+                {user?.image ? "" : user?.username.charAt(0)?.toUpperCase()}
+              </Avatar>
+            </NavBar>
+          </div>
+        )}
+        {!user && (
+          <NotLogin
+            loginHandler={loginHandler}
+            registerHandler={registerHandler}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Header;

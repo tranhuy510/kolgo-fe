@@ -1,15 +1,17 @@
 import React from 'react'
 import Button from '../UI/Button/Button'
+import ButtonRadius from '../UI/Button/ButtonRadius'
+
 
 const NotLogin = (props) => {
     return (
         <div>
-            <Button onClick={props.loginHandler}>
-                Dang nhap
-            </Button>
-            <Button onClick={props.registerHandler}>
-                Dang ky
-            </Button>
+            <ButtonRadius onClick={props.loginHandler}>
+                Login
+            </ButtonRadius>
+            <ButtonRadius onClick={props.registerHandler}>
+                Register
+            </ButtonRadius>
         </div>
 
     )

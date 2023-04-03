@@ -1,15 +1,17 @@
 import React from "react";
-import Header from "../../components/Header/index";
 import SideBar from "../../components/SideBar/index";
+import Content from "../../components/Content/Content";
 
-const Home = props => {
+import Card from "../../components/UI/Card/Card";
+import "./style.css";
 
-    return (
-        <div>
-            <Header />
-            <SideBar />
-        </div>
-    )
-}
+const Home = (props) => {
+  return (
+    <div>
+      <SideBar />
+      <Content />
+    </div>
+  );
+};
 
 export default Home;

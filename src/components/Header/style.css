@@ -1,92 +1,97 @@
 .header {
-    display: flex;
-    height: 65px;
-    width: 100%;
-    position: relative;
-    box-shadow: 5px  0 5px 5px #ccc;
-    justify-content: space-between;
-    background-color: #fff;
+  display: flex;
+  height: 65px;
+  width: 100%;
+  position: relative;
+  /* box-shadow: 5px  0 5px 5px #ccc; */
+  border-bottom: 1px solid #ccc;
+  justify-content: space-between;
+  background-color: #fff;
+  position: fixed;
+  z-index: 1;
 }
 
 .header__icon {
-    width: 105px;
+  width: 105px;
 }
 
 .icon-logo {
-    position: absolute;
-    width: 85px;
-    height: 83.58px;
-    left: 17px;
-    top: calc(50% - 83.58px/2 + 0.29px);    
+  position: absolute;
+  width: 85px;
+  height: 83.58px;
+  left: 17px;
+  top: calc(50% - 83.58px / 2 + 0.29px);
 }
 
-
 .header__button {
-    display: flex;
+  display: flex;
 }
 
 .avata {
-    margin: 16.5px 0;
+  margin: 12.5px 10px;
+  caret-color: transparent;
+}
+
+.avata:hover {
+  cursor: pointer;
 }
 
 .room-guest {
-    display: flex;
+  display: flex;
+  list-style: none;
+  margin: 0;
 }
 
 .icon-room-guest {
-    width: 45px;
-    height: 45px;
-    margin: 10px;
-    border-radius: 50px;
-}
-
-.icon-home {
-
-}
-
-.icon-campaign {
-
+  width: 45px;
+  height: 45px;
+  margin: 10px;
+  border-radius: 50px;
 }
 
 .icon-room-guest a {
-    width: 45px;
-    height: 45px;
-    border-radius: 50px;
-    display: block;
-    background-color: #EFF5F7;
-    position: relative;
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  display: block;
+  background-color: #eff5f7;
+  position: relative;
 }
+.icon-room-guest:hover {
+  cursor: pointer;
+}
+
+.icon-room-guest a.active,
 .icon-room-guest a:hover {
-    cursor: pointer;
-    background-color: #fff;
-    box-shadow: 0px  0 3px 3px #ccc;
+  background-color: #fff;
+  box-shadow: 0px 0 3px 3px #ccc;
 }
 
-.icon-room-guest a:focus {
-    background-color: #fff;
-    box-shadow: 0px  0 3px 3px #ccc;
+.icon-room-guest a.active img,
+.icon-room-guest a:hover img {
+  filter: invert(50%) sepia(56%) saturate(2382%) hue-rotate(328deg)
+    brightness(92%) contrast(105%);
 }
-
 
 .icon-room-guest a img {
-    position: absolute;
-    top : 10px;
-    left: 10px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
-    
+
 .icon-label {
-    display: none;
-    position: absolute;
-    top: 50px;
-    left: -20px;
-    width: 85px;
-    line-height: 30px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 5px;
-    text-align: center;
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: -20px;
+  width: 85px;
+  line-height: 30px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .icon-room-guest a:hover .icon-label {
-    display: block;
+  display: block;
 }
