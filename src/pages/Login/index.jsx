@@ -17,7 +17,7 @@ import "./style.css";
 const Login = (props) => {
   const navigate = useNavigate();
   const [dataInput, setdataInput] = useState({
-    userInput: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState();
@@ -49,10 +49,10 @@ const Login = (props) => {
     if (event) {
       event.preventDefault();
     }
-    if (!dataInput.userInput) {
+    if (!dataInput.email) {
       setError({
-        title: "Invalid input",
-        message: "Please enter a valid name (non-empty name)",
+        title: "Invalid email",
+        message: "Please enter a valid email (non-empty email)",
       });
       return;
     }
@@ -90,6 +90,8 @@ const Login = (props) => {
   };
 
   const setProfile = (response) => {
+    console.log(response);
+
     let accessToken = response.data.token.access_token;
     accessToken = JSON.stringify(accessToken);
     localStorage.setItem("accessToken", accessToken);
@@ -154,7 +156,7 @@ const Login = (props) => {
             <input
               className="input-login"
               type="text"
-              name="userInput"
+              name="email"
               onChange={inputChangeHandler}
               placeholder="User name"
             ></input>

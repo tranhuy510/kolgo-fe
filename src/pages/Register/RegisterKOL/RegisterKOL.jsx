@@ -1,44 +1,54 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import Button from "../../../components/UI/Button/Button";
-import ButtonFull from "../../../components/UI/Button/ButtonFull";
-import Message from "../../../components/UI/Message/Message";
-import ButtonBack from "../../../components/UI/Button/ButtonBack";
-import ErrorModal from "../../../components/UI/ErrorModal/ErrorModal";
+import Button from '../../../components/UI/Button/Button'
+import ButtonFull from '../../../components/UI/Button/ButtonFull';
+import Message from '../../../components/UI/Message/Message';
+import ButtonBack from '../../../components/UI/Button/ButtonBack';
+import ErrorModal from '../../../components/UI/ErrorModal/ErrorModal'
 
-import { Input } from "antd";
-import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
+import { Input } from 'antd';
+import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
 
-import logo from "../../../assets/logo/logo_KOLgo-removebg.svg";
+import logo from '../../../assets/logo/logo_KOLgo-removebg.svg'
+import { register } from '../../../services/authentication';
 
-const RegisterKOL = (props) => {
-  const [dataInput, setdataInput] = useState({
-    username: "",
+const RegisterEnterprise = (props) => {
+  const [userInput, setUserInput] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmationpassword: "",
+    biz: false
   });
   const [check, setCheck] = useState({
     status: false,
-    type: "",
-    content: "",
-  });
+    type: '',
+    content: '',
+  })
   const [error, setError] = useState();
 
-  const changeMessage = () => {
+  const changeMessage = (status, type, content) => {
     setCheck({
-      status: false,
-      type: "",
-      content: "",
-    });
-  };
+      status: status,
+      type: type,
+      content: content,
+    })
+  }
+  const createErrorMessage = (msg) => {
+    changeMessage(true, 'error', msg)
+  }
+
+  const createSuccessMessage = (msg) => {
+    changeMessage(true, 'success', msg)
+  }
 
   const onClickBackHandler = () => {
-    props.changeFormHandler(0);
-  };
+    props.changeFormHandler(0)
+  }
 
   const inputChangeHandler = (event) => {
-    setdataInput((prevState) => {
+    setUserInput((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -50,109 +60,63 @@ const RegisterKOL = (props) => {
     setError(null);
   };
 
-  const submitFormHandler = (event) => {
+  const validateUserInput = (userInput) => {
+    let res = true;
+    let errMsg = '';
+    if (!userInput.firstName) {
+      errMsg = 'Please enter your first name';
+    }
+    else if (!userInput.lastName) {
+      errMsg = 'Please enter your last name';
+    }
+    else if (!userInput.email) {
+      errMsg = 'Please enter your email';
+    }
+    else if (userInput.email.indexOf('@') < 0) {
+      errMsg = 'Wrong email format';
+    }
+    else if (!userInput.password) {
+      errMsg = 'Please enter your password';
+    }
+    else if (!userInput.confirmationpassword) {
+      errMsg = 'Please confirm your password';
+    }
+    else if (userInput.password !== userInput.confirmationpassword) {
+      errMsg = 'Password does not match';
+    }
+    if (errMsg) {
+      createErrorMessage(errMsg)
+      res = false;
+    }
+    return res;
+  }
+
+  const registerWithCredentials = (credentials) => {
+    register(credentials)
+      .then(res => {
+        if (!res.ok) {
+          return Promise.reject(res)
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+        createSuccessMessage(data.message)
+        // window.location.replace(`${process.env.REACT_APP_PUBLIC_URL}/login`);
+        // handle message cho user biet la email da duoc gui
+      }).catch(err => {
+        console.log(err);
+        err.json().then(e => createErrorMessage(e.message))
+      });
+  }
+
+  const handleRegister = (event) => {
     if (event) {
       event.preventDefault();
     }
-    if (!dataInput.username) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: `Username can't be empty`,
-      });
-      return;
-    }
-    if (!dataInput.email) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: `Email can't be empty`,
-      });
-      return;
-    }
-    if (dataInput.email.indexOf("@") < 0) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: `Email must have '@'`,
-      });
-      return;
-    }
-    if (!dataInput.password) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: `Password can't be empty`,
-      });
-      return;
-    }
-    if (!dataInput.confirmationpassword) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: `Confirmation password can't be empty`,
-      });
-      return;
-    }
-    if (dataInput.password !== dataInput.confirmationpassword) {
-      setCheck({
-        status: true,
-        type: "error",
-        content: "Password and confirmation password must not be different",
-      });
-      return;
-    }
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json ; charset=UTF-8" },
-      body: JSON.stringify({
-        email: dataInput.email,
-        username: dataInput.username,
-        password: dataInput.password,
-      }),
-    };
-    fetch("http://localhost:8080/api/auth/register", requestOptions)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        if (data.error) {
-          if (data.error.email) {
-            setError({
-              title: "Error email",
-              message: data.error.email,
-            });
-          } else if (data.error.password) {
-            setError({
-              title: "Error password",
-              message: data.error.password,
-            });
-          } else if (data.error.username) {
-            setError({
-              title: "Error username",
-              message: data.error.username,
-            });
-          }
-        } else {
-          setCheck({
-            status: true,
-            type: "success",
-            content: `Register success`,
-          });
-          window.location.replace("http://localhost:3000/login");
-        }
-      })
-      .catch((err) => {
-        console.log("Looks like there was a problem: \n", err);
-        setCheck({
-          status: true,
-          type: "error",
-          content: `Register fail`,
-        });
-      });
-  };
+    validateUserInput(userInput)
+    registerWithCredentials(userInput)
+  }
 
   return (
     <div>
@@ -160,69 +124,71 @@ const RegisterKOL = (props) => {
         <ErrorModal
           title={error.title}
           message={error.message}
-          onConfirm={errorHandler}
+          onConfirm={setError(null)}
         />
       )}
-      <Message
-        status={check.status}
-        type={check.type}
-        content={check.content}
-        changeMessage={changeMessage}
-      />
-      <ButtonBack onClickBackHandler={onClickBackHandler}>quay lai</ButtonBack>
+      <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
+      <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>
       <div className="register__logo">
-        <img className="logo" src={logo} alt="" />
+        <img className='logo' src={logo} alt="" />
       </div>
-      <form onSubmit={submitFormHandler} className="register-form">
-        <div className="form__top">
-          <h1 style={{ textAlign: "center" }}>KOL register information</h1>
+      <form onSubmit={handleRegister} className="register-form">
+        <div className='form-top'>
+          <h1 style={{ textAlign: 'center' }}>KOL register information</h1>
           <div className="register-form__control">
             <input
               type="text"
-              name="username"
+              name="firstName"
               onChange={inputChangeHandler}
-              placeholder="Input Username"
-              className="input-register"
-            />
+              placeholder='Enter your first name'
+              className='input-register'
+            ></input>
+          </div>
+          <div className="register-form__control">
+            <input
+              type="text"
+              name="lastName"
+              onChange={inputChangeHandler}
+              placeholder='Enter your last name'
+              className='input-register'
+            ></input>
+          </div>
+          <div className="register-form__control">
             <input
               type="text"
               name="email"
               onChange={inputChangeHandler}
-              placeholder="Input Email"
-              className="input-register"
+              placeholder='Enter your email'
+              className='input-register'
             ></input>
           </div>
           <div className="register-form__control">
             <Input.Password
               name="password"
               onChange={inputChangeHandler}
-              placeholder="Input Password"
-              className="input-register"
-              iconRender={(visible) =>
-                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-              }
+              placeholder="Enter your password"
+              className='input-register'
+              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
             />
           </div>
           <div className="register-form__control">
             <Input.Password
               name="confirmationpassword"
               onChange={inputChangeHandler}
-              placeholder="Input Confirmation Password"
-              className="input-register"
-              iconRender={(visible) =>
-                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-              }
+              placeholder="Confirm your password"
+              className='input-register'
+              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
             />
           </div>
         </div>
-        <div className="form-bottom">
+        <div className='form-bottom'>
           <div className="register-form__control">
             <ButtonFull type="submit">Register</ButtonFull>
           </div>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterKOL;
+export default RegisterEnterprise

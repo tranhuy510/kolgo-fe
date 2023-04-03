@@ -54,7 +54,8 @@ const Header = (props) => {
           <div className="avata">
             <NavBar logOutHandler={logOutHandler}>
               <Avatar size={40} src={user?.image}>
-                {user?.image ? "" : user?.username.charAt(0)?.toUpperCase()}
+                {user?.image ? "" : user?.email.charAt(0)?.toUpperCase()}
+                {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
               </Avatar>
             </NavBar>
           </div>
