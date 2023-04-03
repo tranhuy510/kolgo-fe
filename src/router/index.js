@@ -18,6 +18,7 @@ export const router = createBrowserRouter([
         path: "campaign",
         element: <Campaign />,
       },
+      { path: "/detail", element: <HomeDetail /> },
       {
         path: "profile",
         element: <Profile />,
@@ -27,7 +28,6 @@ export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
-  { path: "/detail", element: <HomeDetail /> },
 ]);
 
 export const privateRouters = [];
