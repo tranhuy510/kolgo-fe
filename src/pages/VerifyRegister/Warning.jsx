@@ -5,7 +5,7 @@ const Warning = () => {
     return (
         <Result
             status="warning"
-            title="There are some problems with your operation."
+            title="This link has already been used or expired."
             extra={[]}
         />
     )

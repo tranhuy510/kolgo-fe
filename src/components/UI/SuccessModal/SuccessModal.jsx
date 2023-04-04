@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Modal } from 'antd';
 
 const SuccessModal = (props) => {
@@ -8,19 +8,21 @@ const SuccessModal = (props) => {
             content: (
                 <div>
                     <p>Register success</p>
-                    <p>Please go to {props.emal} for email verification</p>
+                    <p>Please go to {props.email} for email verification</p>
                 </div>
             ),
         });
     };
 
-    if (props.noti) {
-        success();
-    }
+    useEffect(() => {
+
+        if (props.noti) {
+            success();
+        }
+    }, [])
 
     return (
         <>
-
         </>
     )
 }

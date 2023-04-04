@@ -22,27 +22,26 @@ const RegisterEnterprise = (props) => {
     confirmationpassword: "",
     biz: false
   });
-  const [check, setCheck] = useState({
+  const [showMessage, setShowMessage] = useState({
     status: false,
     type: '',
     content: '',
   })
-  const [error, setError] = useState();
   const [noti, setNoti] = useState(false);
 
-  const changeMessage = (status, type, content) => {
-    setCheck({
-      status: status,
-      type: type,
-      content: content,
+  const changeMessage = () => {
+    setShowMessage({
+      status: false,
+      type: '',
+      content: '',
     })
   }
   const createErrorMessage = (msg) => {
-    changeMessage(true, 'error', msg)
+    setShowMessage({ status: true, type: 'error', content: msg })
   }
 
   const createSuccessMessage = (msg) => {
-    changeMessage(true, 'success', msg)
+    setShowMessage({ status: true, type: 'success', content: msg })
   }
 
   const onClickBackHandler = () => {
@@ -58,10 +57,6 @@ const RegisterEnterprise = (props) => {
     });
   };
 
-  const errorHandler = () => {
-    setError(null);
-  };
-
   const validateUserInput = (userInput) => {
     let res = true;
     let errMsg = '';
@@ -75,10 +70,13 @@ const RegisterEnterprise = (props) => {
       errMsg = 'Please enter your email';
     }
     else if (userInput.email.indexOf('@') < 0) {
-      errMsg = 'Wrong email format';
+      errMsg = 'Wrong email format must have @';
     }
     else if (!userInput.password) {
       errMsg = 'Please enter your password';
+    }
+    else if (userInput.password.length > 32 || userInput.password.length < 6) {
+      errMsg = 'Password size must be between 6 and 36';
     }
     else if (!userInput.confirmationpassword) {
       errMsg = 'Please confirm your password';
@@ -102,13 +100,9 @@ const RegisterEnterprise = (props) => {
         return res.json();
       })
       .then(data => {
-        console.log(data);
-        createSuccessMessage(data.message)
-        // window.location.replace(`${process.env.REACT_APP_PUBLIC_URL}/login`);
-        // handle message cho user biet la email da duoc gui
+        setNoti(true);
       }).catch(err => {
-        console.log(err);
-        err.json().then(e => createErrorMessage(e.message))
+        err.json().then(e => console.log(e))
       });
   }
 
@@ -123,16 +117,9 @@ const RegisterEnterprise = (props) => {
   return (
     <div>
       {noti &&
-        <SuccessModal noti={noti} />
+        <SuccessModal noti={noti} email={userInput.email} />
       }
-      {error && (
-        <ErrorModal
-          title={error.title}
-          message={error.message}
-          onConfirm={setError(null)}
-        />
-      )}
-      <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
+      <Message status={showMessage.status} type={showMessage.type} content={showMessage.content} changeMessage={changeMessage} />
       <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>
       <div className="register__logo">
         <img className='logo' src={logo} alt="" />

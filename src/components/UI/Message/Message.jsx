@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, memo, useEffect, useMemo } from 'react'
 import { message } from 'antd';
 
-const Message = ({ status, type, content, changeMessage }) => {
+const Message = memo(({ status, type, content, changeMessage }) => {
     const [messageApi, contextHolder] = message.useMessage();
 
     const success = () => {
@@ -23,26 +23,48 @@ const Message = ({ status, type, content, changeMessage }) => {
         });
     };
 
-    if (status) {
-        if (type === 'success') {
-            success();
-            changeMessage()
+    useEffect(() => {
+        if (status) {
+            if (type === 'success') {
+                success();
+                changeMessage()
+                console.log(content);
+            }
+            if (type === 'error') {
+                error();
+                changeMessage()
+                console.log(content);
+            }
+            if (type === 'warning') {
+                warning();
+                changeMessage()
+                console.log(content);
+            }
         }
-        if (type === 'error') {
-            error();
-            changeMessage()
-        }
-        if (type === 'warning') {
-            warning();
-            changeMessage()
-        }
-    }
+    }, [content])
+    // if (status) {
+    //     if (type === 'success') {
+    //         success();
+    //         changeMessage()
+    //         console.log(content);
+    //     }
+    //     if (type === 'error') {
+    //         error();
+    //         changeMessage()
+    //         console.log(content);
+    //     }
+    //     if (type === 'warning') {
+    //         warning();
+    //         changeMessage()
+    //         console.log(content);
+    //     }
+    // }
 
     return (
         <>
             {contextHolder}
         </>
     );
-}
+})
 
 export default Message
