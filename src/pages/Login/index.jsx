@@ -26,7 +26,6 @@ const Login = (props) => {
     type: "",
     content: "",
   });
-  // const setUser = useAuth();
 
   const changeMessage = () => {
     setCheck({
@@ -72,6 +71,7 @@ const Login = (props) => {
           message: response.data.msg,
         });
       }
+
       return setProfile(response);
     } catch (err) {
       console.log(err);
@@ -103,7 +103,9 @@ const Login = (props) => {
     let user = {
       id: response.data.id,
       email: response.data.email,
-      username: response.data.username,
+      firstName: response.data.firstName,
+      lastName: response.data.lastName,
+      role: response.data.roles[0],
     };
     user = JSON.stringify(user);
     localStorage.setItem("user", user);

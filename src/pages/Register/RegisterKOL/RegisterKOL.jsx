@@ -5,6 +5,7 @@ import ButtonFull from '../../../components/UI/Button/ButtonFull';
 import Message from '../../../components/UI/Message/Message';
 import ButtonBack from '../../../components/UI/Button/ButtonBack';
 import ErrorModal from '../../../components/UI/ErrorModal/ErrorModal'
+import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 
 import { Input } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -27,6 +28,7 @@ const RegisterEnterprise = (props) => {
     content: '',
   })
   const [error, setError] = useState();
+  const [noti, setNoti] = useState(false);
 
   const changeMessage = (status, type, content) => {
     setCheck({
@@ -120,6 +122,9 @@ const RegisterEnterprise = (props) => {
 
   return (
     <div>
+      {noti &&
+        <SuccessModal noti={noti} />
+      }
       {error && (
         <ErrorModal
           title={error.title}

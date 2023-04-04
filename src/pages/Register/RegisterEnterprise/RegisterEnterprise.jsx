@@ -5,6 +5,7 @@ import ButtonFull from '../../../components/UI/Button/ButtonFull';
 import Message from '../../../components/UI/Message/Message';
 import ButtonBack from '../../../components/UI/Button/ButtonBack';
 import ErrorModal from '../../../components/UI/ErrorModal/ErrorModal'
+import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
 
 import { Input } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -27,6 +28,7 @@ const RegisterEnterprise = (props) => {
         content: '',
     })
     const [error, setError] = useState();
+    const [noti, setNoti] = useState(false);
 
     const changeMessage = (status, type, content) => {
         setCheck({
@@ -101,8 +103,7 @@ const RegisterEnterprise = (props) => {
             })
             .then(data => {
                 createSuccessMessage(data.message)
-                // window.location.replace(`${process.env.REACT_APP_PUBLIC_URL}/login`);
-                // handle message cho user biet la email da duoc gui
+                setNoti(true);
             }).catch(err => {
                 err.json().then(e => createErrorMessage(e.message))
             });
@@ -118,13 +119,16 @@ const RegisterEnterprise = (props) => {
 
     return (
         <div>
-            {error && (
-                <ErrorModal
-                    title={error.title}
-                    message={error.message}
-                    onConfirm={setError(null)}
-                />
-            )}
+            {noti &&
+                <SuccessModal noti={noti} email={userInput.email} />
+            }
+
+            {/* <ErrorModal
+                title={error.title}
+                message={error.message}
+                onConfirm={setError(null)}
+            /> */}
+
             <Message status={check.status} type={check.type} content={check.content} changeMessage={changeMessage} />
             <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>
             <div className="register__logo">
