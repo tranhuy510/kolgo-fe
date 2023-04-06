@@ -2,7 +2,9 @@ import React from "react";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
-import useAuth from "../../context/useAuth.context";
+
+import { Input } from 'antd';
+import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
 
 // import axios from "axios";
 
@@ -160,18 +162,16 @@ const Login = (props) => {
               type="text"
               name="email"
               onChange={inputChangeHandler}
-              placeholder="User name"
+              placeholder="Enter your email"
             ></input>
           </div>
-          <div className="login-form__control">
-            <input
-              className="input-login"
-              type="password"
-              name="password"
-              onChange={inputChangeHandler}
-              placeholder="Password"
-            ></input>
-          </div>
+          <Input.Password
+            name="password"
+            onChange={inputChangeHandler}
+            placeholder="Enter your password"
+            className='input-login'
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+          />
           <div className="login-form__control">
             <label className="forgot-password" onClick={forgotPasswordHandler}>
               Fogot password?

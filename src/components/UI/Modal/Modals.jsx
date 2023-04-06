@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { Modal } from 'antd';
 
-const Modals = ({ status, title, email, message, changeNotification }) => {
+const Modals = ({ status, title, email, message, content, changeNotification }) => {
 
     const success = () => {
         Modal.success({
             title: `Register ${title}`,
             content: (
                 <div>
-                    <p>Please go to {email} for email verification</p>
+                    <p>{content}</p>
+                    <p>Please go to {email} {message}</p>
                 </div>
             ),
         });

@@ -8,6 +8,7 @@ import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
+import UpdatePassword from "../pages/ForgotPassword/UpdatePassword";
 
 export const router = createBrowserRouter([
   {
@@ -30,8 +31,12 @@ export const router = createBrowserRouter([
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/detail", element: <HomeDetail /> },
   {
-    path: "/verify-account",
+    path: "/verify_account",
     element: <VerifyRegister />,
+  },
+  {
+    path: "/update_password",
+    element: <UpdatePassword />,
   },
 ]);
 

@@ -7,6 +7,26 @@ const VerifyRegister = () => {
     const [showSuccess, setShowSuccess] = useState(false)
     const [showWarning, setShowWarning] = useState(false)
 
+    // cach 1
+    // const fetchData = async () => {
+    //     try {
+    //         const res = await verify(window.location.search);
+    //         console.log(res.json());
+    //         if (res.ok) {
+    //             setShowSuccess(true);
+    //         } else {
+    //             setShowWarning(true);
+    //         }
+    //         return res;
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
+
+    // const useEffectOnlyOnce = (func) => useEffect(func, [])
+    // useEffectOnlyOnce(fetchData())
+
+    // cach 2
     useEffect(() => {
         const controller = new AbortController()
 
@@ -26,10 +46,12 @@ const VerifyRegister = () => {
         };
         fetchData();
 
+
         return () => {
             controller.abort()
         }
     }, [])
+
     console.log(showSuccess, showWarning);
 
     return (
