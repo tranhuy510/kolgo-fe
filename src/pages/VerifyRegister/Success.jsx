@@ -1,4 +1,4 @@
-import { Result } from 'antd';
+import { Result, Button } from 'antd';
 import { NavLink } from "react-router-dom";
 
 const Success = () => (
@@ -7,9 +7,11 @@ const Success = () => (
         title="Successfully Verify Register!"
         subTitle="You have successfully confirmed your registration, please login to use the service."
         extra={
-            <NavLink to="/login" >
-                <label >Come login</label>
-            </NavLink>
+            <Button>
+                <NavLink to="/login" >
+                    <label >Come login</label>
+                </NavLink>
+            </Button>
         }
     />
 );

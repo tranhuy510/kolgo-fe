@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { verify } from '../../services/authentication';
 import Success from './Success';
 import Warning from './Warning';
@@ -7,24 +7,24 @@ const VerifyRegister = () => {
     const [showSuccess, setShowSuccess] = useState(false)
     const [showWarning, setShowWarning] = useState(false)
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const controller = new AbortController()
 
-        verify(window.location.search).then(res => {
-            console.log(res.json());
-
-            if (res.ok) {
-                setShowSuccess(true)
-                return res.json()
+        const fetchData = async () => {
+            try {
+                const res = await verify(window.location.search);
+                console.log(res.json());
+                if (res.ok) {
+                    setShowSuccess(true);
+                } else {
+                    setShowWarning(true);
+                }
+                return res;
+            } catch (err) {
+                console.log(err);
             }
-            if (!res.ok) {
-                setShowWarning(true)
-                return Promise.reject(res)
-            }
-
-        }).catch(err => {
-            err.json().then(e => console.log(e))
-        });
+        };
+        fetchData();
 
         return () => {
             controller.abort()

@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 
-import Button from '../../../components/UI/Button/Button'
 import ButtonFull from '../../../components/UI/Button/ButtonFull';
 import Message from '../../../components/UI/Message/Message';
 import ButtonBack from '../../../components/UI/Button/ButtonBack';
-import ErrorModal from '../../../components/UI/ErrorModal/ErrorModal'
-import SuccessModal from "../../../components/UI/SuccessModal/SuccessModal";
+import Modals from "../../../components/UI/Modal/Modals";
 
 import { Input } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -27,7 +25,12 @@ const RegisterEnterprise = (props) => {
         type: '',
         content: '',
     })
-    const [noti, setNoti] = useState(false);
+    const [noti, setNoti] = useState({
+        status: false,
+        title: '',
+        email: '',
+        message: ''
+    });
 
     const changeMessage = () => {
         setShowMessage({
@@ -41,8 +44,20 @@ const RegisterEnterprise = (props) => {
         setShowMessage({ status: true, type: 'error', content: msg })
     }
 
-    const createSuccessMessage = (msg) => {
-        setShowMessage({ status: true, type: 'success', content: msg })
+    const createSuccessNoti = (email) => {
+        setNoti({ status: true, title: 'success', email: email })
+    }
+
+    const createWarningNoti = (msg) => {
+        setNoti({ status: true, title: 'warning', message: msg })
+    }
+
+    const createErrorNoti = (msg) => {
+        setNoti({ status: true, title: 'error', message: msg })
+    }
+
+    const changeNotificationHandler = () => {
+        setNoti({ status: false })
     }
 
     const onClickBackHandler = () => {
@@ -93,20 +108,25 @@ const RegisterEnterprise = (props) => {
     }
 
     const registerWithCredentials = (credentials) => {
-
         register(credentials)
             .then(res => {
                 if (!res.ok) {
                     return Promise.reject(res)
                 }
-                return res.json();
+                else if (res.ok) {
+                    createSuccessNoti(userInput.email)
+                    return res.json();
+                }
             })
             .then(data => {
-                setNoti(true);
+                console.log(data);
+                createWarningNoti(data.message)
             }).catch(err => {
-                err.json().then(e => console.log(e))
+                err.json().then(e => {
+                    createErrorNoti(e.message)
+                    console.log(e)
+                })
             });
-
     }
 
     const handleRegister = (event) => {
@@ -119,8 +139,8 @@ const RegisterEnterprise = (props) => {
 
     return (
         <div>
-            {noti &&
-                <SuccessModal noti={noti} email={userInput.email} />
+            {noti.status &&
+                <Modals status={noti.status} title={noti.title} email={noti.email} message={noti.message} changeNotification={changeNotificationHandler} />
             }
             <Message status={showMessage.status} type={showMessage.type} content={showMessage.content} changeMessage={changeMessage} />
             <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>

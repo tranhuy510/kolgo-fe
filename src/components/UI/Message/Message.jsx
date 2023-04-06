@@ -28,37 +28,17 @@ const Message = memo(({ status, type, content, changeMessage }) => {
             if (type === 'success') {
                 success();
                 changeMessage()
-                console.log(content);
             }
             if (type === 'error') {
                 error();
                 changeMessage()
-                console.log(content);
             }
             if (type === 'warning') {
                 warning();
                 changeMessage()
-                console.log(content);
             }
         }
     }, [content])
-    // if (status) {
-    //     if (type === 'success') {
-    //         success();
-    //         changeMessage()
-    //         console.log(content);
-    //     }
-    //     if (type === 'error') {
-    //         error();
-    //         changeMessage()
-    //         console.log(content);
-    //     }
-    //     if (type === 'warning') {
-    //         warning();
-    //         changeMessage()
-    //         console.log(content);
-    //     }
-    // }
 
     return (
         <>
