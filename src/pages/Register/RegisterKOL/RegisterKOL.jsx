@@ -17,7 +17,7 @@ const RegisterEnterprise = (props) => {
     lastName: "",
     email: "",
     password: "",
-    confirmationpassword: "",
+    confirmPassword: "",
     biz: false
   });
   const [showMessage, setShowMessage] = useState({
@@ -94,10 +94,10 @@ const RegisterEnterprise = (props) => {
     else if (userInput.password.length > 32 || userInput.password.length < 6) {
       errMsg = 'Password size must be between 6 and 36';
     }
-    else if (!userInput.confirmationpassword) {
+    else if (!userInput.confirmPassword) {
       errMsg = 'Please confirm your password';
     }
-    else if (userInput.password !== userInput.confirmationpassword) {
+    else if (userInput.password !== userInput.confirmPassword) {
       errMsg = 'Password does not match';
     }
     if (errMsg) {
@@ -188,7 +188,7 @@ const RegisterEnterprise = (props) => {
           </div>
           <div className="register-form__control">
             <Input.Password
-              name="confirmationpassword"
+              name="confirmPassword"
               onChange={inputChangeHandler}
               placeholder="Confirm your password"
               className='input-register'

@@ -6,6 +6,7 @@ import Warning from './Warning';
 const VerifyRegister = () => {
     const [showSuccess, setShowSuccess] = useState(false)
     const [showWarning, setShowWarning] = useState(false)
+    const [verifyToken, setVerifyToken] = useState('')
 
     // cach 1
     // const fetchData = async () => {
@@ -28,29 +29,17 @@ const VerifyRegister = () => {
 
     // cach 2
     useEffect(() => {
-        const controller = new AbortController()
-
-        const fetchData = async () => {
-            try {
-                const res = await verify(window.location.search);
-                console.log(res.json());
-                if (res.ok) {
-                    setShowSuccess(true);
-                } else {
-                    setShowWarning(true);
-                }
-                return res;
-            } catch (err) {
-                console.log(err);
+        setVerifyToken(window.location.search)
+        verify(window.location.search).then(res => {
+            if (res.ok) {
+                setShowSuccess(true);
+                console.log('fetch thanh cong');
             }
-        };
-        fetchData();
-
-
-        return () => {
-            controller.abort()
-        }
-    }, [])
+            else {
+                setShowWarning(true);
+            }
+        })
+    }, [verifyToken])
 
     console.log(showSuccess, showWarning);
 

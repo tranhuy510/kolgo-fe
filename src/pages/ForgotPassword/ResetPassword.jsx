@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { updatePassword } from '../../services/authentication'
+import { resetPassword } from '../../services/authentication'
 
 import { Input, message } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -8,7 +8,7 @@ import ButtonFull from '../../components/UI/Button/ButtonFull';
 import Modals from "../../components/UI/Modal/Modals";
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 
-const UpdatePassword = () => {
+const ResetPassword = () => {
     const [input, setInput] = useState({
         newPassword: '',
         confirmPassword: ''
@@ -54,13 +54,12 @@ const UpdatePassword = () => {
     };
 
     const changePassword = (token, data) => {
-        updatePassword(token, data)
+        resetPassword(token, data)
             .then(res => {
-                console.log(res.json());
                 if (!res.ok) {
                     return Promise.reject(res)
                 }
-                else return res.json()
+                return res.json()
             })
             .then(data => {
                 console.log(data);
@@ -77,7 +76,7 @@ const UpdatePassword = () => {
             event.preventDefault();
         }
 
-        changePassword(window.location.search, input);
+        changePassword(window.location.search, { confirmPassword: input.confirmPassword, newPassword: input.newPassword });
     }
 
     return (
@@ -96,7 +95,7 @@ const UpdatePassword = () => {
                 <form onSubmit={confirmHandler} className="login-form">
                     <div className="register-form__control">
                         <Input.Password
-                            name="newPassword "
+                            name="newPassword"
                             onChange={inputChangeHandler}
                             placeholder="Enter your password"
                             className='input-register'
@@ -121,4 +120,4 @@ const UpdatePassword = () => {
     )
 }
 
-export default UpdatePassword
+export default ResetPassword

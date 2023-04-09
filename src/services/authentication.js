@@ -1,4 +1,5 @@
 export const register = async (credential) => {
+  console.log(credential);
   // return await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
   return await fetch(`http://localhost:8080/api/auth/register`, {
     method: "POST",
@@ -23,7 +24,7 @@ export const verify = async (params) => {
 
 export const forgotPassword = async (email) => {
   // return await fetch(`${process.env.REACT_APP_API_URL}/auth/verify${params}`, {
-  return await fetch(`http://localhost:8080/api/auth/reset_password`, {
+  return await fetch(`http://localhost:8080/api/auth/forgot_password`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -33,10 +34,9 @@ export const forgotPassword = async (email) => {
   });
 };
 
-export const updatePassword = async (token, data) => {
-  console.log(data);
+export const resetPassword = async (token, data) => {
   // return await fetch(`${process.env.REACT_APP_API_URL}/auth/verify${params}`, {
-  return await fetch(`http://localhost:8080/api/auth/update_password${token}`, {
+  return await fetch(`http://localhost:8080/api/auth/reset_password${token}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -44,4 +44,19 @@ export const updatePassword = async (token, data) => {
     },
     body: JSON.stringify(data),
   });
+};
+
+export const refreshToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  return await fetch(
+    `http://localhost:8080/api/auth/refresh_token?token=${refreshToken}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
 };

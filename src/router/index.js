@@ -8,7 +8,7 @@ import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
-import UpdatePassword from "../pages/ForgotPassword/UpdatePassword";
+import ResetPassword from "../pages/ForgotPassword/ResetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -35,8 +35,8 @@ export const router = createBrowserRouter([
     element: <VerifyRegister />,
   },
   {
-    path: "/update_password",
-    element: <UpdatePassword />,
+    path: "/reset_password",
+    element: <ResetPassword />,
   },
 ]);
 
