@@ -126,7 +126,7 @@ const Login = (props) => {
   };
 
   const forgotPasswordHandler = () => {
-    navigate("../forgotpassword");
+    navigate("../forgot_password");
   };
 
   const comeRegisterHandler = () => {

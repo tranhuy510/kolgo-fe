@@ -1,5 +1,4 @@
 export const register = async (credential) => {
-  console.log(credential);
   // return await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
   return await fetch(`http://localhost:8080/api/auth/register`, {
     method: "POST",

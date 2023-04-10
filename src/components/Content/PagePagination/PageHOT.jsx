@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import axios from 'axios';
 import styled from "styled-components";
 
 import { getKols } from '../../../services/authentication';

@@ -43,6 +43,8 @@ const ForgotPassword = () => {
         });
     };
 
+    let demo = 0
+
     const forgotPasswordHandler = (event) => {
         if (event) {
             event.preventDefault();
@@ -50,15 +52,17 @@ const ForgotPassword = () => {
 
         forgotPassword(userInput)
             .then(res => {
-                console.log(res);
-                if (!res.ok) {
-                    return Promise.reject(res)
-                }
-                else return res.json()
+                if (res.ok) { demo = 1 }
+                else { demo = 2 }
+                return res.json()
             })
             .then(data => {
-                console.log(data);
-                createSuccessNoti(userInput.email, data.message)
+                if (demo === 1) {
+                    createSuccessNoti(userInput.email, data.message)
+                }
+                if (demo === 2) {
+                    createErrorNoti(data.message)
+                }
             })
             .catch(err => {
                 console.log(err)

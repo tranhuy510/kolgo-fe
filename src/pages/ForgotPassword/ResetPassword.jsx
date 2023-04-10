@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { resetPassword } from '../../services/authentication'
+import { useNavigate } from "react-router-dom";
+import { refreshToken } from '../../services/authentication';
 
 import { Input, message } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -9,7 +11,8 @@ import Modals from "../../components/UI/Modal/Modals";
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 
 const ResetPassword = () => {
-    const [input, setInput] = useState({
+    const navigate = useNavigate();
+    const [userInput, setUserInput] = useState({
         newPassword: '',
         confirmPassword: ''
     });
@@ -21,21 +24,16 @@ const ResetPassword = () => {
         content: ''
     });
 
-    const demo = {
-        newPassword: '123456789',
-        confirmPassword: '123456789'
-    }
-
     const createSuccessNoti = (message) => {
         setNoti({ status: true, title: 'success', message: message })
     }
 
-    const createWarningNoti = (msg) => {
-        setNoti({ status: true, title: 'warning', message: msg })
+    const createWarningNoti = (message) => {
+        setNoti({ status: true, title: 'warning', message: message, })
     }
 
-    const createErrorNoti = (msg) => {
-        setNoti({ status: true, title: 'error', message: msg })
+    const createErrorNoti = (message, content) => {
+        setNoti({ status: true, title: 'error', message: message, content: content })
     }
 
     const changeNotificationHandler = () => {
@@ -43,9 +41,7 @@ const ResetPassword = () => {
     }
 
     const inputChangeHandler = (event) => {
-        setInput((prevState) => {
-            console.log(event.target.name, event.target.value);
-            console.log(input);
+        setUserInput((prevState) => {
             return {
                 ...prevState,
                 [event.target.name]: event.target.value,
@@ -53,21 +49,57 @@ const ResetPassword = () => {
         });
     };
 
+    const validateUserInput = (userInput) => {
+        let res = true;
+        let errMsg = '';
+        if (!userInput.newPassword) {
+            errMsg = 'Please enter New Password';
+        }
+        else if (userInput.newPassword.length > 32 || userInput.newPassword.length < 6) {
+            errMsg = 'Password size must be between 6 and 36';
+        }
+        else if (!userInput.confirmPassword) {
+            errMsg = 'Please enter Confirm Password';
+        }
+        else if (userInput.newPassword !== userInput.confirmPassword) {
+            errMsg = 'Password does not match';
+        }
+        if (errMsg) {
+            createWarningNoti(errMsg)
+            res = false;
+        }
+        return res;
+    }
+
+    const checkRefreshToken = () => {
+        refreshToken()
+            .then(res => {
+                if (res.status !== 200) {
+                    navigate("../forgot_password");
+                }
+            })
+            .then(data => console.log(data))
+    }
+
     const changePassword = (token, data) => {
         resetPassword(token, data)
             .then(res => {
-                if (!res.ok) {
-                    return Promise.reject(res)
-                }
-                return res.json()
+                return res.json();
             })
             .then(data => {
-                console.log(data);
-                createSuccessNoti(data.message)
+                if (data.message === 'Token expired') {
+                    createWarningNoti('Your email has expired, please resend email to continue')
+                    checkRefreshToken()
+                }
+                else {
+                    createSuccessNoti(data.message)
+                    setTimeout(() => {
+                        navigate("../login");
+                    }, 1000)
+                }
             })
             .catch(err => {
                 console.log(err)
-                createErrorNoti(err.message)
             });
     }
 
@@ -75,8 +107,10 @@ const ResetPassword = () => {
         if (event) {
             event.preventDefault();
         }
-
-        changePassword(window.location.search, { confirmPassword: input.confirmPassword, newPassword: input.newPassword });
+        validateUserInput(userInput)
+        if (validateUserInput(userInput)) {
+            changePassword(window.location.search, { newPassword: userInput.newPassword, confirmPassword: userInput.confirmPassword });
+        }
     }
 
     return (

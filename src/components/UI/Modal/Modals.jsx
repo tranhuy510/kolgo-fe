@@ -18,14 +18,24 @@ const Modals = ({ status, title, email, message, content, changeNotification }) 
     const warning = () => {
         Modal.warning({
             title: title,
-            content: message,
+            content: (
+                <div>
+                    <p>{content}</p>
+                    <p>{message}</p>
+                </div>
+            ),
         });
     };
 
     const error = () => {
         Modal.error({
             title: title,
-            content: message,
+            content: (
+                <div>
+                    <p>{content}</p>
+                    <p>{message}</p>
+                </div>
+            ),
         });
     };
 

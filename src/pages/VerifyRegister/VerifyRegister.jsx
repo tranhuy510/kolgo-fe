@@ -6,7 +6,6 @@ import Warning from './Warning';
 const VerifyRegister = () => {
     const [showSuccess, setShowSuccess] = useState(false)
     const [showWarning, setShowWarning] = useState(false)
-    const [verifyToken, setVerifyToken] = useState('')
 
     // cach 1
     // const fetchData = async () => {
@@ -29,17 +28,22 @@ const VerifyRegister = () => {
 
     // cach 2
     useEffect(() => {
-        setVerifyToken(window.location.search)
-        verify(window.location.search).then(res => {
-            if (res.ok) {
-                setShowSuccess(true);
-                console.log('fetch thanh cong');
-            }
-            else {
-                setShowWarning(true);
-            }
-        })
-    }, [verifyToken])
+        verify(window.location.search)
+            .then(res => {
+                console.log(res);
+                if (res.ok) {
+                    setShowSuccess(true);
+                    console.log('fetch thanh cong');
+                }
+                else {
+                    setShowWarning(true);
+                }
+                return res.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+    }, [])
 
     console.log(showSuccess, showWarning);
 

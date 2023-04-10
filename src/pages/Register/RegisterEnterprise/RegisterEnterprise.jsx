@@ -111,8 +111,6 @@ const RegisterEnterprise = (props) => {
         register(credentials)
             .then(res => {
                 if (!res.ok) {
-                    console.log(res);
-                    console.log(res.json());
                     return Promise.reject(res)
                 }
                 else if (res.ok) {
@@ -136,7 +134,9 @@ const RegisterEnterprise = (props) => {
             event.preventDefault();
         }
         validateUserInput(userInput)
-        registerWithCredentials(userInput)
+        if (validateUserInput(userInput)) {
+            registerWithCredentials(userInput)
+        }
     }
 
     return (
