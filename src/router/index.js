@@ -9,6 +9,7 @@ import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
+import Chat from "../pages/Chat";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,8 @@ export const router = createBrowserRouter([
         path: "campaign",
         element: <Campaign />,
       },
+      { path: "/detail", element: <HomeDetail /> },
+      { path: "/chat", element: <Chat /> },
       {
         path: "profile",
         element: <Profile />,

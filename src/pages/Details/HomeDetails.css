@@ -1,8 +1,8 @@
 .main-details .top-details {
   border: 1px solid rgba(0, 0, 0, 0.7);
   border-radius: 20px;
-  margin: 2% 10%;
-  padding: 50px;
+  margin: 0 10%;
+  padding: 70px 50px 50px;
 }
 .main-details .detail-description {
   display: flex;
@@ -270,8 +270,8 @@ div[aria-selected^="true"] button {
   .main-details .top-details {
     border: 1px solid rgba(0, 0, 0, 0.7);
     border-radius: 20px;
-    margin: 2% 5%;
-    padding: 10px;
+    margin: 0 5%;
+    padding: 70px 10px 10px;
   }
   .top-details .left-description {
     height: 400px;

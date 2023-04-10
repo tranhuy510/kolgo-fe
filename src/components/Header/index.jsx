@@ -5,8 +5,7 @@ import { Spin, Avatar } from "antd";
 
 import DidLogin from "../BtnLogin/DidLogin";
 import NotLogin from "../BtnNotLogin/NotLogin";
-import MenuGuest from "./Menu/MenuGuest";
-import MenuUser from "./Menu/MenuUser";
+import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
 
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
@@ -46,8 +45,7 @@ const Header = (props) => {
         </a>
       </div>
       <div className="header__room">
-        {!user && <MenuGuest icons={[home, campaign]} />}
-        {user && <MenuUser icons={[home, campaign, chat]} />}
+        <Menu icons={[home, campaign, chat]} />
       </div>
       <div className="header__button">
         {user && (

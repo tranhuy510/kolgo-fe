@@ -69,7 +69,6 @@ const HomeDetails = () => {
 
   return (
     <>
-      <Header />
       <main className="main-details">
         <div className="top-details">
           <div className="detail-description">
