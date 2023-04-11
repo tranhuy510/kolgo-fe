@@ -1,40 +1,27 @@
-import React, { useState } from 'react'
+import React from "react";
+import FormProfileKOL from "../FormContent/FormProfileKOL";
+import FormEmail from "../FormContent/FormEmail";
+import FormPassword from "../FormContent/FormPassword";
+import FormActivity from "../FormContent/FormActivity";
+import FormPayment from "../FormContent/FormPayment";
 
-import Login from '../../Login/index'
-import Register from '../../Register/Register'
+const components = [
+  { key: "1", component: <FormProfileKOL /> },
+  { key: "sub1", component: <FormEmail /> },
+  { key: "sub2", component: <FormPassword /> },
+  { key: "3", component: <FormActivity /> },
+  { key: "4", component: <FormPayment /> },
+];
 
 const SubContext = (props) => {
-    const [key, setKey] = useState(props.changeContent);
+  return (
+    <div className="sub-context" style={{ width: "100%" }}>
+      {!props.changeContent && <FormProfileKOL />}
+      {components.map((component) => {
+        if (component.key === props.changeContent) return component.component;
+      })}
+    </div>
+  );
+};
 
-    if (key !== props.changeContent) {
-        setKey(props.changeContent)
-    }
-
-    const components = [
-        <Login />,
-        <Register />,
-        <div>Option 3</div>,
-        <div>Option 4</div>,
-        <div>Option 5</div>,
-        <div>Option 6</div>,
-        <div>Option 7</div>,
-        <div>Option 8</div>,
-        <div>Option 9</div>,
-        <div>Option 10</div>,
-        <div>Option 11</div>,
-        <div>Option 12</div>,
-        <div>Option 13</div>,
-    ]
-
-    return (
-        <div className='sub-context' style={{ width: '100%' }}>
-            {components.map((component, index) => {
-                if (index == key) {
-                    return component
-                }
-            })}
-        </div>
-    )
-}
-
-export default SubContext
+export default SubContext;
