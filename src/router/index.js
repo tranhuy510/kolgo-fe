@@ -19,11 +19,15 @@ export const router = createBrowserRouter([
         path: "campaign",
         element: <Campaign />,
       },
-      { path: "/detail", element: <HomeDetail /> },
-      { path: "/chat", element: <Chat /> },
       {
-        path: "profile",
+        path: "kols",
+        children: [{ path: "detail", element: <HomeDetail /> }],
+      },
+      { path: "chat", element: <Chat /> },
+      {
+        path: "setting",
         element: <Profile />,
+        children: [{ path: "profile" }],
       },
     ],
   },

@@ -1,9 +1,9 @@
 import React from "react";
 import {
   UserOutlined,
-  MailOutlined,
+  HistoryOutlined,
   SettingOutlined,
-  AppstoreOutlined,
+  ClockCircleOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -17,45 +17,30 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const items = [
-  getItem("Thông tin cá nhân", "sub1", <UserOutlined />),
-  getItem("Cài đặt tài khoản", "sub2", <SettingOutlined />, [
-    getItem("Email", "1"),
-    getItem("Tài khoản và mật khẩu", "2"),
-    getItem("Option 7", "6"),
-    getItem("Option 8", "7"),
+  getItem("Thông tin cá nhân", "1", <UserOutlined />),
+  getItem("Cài đặt tài khoản", "2", <SettingOutlined />, [
+    getItem("Email", "sub1"),
+    getItem("Tài khoản và mật khẩu", "sub2"),
   ]),
-  {
-    type: "divider",
-  },
-  getItem("Navigation Three", "sub4", <SettingOutlined />, [
-    getItem("Option 9", "8"),
-    getItem("Option 10", "9"),
-    getItem("Option 11", "10"),
-    getItem("Option 12", "11"),
-  ]),
-  getItem(
-    "Group",
-    "grp",
-    null,
-    [getItem("Option 13", "12"), getItem("Option 14", "13")],
-    "group"
-  ),
+  getItem("Lịch sử hoạt động", "3", <ClockCircleOutlined />),
+  getItem("Lịch sử thanh toán", "4", <HistoryOutlined />),
 ];
 
 const MenuProfile = (props) => {
   const onClick = (e) => {
-    console.log("click ", e);
+    console.log("click ", e.key);
     props.onChangeContentHandler(e.key);
   };
 
   return (
     <Menu
-      onClick={onClick}
+      onSelect={onClick}
       style={{
         width: "100%",
+        marginTop: "70px",
       }}
-      defaultSelectedKeys={["1"]}
-      defaultOpenKeys={["sub1"]}
+      defaultSelectedKeys={"1"}
+      // defaultOpenKeys={["sub1"]}
       mode="inline"
       items={items}
     />
