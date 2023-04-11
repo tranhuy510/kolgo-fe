@@ -16,8 +16,9 @@ const Title = styled.h2`
 
 const Content = () => {
     const [currentHotKOL, setCurrentHotKOL] = useState(1);
-    const [currentOutstandingKOL, setCurrentOutstandingKOL] = useState(1);
     const [totalHotKOL, setTotalHotKOL] = useState(30);
+
+    const [currentOutstandingKOL, setCurrentOutstandingKOL] = useState(1);
     const [totalOutstandingKOL, setTotalOutstandingKOL] = useState(30);
 
 
@@ -26,6 +27,10 @@ const Content = () => {
         console.log(page);
         setCurrentHotKOL(page);
     };
+
+    const onChangeTotalHotKOL = (total) => {
+        setTotalHotKOL(total)
+    }
 
     const onChangeOutstandingKOL = (page) => {
         console.log(page);
@@ -40,7 +45,7 @@ const Content = () => {
             <div className='content-middle'>
                 <Title>Hot KOL</Title>
                 <div className='content-page'>
-                    <PageHot current={currentHotKOL} />
+                    <PageHot current={currentHotKOL} onChangeTotalHotKOL={onChangeTotalHotKOL} />
                 </div>
                 <div className='content-pagination'>
                     <Pagination current={currentHotKOL} onChange={onChangeHotKOL} total={totalHotKOL} />

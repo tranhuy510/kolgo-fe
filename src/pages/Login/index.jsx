@@ -2,7 +2,9 @@ import React from "react";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
-import useAuth from "../../context/useAuth.context";
+
+import { Input } from 'antd';
+import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
 
 // import axios from "axios";
 
@@ -17,7 +19,7 @@ import "./style.css";
 const Login = (props) => {
   const navigate = useNavigate();
   const [dataInput, setdataInput] = useState({
-    userInput: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState();
@@ -26,7 +28,6 @@ const Login = (props) => {
     type: "",
     content: "",
   });
-  // const setUser = useAuth();
 
   const changeMessage = () => {
     setCheck({
@@ -49,10 +50,10 @@ const Login = (props) => {
     if (event) {
       event.preventDefault();
     }
-    if (!dataInput.userInput) {
+    if (!dataInput.email) {
       setError({
-        title: "Invalid input",
-        message: "Please enter a valid name (non-empty name)",
+        title: "Invalid email",
+        message: "Please enter a valid email (non-empty email)",
       });
       return;
     }
@@ -72,6 +73,7 @@ const Login = (props) => {
           message: response.data.msg,
         });
       }
+
       return setProfile(response);
     } catch (err) {
       console.log(err);
@@ -90,6 +92,8 @@ const Login = (props) => {
   };
 
   const setProfile = (response) => {
+    console.log(response);
+
     let accessToken = response.data.token.access_token;
     accessToken = JSON.stringify(accessToken);
     localStorage.setItem("accessToken", accessToken);
@@ -101,7 +105,9 @@ const Login = (props) => {
     let user = {
       id: response.data.id,
       email: response.data.email,
-      username: response.data.username,
+      firstName: response.data.firstName,
+      lastName: response.data.lastName,
+      role: response.data.roles[0],
     };
     user = JSON.stringify(user);
     localStorage.setItem("user", user);
@@ -120,7 +126,7 @@ const Login = (props) => {
   };
 
   const forgotPasswordHandler = () => {
-    navigate("../forgotpassword");
+    navigate("../forgot_password");
   };
 
   const comeRegisterHandler = () => {
@@ -154,20 +160,18 @@ const Login = (props) => {
             <input
               className="input-login"
               type="text"
-              name="userInput"
+              name="email"
               onChange={inputChangeHandler}
-              placeholder="User name"
+              placeholder="Enter your email"
             ></input>
           </div>
-          <div className="login-form__control">
-            <input
-              className="input-login"
-              type="password"
-              name="password"
-              onChange={inputChangeHandler}
-              placeholder="Password"
-            ></input>
-          </div>
+          <Input.Password
+            name="password"
+            onChange={inputChangeHandler}
+            placeholder="Enter your password"
+            className='input-login'
+            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+          />
           <div className="login-form__control">
             <label className="forgot-password" onClick={forgotPasswordHandler}>
               Fogot password?

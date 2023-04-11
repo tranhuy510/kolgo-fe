@@ -7,6 +7,8 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
+import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
+import ResetPassword from "../pages/ForgotPassword/ResetPassword";
 import Chat from "../pages/Chat";
 
 export const router = createBrowserRouter([
@@ -33,8 +35,16 @@ export const router = createBrowserRouter([
   },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/forgotpassword", element: <ForgotPassword /> },
-  { path: "/chat", element: <Chat /> },
+  { path: "/forgot_password", element: <ForgotPassword /> },
+  { path: "/detail", element: <HomeDetail /> },
+  {
+    path: "/verify_account",
+    element: <VerifyRegister />,
+  },
+  {
+    path: "/reset_password",
+    element: <ResetPassword />,
+  },
 ]);
 
 export const privateRouters = [];
