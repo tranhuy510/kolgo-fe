@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
 
-import { getKols } from '../../../services/authentication';
+import { getKols } from '../../../services/getApi';
 
 const IMG = styled.img`
     width: 220px;
@@ -12,7 +12,7 @@ const IMG = styled.img`
 
 const Name = styled.p`
     margin: 0;
-    padding: 0 10px;
+    padding-left: 10px;
     font-weight: 500;
     line-height: 40px;
 `
@@ -59,14 +59,22 @@ const PageHOT = (props) => {
         window.location.replace('http://localhost:3000/detail')
     }
 
+    function arrUpperCase(data) {
+        const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
+            return p1.toUpperCase() + p2;
+        })
+        return demo;
+    };
+
     return (
-        <DivWrap>
+        <DivWrap key={'hotKol'}>
             {listKolHot?.map((item) => {
+                const firstName = arrUpperCase(item.firstName)
                 return (
                     <CardKOL key={item.id} onClick={onComeKolDetail}>
                         <IMG src={item?.ava} alt="" />
                         <div style={{ display: 'flex' }}>
-                            <Name>{item.firstName}</Name>
+                            <Name>{firstName}</Name>
                             <Name>{item.lastName}</Name>
                         </div>
                     </CardKOL>

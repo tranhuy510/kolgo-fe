@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
-
 import { getKols } from '../../../services/getApi';
 
 const IMG = styled.img`
@@ -12,7 +11,7 @@ const IMG = styled.img`
 
 const Name = styled.p`
     margin: 0;
-    padding: 0 10px;
+    padding-left: 10px;
     font-weight: 500;
     line-height: 40px;
 `
@@ -33,13 +32,13 @@ const DivWrap = styled.div`
     box-sizing: border-box;
 `
 
-const PageOutstandingKOL = (props) => {
+const PageField = (props) => {
 
-    const [listKolHot, setListKolHot] = useState([])
+    const [listField, setListField] = useState([])
 
     useLayoutEffect(() => {
-        props.onChangeTotalOutstandingKOL(listKolHot.length);
-    }, [listKolHot])
+        props.onChangeTotalKol(listField.length);
+    }, [listField])
 
     useEffect(() => {
         getKols()
@@ -51,7 +50,7 @@ const PageOutstandingKOL = (props) => {
             })
             .then(data => {
                 console.log(data);
-                setListKolHot(data)
+                setListField(data)
             })
     }, [])
 
@@ -67,8 +66,8 @@ const PageOutstandingKOL = (props) => {
     };
 
     return (
-        <DivWrap key={'outstandingKol'}>
-            {listKolHot?.map((item) => {
+        <DivWrap key={'fieldPage'}>
+            {listField?.map((item) => {
                 const firstName = arrUpperCase(item.firstName)
                 return (
                     <CardKOL key={item.id} onClick={onComeKolDetail}>
@@ -84,4 +83,4 @@ const PageOutstandingKOL = (props) => {
     )
 }
 
-export default PageOutstandingKOL
+export default PageField

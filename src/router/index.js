@@ -10,6 +10,7 @@ import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
 import Chat from "../pages/Chat";
+import Fields from "../pages/Fields/Fields";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ export const router = createBrowserRouter([
   {
     path: "/reset_password",
     element: <ResetPassword />,
+  },
+  {
+    path: "/fields/kol/:id",
+    element: <Fields />,
   },
 ]);
 

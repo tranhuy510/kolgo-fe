@@ -37,6 +37,10 @@ const Content = () => {
         setCurrentOutstandingKOL(page);
     };
 
+    const onChangeTotalOutstandingKOL = (total) => {
+        setTotalOutstandingKOL(total)
+    }
+
     return (
         <div className='content'>
             <div className='content-top'>
@@ -54,7 +58,7 @@ const Content = () => {
             <div className='content-bottom'>
                 <Title>Outstanding KOL</Title>
                 <div className='content-page'>
-                    <PageOutStanding current={currentOutstandingKOL} />
+                    <PageOutStanding current={currentOutstandingKOL} onChangeTotalOutstandingKOL={onChangeTotalOutstandingKOL} />
                 </div>
                 <div className='content-pagination'>
                     <Pagination current={currentOutstandingKOL} onChange={onChangeOutstandingKOL} total={totalOutstandingKOL} />
