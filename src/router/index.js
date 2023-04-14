@@ -8,6 +8,7 @@ import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import Chat from "../pages/Chat";
+import HomeAdmin from '../pages/Admin/HomeAdmin';
 
 export const router = createBrowserRouter([
   {
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
   { path: "/register", element: <Register /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/chat", element: <Chat /> },
+  { path: "/admin", element: <HomeAdmin /> },
 ]);
 
 export const privateRouters = [];
