@@ -1,62 +1,36 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Col, Row } from "antd";
 
-const user = [];
+import classes from "./Form.module.css";
 
 export default function FormEmail(props) {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <Row>
       <Col span={16}>
-        <h1 style={{ marginLeft: 30 }}>Email</h1>
-        <Form
-          labelCol={{
-            span: 4,
-          }}
-          wrapperCol={{
-            span: 20,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập Email!",
-                defaultField: user.email ? user.email : "",
-              },
-            ]}
-          >
-            <Input placeholder="Nhập Email của bạn" />
-          </Form.Item>
+        <h1>Email</h1>
+        <form className={classes.form}>
+          <Row className={classes.form_control}>
+            <Col span={4}>Email:</Col>
+            <Col span={20}>
+              <input
+                placeholder="Nhập Email của bạn"
+                className={classes.input_profile}
+                name="email"
+                type="email"
+                defaultValue={user?.email}
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 4,
-              span: 16,
-            }}
-          >
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              style={{ background: "var(--color-primary-1)" }}
-            >
-              Thay đổi Email
-            </Button>
-          </Form.Item>
-        </Form>
+          <Row>
+            <Col offset={4}></Col>
+            <Col span={16}>
+              <button className={classes.btnSubmit} type="submit">
+                Thay đổi Email
+              </button>
+            </Col>
+          </Row>
+        </form>
       </Col>
     </Row>
   );

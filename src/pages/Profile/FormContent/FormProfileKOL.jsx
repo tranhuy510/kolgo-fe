@@ -1,175 +1,303 @@
-import { LinkOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Col, Form, Input, Radio, Row, Select } from "antd";
-import { useState } from "react";
-import optionCity, { optionSpeciality } from "./option";
+import { EditOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Col, Row, Select } from "antd";
+import { useEffect, useState } from "react";
+import {
+  getCities,
+  getFields,
+  getGenders,
+  getKolProfile,
+} from "../../../services/getApi";
 
-const user = [];
+import classes from "./Form.module.css";
 
 export default function FormProfileKOL(props) {
-  const [value, setValue] = useState("male");
-  const onChangeRadio = (e) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+  const [profile, setProfile] = useState();
+  const [gender, setGender] = useState([]);
+  const [city, setCity] = useState([]);
+  const [speciality, setSpeciality] = useState([]);
+  const [valueGender, setValueGender] = useState("");
+  const [valueCity, setValueCity] = useState("");
+  const [valueSpeciality, setValueSpeciality] = useState("");
+
+  const setDefaultProfile = () => {
+    getKolProfile()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setProfile(data);
+      });
   };
-  const onFinish = (values) => {
-    console.log("Success:", values);
+
+  const setDefaultGender = () => {
+    getGenders()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setGender(data);
+      });
   };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+
+  const setDefaultCity = () => {
+    getCities()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setCity(data);
+      });
   };
-  const onChangeSelect = (value) => {
-    console.log(`selected ${value}`);
+
+  const setDefaultSpeciality = () => {
+    getFields()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setSpeciality(data);
+      });
+  };
+
+  useEffect(() => {
+    setDefaultProfile();
+    setDefaultGender();
+    setDefaultCity();
+    setDefaultSpeciality();
+  }, []);
+
+  const optionGender = gender.map((g) => {
+    return {
+      value: g.id,
+      label: g.name,
+    };
+  });
+
+  const optionCity = city.map((c) => {
+    return {
+      value: c.id,
+      label: c.name,
+    };
+  });
+
+  const optionSpeciality = speciality.map((s) => {
+    return {
+      value: s.id,
+      label: s.name,
+    };
+  });
+
+  const changeGenderHandler = (value) => {
+    setValueGender(value);
+  };
+
+  const changeCityHandler = (value) => {
+    setValueCity(value);
+  };
+
+  const changeSpecialityHandler = (value) => {
+    setValueSpeciality(value);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
   };
 
   return (
     <Row>
       <Col span={16}>
-        <h1 style={{ marginLeft: 30 }}>Thông tin cá nhân</h1>
-        <Form
-          labelCol={{
-            span: 7,
-          }}
-          wrapperCol={{
-            span: 17,
-          }}
-          style={{
-            maxWidth: 400,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            label="Họ và tên"
-            name="name"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập họ và tên!",
-                defaultField:
-                  user?.firstName && user?.lastName
-                    ? `${user?.firstName} ${user?.lastName}`
-                    : "",
-              },
-            ]}
-          >
-            <Input placeholder="Họ và tên" />
-          </Form.Item>
+        <h1>Thông tin cá nhân</h1>
+        <form className={classes.form} onSubmit={submitHandler}>
+          <Row className={classes.form_control}>
+            <Col span={7}>Tên:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Tên của bạn"
+                className={classes.input_profile}
+                name="firstName"
+                defaultValue={profile?.firstName}
+              />
+            </Col>
+          </Row>
 
-          <Form.Item label="Giới tính" name="gender">
-            <Radio.Group
-              onChange={onChangeRadio}
-              value={value}
-              defaultValue={user?.gender}
-            >
-              <Radio value="male">Nam</Radio>
-              <Radio value="female">Nữ</Radio>
-            </Radio.Group>
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Họ:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Họ của bạn"
+                className={classes.input_profile}
+                defaultValue={profile?.lastName}
+                name="lastName"
+              />
+            </Col>
+          </Row>
 
-          <Form.Item name="phone" label="Số điện thoại">
-            <Input
-              defaultValue={user?.phoneNumber}
-              placeholder="Số điện thoại"
-            />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Giới tính:</Col>
+            <Col span={17}>
+              <Select
+                showSearch
+                name="gender"
+                className={classes.select_profile}
+                placeholder="Chọn giới tính của bạn"
+                optionFilterProp="children"
+                onChange={changeGenderHandler}
+                value={valueGender ? valueGender : profile?.genderId}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={optionGender}
+              />
+            </Col>
+          </Row>
 
-          <Form.Item name="city" label="Tỉnh/Thành phố">
-            <Select
-              showSearch
-              placeholder="Chọn tỉnh/thành phố làm việc"
-              optionFilterProp="children"
-              onChange={onChangeSelect}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={optionCity}
-            />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Số điện thoại:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Số điện thoại"
+                className={classes.input_profile}
+                defaultValue={profile?.phoneNumber}
+                name="phone"
+              />
+            </Col>
+          </Row>
 
-          <Form.Item name="speciality" label="Lĩnh vực">
-            <Select
-              showSearch
-              placeholder="Chọn lĩnh vực hoạt động"
-              optionFilterProp="children"
-              onChange={onChangeSelect}
-              filterOption={(input, option) =>
-                (option?.label ?? "")
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
-              }
-              options={optionSpeciality}
-            />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Tỉnh/Thành phố:</Col>
+            <Col span={17}>
+              <Select
+                showSearch
+                name="city"
+                placeholder="Chọn tỉnh/thành phố làm việc"
+                className={classes.select_profile}
+                optionFilterProp="children"
+                onChange={changeCityHandler}
+                value={valueCity ? valueCity : profile?.cityId}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={optionCity}
+              />
+            </Col>
+          </Row>
 
-          <Form.Item name="linkFb" label="Facebook url">
-            <Input
-              type="url"
-              defaultValue={user?.facebookUrl}
-              placeholder="Link trang Facebook cá nhân"
-              prefix=<LinkOutlined />
-            />
-          </Form.Item>
-          <Form.Item name="linkYt" label="Youtube url">
-            <Input
-              type="url"
-              defaultValue={user?.youtubeUrl}
-              placeholder="Link kênh Youtube cá nhân"
-              prefix=<LinkOutlined />
-            />
-          </Form.Item>
-          <Form.Item name="linkInsta" label="Instagram url">
-            <Input
-              type="url"
-              defaultValue={user?.instagramUrl}
-              placeholder="Link trang Instagram cá nhân"
-              prefix=<LinkOutlined />
-            />
-          </Form.Item>
-          <Form.Item
-            name="linkTt"
-            label="TikTok url"
-            rules={[
-              {
-                message: "Vui lòng nhập link profile TikTok",
-              },
-            ]}
-          >
-            <Input
-              type="url"
-              defaultValue={user?.tiktokUrl}
-              placeholder="Link trang TikTok cá nhân"
-              prefix=<LinkOutlined />
-            />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Lĩnh vực:</Col>
+            <Col span={17}>
+              <Select
+                showSearch
+                name="speciality"
+                placeholder="Chọn lĩnh vực hoạt động"
+                className={classes.select_profile}
+                optionFilterProp="children"
+                onChange={changeSpecialityHandler}
+                value={valueSpeciality ? valueSpeciality : profile?.kolFieldId}
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={optionSpeciality}
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 4,
-              span: 16,
-            }}
-          >
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              style={{ background: "var(--color-primary-1)" }}
-            >
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
+          <Row className={classes.form_control}>
+            <Col span={7}>Facebook url:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Link trang Facebook cá nhân"
+                className={classes.input_profile}
+                defaultValue={profile?.facebookUrl}
+                name="linkFb"
+                type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={7}>Youtube url:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Link kênh Youtube cá nhân"
+                className={classes.input_profile}
+                defaultValue={profile?.youtubeUrl}
+                name="linkYt"
+                type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={7}>Instagram url:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Link trang Instagram cá nhân"
+                className={classes.input_profile}
+                defaultValue={profile?.instagramUrl}
+                name="linkInsta"
+                type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={7}>TikTok url:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Link trang TikTok cá nhân"
+                className={classes.input_profile}
+                defaultValue={profile?.tiktokUrl}
+                name="linkTt"
+                type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row>
+            <Col offset={4}></Col>
+            <Col span={16}>
+              <button className={classes.btnSubmit} type="submit">
+                Cập nhật
+              </button>
+            </Col>
+          </Row>
+        </form>
       </Col>
-      <Col span={8} style={{ marginTop: "30px" }}>
+      <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
         <h3>Ảnh đại diện</h3>
-        <Avatar size={150} src={user?.image}>
-          {user.image ? (
+        <Avatar size={200} src={profile?.avatar}>
+          {profile?.avatar ? (
             ""
           ) : (
-            <UserOutlined style={{ fontSize: 70, lineHeight: "150px" }} />
+            <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
           )}
         </Avatar>
+        <button className={classes.btnChange}>
+          <EditOutlined /> Thay đổi
+        </button>
       </Col>
     </Row>
   );

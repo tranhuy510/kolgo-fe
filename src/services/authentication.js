@@ -59,11 +59,3 @@ export const refreshToken = async () => {
     }
   );
 };
-
-export const getUsers = async () => {
-  return await fetch(`http://localhost:8080/api/users`);
-};
-
-export const getKols = async () => {
-  return await fetch(`http://localhost:8080/api/kols`);
-};

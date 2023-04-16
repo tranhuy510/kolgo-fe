@@ -1,89 +1,74 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Col, Row } from "antd";
 
-export default function FormPassword({ user }) {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+import classes from "./Form.module.css";
 
+export default function FormPassword(props) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
   return (
     <Row>
       <Col span={16}>
-        <h1 style={{ marginLeft: 30 }}>Tài khoản và mật khẩu</h1>
-        <Form
-          labelCol={{
-            span: 6,
-          }}
-          wrapperCol={{
-            span: 18,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item label="Email" name="email">
-            <Input placeholder="Email" disabled defaultValue={user?.email} />
-          </Form.Item>
+        <h1>Tài khoản và mật khẩu</h1>
+        <form className={classes.form}>
+          <Row className={classes.form_control}>
+            <Col span={7}>Email:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Email"
+                className={classes.input_profile}
+                name="email"
+                type="email"
+                defaultValue={user?.email}
+                disabled
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            name="oldpasswod"
-            label="Mật khẩu cũ"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mật khẩu hiện tại!",
-              },
-            ]}
-          >
-            <Input placeholder="Nhập mật khẩu hiện tại" />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Mật khẩu cũ:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Nhập mật khẩu hiện tại"
+                className={classes.input_profile}
+                name="oldPasswod"
+                type="password"
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            name="newpassword"
-            label="Mật khẩu mới"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mật khẩu mới!",
-              },
-            ]}
-          >
-            <Input placeholder="Nhập mật khẩu mới" />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Mật khẩu mới:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Nhập mật khẩu mới"
+                className={classes.input_profile}
+                name="newPassword"
+                type="password"
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            name="reenterpasswod"
-            label="Nhập lại mật khẩu"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập lại mật khẩu mới!",
-              },
-            ]}
-          >
-            <Input placeholder="Nhập lại mật khẩu" />
-          </Form.Item>
+          <Row className={classes.form_control}>
+            <Col span={7}>Nhập lại mật khẩu:</Col>
+            <Col span={17}>
+              <input
+                placeholder="Nhập lại mật khẩu"
+                className={classes.input_profile}
+                name="resetPassword"
+                type="password"
+              />
+            </Col>
+          </Row>
 
-          <Form.Item
-            wrapperCol={{
-              offset: 4,
-              span: 16,
-            }}
-          >
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              style={{ background: "var(--color-primary-1)" }}
-            >
-              Cập nhật
-            </Button>
-          </Form.Item>
-        </Form>
+          <Row>
+            <Col offset={4}></Col>
+            <Col span={16}>
+              <button className={classes.btnSubmit} type="submit">
+                Cập nhật
+              </button>
+            </Col>
+          </Row>
+        </form>
       </Col>
     </Row>
   );

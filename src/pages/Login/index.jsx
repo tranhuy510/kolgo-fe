@@ -3,8 +3,8 @@ import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
 
-import { Input } from 'antd';
-import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
+import { Input } from "antd";
+import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 // import axios from "axios";
 
@@ -94,11 +94,11 @@ const Login = (props) => {
   const setProfile = (response) => {
     console.log(response);
 
-    let accessToken = response.data.token.access_token;
+    let accessToken = response.data.token.accessToken;
     accessToken = JSON.stringify(accessToken);
     localStorage.setItem("accessToken", accessToken);
 
-    let refreshToken = response.data.token.refresh_token;
+    let refreshToken = response.data.token.refreshToken;
     refreshToken = JSON.stringify(refreshToken);
     localStorage.setItem("refreshToken", refreshToken);
 
@@ -169,8 +169,10 @@ const Login = (props) => {
             name="password"
             onChange={inputChangeHandler}
             placeholder="Enter your password"
-            className='input-login'
-            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+            className="input-login"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
           />
           <div className="login-form__control">
             <label className="forgot-password" onClick={forgotPasswordHandler}>
