@@ -1,0 +1,119 @@
+.child-chien-dich-container {
+  width: 100%;
+  padding: 10px 30px 10px 30px;
+  box-shadow: 1px 2px 7px 0px #888888;
+  border-radius: 20px;
+}
+.child-chien-dich-container .name-chien-dich {
+  margin-bottom: 5px;
+}
+.child-chien-dich-container .infor-chien-dich {
+  width: 100%;
+  display: flex;
+}
+.child-chien-dich-container .infor-chien-dich .left-infor {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.child-chien-dich-container .infor-chien-dich .left-infor img {
+  width: 150px;
+}
+.child-chien-dich-container .infor-chien-dich .right-infor {
+  margin-left: 20px;
+}
+.child-chien-dich-container .right-infor .thoi-gian {
+  margin-bottom: 5px;
+}
+.child-chien-dich-container .right-infor .linh-vuc {
+  margin-bottom: 5px;
+}
+.child-chien-dich-container .right-infor .linh-vuc button {
+  margin: 0 5px;
+  border-radius: 20px;
+  background-color: #333;
+  color: #fff;
+}
+.child-chien-dich-container .right-infor .mo-ta {
+  margin-bottom: 5px;
+  height: 120px;
+  width: 950px;
+}
+.child-chien-dich-container .right-infor .mo-ta .noi-dung {
+  margin-top: 5px;
+  border: 1px solid #8f8f87;
+  border-radius: 10px;
+  height: 90px;
+  padding-left: 5px;
+  overflow: auto;
+}
+.right-infor .action {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 10px;
+}
+.right-infor .action button {
+  width: 150px;
+  height: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background-color: rgb(240, 86, 74);
+}
+.top-modal-infor {
+  display: flex;
+  justify-content: space-between;
+}
+.bottom-modal-infor {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+}
+.bottom-modal-infor .left-modal {
+  width: 70%;
+}
+.bottom-modal-infor .left-modal .image {
+  height: 150px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+.bottom-modal-infor .left-modal label {
+  font-weight: 600;
+}
+.bottom-modal-infor .left-modal .mota {
+  min-height: 200px;
+  border: 1px solid rgb(104, 92, 92);
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.bottom-modal-infor .right-modal {
+  width: 30%;
+  padding-left: 20px;
+}
+.bottom-modal-infor .right-modal .list {
+  border: 1px solid rgb(104, 92, 92);
+  margin-right: 20px;
+  padding-left: 20px;
+  border-radius: 20px;
+  min-height: 110px;
+}
+.bottom-modal-infor .right-modal .list a {
+  color: #333;
+}
+.bottom-modal-infor .right-modal .list a:hover {
+  color: blue;
+}
+.btn-tham-gia {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background-color: rgb(240, 86, 74);
+}

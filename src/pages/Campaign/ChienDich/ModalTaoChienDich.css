@@ -1,0 +1,8 @@
+.tao-chien-dich-input {
+  display: flex;
+  margin-bottom: 20px;
+}
+.tao-chien-dich-input .title {
+  margin-right: 10px;
+  width: 100px;
+}
