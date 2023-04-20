@@ -9,15 +9,39 @@ import {
 } from "../../../services/getApi";
 
 import classes from "./Form.module.css";
+import { postKolProfile } from "../../../services/postApi";
+import Message from "../../../components/UI/Message/Message";
 
 export default function FormProfileKOL(props) {
-  const [profile, setProfile] = useState();
+  const [profile, setProfile] = useState({});
   const [gender, setGender] = useState([]);
   const [city, setCity] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [valueGender, setValueGender] = useState("");
   const [valueCity, setValueCity] = useState("");
   const [valueSpeciality, setValueSpeciality] = useState("");
+
+  const [showMessage, setShowMessage] = useState({
+    status: false,
+    type: "",
+    content: "",
+  });
+
+  const changeMessage = () => {
+    setShowMessage({
+      status: false,
+      type: "",
+      content: "",
+    });
+  };
+
+  const createErrorMessage = (msg) => {
+    setShowMessage({ status: true, type: "error", content: msg });
+  };
+
+  const createSuccessMessage = (msg) => {
+    setShowMessage({ status: true, type: "success", content: msg });
+  };
 
   const setDefaultProfile = () => {
     getKolProfile()
@@ -42,7 +66,6 @@ export default function FormProfileKOL(props) {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setGender(data);
       });
   };
@@ -56,7 +79,6 @@ export default function FormProfileKOL(props) {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setCity(data);
       });
   };
@@ -70,7 +92,6 @@ export default function FormProfileKOL(props) {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setSpeciality(data);
       });
   };
@@ -103,26 +124,96 @@ export default function FormProfileKOL(props) {
     };
   });
 
+  const inputChangeHandler = (event) => {
+    setProfile((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: event.target.value,
+      };
+    });
+  };
+
   const changeGenderHandler = (value) => {
     setValueGender(value);
+    setProfile((prevState) => {
+      return {
+        ...prevState,
+        genderId: value,
+      };
+    });
   };
 
   const changeCityHandler = (value) => {
     setValueCity(value);
+    setProfile((prevState) => {
+      return {
+        ...prevState,
+        cityId: value,
+      };
+    });
   };
 
   const changeSpecialityHandler = (value) => {
     setValueSpeciality(value);
+    setProfile((prevState) => {
+      return {
+        ...prevState,
+        kolFieldId: value,
+      };
+    });
+  };
+
+  const validateFormData = (formData) => {
+    let res = true;
+    let errMsg = "";
+    if (!formData.firstName) {
+      errMsg = "Vui lòng nhập tên của bạn!";
+    } else if (!formData.lastName) {
+      errMsg = "Vui lòng nhập họ của bạn!";
+    } else if (!formData.genderId) {
+      errMsg = "Vui lòng chọn giới tính của bạn!";
+    } else if (!formData.phoneNumber) {
+      errMsg = "Vui lòng nhập số điện thoại của bạn!";
+    } else if (!formData.cityId) {
+      errMsg = "Vui lòng chọn thành phố làm việc!";
+    } else if (!formData.kolFieldId) {
+      errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
+    }
+    if (errMsg) {
+      createErrorMessage(errMsg);
+      res = false;
+    }
+    return res;
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
+    if (!validateFormData(profile)) return;
+    console.log(profile);
+    postKolProfile(profile)
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        } else {
+          createSuccessMessage("Cập nhật thành công!");
+          return res.json();
+        }
+      })
+      .then((data) => {
+        console.log(data.json());
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <Row>
       <Col span={16}>
+        <Message
+          status={showMessage.status}
+          type={showMessage.type}
+          content={showMessage.content}
+          changeMessage={changeMessage}
+        />
         <h1>Thông tin cá nhân</h1>
         <form className={classes.form} onSubmit={submitHandler}>
           <Row className={classes.form_control}>
@@ -132,6 +223,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Tên của bạn"
                 className={classes.input_profile}
                 name="firstName"
+                onChange={inputChangeHandler}
                 defaultValue={profile?.firstName}
               />
             </Col>
@@ -142,6 +234,7 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Họ của bạn"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.lastName}
                 name="lastName"
@@ -154,7 +247,6 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <Select
                 showSearch
-                name="gender"
                 className={classes.select_profile}
                 placeholder="Chọn giới tính của bạn"
                 optionFilterProp="children"
@@ -175,9 +267,10 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Số điện thoại"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.phoneNumber}
-                name="phone"
+                name="phoneNumber"
               />
             </Col>
           </Row>
@@ -187,7 +280,6 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <Select
                 showSearch
-                name="city"
                 placeholder="Chọn tỉnh/thành phố làm việc"
                 className={classes.select_profile}
                 optionFilterProp="children"
@@ -208,7 +300,6 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <Select
                 showSearch
-                name="speciality"
                 placeholder="Chọn lĩnh vực hoạt động"
                 className={classes.select_profile}
                 optionFilterProp="children"
@@ -229,6 +320,7 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Link trang Facebook cá nhân"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.facebookUrl}
                 name="linkFb"
@@ -242,6 +334,7 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Link kênh Youtube cá nhân"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.youtubeUrl}
                 name="linkYt"
@@ -255,6 +348,7 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Link trang Instagram cá nhân"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.instagramUrl}
                 name="linkInsta"
@@ -268,6 +362,7 @@ export default function FormProfileKOL(props) {
             <Col span={17}>
               <input
                 placeholder="Link trang TikTok cá nhân"
+                onChange={inputChangeHandler}
                 className={classes.input_profile}
                 defaultValue={profile?.tiktokUrl}
                 name="linkTt"
@@ -298,6 +393,7 @@ export default function FormProfileKOL(props) {
         <button className={classes.btnChange}>
           <EditOutlined /> Thay đổi
         </button>
+        <input type="file" accept="image/*" />
       </Col>
     </Row>
   );

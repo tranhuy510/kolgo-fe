@@ -1,4 +1,6 @@
 import { Badge, Table } from "antd";
+import { useEffect, useState } from "react";
+import { getBookingHistory } from "../../../services/getApi";
 
 const columns = [
   {
@@ -57,6 +59,25 @@ const data = [
 ];
 
 export default function FormActivity({ user }) {
+  const [activity, setActivity] = useState();
+
+  const setDefaultHistory = () => {
+    getBookingHistory()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setActivity(data);
+      });
+  };
+
+  useEffect(() => {
+    setDefaultHistory();
+  }, []);
   return (
     <>
       <h1 style={{ marginLeft: 30 }}>Lịch sử hoạt động</h1>

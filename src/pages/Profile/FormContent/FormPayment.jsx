@@ -1,4 +1,8 @@
-import { Badge, Table } from "antd";
+import { Table } from "antd";
+
+import classes from "./Form.module.css";
+import { useEffect, useState } from "react";
+import { getPaymentHistory } from "../../../services/getApi";
 
 const columns = [
   {
@@ -8,9 +12,15 @@ const columns = [
     align: "center",
   },
   {
-    title: "Người giao dịch",
-    dataIndex: "name",
-    key: "name",
+    title: "Người gửi",
+    dataIndex: "sender",
+    key: "sender",
+    align: "center",
+  },
+  {
+    title: "Người nhận",
+    dataIndex: "receiver",
+    key: "receiver",
     align: "center",
   },
   {
@@ -25,41 +35,55 @@ const columns = [
     dataIndex: "time",
     align: "center",
   },
-  {
-    title: "Tình trạng",
-    key: "status",
-    align: "center",
-    render: () => <Badge status="success" text="Hoàn thành" />,
-  },
 ];
 const data = [
   {
     id: "1",
-    name: "Chiến dịch Marketing Game Rok",
+    sender: "Công ty TNHH Một thành viên Huy Trần",
+    receiver: "Sang Kol",
     content: 32,
     time: "10/2/2023",
-    status: ["Hoàn thành"],
   },
   {
     id: "2",
-    name: "Jim Green",
-    content: 42,
+    sender: "Công ty TNHH Một thành viên Huy Trần",
+    receiver: "Hiếu Kol",
+    content: "Tiền book quảng cáo",
     time: "10/3/2023",
-    status: ["loser"],
   },
   {
     id: "3",
-    name: "Joe Black",
-    content: 32,
-    time: "03/04/2023",
-    status: ["cool", "teacher"],
+    sender: "Công ty TNHH Một thành viên Huy Trần",
+    receiver: "Thắng Kol",
+    content: "Tiền book chiến dịch",
+    time: "15/4/2023",
   },
 ];
 
 export default function FormActivity(props) {
+  const [payment, setPayment] = useState();
+
+  const setDefaultHistory = () => {
+    getPaymentHistory()
+      .then((res) => {
+        if (!res.ok) {
+          return Promise.reject(res);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setPayment(data);
+      });
+  };
+
+  useEffect(() => {
+    setDefaultHistory();
+  }, []);
+
   return (
     <>
-      <h1 style={{ marginLeft: 30 }}>Lịch sử giao dịch</h1>
+      <h1>Lịch sử giao dịch</h1>
       <Table columns={columns} dataSource={data} />;
     </>
   );
