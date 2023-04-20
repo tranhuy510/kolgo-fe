@@ -1,17 +1,18 @@
-import { Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import React from "react";
+import NotAdmin from "../pages/NotFound/NotAdmin";
 
-import RequestLogin from "../components/UI/Modal/RequestLogin";
-import useAuth from "./useAuth.context";
-
-const ProtectedRoute = ({ key, path, element }) => {
-  let { user } = useAuth();
-
-  if (!user || !user.token || user.token === "") {
-    // component thong bao yeu cau dang nhap
-    return <RequestLogin />;
+export function isAuthenticatedRoute(Component, name) {
+  const accessToken = localStorage.getItem("accessToken");
+  const user = localStorage.getItem("user");
+  const WrappedComponent = (props) => <Component {...props} />;
+  if (!accessToken) {
+    return <Navigate to="/login" />;
   }
-
-  return <Route key={key} path={path} element={element} />;
-};
-
-export default ProtectedRoute;
+  if (name === "admin") {
+    if (user.role === "ADMN") {
+      return <WrappedComponent />;
+    } else return <NotAdmin />;
+  }
+  return <WrappedComponent />;
+}

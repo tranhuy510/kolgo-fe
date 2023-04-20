@@ -1,5 +1,14 @@
 .fields {
     width: calc(100% - 250px);
-    margin-left: 250px;
-    padding: 80px 20px 0 20px;
+    margin: 0 0 0 270px;
+    padding: 80px 20px;
+    background-color: #fff;
+}
+
+.page-field {
+    background-color: #fff;
+}
+
+.content-page {
+    margin: 40px 0;
 }

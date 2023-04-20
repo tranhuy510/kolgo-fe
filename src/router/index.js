@@ -9,8 +9,11 @@ import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
-import Chat from "../pages/Chat";
+import Chat from "../pages/Chat/Chat";
 import Fields from "../pages/Fields/Fields";
+import NotFound from "../pages/NotFound/NotFound";
+
+import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
 
 export const router = createBrowserRouter([
   {
@@ -22,18 +25,23 @@ export const router = createBrowserRouter([
         path: "campaign",
         element: <Campaign />,
       },
-      { path: "/detail", element: <HomeDetail /> },
-      { path: "/chat", element: <Chat /> },
+      {
+        path: "/detail/:id",
+        element: <HomeDetail />,
+      },
+      {
+        path: "/fields/kol/:id",
+        element: <Fields />,
+      },
       {
         path: "profile",
-        element: <Profile />,
+        element: isAuthenticatedRoute(Profile),
       },
     ],
   },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "/forgot_password", element: <ForgotPassword /> },
-  { path: "/detail", element: <HomeDetail /> },
   {
     path: "/verify_account",
     element: <VerifyRegister />,
@@ -43,8 +51,16 @@ export const router = createBrowserRouter([
     element: <ResetPassword />,
   },
   {
-    path: "/fields/kol/:id",
-    element: <Fields />,
+    path: "/chat",
+    element: isAuthenticatedRoute(Chat, "chat"),
+  },
+  {
+    path: "/admin",
+    element: isAuthenticatedRoute(Chat, "admin"),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

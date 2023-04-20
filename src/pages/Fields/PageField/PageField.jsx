@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
-import { getKols } from '../../../services/getApi';
+import { Link } from "react-router-dom";
+import { getFieldsId, getKols } from '../../../services/getApi';
 
 const IMG = styled.img`
     width: 220px;
@@ -16,14 +17,17 @@ const Name = styled.p`
     line-height: 40px;
 `
 
-const CardKOL = styled.div`
-    width: 220px;
-    height: 280px;
-    margin: 5px 0;
-    box-sizing: border-box;
-    border-radius: 20px;
-    border: 1px solid #ccc
-`
+const linkStyle = {
+    width: '220px',
+    height: '280px',
+    margin: '5px 0',
+    boxSizing: 'border-box',
+    borderRadius: '20px',
+    border: '1px solid #ccc',
+    textDecoration: 'none',
+    color: '#000'
+}
+
 
 const DivWrap = styled.div`
     display: flex;
@@ -41,7 +45,7 @@ const PageField = (props) => {
     }, [listField])
 
     useEffect(() => {
-        getKols()
+        getFieldsId(props.id)
             .then(res => {
                 if (!res.ok) {
                     return Promise.reject(res)
@@ -52,11 +56,8 @@ const PageField = (props) => {
                 console.log(data);
                 setListField(data)
             })
-    }, [])
+    }, [props.id])
 
-    const onComeKolDetail = () => {
-        window.location.replace('http://localhost:3000/detail')
-    }
 
     function arrUpperCase(data) {
         const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
@@ -66,20 +67,20 @@ const PageField = (props) => {
     };
 
     return (
-        <DivWrap key={'fieldPage'}>
+        <DivWrap key={'fieldPage'} className='page-field'>
             {listField?.map((item) => {
                 const firstName = arrUpperCase(item.firstName)
                 return (
-                    <CardKOL key={item.id} onClick={onComeKolDetail}>
-                        <IMG src={item?.ava} alt="" />
+                    <Link key={item.kolId} to={`/detail/:${item.kolId}`} style={linkStyle}>
+                        <IMG src={item?.ava} />
                         <div style={{ display: 'flex' }}>
                             <Name>{firstName}</Name>
                             <Name>{item.lastName}</Name>
                         </div>
-                    </CardKOL>
+                    </Link>
                 )
             })}
-        </DivWrap>
+        </DivWrap >
     )
 }
 

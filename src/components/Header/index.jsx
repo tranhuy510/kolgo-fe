@@ -25,8 +25,9 @@ const Header = (props) => {
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     window.location.replace("http://localhost:3000/");
-    // navigate('./')
   };
 
   const loginHandler = () => {
