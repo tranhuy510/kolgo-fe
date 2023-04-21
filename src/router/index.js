@@ -9,7 +9,7 @@ import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import HomeDetail from "../pages/Details/HomeDetails";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
-import Chat from "../pages/Chat";
+import Chat from "../pages/Chat/Chat";
 
 export const router = createBrowserRouter([
   {

@@ -21,7 +21,7 @@ const Header = (props) => {
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
-  console.log(user);
+  // console.log(user);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
