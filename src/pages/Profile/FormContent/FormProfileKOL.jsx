@@ -189,8 +189,13 @@ export default function FormProfileKOL(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(profile)) return;
+
     console.log(profile);
-    postKolProfile(profile)
+
+    const formData = new FormData();
+    Object.keys(profile).map(key => formData.append(key, profile[key]))
+
+    postKolProfile(formData)
       .then((res) => {
         if (!res.ok) {
           return Promise.reject(res);

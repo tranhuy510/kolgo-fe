@@ -1,14 +1,12 @@
-export const postKolProfile = async (data) => {
+export const postKolProfile = async (formData) => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
   return await fetch(`http://localhost:8080/api/settings/kol-profile`, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + accessToken,
-      Accept: "application/json",
-      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data),
+    body: formData
   });
 };
 
