@@ -39,23 +39,27 @@ const Modals = ({ status, title, email, message, content, changeNotification }) 
         });
     };
 
-
     useEffect(() => {
-        if (status) {
-            if (title === 'success') {
-                success();
-                changeNotification()
+        const identifier = setTimeout(() => {
+            if (status) {
+                if (title === 'success') {
+                    success();
+                    changeNotification()
+                }
+                if (title === 'warning') {
+                    warning();
+                    changeNotification()
+                }
+                if (title === 'error') {
+                    error();
+                    changeNotification()
+                }
             }
-            if (title === 'warning') {
-                warning();
-                changeNotification()
-            }
-            if (title === 'error') {
-                error();
-                changeNotification()
-            }
+        }, 500)
+        return () => {
+            clearTimeout(identifier)
         }
-    }, [title])
+    }, [])
 
     return (
         <>

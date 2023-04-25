@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { getFields } from '../../services/getApi';
+import { Link } from "react-router-dom";
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -15,108 +17,58 @@ const SideBar = () => {
         UploadOutlined,
         UserOutlined,
         VideoCameraOutlined];
-    const items = [{
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 2,
-        title: "cong viec 1",
-        icon: <MenuUnfoldOutlined />,
-    }, {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    }, {
-        key: 4,
-        title: "cong viec 1",
-        icon: <UserOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    },
-    {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    },
-    {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    },]
+
+    const [listFields, setListFields] = useState([])
+
+    useEffect(() => {
+        const identifier = setTimeout(() => {
+            getFields()
+                .then(res => {
+                    if (!res.ok) {
+                        return Promise.reject(res)
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    setListFields(data)
+                })
+        }, 500)
+        return () => {
+            clearTimeout(identifier)
+        }
+
+    }, [])
+
+    // lấy chuỗi trong ()
+    function cutString(data) {
+        var pattern = /\((.*?)\)/; // Biểu thức chính quy để tìm chuỗi trong ngoặc "()" và lấy nội dung bên trong
+        var ketQua = data.match(pattern);
+        if (ketQua && ketQua.length > 1) {
+            return ketQua[1];
+        }
+    }
+
+    // lấy chuỗi ngoài ()
+    const regex = /(.*)\s\((.*)\)/;
 
     return (
         <div className="sidebar">
             <div className='item-sidebar' >
+                <p style={{ textAlign: 'center', fontWeight: '500', fontSize: '20px' }}>Lĩnh vực</p>
                 {
-                    items.map((item) => {
+                    listFields?.map((field) => {
+                        // const name = cutString(field.name)
+                        const name = field.name.match(regex)[1]
                         return (
-                            <a href="#" className="box-item" key={item.key}>
-                                {item.icon}
-                                <p className="">{item.title}</p>
-                            </a>
+                            <Link to={`/fields/kol/:${field.id}`} className="box-item" key={field.id}>
+                                <p className="">{name}</p>
+                            </Link>
                         )
                     })
                 }
             </div>
-        </div>
+        </div >
     )
 }
 

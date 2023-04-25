@@ -1,0 +1,30 @@
+.activate-filter {
+    color: white;
+    padding: 0 1rem;
+}
+
+.activate-filter__control {
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.activate-filter label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.activate-filter select {
+  font: inherit;
+  padding: 0.5rem 3rem;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+.activate-filter select:hover {
+  cursor: pointer;
+}
