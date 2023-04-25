@@ -299,8 +299,8 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Địa chỉ cụ thể"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={`${ent?.district} ${ent?.ward} ${ent?.streetName} ${ent?.buildingNumber}`}
-                name="addressDetail"
+                defaultValue={ent?.addressDetails}
+                name="addressDetails"
               />
             </Col>
           </Row>

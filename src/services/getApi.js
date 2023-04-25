@@ -1,5 +1,17 @@
-export const getUsers = async () => {
-  return await fetch(`http://localhost:8080/api/users`);
+export const getUsers = async (params, auth) => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization:
+        auth && `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
+    },
+  };
+  const res = await fetch(
+    `${process.env.REACT_APP_API_URL}/${params}`,
+    options
+  );
+  const data = await res.json();
+  return data;
 };
 
 export const getKols = async () => {

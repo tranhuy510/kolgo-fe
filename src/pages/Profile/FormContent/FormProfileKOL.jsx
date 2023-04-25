@@ -1,6 +1,6 @@
 import { EditOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row, Select } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getCities,
   getFields,
@@ -20,6 +20,7 @@ export default function FormProfileKOL(props) {
   const [valueGender, setValueGender] = useState("");
   const [valueCity, setValueCity] = useState("");
   const [valueSpeciality, setValueSpeciality] = useState("");
+  const fileInputRef = useRef(null);
 
   const [showMessage, setShowMessage] = useState({
     status: false,
@@ -186,6 +187,10 @@ export default function FormProfileKOL(props) {
     return res;
   };
 
+  const handleButtonChange = () => {
+    fileInputRef.current.click();
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(profile)) return;
@@ -193,7 +198,7 @@ export default function FormProfileKOL(props) {
     console.log(profile);
 
     const formData = new FormData();
-    Object.keys(profile).map(key => formData.append(key, profile[key]))
+    Object.keys(profile).map((key) => formData.append(key, profile[key]));
 
     postKolProfile(formData)
       .then((res) => {
@@ -395,10 +400,16 @@ export default function FormProfileKOL(props) {
             <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
           )}
         </Avatar>
-        <button className={classes.btnChange}>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={(e) => console.log(e.target.files)}
+        />
+        <button className={classes.btnChange} onClick={handleButtonChange}>
           <EditOutlined /> Thay đổi
         </button>
-        <input type="file" accept="image/*" />
       </Col>
     </Row>
   );
