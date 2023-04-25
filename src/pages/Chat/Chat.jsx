@@ -30,38 +30,46 @@ const Chat = (props) => {
       fetchData("users", true),
       fetchData("conversations", true),
     ]).then(([users, convoList]) => {
-      setUserList(users);
+      console.log("users", users)
+      setUserList([...users]);
+      console.log("private chats", convoList);
+      // setPrivateChats([...convoList])
     });
 
     const currentUser = JSON.parse(localStorage.getItem("user"));
     setMessage(prev => ({ ...prev, senderId: currentUser.id }));
-    // setPrivateChats(new Map([[0, {
-    //   id: 0,
-    //   receiverFirstName: "Sang",
-    //   receiverLastName: "Beo",
-    //   messages: [
-    //     { authorFirstName: "Sang", authorLastName: "Beo", content: "test content" }
-    //   ]
-    // }]]));
 
     connect();
   }, [])
 
   useEffect(() => {
-    console.log(tab)
-    if (privateChats.has(0)) {
-      console.log(privateChats?.get(0).messages)
-    }
+    checkConversationExistence();
+  }, [userList])
+
+  useEffect(() => {
+    // console.log("current tab", tab)
   }, [tab])
 
-  // const initCheck = () => {
-  //   if (state && state.receiverId) {
-  //     let convoExisted = [...convoList.values()].some(convo => convo.receiverId === state.receiverId);
-  //     if (!convoExisted) {
-  //       postData("conversations", {})
-  //     }
-  //   }
-  // }
+  const checkConversationExistence = () => {
+    if (state && state.receiverId) {
+      const receiver = userList.find(u => u.id === state.receiverId);
+      if (receiver) {
+        privateChats.set(0, {
+          id: 0,
+          conversationType: "PRIVATE",
+          receiverId: receiver.id,
+          receiverFirstName: receiver.firstName,
+          receiverLastName: receiver.lastName,
+          messages: []
+        })
+        setPrivateChats(prev => new Map([...prev, ...privateChats]));
+        setTab(0);
+      } else {
+        const convo = [...privateChats.values()].find(c => c.receiverId === receiver.id);
+        setTab(convo?.conversationId)
+      }
+    }
+  }
 
   const connect = () => {
     if (!stompClient) {
@@ -105,44 +113,62 @@ const Chat = (props) => {
     let msg = JSON.parse(payload.body);
     if (!privateChats.has(msg.conversationId)) {
       privateChats.set(msg.conversationId, {
-        conversationId: msg.conversationId,
-        authorId: msg.authorId,
-        authorFirstName: msg.authorFirstName,
-        authorLastName: msg.authorLastName,
-        type: msg.type,
-        content: msg.content,
-        timestamp: msg.timestamp,
+        id: msg.conversationId,
+        conversationType: msg.conversationType,
+        receiverId: msg.authorId,
+        receiverFirstName: msg.authorFirstName,
+        receiverLastName: msg.authorLastName,
+        messages: [msg]
       })
+      setPrivateChats(prev => new Map([...prev, ...privateChats]));
+    } else {
+      let convo = privateChats.get(msg.conversationId);
+      convo.messages.push(msg);
+      setPrivateChats(prev => new Map([...prev, [convo.id, convo]]))
     }
   }
 
   const sendMessage = (e) => {
     if (message.content) {
-      let msg = {
-        ...message,
-        messageType: "MESSAGE",
+      setMessage(prev => ({
+        ...prev,
+        type: "MESSAGE",
         timestamp: new Date().toISOString()
-      }
-      if (tab === "PUBLIC") {
-        sendPublicMessage(msg);
-      } else {
-        sendPrivateMessage(msg)
-      }
+      }));
+      if (tab === "PUBLIC") sendPublicMessage();
+      else sendPrivateMessage();
+
       setMessage(prev => ({ ...prev, content: "" }));
     }
     e.preventDefault();
   }
 
-  const sendPublicMessage = (msg) => {
-    stompClient.send(`${appPrefix}/public`, {}, JSON.stringify({
-      ...msg, conversationType: "PUBLIC"
-    }));
+  const sendPublicMessage = () => {
+    stompClient.send(`${appPrefix}/public`, {}, JSON.stringify(message));
   }
 
-  const sendPrivateMessage = (msg) => {
+  const sendPrivateMessage = () => {
+    // TODO: if msg.conversationId == 0, post data to server
+    // server response conversation id
     stompClient.send(`${appPrefix}/private`, {}, JSON.stringify({
-      ...msg, conversationType: "PUBLIC"
+      ...message,
+      conversationId: tab,
+      receiverId: privateChats.get(tab).receiverId,
     }));
+
+    let currentUser = JSON.parse(localStorage.getItem("user"));
+    let convo = privateChats.get(tab);
+    convo.messages.push({
+      authorId: currentUser.id,
+      authorFirstName: currentUser.firstName,
+      authorLastName: currentUser.lastName,
+      messageType: message.type,
+      content: message.content,
+      timestamp: message.timestamp,
+      conversationId: message.conversationId
+    })
+
+    setPrivateChats(prev => new Map([...prev, [convo.id, convo]]))
   }
 
   return (
@@ -162,9 +188,11 @@ const Chat = (props) => {
             />
           </div>
           {/* Receiver List */}
+          {/* Public Room */}
           <li onClick={() => setTab("PUBLIC")} className={`conversation-list-item ${tab === "PUBLIC" && "active"}`}>
             Public Chat
           </li>
+          {/* Private Receivers */}
           {[...privateChats.values()].map((convo, index) => (
             <li onClick={() => setTab(convo.id)} className={`conversation-list-item ${tab === convo.id && "active"}`} key={index}>
               {convo.receiverFirstName} {convo.receiverLastName}
