@@ -15,17 +15,16 @@
 .item-sidebar {
     width: 100%;
     box-sizing: border-box;
-    padding: 20px 0;
 }
 
 .box-item {
-    display: block;
     display: flex; 
     text-decoration: none;
-    margin: 0 auto;
-    width: 100%;
+    margin-right: 5px;
+    /* width: 100%; */
     box-sizing: border-box;
-    padding: 0 20px;
+    padding: 5px 20px;
+    color: #000;
 }
 
 .box-item:hover {

@@ -1,9 +1,5 @@
-.slick-slide > div {
-  margin: 0 5px;
-}
-.slick-list {
-  margin: 0 -5px;
-}
+
+
 .slick-prev:before {
   color: gray;
 }
@@ -12,13 +8,19 @@
 }
 .detail-simple-slider {
   height: 100%;
-  width: 80%;
+  width: calc(100% - 60px);
 }
 .detail-simple-slider .image-slider {
   height: 90px;
   position: relative;
 }
-
 .detail-simple-slider .image-item {
-  border-radius: 10px;
+  width: 90px;
+  border: 2px solid #fff;
+  box-sizing: border-box;
 }
+
+.detail-simple-slider .image-item:hover {
+  cursor: pointer;
+  border: 2px solid #f0564a;
+} 

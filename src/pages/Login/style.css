@@ -16,6 +16,7 @@ body {
 .logo {
     display: block;
     margin: 0 auto;
+    text-decoration-line: underline;
 }
 
 .login-form__control {
@@ -50,7 +51,7 @@ body {
     flex-direction: row-reverse;
 }
 
-.forgot-password:hover {
+.line-forgot-password:hover {
     text-decoration-line: underline;
     cursor: pointer;
     color: #F0564A;

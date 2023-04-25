@@ -1,8 +1,11 @@
-.main-details .top-details {
-  border: 1px solid rgba(0, 0, 0, 0.7);
-  border-radius: 20px;
-  margin: 0 10%;
-  padding: 70px 50px 50px;
+.main-details {
+  padding: 65px 0;
+  background-color: #fff;
+}
+
+.container {
+  width: 1440px;
+  margin: 20px auto;
 }
 .main-details .detail-description {
   display: flex;
@@ -12,20 +15,7 @@
   width: 35%;
   background-color: #e8e8e8;
 }
-.top-details .left-description .avatar {
-  background-color: #e8e8e8;
-  height: 60%;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  overflow: hidden;
-  margin-top: 10px;
-  border: 10px;
-}
-.left-description .avatar .image-avatar {
-  width: 53%;
-  border-radius: 10px;
-}
+
 .top-details .left-description .slider-image {
   padding-top: 10px;
   height: 20%;
@@ -75,18 +65,6 @@
 .right-description .name .name span {
   margin-left: 20px;
 }
-.top-details .right-description .name .btn-book {
-  width: 30%;
-  height: 60px;
-  color: white;
-  font-weight: 600;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  text-align: center;
-  background-color: rgb(240, 86, 74);
-  cursor: pointer;
-}
 .top-details .right-description .gender {
   height: 20%;
   margin-top: 10px;
@@ -110,18 +88,7 @@
 .top-details .right-description .gender .gender div {
   margin-left: 20px;
 }
-.top-details .right-description .gender .btn-chat {
-  width: 30%;
-  height: 60px;
-  border-radius: 5px;
-  color: white;
-  font-weight: 600;
-  border: none;
-  outline: none;
-  text-align: center;
-  background-color: rgb(240, 86, 74);
-  cursor: pointer;
-}
+
 .top-details .right-description .introduce {
   margin-top: 20px;
   height: calc(100% - 35% - 40px);
@@ -200,6 +167,8 @@
   cursor: pointer;
   color: rgb(240, 86, 74);
   border-radius: 5px;
+  background-color: #EFF5F7;
+  border: 1px solid #F0564A;
 }
 .btn-so-sanh {
   margin-left: 10px;
@@ -209,6 +178,8 @@
   cursor: pointer;
   color: rgb(240, 86, 74);
   border-radius: 5px;
+  background-color: #EFF5F7;
+  border: 1px solid #F0564A;
 }
 div[aria-selected^="true"] button {
   color: white;
@@ -216,12 +187,11 @@ div[aria-selected^="true"] button {
   border: none !important;
 }
 .main-details .bottom-details {
-  border: 1px solid rgba(0, 0, 0, 0.7);
-  border-radius: 20px;
+  border-top: 1px solid #ccc;
   margin: 2% 10%;
   /* display: flex; */
   justify-content: center;
-  padding: 50px;
+  padding: 30px 50px;
 }
 .main-details .bottom-details .tab-item {
   width: 100%;
@@ -234,25 +204,22 @@ div[aria-selected^="true"] button {
 
 .bottom-details .form-danh-gia {
   width: 100%;
-  margin-top: 20px;
-  background-color: #e8e8e8;
-  border-radius: 20px;
-  padding-bottom: 10px;
 }
 .form-danh-gia .title-danh-gia {
-  margin-left: 50px;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 36px;
 }
 .form-danh-gia .rate {
   width: 100%;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 .rate .rate-item {
   display: flex;
-  margin: 0 20px 20px 20px;
+  margin: 20px 0;
+  padding-top: 20px;
 }
 .rate .rate-item .rate-item__content {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #ccc;
   width: 90%;
   margin-left: 10px;
 }
@@ -260,10 +227,73 @@ div[aria-selected^="true"] button {
   font-size: 20px;
   font-weight: 600;
 }
+
+.rate-item__content .busines a {
+  text-decoration: none ;
+  color: #000;
+}
 .rate-item__content .content-is-rated {
   width: 100%;
   word-wrap: break-word;
+  padding: 20px 0;
+  font-size: 20px;
 }
+
+/* css moi */
+
+.date-item {
+  display: flex;
+  font-size: 20px;
+  color: #000;
+  opacity: 0.7;
+}
+
+.date-item div {
+  padding: 0 5px;
+}
+
+:where(.css-dev-only-do-not-override-1vtf12y).ant-descriptions .ant-descriptions-title {
+  font-size: 24px; 
+}
+
+.rate-item__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  align-items: center;
+}
+
+.col-6-right {
+  justify-content: space-around;
+  align-items: center;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  width: 80%;
+  margin: 20px auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.col-6-right .price-booking {
+  box-sizing: border-box;
+  font-size: 24px;
+  text-align: center;
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.col-6-right .btn-function {
+  box-sizing: border-box;
+  height: calc(50% - 20px);
+  margin: 10px 0;
+}
+
+.col-12-middle .middle-row {
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+  margin: 20px;
+}
+
 
 /* responsive */
 @media screen and (max-width: 767px) {
@@ -328,18 +358,6 @@ div[aria-selected^="true"] button {
     background-color: #e8e8e8;
     border-radius: 5px;
   }
-  .top-details .right-description .name .btn-book {
-    width: 30%;
-    height: 50px;
-    color: white;
-    font-weight: 600;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    text-align: center;
-    background-color: rgb(240, 86, 74);
-    cursor: pointer;
-  }
   .top-details .right-description .gender {
     height: 20%;
     margin-top: 10px;
@@ -362,18 +380,6 @@ div[aria-selected^="true"] button {
     display: block;
     justify-content: center;
     align-items: center;
-  }
-  .top-details .right-description .gender .btn-chat {
-    width: 30%;
-    height: 50px;
-    color: white;
-    font-weight: 600;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    text-align: center;
-    background-color: rgb(240, 86, 74);
-    cursor: pointer;
   }
   .top-details .right-description .introduce {
     margin-top: 20px;

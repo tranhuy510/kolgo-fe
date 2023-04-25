@@ -1,7 +1,8 @@
 .form-hoat-dong {
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.7);
-  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .form-hoat-dong .char-layout {
   height: 200px;

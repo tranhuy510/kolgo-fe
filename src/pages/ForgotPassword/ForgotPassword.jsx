@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { Link } from "react-router-dom";
 import { forgotPassword } from '../../services/authentication'
 
 import ButtonFull from '../../components/UI/Button/ButtonFull';
@@ -76,9 +76,10 @@ const ForgotPassword = () => {
                 <Modals status={noti.status} title={noti.title} email={noti.email} message={noti.message} content={noti.content} changeNotification={changeNotificationHandler} />
             }
             <div className="forgot-password" style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff' }}>
-
-                <div className="forgot-password__logo">
-                    <img className="logo" src={logo} alt="" />
+                <div className="forgot-password__logo" style={{ display: 'flex', justifyContent: 'space-around', textDecorationLine: 'underline' }}>
+                    <Link to={`../`} >
+                        <img src={logo} alt="" />
+                    </Link>
                 </div>
                 <div className="register-form__control" >
                     <h1 style={{ margin: '0 auto' }}>Forgot password</h1>

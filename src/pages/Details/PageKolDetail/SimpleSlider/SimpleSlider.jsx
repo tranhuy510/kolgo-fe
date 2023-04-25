@@ -3,26 +3,18 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./SimpleSlider.css";
-import { listImage } from "./data-details";
+
 import { Image } from "antd";
 
-const SimpleSlider = () => {
-  const [imageList, setImageList] = useState([]);
 
-  useEffect(() => {
-    const getImage = async () => {
-      const dataImage = await listImage;
-      setImageList([dataImage]);
-    };
-    getImage();
-  }, []);
+const SimpleSlider = ({ images, onChangeImageHandler }) => {
 
   const settings = {
     dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
       {
@@ -51,14 +43,17 @@ const SimpleSlider = () => {
       },
     ],
   };
+
+
   return (
     <>
       <div className="detail-simple-slider">
         <Slider {...settings}>
-          {imageList[0] &&
-            imageList[0].length > 0 &&
-            imageList[0].map((item, index) => (
-              <Image
+          {images &&
+            images.length > 0 &&
+            images.map((item, index) => (
+              <img
+                onClick={(item) => { onChangeImageHandler(item.target.currentSrc) }}
                 className="image-item"
                 key={index}
                 height={90}

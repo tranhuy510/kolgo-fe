@@ -1,0 +1,33 @@
+.socials {
+    box-sizing: border-box;
+    width: 200px;
+    margin: 20px 60px;
+}
+
+.socials .socials-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.socials .socials-item .socials-item_follow {
+    font-size: 18px;
+    line-height: 40px;
+}
+.icon {
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+    clip-path: circle(50% at 50% 50%);
+}
+
+.icon:hover {
+    filter: drop-shadow(0 0 4px #F0564A);
+}

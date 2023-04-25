@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./Chat.module.css";
 
-const Chat = (props) => {
+const Chat = () => {
   return <div className={styles.chat}>Chat</div>;
 };
 

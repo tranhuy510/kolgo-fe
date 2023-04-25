@@ -1,0 +1,182 @@
+.main-detail-enterprise {
+    padding: 65px 0;
+}
+
+.detail-enterprise-row-1-header {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
+}
+
+.row-1-header-banner {
+    width: 100%;
+    height: 400px;
+}
+
+.header-banner-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0 0 20px 20px ;
+}
+
+.wrap-middle-avatar {
+    border-radius: 50%;
+    border: 5px solid #fff;
+    margin: 0 20px;
+}
+
+.middle-avatar {
+    width: 168px;
+    height: 168px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+
+.row-1-middle {
+    display: flex;
+    margin: 20px  20px 5px 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.middle-name {
+    align-items: center;
+    padding: 20px 0;
+    width: 40%;
+}
+
+.middle-name h1 {
+    line-height: 50px;
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.middle-name p {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.row-1-bottom {
+    padding: 0 20px;
+    display: flex;
+}
+
+.wrap-bottom-btn {
+    border-bottom: 5px solid #fff;
+    background-color: #fff;
+    box-sizing: border-box;
+    height: 60px;
+}
+
+.bottom-btn {
+    height: 100%;
+    background-color: #fff;
+    padding: 0 16px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
+.bottom-btn:hover {
+    border-radius: 10px;
+    background-color: rgba(204,204,204, 0.8);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.bottom-btn:active {
+    color: #F0564A;
+}
+
+.active {
+    border-bottom: 5px solid #F0564A;
+}
+
+.detail-enterprise-row-2-middle{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.row-2-col-1 {
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.enterprise-detail-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+}
+
+.enterprise-detail-introduce h2 {
+    opacity: 0.7;
+}
+
+.enterprise-detail-introduce p {
+    margin: 0;
+    font-size: 20px;
+}
+
+.sub-content-introduce {
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.sub-content-introduce .coban-item {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.sub-content-introduce .coban-item .coban-item-img {
+    width: 100%;
+    background: url(https://external.fsgn4-1.fna.fbcdn.net/static_map.php?v=2042&theme=default&ccb=4-4&size=544x250&language=vi_VN&scale=1&zoom=12&center=16.070141119895%2C108.22018295791&marker_list[0]=16.070141119895%2C108.22018295791&_nc_client_id=profile&_nc_client_caller=CometStaticMap.react);
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 0;
+    padding-top: 50%; 
+    box-sizing: border-box;
+}
+
+.coban-item-address,.coban-item-phone,.coban-item-email,.coban-item-web,.coban-item-linkedIn{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.custom-menu-item {
+    font-size: 16px;
+}
+
+.campaign-wrap-item {
+    border-bottom: 1px solid #ccc;
+    padding: 20px 0 ;
+}
+
+.campaign-item {
+    padding: 20px;
+}
+
+.campaign-item h2 {
+    margin-top: 0;
+}
+
+.campaign-item:hover {
+    box-sizing: border-box;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.campaign-item-header {
+    display: flex;
+    justify-content: space-between;
+}

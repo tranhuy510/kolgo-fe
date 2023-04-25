@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { resetPassword } from '../../services/authentication'
 import { useNavigate } from "react-router-dom";
 import { refreshToken } from '../../services/authentication';
+import { Link } from "react-router-dom";
 
 import { Input, message } from 'antd';
 import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
@@ -120,8 +121,10 @@ const ResetPassword = () => {
             }
             <div className="forgot-pass" style={{ width: '800px', margin: '0 auto', backgroundColor: '#fff' }}>
 
-                <div className="forgot-password__logo">
-                    <img className="logo" src={logo} alt="" />
+                <div className="forgot-password__logo" style={{ display: 'flex', justifyContent: 'space-around', textDecorationLine: 'underline' }}>
+                    <Link to={`../`} >
+                        <img src={logo} alt="" />
+                    </Link>
                 </div>
                 <div className="register-form__control" >
                     <h1 style={{ margin: '0 auto' }}>Change password</h1>

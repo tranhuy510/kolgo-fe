@@ -7,6 +7,7 @@ import DidLogin from "../BtnLogin/DidLogin";
 import NotLogin from "../BtnNotLogin/NotLogin";
 import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
+import SearchModal from "./Search/SearchModal";
 
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 import home from "../../assets/logo/icon-home.svg";
@@ -19,14 +20,19 @@ const Header = (props) => {
   const [user, setUser] = useState(false);
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+    const identifier = setTimeout(() => {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }, 500)
+    return () => {
+      clearTimeout(identifier)
+    }
   }, []);
-  console.log(user);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     window.location.replace("http://localhost:3000/");
-    // navigate('./')
   };
 
   const loginHandler = () => {
@@ -44,6 +50,7 @@ const Header = (props) => {
           <img className="icon-logo" src={logo} alt="" />
         </a>
       </div>
+      <SearchModal />
       <div className="header__room">
         <Menu icons={[home, campaign, chat]} />
       </div>
