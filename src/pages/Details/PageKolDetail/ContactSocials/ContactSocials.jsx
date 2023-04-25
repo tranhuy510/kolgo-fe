@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import TiktokIcon from "../../../assets/icon/icon-tiktok.png";
-import FacebookIcon from "../../../assets/icon/icon-facebook.png";
-import IntagramIcon from "../../../assets/icon/icon-intagram.png";
-import YoutubeIcon from "../../../assets/icon/youtube.png";
+import TiktokIcon from "../../../../assets/icon/icon-tiktok.png";
+import FacebookIcon from "../../../../assets/icon/icon-facebook.png";
+import IntagramIcon from "../../../../assets/icon/icon-intagram.png";
+import YoutubeIcon from "../../../../assets/icon/youtube.png";
 
 import classes from './ContactSocials.module.css'
 

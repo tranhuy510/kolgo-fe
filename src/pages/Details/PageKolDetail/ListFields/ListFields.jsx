@@ -19,11 +19,14 @@ const DivWrap = styled.div`
 
 const ListFields = ({ field }) => {
 
+    const regex = /(.*)\s\((.*)\)/;
+    const name = field?.name?.match(regex)[1]
+
     return (
         <div style={{ fontSize: '18px', lineHeight: '36px', fontWeight: '400' }}>
             <Link to={`/fields/kol/:${field?.id}`}>
                 <DivWrap>
-                    {field?.name}
+                    {name}
                 </DivWrap>
             </Link>
         </div>

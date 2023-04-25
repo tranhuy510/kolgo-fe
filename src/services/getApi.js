@@ -1,7 +1,16 @@
 import axios from "axios";
 
-export const getUsers = async () => {
-  return await fetch(`http://localhost:8080/api/users`);
+export const getUsers = async (params, auth) => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization:
+        auth && `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
+    },
+  };
+  const res = await fetch(`http://localhost:8080/api/${params}`, options);
+  const data = await res.json();
+  return data;
 };
 
 export const getKols = async () => {
@@ -41,4 +50,12 @@ export const getSocialLinksSearch = async (param) => {
     `https://tiktok82.p.rapidapi.com/getProfile?username=suankotanki32000`,
     options
   );
+};
+
+export const getEnts = async () => {
+  return await fetch(`http://localhost:8080/api/ents`);
+};
+
+export const getEntsId = async (params) => {
+  return await fetch(`http://localhost:8080/api/ents/${params}`);
 };

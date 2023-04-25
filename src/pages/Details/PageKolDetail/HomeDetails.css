@@ -227,6 +227,11 @@ div[aria-selected^="true"] button {
   font-size: 20px;
   font-weight: 600;
 }
+
+.rate-item__content .busines a {
+  text-decoration: none ;
+  color: #000;
+}
 .rate-item__content .content-is-rated {
   width: 100%;
   word-wrap: break-word;
@@ -239,7 +244,8 @@ div[aria-selected^="true"] button {
 .date-item {
   display: flex;
   font-size: 20px;
-  color: #ccc;
+  color: #000;
+  opacity: 0.7;
 }
 
 .date-item div {

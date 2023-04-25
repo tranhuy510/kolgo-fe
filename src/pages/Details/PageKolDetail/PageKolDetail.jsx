@@ -11,24 +11,24 @@ import Activate from "./Activate/Activate";
 import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
 
-import { getKolsId, getGenders, getCities, getFields } from "../../services/getApi";
+import { getKolsId, getGenders, getCities, getFields } from "../../../services/getApi";
 
 import "./HomeDetails.css";
 import { Col, Row } from 'antd';
 import { Tabs } from "antd";
-
-import ButtonFull from '../../components/UI/Button/ButtonFull'
+import ButtonFull from '../../../components/UI/Button/ButtonFull'
 
 const description = "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n"
 
 const danhgia = [
-  { id: 1, name: 'cty ABC', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { id: 2, name: 'cty ABC', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { id: 3, name: 'cty ABC', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { id: 4, name: 'cty ABC', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
+  { enterpriseId: 1, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
+  { enterpriseId: 2, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
+  { enterpriseId: 3, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
+  { enterpriseId: 4, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
+  { enterpriseId: 5, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
 ]
 
-const HomeDetails = () => {
+const PageKolDetail = () => {
   const [infoKol, setInfoKol] = useState()
   const [gender, setGender] = useState('')
   const [city, setCity] = useState('')
@@ -125,12 +125,12 @@ const HomeDetails = () => {
   const items = [
     {
       key: "1",
-      label: <button className="btn-hoat-dong" style={{ fontSize: '18px' }}>Activate</button>,
+      label: <button className="btn-hoat-dong" style={{ fontSize: '18px' }}>Hoạt động</button>,
       children: <Activate />,
     },
     {
       key: "2",
-      label: <button className="btn-so-sanh" style={{ fontSize: '18px' }}>Compare</button>,
+      label: <button className="btn-so-sanh" style={{ fontSize: '18px' }}>So sánh</button>,
       children: <Compare infoKol={infoKol} />,
     },
   ];
@@ -176,7 +176,7 @@ const HomeDetails = () => {
               <div className="col-6-right" >
                 <div className="price-booking" >1.000.000</div>
                 <ButtonFull onClick={bookingHandler} className="btn-function" >BOOK</ButtonFull>
-                <ButtonFull onClick={navigateToChat} className="btn-function" >CHAT</ButtonFull>
+                <ButtonFull onClick={navigateToChat} className="btn-function" >NHẮN TIN</ButtonFull>
               </div>
             </Col>
           </Row>
@@ -196,4 +196,4 @@ const HomeDetails = () => {
     </>
   );
 };
-export default HomeDetails;
+export default PageKolDetail;

@@ -4,6 +4,7 @@ import SideBar from "../../components/SideBar/index";
 import Header from '../../components/Header';
 import PageField from './PageField/PageField';
 import { Pagination } from 'antd';
+import { getFields } from '../../services/getApi';
 
 import './Fields.css'
 
@@ -14,9 +15,24 @@ const Fields = () => {
 
     const [currentKol, setCurrentKol] = useState(1);
     const [totalKol, setTotalKol] = useState(30);
+    const [fieldName, setFieldName] = useState([])
+
+    useEffect(() => {
+        getFields()
+            .then(res => {
+                if (!res.ok) {
+                    return Promise.reject(res)
+                }
+                return res.json();
+            })
+            .then(data => {
+                setFieldName(data.find((item) => {
+                    return item.id == id
+                }))
+            })
+    }, [id])
 
     const onChangeCurrentKol = (page) => {
-        console.log(page);
         setCurrentKol(page);
     };
 
@@ -24,12 +40,15 @@ const Fields = () => {
         setTotalKol(total)
     }
 
+    const regex = /(.*)\s\((.*)\)/;
+    const name = fieldName?.name?.match(regex)[1]
+
     return (
         <div>
             <Header />
             <SideBar />
             <div className='fields'>
-                <h2>fields</h2>
+                <h2>Lĩnh vực {name}</h2>
                 <div className='content-page'>
                     <PageField id={id} current={currentKol} onChangeTotalKol={onChangeTotalKol} />
                 </div>

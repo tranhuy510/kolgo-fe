@@ -45,17 +45,23 @@ const PageHOT = (props) => {
     }, [listKolHot])
 
     useEffect(() => {
-        getKols()
-            .then(res => {
-                if (!res.ok) {
-                    return Promise.reject(res)
-                }
-                return res.json();
-            })
-            .then(data => {
-                console.log(data);
-                setListKolHot(data)
-            })
+        const identifier = setTimeout(() => {
+            getKols()
+                .then(res => {
+                    if (!res.ok) {
+                        return Promise.reject(res)
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    setListKolHot(data)
+                })
+        }, 500)
+        return () => {
+            clearTimeout(identifier)
+        }
+
     }, [])
 
     function arrUpperCase(data) {
@@ -70,7 +76,7 @@ const PageHOT = (props) => {
             {listKolHot?.map((item) => {
                 const firstName = arrUpperCase(item.firstName)
                 return (
-                    <Link key={item.kolId} to={`/detail/:${item.kolId}`} style={linkStyle}>
+                    <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
                         <IMG src={item?.avata} alt="" />
                         <div style={{ display: 'flex' }}>
                             <Name>{firstName}</Name>

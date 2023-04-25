@@ -6,12 +6,13 @@ import Profile from "../pages/Profile/Profile";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
-import HomeDetail from "../pages/Details/HomeDetails";
+import PageKolDetail from "../pages/Details/PageKolDetail/PageKolDetail";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
 import ResetPassword from "../pages/ForgotPassword/ResetPassword";
 import Chat from "../pages/Chat/Chat";
 import Fields from "../pages/Fields/Fields";
 import NotFound from "../pages/NotFound/NotFound";
+import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 
 import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
 
@@ -26,8 +27,12 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       {
-        path: "/detail/:id",
-        element: <HomeDetail />,
+        path: "/detail/kol/:id",
+        element: <PageKolDetail />,
+      },
+      {
+        path: "/detail/enterprise/:id",
+        element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
       },
       {
         path: "/fields/kol/:id",
@@ -35,7 +40,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: isAuthenticatedRoute(Profile),
+        element: isAuthenticatedRoute(Profile, "profile"),
       },
     ],
   },

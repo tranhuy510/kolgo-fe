@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from 'react'
 import RateDate from './RateDate';
+import { Link } from 'react-router-dom';
 
 import { Avatar } from "antd";
 
@@ -23,13 +24,15 @@ const Rate = (props) => {
                     props.danhgia.map((item) => {
                         const color = getRandomColorHex()
                         return (
-                            <div key={item.id} className="rate-item">
+                            <div key={item.enterpriseId} className="rate-item">
                                 <div className="rate-item__avatar" style={{ border: `4px solid ${color}` }}>
                                     <Avatar size={64} src={item.avatar} >{item.avatar ? "" : item.name.charAt(0)?.toUpperCase()}</Avatar>
                                 </div>
                                 <div className="rate-item__content">
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <div className="busines" style={{ color: color }}>{item.name}</div>
+                                        <div className="busines" style={{ color: color }}>
+                                            <Link to={`/detail/enterprise/:${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
+                                        </div>
                                         <RateDate date={item.date} />
                                     </div>
                                     <div className="content-is-rated">
@@ -40,7 +43,7 @@ const Rate = (props) => {
                         )
                     })}
             </div>
-        </div>
+        </div >
     )
 }
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import ButtonRadius from '../../../components/UI/Button/ButtonRadius'
+import ButtonRadius from '../../../../components/UI/Button/ButtonRadius'
 import { HeartOutlined } from '@ant-design/icons/lib/icons'
 import classes from './NameMain.module.css'
-import Modals from "../../../components/UI/Modal/Modals";
+import Modals from "../../../../components/UI/Modal/Modals";
 
 const NameMain = ({ firstName, lastName, sumBook, sumLike }) => {
     const [noti, setNoti] = useState({
@@ -35,7 +35,7 @@ const NameMain = ({ firstName, lastName, sumBook, sumLike }) => {
                 >{name}</span>
                 <ButtonRadius className={classes['header__button-like']} onClick={checkLoginHandler}>
                     <HeartOutlined />
-                    <p>Like</p>
+                    <p>Yêu thích</p>
                 </ButtonRadius>
                 {noti.status &&
                     <Modals status={noti.status} title={noti.title} message={noti.message} changeNotification={changeNotificationHandler} />
@@ -44,11 +44,11 @@ const NameMain = ({ firstName, lastName, sumBook, sumLike }) => {
             <div className={classes['name-main__bottom']} >
                 <div className={classes['bottom-item']} >
                     <span className={classes['bottom-item__title']}>SỐ LƯỢT BOOK</span>
-                    <span className={classes['bottom-item__content']}>sumBook</span>
+                    <span className={classes['bottom-item__content']}>120</span>
                 </div>
                 <div className={classes['bottom-item']}>
                     <span className={classes['bottom-item__title']}>SỐ NGƯỜI YÊU THÍCH</span>
-                    <span className={classes['bottom-item__content']}>sumLike</span>
+                    <span className={classes['bottom-item__content']}>320</span>
                 </div>
             </div>
         </div>

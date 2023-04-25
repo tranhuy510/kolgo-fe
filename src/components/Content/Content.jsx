@@ -56,7 +56,7 @@ const Content = () => {
                 </div>
             </div>
             <div className='content-bottom'>
-                <Title>Outstanding KOL</Title>
+                <Title>Danh sách KOL</Title>
                 <div className='content-page'>
                     <PageOutStanding current={currentOutstandingKOL} onChangeTotalOutstandingKOL={onChangeTotalOutstandingKOL} />
                 </div>

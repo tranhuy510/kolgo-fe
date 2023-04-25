@@ -22,7 +22,7 @@ export const verify = async (params) => {
 };
 
 export const forgotPassword = async (email) => {
-  // return await fetch(`${process.env.REACT_APP_API_URL}/auth/verify${params}`, {
+  // return await fetch(`${process.env.REACT_APP_API_URL}/auth/forgot_password`, {
   return await fetch(`http://localhost:8080/api/auth/forgot_password`, {
     method: "POST",
     headers: {
@@ -34,7 +34,7 @@ export const forgotPassword = async (email) => {
 };
 
 export const resetPassword = async (token, data) => {
-  // return await fetch(`${process.env.REACT_APP_API_URL}/auth/verify${params}`, {
+  // return await fetch(`${process.env.REACT_APP_API_URL}/auth/reset_password${token}`, {
   return await fetch(`http://localhost:8080/api/auth/reset_password${token}`, {
     method: "POST",
     headers: {
@@ -59,5 +59,3 @@ export const refreshToken = async () => {
     }
   );
 };
-
-
