@@ -1,13 +1,14 @@
 import { EditOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row, Select } from "antd";
 import { useEffect, useState } from "react";
-import { getCities, getFields, getGenders } from "../../../services/getApi";
+// import { getCities, getFields, getGenders } from "../../../services/getApi";
 
 import classes from "./Form.module.css";
-import { postKolProfile } from "../../../services/postApi";
+// import { postKolProfile } from "../../../services/postApi";
 import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
-import { getKolProfile } from "../../../services/getApiProfile";
+// import { getKolProfile } from "../../../services/getApiProfile";
+import { fetchData, postData, putFormData } from "../../../services/common";
 
 export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
@@ -42,64 +43,79 @@ export default function FormProfileKOL(props) {
     setShowMessage({ status: true, type: "success", content: msg });
   };
 
-  const setDefaultProfile = () => {
-    getKolProfile()
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(res);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-        setProfile(data);
-      });
-  };
+  // const setDefaultProfile = () => {
+  //   fetchData("kol/profile", true).then(data => setProfile(data))
+  //   getKolProfile()
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return Promise.reject(res);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //       setProfile(data);
+  //     });
+  // };
 
-  const setDefaultGender = () => {
-    getGenders()
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(res);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setGender(data);
-      });
-  };
+  // const setDefaultGender = () => {
+  //   fetchData("genders", false).then(data => setGender(data))
+  //   getGenders()
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return Promise.reject(res);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setGender(data);
+  //     });
+  // };
 
-  const setDefaultCity = () => {
-    getCities()
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(res);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCity(data);
-      });
-  };
+  // const setDefaultCity = () => {
+  //   fetchData("cities", false).then(data => setCity(data))
+  //   getCities()
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return Promise.reject(res);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setCity(data);
+  //     });
+  // };
 
-  const setDefaultSpeciality = () => {
-    getFields()
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(res);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setSpeciality(data);
-      });
-  };
+  // const setDefaultSpeciality = () => {
+  //   fetchData("fields/kol", false).then(data => setSpeciality(data))
+  //   getFields()
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         return Promise.reject(res);
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       setSpeciality(data);
+  //     });
+  // };
 
   useEffect(() => {
-    setDefaultProfile();
-    setDefaultGender();
-    setDefaultCity();
-    setDefaultSpeciality();
+    Promise.all([
+      fetchData("kol/profile", true),
+      fetchData("genders", false),
+      fetchData("cities", false),
+      fetchData("fields/ent", false),
+    ]).then(([profile, genders, cities, fields]) => {
+      setProfile(profile);
+      setGender(genders);
+      setCity(cities);
+      setSpeciality(fields);
+    });
+    // setDefaultProfile();
+    // setDefaultGender();
+    // setDefaultCity();
+    // setDefaultSpeciality();
   }, []);
 
   const optionGender = gender.map((g) => {
@@ -163,7 +179,7 @@ export default function FormProfileKOL(props) {
   };
 
   const avatarChangeHandler = (event) => {
-    setAvatar(event.target.files);
+    setAvatar(event.target.files[0]);
   };
 
   const handleFileChange = (event) => {
@@ -207,19 +223,21 @@ export default function FormProfileKOL(props) {
     formData.append("avatar", avatar);
     images.forEach((image) => formData.append("images", image));
 
-    postKolProfile(formData)
-      .then((res) => {
-        if (!res.ok) {
-          return Promise.reject(res);
-        } else {
-          createSuccessMessage("Cập nhật thành công!");
-          return res.json();
-        }
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => console.log(err));
+    putFormData("kol/profile", formData, true)
+      .then(createSuccessMessage("Cập nhật thành công!"));
+    // postKolProfile(formData)
+    //   .then((res) => {
+    //     if (!res.ok) {
+    //       return Promise.reject(res);
+    //     } else {
+    //       createSuccessMessage("Cập nhật thành công!");
+    //       return res.json();
+    //     }
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (

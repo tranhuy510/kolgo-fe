@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
-import { fetchData, postData } from "../../services/chat";
+import { fetchData, postData } from "../../services/common";
 import "./Chat.css";
 import { useLocation } from 'react-router';
 

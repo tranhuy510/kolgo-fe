@@ -107,6 +107,7 @@ const Login = (props) => {
       email: response.data.email,
       firstName: response.data.firstName,
       lastName: response.data.lastName,
+      avatar: response.data.avatar,
       role: response.data.roles[0],
     };
     user = JSON.stringify(user);
