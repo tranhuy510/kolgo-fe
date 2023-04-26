@@ -17,6 +17,7 @@ export default function FormProfileEnterprise(props) {
   const [speciality, setSpeciality] = useState([]);
   const [valueSpeciality, setValueSpeciality] = useState();
   const [valueCity, setValueCity] = useState();
+  const [avatar, setAvatar] = useState();
   const [showMessage, setShowMessage] = useState({
     status: false,
     type: "",
@@ -128,6 +129,10 @@ export default function FormProfileEnterprise(props) {
     });
   };
 
+  const avatarChangeHandler = (event) => {
+    setAvatar(event.target.files);
+  };
+
   const validateFormData = (formData) => {
     let res = true;
     let errMsg = "";
@@ -145,7 +150,7 @@ export default function FormProfileEnterprise(props) {
       errMsg = "Vui lòng chọn tỉnh/thành phố địa chỉ!";
     } else if (!formData.enterpriseFieldId) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
-    } else if (!formData.addressDetail) {
+    } else if (!formData.addressDetails) {
       errMsg = "Vui lòng nhập địa chỉ cụ thể!";
     }
     if (errMsg) {
@@ -158,8 +163,12 @@ export default function FormProfileEnterprise(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(ent)) return;
-    console.log(ent);
-    postEntProfile(ent)
+
+    const formData = new FormData();
+    Object.keys(ent).map((key) => formData.append(key, ent[key]));
+    formData.append("avatar", avatar);
+
+    postEntProfile(formData)
       .then((res) => {
         if (!res.ok) {
           return Promise.reject(res);
@@ -169,22 +178,22 @@ export default function FormProfileEnterprise(props) {
         }
       })
       .then((data) => {
-        console.log(data.json());
+        console.log(data);
       })
-      .catch((err) => err.json().then((e) => console.log(e)));
+      .catch((err) => console.log(err));
   };
 
   return (
-    <Row>
-      <Col span={16}>
-        <Message
-          status={showMessage.status}
-          type={showMessage.type}
-          content={showMessage.content}
-          changeMessage={changeMessage}
-        />
-        <h1>Thông tin cá nhân</h1>
-        <form className={classes.form} onSubmit={submitHandler}>
+    <form className={classes.form} onSubmit={submitHandler}>
+      <Row>
+        <Col span={16}>
+          <Message
+            status={showMessage.status}
+            type={showMessage.type}
+            content={showMessage.content}
+            changeMessage={changeMessage}
+          />
+          <h1>Thông tin cá nhân</h1>
           <Row className={classes.form_control}>
             <Col span={7}>Tên:</Col>
             <Col span={17}>
@@ -313,21 +322,26 @@ export default function FormProfileEnterprise(props) {
               </button>
             </Col>
           </Row>
-        </form>
-      </Col>
-      <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
-        <h3>Ảnh đại diện</h3>
-        <Avatar size={200} src={ent?.avatar}>
-          {ent?.avatar ? (
-            ""
-          ) : (
-            <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
-          )}
-        </Avatar>
-        <button className={classes.btnChange}>
-          <EditOutlined /> Thay đổi
-        </button>
-      </Col>
-    </Row>
+        </Col>
+        <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
+          <h3>Ảnh đại diện</h3>
+          <Avatar size={200} src={ent?.avatar}>
+            {ent?.avatar ? (
+              ""
+            ) : (
+              <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
+            )}
+          </Avatar>
+          <div className={classes.avatarWrapper}>
+            <EditOutlined /> Thay đổi
+            <input
+              type="file"
+              accept="image/*"
+              onChange={avatarChangeHandler}
+            />
+          </div>
+        </Col>
+      </Row>
+    </form>
   );
 }

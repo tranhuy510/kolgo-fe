@@ -4,7 +4,6 @@ h1 {
 }
 
 .form {
-  max-width: 400px;
   padding: 12px;
 }
 
@@ -15,7 +14,7 @@ h1 {
 }
 
 .input_profile {
-  width: 100%;
+  width: 66.666%;
   padding: 0 11px;
   border: 1px solid #d9d9d9;
   border-radius: 6px;
@@ -30,7 +29,7 @@ h1 {
 }
 
 .select_profile {
-  width: 100%;
+  width: 66.666%;
   outline-color: var(--color-primary-1);
 }
 
@@ -48,7 +47,7 @@ h1 {
   line-height: 30px;
   font-size: 14px;
   min-width: 200px;
-  width: 100%;
+  width: 66.666%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -76,7 +75,35 @@ h1 {
   cursor: pointer;
 }
 
-.btnChange:hover {
+.avatarWrapper {
+  position: relative;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  line-height: 30px;
+  font-size: 14px;
+  width: 120px;
+  margin-top: 10px;
+  display: inline-block;
+  padding: 5px 20px;
+  text-align: center;
+  height: 30px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.avatarWrapper input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.avatarWrapper:hover {
   cursor: pointer;
   border: 1px solid var(--color-primary-1);
   color: var(--color-primary-1);

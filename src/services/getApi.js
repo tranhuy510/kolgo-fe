@@ -81,3 +81,7 @@ export const getGenders = async () => {
 export const getCities = async () => {
   return await fetch(`http://localhost:8080/api/cities`);
 };
+
+export const getImages = async (image) => {
+  return await fetch(`http://localhost:8080/api/images/${image}`);
+};

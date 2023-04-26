@@ -29,7 +29,6 @@ export const router = createBrowserRouter([
       {
         path: "setting",
         element: <Profile />,
-        children: [{ path: "profile" }],
       },
     ],
   },

@@ -1,6 +1,6 @@
 import { EditOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row, Select } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getCities,
   getFields,
@@ -11,6 +11,7 @@ import {
 import classes from "./Form.module.css";
 import { postKolProfile } from "../../../services/postApi";
 import Message from "../../../components/UI/Message/Message";
+import ImageGallery from "../../../components/UI/ImageGallery/ImageGallery";
 
 export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
@@ -20,7 +21,8 @@ export default function FormProfileKOL(props) {
   const [valueGender, setValueGender] = useState("");
   const [valueCity, setValueCity] = useState("");
   const [valueSpeciality, setValueSpeciality] = useState("");
-  const fileInputRef = useRef(null);
+  const [images, setImages] = useState([]);
+  const [avatar, setAvatar] = useState();
 
   const [showMessage, setShowMessage] = useState({
     status: false,
@@ -164,6 +166,19 @@ export default function FormProfileKOL(props) {
     });
   };
 
+  const avatarChangeHandler = (event) => {
+    setAvatar(event.target.files);
+  };
+
+  const handleFileChange = (event) => {
+    const fileList = event.target.files;
+    const newFiles = [];
+    for (let i = 0; i < fileList.length; i++) {
+      newFiles.push(fileList[i]);
+    }
+    setImages([...images, ...newFiles]);
+  };
+
   const validateFormData = (formData) => {
     let res = true;
     let errMsg = "";
@@ -187,18 +202,14 @@ export default function FormProfileKOL(props) {
     return res;
   };
 
-  const handleButtonChange = () => {
-    fileInputRef.current.click();
-  };
-
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(profile)) return;
 
-    console.log(profile);
-
     const formData = new FormData();
     Object.keys(profile).map((key) => formData.append(key, profile[key]));
+    formData.append("avatar", avatar);
+    images.forEach((image) => formData.append("images", image));
 
     postKolProfile(formData)
       .then((res) => {
@@ -210,25 +221,25 @@ export default function FormProfileKOL(props) {
         }
       })
       .then((data) => {
-        console.log(data.json());
+        console.log(data);
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <Row>
-      <Col span={16}>
-        <Message
-          status={showMessage.status}
-          type={showMessage.type}
-          content={showMessage.content}
-          changeMessage={changeMessage}
-        />
-        <h1>Thông tin cá nhân</h1>
-        <form className={classes.form} onSubmit={submitHandler}>
+    <form className={classes.form} onSubmit={submitHandler}>
+      <Row>
+        <Col span={16}>
+          <Message
+            status={showMessage.status}
+            type={showMessage.type}
+            content={showMessage.content}
+            changeMessage={changeMessage}
+          />
+          <h1>Thông tin cá nhân</h1>
           <Row className={classes.form_control}>
-            <Col span={7}>Tên:</Col>
-            <Col span={17}>
+            <Col span={6}>Tên:</Col>
+            <Col span={18}>
               <input
                 placeholder="Tên của bạn"
                 className={classes.input_profile}
@@ -240,8 +251,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Họ:</Col>
-            <Col span={17}>
+            <Col span={6}>Họ:</Col>
+            <Col span={18}>
               <input
                 placeholder="Họ của bạn"
                 onChange={inputChangeHandler}
@@ -253,8 +264,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Giới tính:</Col>
-            <Col span={17}>
+            <Col span={6}>Giới tính:</Col>
+            <Col span={18}>
               <Select
                 showSearch
                 className={classes.select_profile}
@@ -273,8 +284,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Số điện thoại:</Col>
-            <Col span={17}>
+            <Col span={6}>Số điện thoại:</Col>
+            <Col span={18}>
               <input
                 placeholder="Số điện thoại"
                 onChange={inputChangeHandler}
@@ -286,8 +297,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Tỉnh/Thành phố:</Col>
-            <Col span={17}>
+            <Col span={6}>Tỉnh/Thành phố:</Col>
+            <Col span={18}>
               <Select
                 showSearch
                 placeholder="Chọn tỉnh/thành phố làm việc"
@@ -306,8 +317,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Lĩnh vực:</Col>
-            <Col span={17}>
+            <Col span={6}>Lĩnh vực:</Col>
+            <Col span={18}>
               <Select
                 showSearch
                 placeholder="Chọn lĩnh vực hoạt động"
@@ -326,8 +337,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Facebook url:</Col>
-            <Col span={17}>
+            <Col span={6}>Facebook url:</Col>
+            <Col span={18}>
               <input
                 placeholder="Link trang Facebook cá nhân"
                 onChange={inputChangeHandler}
@@ -340,8 +351,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Youtube url:</Col>
-            <Col span={17}>
+            <Col span={6}>Youtube url:</Col>
+            <Col span={18}>
               <input
                 placeholder="Link kênh Youtube cá nhân"
                 onChange={inputChangeHandler}
@@ -354,8 +365,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>Instagram url:</Col>
-            <Col span={17}>
+            <Col span={6}>Instagram url:</Col>
+            <Col span={18}>
               <input
                 placeholder="Link trang Instagram cá nhân"
                 onChange={inputChangeHandler}
@@ -368,8 +379,8 @@ export default function FormProfileKOL(props) {
           </Row>
 
           <Row className={classes.form_control}>
-            <Col span={7}>TikTok url:</Col>
-            <Col span={17}>
+            <Col span={6}>TikTok url:</Col>
+            <Col span={18}>
               <input
                 placeholder="Link trang TikTok cá nhân"
                 onChange={inputChangeHandler}
@@ -377,6 +388,19 @@ export default function FormProfileKOL(props) {
                 defaultValue={profile?.tiktokUrl}
                 name="linkTt"
                 type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={6}>Album ảnh:</Col>
+            <Col span={18}>
+              {profile.images && <ImageGallery images={profile?.images} />}
+              <input
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                accept="image/*"
               />
             </Col>
           </Row>
@@ -389,28 +413,26 @@ export default function FormProfileKOL(props) {
               </button>
             </Col>
           </Row>
-        </form>
-      </Col>
-      <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
-        <h3>Ảnh đại diện</h3>
-        <Avatar size={200} src={profile?.avatar}>
-          {profile?.avatar ? (
-            ""
-          ) : (
-            <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
-          )}
-        </Avatar>
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={(e) => console.log(e.target.files)}
-        />
-        <button className={classes.btnChange} onClick={handleButtonChange}>
-          <EditOutlined /> Thay đổi
-        </button>
-      </Col>
-    </Row>
+        </Col>
+        <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
+          <h3>Ảnh đại diện</h3>
+          <Avatar size={200} src={profile?.avatar}>
+            {profile?.avatar ? (
+              ""
+            ) : (
+              <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />
+            )}
+          </Avatar>
+          <div className={classes.avatarWrapper}>
+            <EditOutlined /> Thay đổi
+            <input
+              type="file"
+              accept="image/*"
+              onChange={avatarChangeHandler}
+            />
+          </div>
+        </Col>
+      </Row>
+    </form>
   );
 }
