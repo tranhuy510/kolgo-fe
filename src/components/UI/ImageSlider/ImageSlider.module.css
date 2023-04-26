@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  width: 50%;
+}
+
+.silderImage {
+  width: 105px;
+  height: 105px;
+}

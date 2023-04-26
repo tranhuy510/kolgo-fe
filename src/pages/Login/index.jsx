@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
 
@@ -103,13 +103,14 @@ const Login = (props) => {
     localStorage.setItem("refreshToken", refreshToken);
 
     let user = {
-      id: response.data.id,
+      id: response.data.userId,
       email: response.data.email,
       firstName: response.data.firstName,
       lastName: response.data.lastName,
       role: response.data.roles[0],
     };
     user = JSON.stringify(user);
+    console.log(user);
     localStorage.setItem("user", user);
 
     setCheck({
@@ -118,7 +119,10 @@ const Login = (props) => {
       content: `Login success`,
     });
 
-    return navigate("..");
+    if (response.data.roles[0] === 'ADMIN') {
+      return navigate("../admin");
+    }
+    else return navigate("..");
   };
 
   const errorHandler = () => {
@@ -150,7 +154,7 @@ const Login = (props) => {
       />
       <div className="login">
         <div className="login__logo">
-          <img className="logo" src={logo} alt="" />
+          <Link to='../'><img className="logo" src={logo} alt="" /></Link>
         </div>
         <div className="login-form__control">
           <h1 className="tittle-login">Log in to KOLgo</h1>
@@ -175,7 +179,7 @@ const Login = (props) => {
             }
           />
           <div className="login-form__control">
-            <label className="forgot-password" onClick={forgotPasswordHandler}>
+            <label className="line-forgot-password" onClick={forgotPasswordHandler}>
               Fogot password?
             </label>
           </div>

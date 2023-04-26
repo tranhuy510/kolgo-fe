@@ -1,17 +1,13 @@
-import { EditOutlined, UserOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Col, Row, Select } from "antd";
 import { useEffect, useState } from "react";
-import {
-  getCities,
-  getFields,
-  getGenders,
-  getKolProfile,
-} from "../../../services/getApi";
+import { getCities, getFields, getGenders } from "../../../services/getApi";
 
 import classes from "./Form.module.css";
 import { postKolProfile } from "../../../services/postApi";
 import Message from "../../../components/UI/Message/Message";
-import ImageGallery from "../../../components/UI/ImageGallery/ImageGallery";
+import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
+import { getKolProfile } from "../../../services/getApiProfile";
 
 export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
@@ -395,13 +391,16 @@ export default function FormProfileKOL(props) {
           <Row className={classes.form_control}>
             <Col span={6}>Album ảnh:</Col>
             <Col span={18}>
-              {profile.images && <ImageGallery images={profile?.images} />}
-              <input
-                type="file"
-                multiple
-                onChange={handleFileChange}
-                accept="image/*"
-              />
+              {profile.images && <ImageSlider images={profile?.images} />}
+              <div className={classes.albumWrapper}>
+                <PlusOutlined /> Thêm ảnh mới
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  accept="image/*"
+                />
+              </div>
             </Col>
           </Row>
 

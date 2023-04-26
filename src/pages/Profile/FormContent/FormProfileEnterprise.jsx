@@ -4,12 +4,9 @@ import { Avatar, Col, Row, Select } from "antd";
 
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
-import {
-  getCities,
-  getEntFields,
-  getEntProfile,
-} from "../../../services/getApi";
+import { getCities } from "../../../services/getApi";
 import { postEntProfile } from "../../../services/postApi";
+import { getEntFields, getEntProfile } from "../../../services/getApiProfile";
 
 export default function FormProfileEnterprise(props) {
   const [ent, setEnt] = useState({});
@@ -163,6 +160,8 @@ export default function FormProfileEnterprise(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(ent)) return;
+
+    console.log(ent);
 
     const formData = new FormData();
     Object.keys(ent).map((key) => formData.append(key, ent[key]));
@@ -325,8 +324,11 @@ export default function FormProfileEnterprise(props) {
         </Col>
         <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
           <h3>Ảnh đại diện</h3>
-          <Avatar size={200} src={ent?.avatar}>
-            {ent?.avatar ? (
+          <Avatar
+            size={200}
+            src={`http://localhost:8080/api/images/${ent?.avatar}`}
+          >
+            {ent.avatar ? (
               ""
             ) : (
               <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />

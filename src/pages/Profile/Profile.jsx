@@ -1,26 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Col, Row } from "antd";
+import { Breadcrumb, Layout, Menu, theme, Col, Row } from "antd";
 import MenuProfile from "./Menu/MenuProfile";
 import SubContext from "./SubContext/SubContext";
 import "./profile.css";
 
 const Profile = () => {
-  const [user, setUser] = useState({});
-  const [changeContent, setChangeContent] = useState();
+  const [changeContent, setChangeContent] = useState({});
 
-  const getUser = () => {
-    const account = JSON.parse(localStorage.getItem("user"));
-    setUser({ ...account });
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const onChangeContentHandler = (data) => {
     setChangeContent(data);
     console.log(data);
   };
+
+  console.log(user);
 
   return (
     <>

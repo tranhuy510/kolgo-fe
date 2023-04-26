@@ -1,6 +1,6 @@
 import { Badge, Table } from "antd";
 import { useEffect, useState } from "react";
-import { getBookingHistory } from "../../../services/getApi";
+import { getBookingHistory } from "../../../services/getApiProfile";
 
 const columns = [
   {

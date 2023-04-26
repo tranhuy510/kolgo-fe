@@ -1,9 +1,9 @@
 import React from "react";
 import {
   UserOutlined,
-  HistoryOutlined,
   SettingOutlined,
   ClockCircleOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
@@ -36,7 +36,7 @@ const itemEnt = [
 ];
 const MenuProfile = (props) => {
   const onClick = (e) => {
-    console.log("click ", e.key);
+    console.log("click ", e);
     props.onChangeContentHandler(e.key);
   };
 

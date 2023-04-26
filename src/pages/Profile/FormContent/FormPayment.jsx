@@ -2,7 +2,7 @@ import { Table } from "antd";
 
 import classes from "./Form.module.css";
 import { useEffect, useState } from "react";
-import { getPaymentHistory } from "../../../services/getApi";
+import { getPaymentHistory } from "../../../services/getApiProfile";
 
 const columns = [
   {

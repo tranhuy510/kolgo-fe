@@ -22,17 +22,20 @@ const componentEnt = [
 ];
 
 const SubContext = (props) => {
+  console.log(props);
   return (
     <div className="sub-context" style={{ width: "100%" }}>
-      {props.user.role === "KOL" && !props.changeContent && <FormProfileKOL />}
+      {props.user.role === "KOL" &&
+        Object.keys(props.changeContent).length === 0 && <FormProfileKOL />}
       {props.user.role === "KOL" &&
         componentKOL.map((component) => {
           if (component.key === props.changeContent) return component.component;
         })}
 
-      {props.user.role === "ENTERPRISE" && !props.changeContent && (
-        <FormProfileEnterprise />
-      )}
+      {props.user.role === "ENTERPRISE" &&
+        Object.keys(props.changeContent).length === 0 && (
+          <FormProfileEnterprise />
+        )}
       {props.user.role === "ENTERPRISE" &&
         componentEnt.map((component) => {
           if (component.key === props.changeContent) return component.component;
