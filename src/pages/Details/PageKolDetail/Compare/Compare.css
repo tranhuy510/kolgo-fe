@@ -1,0 +1,151 @@
+.form-so-sanh {
+    width: 100%;
+    /* border: 1px solid rgba(0, 0, 0, 0.7); */
+    border-radius: 20px;
+  }
+  .compare-avatar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .compare-avatar .container-avatar {
+    border: 1px solid #ccc;
+    width: 30%;
+    padding: 30px 20px 20px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hide-more-user {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    top: 0;
+    right: 0;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .container-avatar .more-user-compare {
+    height: 120px;
+    width: 110px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    border: 2px dashed #333;
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+  .modal-list-more-user input {
+    border: 1px solid #333;
+    outline: none;
+    margin-bottom: 20px;
+  }
+  .modal-list-more-user .container-modal-search {
+    height: 450px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+  .modal-list-more-user .item-search-user {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+  }
+  .item-search-user .image-item-user {
+    height: 120px;
+    width: 100px;
+  }
+  .item-search-user .name-item-user {
+    margin-left: 20px;
+    font-size: 20px;
+  }
+  .item-search-user .content-item-user {
+    position: absolute;
+    font-size: 15px;
+    right: 10px;
+    cursor: pointer;
+    color: blue;
+    opacity: 0.7;
+  }
+  .item-search-user .content-item-user:hover {
+    opacity: 0.9;
+  }
+  .compare-avatar .container-avatar .image {
+    height: 200px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  .compare-avatar .container-avatar .image-left {
+    width: 100%;
+  }
+  .compare-avatar .container-avatar .image-right {
+    width: 100%;
+  }
+  
+  .compare-avatar .image-center {
+    width: 10%;
+  }
+  .bottom-content-hide {
+    display: none;
+    pointer-events: none;
+  }
+  .container-avatar .bottom-content {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    bottom: 10px;
+  }
+  .bottom-content button {
+    border: none;
+    outline: none;
+    width: 150px;
+    height: 30px;
+    border-radius: 20px;
+    background-color: rgb(240, 86, 74);
+    color: white;
+    font-weight: 600;
+  }
+  .bottom-content .icon-start {
+    color: rgb(240, 86, 74);
+    margin-left: 20px;
+  }
+  .bottom-content .start-score {
+    margin-left: 3px;
+  }
+  .compare-interact {
+    display: flex;
+    border-top: 1px solid #ccc;
+    margin: 10px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .compare-interact .comparisonType-image {
+    width: 3%;
+    position: absolute;
+    left: 15px;
+  }
+  .compare-interact .comparisonType-text {
+    width: 20%;
+    position: absolute;
+    font-size: 15px;
+    left: 15px;
+  }
+  .compare-interact div {
+    width: calc(30% + 20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 6%;
+  }
+  
