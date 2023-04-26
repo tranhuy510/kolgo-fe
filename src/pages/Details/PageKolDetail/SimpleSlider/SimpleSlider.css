@@ -1,0 +1,26 @@
+
+
+.slick-prev:before {
+  color: gray;
+}
+.slick-next:before {
+  color: gray;
+}
+.detail-simple-slider {
+  height: 100%;
+  width: calc(100% - 60px);
+}
+.detail-simple-slider .image-slider {
+  height: 90px;
+  position: relative;
+}
+.detail-simple-slider .image-item {
+  width: 90px;
+  border: 2px solid #fff;
+  box-sizing: border-box;
+}
+
+.detail-simple-slider .image-item:hover {
+  cursor: pointer;
+  border: 2px solid #f0564a;
+} 

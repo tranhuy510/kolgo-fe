@@ -6,9 +6,16 @@ import Profile from "../pages/Profile/Profile";
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
-import HomeDetail from "../pages/Details/HomeDetails";
-import Chat from "../pages/Chat";
-import HomeAdmin from '../pages/Admin/HomeAdmin';
+import PageKolDetail from "../pages/Details/PageKolDetail/PageKolDetail";
+import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
+import ResetPassword from "../pages/ForgotPassword/ResetPassword";
+import Chat from "../pages/Chat/Chat";
+import Fields from "../pages/Fields/Fields";
+import NotFound from "../pages/NotFound/NotFound";
+import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
+import HomeAdmin from "../pages/Admin/HomeAdmin";
+
+import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
 
 export const router = createBrowserRouter([
   {
@@ -20,19 +27,47 @@ export const router = createBrowserRouter([
         path: "campaign",
         element: <Campaign />,
       },
-      { path: "/detail", element: <HomeDetail /> },
-      { path: "/chat", element: <Chat /> },
+      {
+        path: "/detail/kol/:id",
+        element: <PageKolDetail />,
+      },
+      {
+        path: "/detail/enterprise/:id",
+        element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
+      },
+      {
+        path: "/fields/kol/:id",
+        element: <Fields />,
+      },
       {
         path: "profile",
-        element: <Profile />,
+        element: isAuthenticatedRoute(Profile, "profile"),
       },
     ],
   },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
-  { path: "/forgotpassword", element: <ForgotPassword /> },
-  { path: "/chat", element: <Chat /> },
-  { path: "/admin", element: <HomeAdmin /> },
+  { path: "/forgot_password", element: <ForgotPassword /> },
+  {
+    path: "/verify_account",
+    element: <VerifyRegister />,
+  },
+  {
+    path: "/reset_password",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/chat",
+    element: isAuthenticatedRoute(Chat, "chat"),
+  },
+  {
+    path: "/admin",
+    element: isAuthenticatedRoute(HomeAdmin, "admin"),
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
 ]);
 
 export const privateRouters = [];
