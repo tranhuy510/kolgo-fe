@@ -104,15 +104,15 @@ const PageKolDetail = () => {
   }, [infoKol?.kolFieldId])
 
   const navigateToChat = () => {
-    const user = localStorage.getItem('user')
+    const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('../login')
     }
-    else navigate(`/Chat`, { state: { userId: infoKol.kolId } })
+    else navigate(`/chat`, { state: { userId: infoKol.userId } })
   }
 
   const bookingHandler = () => {
-    const user = localStorage.getItem('user')
+    const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('../login')
     }

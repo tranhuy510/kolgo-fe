@@ -110,7 +110,6 @@ const Login = (props) => {
       role: response.data.roles[0],
     };
     user = JSON.stringify(user);
-    console.log(user);
     localStorage.setItem("user", user);
 
     setCheck({
@@ -120,7 +119,7 @@ const Login = (props) => {
     });
 
     if (response.data.roles[0] === 'ADMIN') {
-      return navigate("../admin");
+      return navigate("/admin");
     }
     else return navigate("..");
   };
@@ -173,7 +172,7 @@ const Login = (props) => {
             name="password"
             onChange={inputChangeHandler}
             placeholder="Enter your password"
-            className='input-login'
+            className="input-login"
             iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           />
           <div className="login-form__control">

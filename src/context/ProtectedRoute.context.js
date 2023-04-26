@@ -4,13 +4,14 @@ import NotAdmin from "../pages/NotFound/NotAdmin";
 
 export function isAuthenticatedRoute(Component, name) {
   const accessToken = localStorage.getItem("accessToken");
-  const user = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user);
   const WrappedComponent = (props) => <Component {...props} />;
   if (!accessToken) {
     return <Navigate to="/login" />;
   }
   if (name === "admin") {
-    if (user.role === "ADMN") {
+    if (user.role === "ADMIN") {
       return <WrappedComponent />;
     } else return <NotAdmin />;
   }
