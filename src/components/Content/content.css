@@ -1,6 +1,8 @@
 .content {
     margin-left: 250px;
-    padding: 80px 20px 0 20px;
+    padding-top: 67px;
+    padding-left: 2px;
+    width: calc(100% - 250px);
 }
 
 .content-pagination .ant-pagination-options {
@@ -21,12 +23,12 @@
 
 .content-top {
     background-color: #fff;
-    padding: 10px;
+    padding: 10px 50px;
     box-sizing: border-box;
 }
 
 .content-middle,.content-bottom {
     background-color: #fff;
-    padding: 10px;
+    padding: 10px 50px;
     box-sizing: border-box;
 }

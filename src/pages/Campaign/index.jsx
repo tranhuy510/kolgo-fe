@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Campaign.module.css";
+import classes from "./Campaign.module.css";
 import "./index.css";
 import HomeChienDich from "./ChienDich/HomeChienDich";
 
@@ -7,7 +7,7 @@ const Campaign = (props) => {
   const [activeTab, setActiveTab] = useState(1);
 
   return (
-    <div> 
+    <div className={classes.campaign}>
       <div className="tab-buttons">
         <button
           className={`tab-button ${activeTab === 1 ? "active" : ""}`}

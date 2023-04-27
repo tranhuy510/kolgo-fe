@@ -119,6 +119,7 @@ const Login = (props) => {
     });
 
     if (response.data.roles[0] === 'ADMIN') {
+      console.log('admin');
       return navigate("/admin");
     }
     else return navigate("..");

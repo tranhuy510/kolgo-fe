@@ -5,10 +5,11 @@ import { getKols } from '../../../services/getApi';
 import { UserOutlined } from '@ant-design/icons'
 
 const IMG = styled.img`
-  width: 220px;
+  width: 100%;
   height: 220px;
   box-sizing: border-box;
   border-radius: 20px 20px 0 0;
+  border: none;
 `;
 
 const Name = styled.p`
@@ -19,7 +20,7 @@ const Name = styled.p`
 `
 
 const linkStyle = {
-  width: '220px',
+  width: '240px',
   height: '280px',
   margin: '5px 0',
   boxSizing: 'border-box',
@@ -76,7 +77,7 @@ const PageHOT = (props) => {
         const firstName = arrUpperCase(item.firstName)
         return (
           <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
-            <IMG src={item?.avata} alt="" />
+            <IMG src={item.avata ? item.avata : 'https://playerduo.com/api/upload-service/images/b20cc91f-4fe8-4e50-9b36-f97dff81d0e2__f6546050-d17f-11ed-a19f-23a3b10d190e__player_avatar.jpg'} alt="" />
             <div style={{ display: 'flex' }}>
               <Name>{firstName}</Name>
               <Name>{item.lastName}</Name>

@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { getKols } from '../../../services/getApi';
 
 const IMG = styled.img`
-  width: 220px;
+  width: 100%;
   height: 220px;
   box-sizing: border-box;
   border-radius: 20px 20px 0 0;
+  border: none;
 `;
 
 const Name = styled.p`
@@ -18,7 +19,7 @@ const Name = styled.p`
 `;
 
 const linkStyle = {
-  width: '220px',
+  width: '240px',
   height: '280px',
   margin: '5px 0',
   boxSizing: 'border-box',
@@ -74,7 +75,7 @@ const PageOutstandingKOL = (props) => {
         const firstName = arrUpperCase(item.firstName)
         return (
           <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
-            <IMG src={item?.ava} alt="" />
+            <IMG src={item.avata ? item.avata : 'https://playerduo.com/api/upload-service/images/01d1e26f-ebf6-4aec-960c-a4edbee3b700__7b3d51a0-e431-11ed-a19f-23a3b10d190e__player_avatar.jpg'} alt="" />
             <div style={{ display: 'flex' }}>
               <Name>{firstName}</Name>
               <Name>{item.lastName}</Name>
