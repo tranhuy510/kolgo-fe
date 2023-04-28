@@ -42,6 +42,10 @@ export const router = createBrowserRouter([
         path: "setting",
         element: <Profile />,
       },
+      {
+        path: "/chat",
+        element: isAuthenticatedRoute(Chat, "chat"),
+      },
     ],
   },
   { path: "/login", element: <Login /> },
@@ -54,10 +58,6 @@ export const router = createBrowserRouter([
   {
     path: "/reset_password",
     element: <ResetPassword />,
-  },
-  {
-    path: "/chat",
-    element: isAuthenticatedRoute(Chat, "chat"),
   },
   {
     path: "/admin",

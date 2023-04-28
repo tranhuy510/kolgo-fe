@@ -22,10 +22,10 @@ export const postEntProfile = async (formData) => {
   });
 };
 
-export const postEmail = async (formData) => {
+export const putEmail = async (formData) => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-  return await fetch(`http://localhost:8080/api/ent/profile`, {
+  return await fetch(`http://localhost:8080/api/user/email`, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + accessToken,
@@ -37,7 +37,7 @@ export const postEmail = async (formData) => {
 export const postPassword = async (formData) => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
-  return await fetch(`http://localhost:8080/api/ent/profile`, {
+  return await fetch(`http://localhost:8080/api/user/password`, {
     method: "PUT",
     headers: {
       Authorization: "Bearer " + accessToken,

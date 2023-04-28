@@ -7,6 +7,8 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 
+import classes from "./MenuProfile.module.css";
+
 function getItem(label, key, icon, children, type) {
   return {
     key,
@@ -42,11 +44,8 @@ const MenuProfile = (props) => {
 
   return (
     <Menu
+      className={classes.menu}
       onSelect={onClick}
-      style={{
-        width: "100%",
-        marginTop: "70px",
-      }}
       defaultSelectedKeys={"1"}
       mode="inline"
       items={props.user.role === "KOL" ? itemKOL : itemEnt}

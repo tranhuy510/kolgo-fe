@@ -1,23 +1,92 @@
 import { Col, Row } from "antd";
 
 import classes from "./Form.module.css";
+import { useEffect, useState } from "react";
+import Message from "../../../components/UI/Message/Message";
+import { putFormData, updateData } from "../../../services/common";
 
 export default function FormEmail(props) {
   const user = JSON.parse(localStorage.getItem("user"));
+  const [email, setEmail] = useState();
+
+  const [showMessage, setShowMessage] = useState({
+    status: false,
+    type: "",
+    content: "",
+  });
+
+  const changeMessage = () => {
+    setShowMessage({
+      status: false,
+      type: "",
+      content: "",
+    });
+  };
+
+  const createErrorMessage = (msg) => {
+    setShowMessage({ status: true, type: "error", content: msg });
+  };
+
+  const createSuccessMessage = (msg) => {
+    setShowMessage({ status: true, type: "success", content: msg });
+  };
+
+  useEffect(() => {
+    setEmail(user.email);
+  }, [user.email]);
+
+  const inputChangeHandler = (event) => {
+    console.log(event.target.value);
+    setEmail(event.target.value);
+  };
+
+  const validateFormData = (formData) => {
+    let res = true;
+    let errMsg = "";
+    if (!formData) {
+      errMsg = "Vui lòng nhập email!";
+    } else if (formData.indexOf("@") < 0) {
+      errMsg = "Email sai, email phải chứa @!";
+    }
+    if (errMsg) {
+      createErrorMessage(errMsg);
+      res = false;
+    }
+    return res;
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    if (!validateFormData(email)) return;
+    console.log(email);
+
+    updateData("PUT", "user/email", email, true).then((data) => {
+      createSuccessMessage("Cập nhật thành công!");
+      console.log(data);
+    });
+  };
+
   return (
     <Row>
       <Col span={16}>
+        <Message
+          status={showMessage.status}
+          type={showMessage.type}
+          content={showMessage.content}
+          changeMessage={changeMessage}
+        />
         <h1>Email</h1>
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={submitHandler}>
           <Row className={classes.form_control}>
             <Col span={4}>Email:</Col>
             <Col span={20}>
               <input
                 placeholder="Nhập Email của bạn"
                 className={classes.input_profile}
+                onChange={inputChangeHandler}
                 name="email"
                 type="email"
-                defaultValue={user?.email}
+                defaultValue={email}
               />
             </Col>
           </Row>
