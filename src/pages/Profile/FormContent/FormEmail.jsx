@@ -3,7 +3,7 @@ import { Col, Row } from "antd";
 import classes from "./Form.module.css";
 import { useEffect, useState } from "react";
 import Message from "../../../components/UI/Message/Message";
-import { putFormData, updateData } from "../../../services/common";
+import { putData } from "../../../services/common";
 
 export default function FormEmail(props) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -60,9 +60,12 @@ export default function FormEmail(props) {
     if (!validateFormData(email)) return;
     console.log(email);
 
-    updateData("PUT", "user/email", email, true).then((data) => {
+    putData("user/email", { email }).then((res) => {
+      console.log(res)
+      if (res.error) createErrorMessage(res.message);
       createSuccessMessage("Cập nhật thành công!");
-      console.log(data);
+      setEmail(email);
+      localStorage.setItem("user", JSON.stringify({ ...user, email }))
     });
   };
 

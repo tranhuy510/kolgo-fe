@@ -34,7 +34,7 @@ const Header = (props) => {
     return () => {
       clearTimeout(identifier);
     };
-  }, [user]);
+  }, []);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");

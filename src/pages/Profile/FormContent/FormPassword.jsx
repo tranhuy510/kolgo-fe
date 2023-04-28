@@ -3,11 +3,11 @@ import { Col, Row } from "antd";
 
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
-import { putFormData, updateData } from "../../../services/common";
+import { putData } from "../../../services/common";
 
 export default function FormPassword(props) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const [data, setData] = useState();
+  const [formData, setFormData] = useState({});
 
   const [showMessage, setShowMessage] = useState({
     status: false,
@@ -32,7 +32,7 @@ export default function FormPassword(props) {
   };
 
   const inputChangeHandler = (event) => {
-    setData((prevState) => {
+    setFormData((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -40,18 +40,18 @@ export default function FormPassword(props) {
     });
   };
 
-  const validateFormData = (formData) => {
+  const validateFormData = (userInput) => {
     let res = true;
     let errMsg = "";
-    if (!formData.oldPassword) {
+    if (!userInput.oldPassword) {
       errMsg = "Vui lòng nhập mật khẩu hiện tại!";
-    } else if (!formData.newPassword) {
+    } else if (!userInput.newPassword) {
       errMsg = "Vui lòng nhập mật khẩu mới!";
-    } else if (formData.oldPassword === formData.newPassword) {
+    } else if (userInput.oldPassword === userInput.newPassword) {
       errMsg = "Mật khẩu hiện tại và mật khẩu mới phải khác nhau!";
-    } else if (!formData.resetPassword) {
+    } else if (!userInput.resetPassword) {
       errMsg = "Vui lòng nhập lại mật khẩu mới!";
-    } else if (formData.newPassword !== formData.resetPassword) {
+    } else if (userInput.newPassword !== userInput.resetPassword) {
       errMsg = "Mật khẩu mới và Nhập lại mật khẩu phải giống nhau!";
     }
     if (errMsg) {
@@ -63,15 +63,13 @@ export default function FormPassword(props) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (!validateFormData(data)) return;
-    console.log(data.newPassword);
+    if (!validateFormData(formData)) return;
 
-    const formData = new FormData();
-    formData.append("oldPassword", data.oldPassword);
-    formData.append("newPassword", data.newPassword);
-
-    updateData("PUT", "user/password", formData, true).then(
-      createSuccessMessage("Cập nhật thành công!")
+    putData("user/password", formData).then(res => {
+      console.log(res)
+      if (res.error) createErrorMessage(res.message)
+      else createSuccessMessage("Cập nhật thành công!")
+    }
     );
   };
 

@@ -7,6 +7,7 @@ import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
 import { fetchData, putFormData } from "../../../services/common";
 
+
 export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
   const [gender, setGender] = useState([]);
