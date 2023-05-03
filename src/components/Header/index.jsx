@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Spin, Avatar } from "antd";
-
-import DidLogin from "../BtnLogin/DidLogin";
+import { Avatar } from "antd";
 import NotLogin from "../BtnNotLogin/NotLogin";
 import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
@@ -34,7 +32,7 @@ const Header = (props) => {
     return () => {
       clearTimeout(identifier);
     };
-  }, []);
+  }, [user]);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
