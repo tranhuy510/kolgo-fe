@@ -71,13 +71,13 @@ const PageOutstandingKOL = (props) => {
   return (
     <DivWrap key={'outstandingKol'}>
       {listKolHot?.map((item) => {
-        const firstName = arrUpperCase(item.firstName)
+        const firstName = arrUpperCase(item.user.firstName)
         return (
-          <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
+          <Link key={item.id} to={`/detail/kol/:${item.id}`} style={linkStyle}>
             <IMG src={item?.ava} alt="" />
             <div style={{ display: 'flex' }}>
               <Name>{firstName}</Name>
-              <Name>{item.lastName}</Name>
+              <Name>{item.user.lastName}</Name>
             </div>
           </Link>
         )

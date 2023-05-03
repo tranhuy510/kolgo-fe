@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 
 import ImageDescription from "./ImageDescription/ImageDescription";
 import ContactSocials from "./ContactSocials/ContactSocials";
@@ -12,6 +12,7 @@ import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
 
 import { getKolsId, getGenders, getCities, getFields } from "../../../services/getApi";
+import { fetchData, postData } from "../../../services/common";
 
 import "./HomeDetails.css";
 import { Col, Row } from 'antd';
@@ -113,9 +114,21 @@ const PageKolDetail = () => {
 
   const bookingHandler = () => {
     const user = localStorage.getItem('user')
+    console.log("Booing")
     if (!user) {
       navigate('../login')
     }
+
+    postData("vnpay/payment", { amount: "100000" })
+      .then(res => {
+        console.log(res);
+        const paymentUrl = res.data.paymentUrl;
+        console.log(paymentUrl)
+        if (paymentUrl) {
+          window.location.replace(paymentUrl)
+        }
+
+      })
   }
 
   const onChange = (key) => {
