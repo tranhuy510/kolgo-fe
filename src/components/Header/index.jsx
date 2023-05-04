@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Spin, Avatar } from "antd";
-
-import DidLogin from "../BtnLogin/DidLogin";
+import { Avatar } from "antd";
 import NotLogin from "../BtnNotLogin/NotLogin";
 import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
@@ -14,19 +12,27 @@ import home from "../../assets/logo/icon-home.svg";
 import campaign from "../../assets/logo/icon-compaign.svg";
 import chat from "../../assets/logo/icon-chat.svg";
 import "./style.css";
+import { fetchData } from "../../services/common";
 
 const Header = (props) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(false);
+  const [profile, setProfile] = useState();
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const identifier = setTimeout(() => {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }, 500)
+      if (user && user.role === "KOL") {
+        fetchData("kol/profile", true).then((data) => setProfile(data));
+      }
+      if (user && user.role === "ENTERPRISE") {
+        fetchData("ent/profile", true).then((data) => setProfile(data));
+      }
+    }, 500);
     return () => {
-      clearTimeout(identifier)
-    }
-  }, []);
+      clearTimeout(identifier);
+    };
+  }, [user]);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
@@ -58,7 +64,10 @@ const Header = (props) => {
         {user && (
           <div className="avata">
             <NavBar logOutHandler={logOutHandler}>
-              <Avatar size={40} src={user?.image}>
+              <Avatar
+                size={40}
+                src={`http://localhost:8080/api/images/${profile?.user.avatar}`}
+              >
                 {user?.image ? "" : user?.email.charAt(0)?.toUpperCase()}
                 {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
               </Avatar>
