@@ -103,11 +103,12 @@ const Login = (props) => {
     localStorage.setItem("refreshToken", refreshToken);
 
     let user = {
-      id: response.data.userId,
-      email: response.data.email,
-      firstName: response.data.firstName,
-      lastName: response.data.lastName,
-      role: response.data.roles[0],
+      id: response.data.user.id,
+      email: response.data.user.email,
+      firstName: response.data.user.firstName,
+      lastName: response.data.user.lastName,
+      avatar: response.data.user.avatar,
+      role: response.data.user.role,
     };
     user = JSON.stringify(user);
     console.log(user);
@@ -119,7 +120,7 @@ const Login = (props) => {
       content: `Login success`,
     });
 
-    if (response.data.roles[0] === 'ADMIN') {
+    if (response.data.role === 'ADMIN') {
       return navigate("../admin");
     }
     else return navigate("..");

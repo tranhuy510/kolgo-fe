@@ -28,11 +28,11 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       {
-        path: "/detail/kol/:id",
+        path: "/kols/:id",
         element: <PageKolDetail />,
       },
       {
-        path: "/detail/enterprise/:id",
+        path: "/ents/:id",
         element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
       },
       {
