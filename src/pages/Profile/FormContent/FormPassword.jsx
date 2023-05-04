@@ -65,12 +65,13 @@ export default function FormPassword(props) {
     event.preventDefault();
     if (!validateFormData(formData)) return;
 
-    putData("user/password", formData).then(res => {
-      console.log(res)
-      if (res.error) createErrorMessage(res.message)
-      else createSuccessMessage("Cập nhật thành công!")
-    }
-    );
+    console.log(formData);
+
+    putData("user/password", formData).then((res) => {
+      console.log(res);
+      if (res.error) createErrorMessage(res.message);
+      else createSuccessMessage("Cập nhật thành công!");
+    });
   };
 
   return (

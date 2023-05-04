@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Breadcrumb, Layout, Menu, theme, Col, Row } from "antd";
+import React, { useState } from "react";
+import { Col, Row } from "antd";
 import MenuProfile from "./Menu/MenuProfile";
 import SubContext from "./SubContext/SubContext";
-import "./profile.css";
 
 const Profile = () => {
   const [changeContent, setChangeContent] = useState({});
@@ -11,17 +10,11 @@ const Profile = () => {
 
   const onChangeContentHandler = (data) => {
     setChangeContent(data);
-    console.log(data);
   };
-
-  console.log(user);
 
   return (
     <>
-      <div
-        className="profile"
-        style={{ padding: "65px 50px", backgroundColor: "#fff" }}
-      >
+      <div style={{ padding: "65px 50px", backgroundColor: "#fff" }}>
         <Row>
           <Col span={6}>
             <MenuProfile

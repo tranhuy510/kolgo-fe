@@ -7,17 +7,14 @@ import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
 import { fetchData, putFormData } from "../../../services/common";
 
-
 export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
-  const [gender, setGender] = useState([]);
   const [city, setCity] = useState([]);
   const [speciality, setSpeciality] = useState([]);
   const [valueGender, setValueGender] = useState("");
   const [valueCity, setValueCity] = useState("");
   const [valueSpeciality, setValueSpeciality] = useState("");
   const [images, setImages] = useState([]);
-  const [avatar, setAvatar] = useState();
 
   const [showMessage, setShowMessage] = useState({
     status: false,
@@ -44,23 +41,43 @@ export default function FormProfileKOL(props) {
   useEffect(() => {
     Promise.all([
       fetchData("kol/profile", true),
-      fetchData("genders", false),
       fetchData("cities", false),
       fetchData("fields/kol", false),
-    ]).then(([profile, genders, cities, fields]) => {
-      setProfile(profile);
-      setGender(genders);
+    ]).then(([profile, cities, fields]) => {
+      setProfile({
+        firstName: profile.user.firstName,
+        lastName: profile.user.lastName,
+        gender: profile.gender,
+        phone: profile.phone,
+        cityId: profile.address.city.id,
+        addressDetails: profile.address.details,
+        fieldId: profile.field.id,
+        facebookUrl: profile.facebookUrl,
+        youtubeUrl: profile.youtubeUrl,
+        instagramUrl: profile.instagramUrl,
+        tiktokUrl: profile.tiktokUrl,
+        avatar: profile.user.avatar,
+      });
+      setImages([...profile.images]);
       setCity(cities);
       setSpeciality(fields);
     });
   }, []);
 
-  const optionGender = gender.map((g) => {
-    return {
-      value: g.id,
-      label: g.name,
-    };
-  });
+  const optionGender = [
+    {
+      value: "MALE",
+      label: "Nam",
+    },
+    {
+      value: "FEMALE",
+      label: "Nữ",
+    },
+    {
+      value: "OTHERS",
+      label: "Khác",
+    },
+  ];
 
   const optionCity = city.map((c) => {
     return {
@@ -110,13 +127,18 @@ export default function FormProfileKOL(props) {
     setProfile((prevState) => {
       return {
         ...prevState,
-        kolFieldId: value,
+        fieldId: value,
       };
     });
   };
 
   const avatarChangeHandler = (event) => {
-    setAvatar(event.target.files[0]);
+    setProfile((prevState) => {
+      return {
+        ...prevState,
+        avatar: event.target.files[0],
+      };
+    });
   };
 
   const handleFileChange = (event) => {
@@ -125,6 +147,7 @@ export default function FormProfileKOL(props) {
     for (let i = 0; i < fileList.length; i++) {
       newFiles.push(fileList[i]);
     }
+    console.log(images);
     setImages([...images, ...newFiles]);
   };
 
@@ -135,13 +158,13 @@ export default function FormProfileKOL(props) {
       errMsg = "Vui lòng nhập tên của bạn!";
     } else if (!formData.lastName) {
       errMsg = "Vui lòng nhập họ của bạn!";
-    } else if (!formData.genderId) {
+    } else if (!formData.gender) {
       errMsg = "Vui lòng chọn giới tính của bạn!";
-    } else if (!formData.phoneNumber) {
+    } else if (!formData.phone) {
       errMsg = "Vui lòng nhập số điện thoại của bạn!";
     } else if (!formData.cityId) {
       errMsg = "Vui lòng chọn thành phố làm việc!";
-    } else if (!formData.kolFieldId) {
+    } else if (!formData.fieldId) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
     }
     if (errMsg) {
@@ -157,7 +180,6 @@ export default function FormProfileKOL(props) {
 
     const formData = new FormData();
     Object.keys(profile).map((key) => formData.append(key, profile[key]));
-    formData.append("avatar", avatar);
     images.forEach((image) => formData.append("images", image));
 
     putFormData("kol/profile", formData, true).then(
@@ -184,7 +206,7 @@ export default function FormProfileKOL(props) {
                 className={classes.input_profile}
                 name="firstName"
                 onChange={inputChangeHandler}
-                defaultValue={profile?.firstName}
+                defaultValue={profile.firstName}
               />
             </Col>
           </Row>
@@ -196,7 +218,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Họ của bạn"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.lastName}
+                defaultValue={profile.lastName}
                 name="lastName"
               />
             </Col>
@@ -211,7 +233,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Chọn giới tính của bạn"
                 optionFilterProp="children"
                 onChange={changeGenderHandler}
-                value={valueGender ? valueGender : profile?.genderId}
+                value={valueGender ? valueGender : profile.gender}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -229,8 +251,8 @@ export default function FormProfileKOL(props) {
                 placeholder="Số điện thoại"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.phoneNumber}
-                name="phoneNumber"
+                defaultValue={profile.phone}
+                name="phone"
               />
             </Col>
           </Row>
@@ -244,13 +266,26 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeCityHandler}
-                value={valueCity ? valueCity : profile?.cityId}
+                value={valueCity ? valueCity : profile.cityId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
                 options={optionCity}
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={6}>Địa chỉ cụ thể:</Col>
+            <Col span={18}>
+              <input
+                placeholder="Địa chỉ cụ thể"
+                onChange={inputChangeHandler}
+                className={classes.input_profile}
+                defaultValue={profile.addressDetails}
+                name="addressDetails"
               />
             </Col>
           </Row>
@@ -264,7 +299,7 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeSpecialityHandler}
-                value={valueSpeciality ? valueSpeciality : profile?.kolFieldId}
+                value={valueSpeciality ? valueSpeciality : profile.fieldId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -282,8 +317,8 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang Facebook cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.facebookUrl}
-                name="linkFb"
+                defaultValue={profile.facebookUrl}
+                name="facebookUrl"
                 type="url"
               />
             </Col>
@@ -296,8 +331,8 @@ export default function FormProfileKOL(props) {
                 placeholder="Link kênh Youtube cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.youtubeUrl}
-                name="linkYt"
+                defaultValue={profile.youtubeUrl}
+                name="youtubeUrl"
                 type="url"
               />
             </Col>
@@ -310,8 +345,8 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang Instagram cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.instagramUrl}
-                name="linkInsta"
+                defaultValue={profile.instagramUrl}
+                name="instagramUrl"
                 type="url"
               />
             </Col>
@@ -324,8 +359,8 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang TikTok cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile?.tiktokUrl}
-                name="linkTt"
+                defaultValue={profile.tiktokUrl}
+                name="tiktokUrl"
                 type="url"
               />
             </Col>
@@ -334,7 +369,7 @@ export default function FormProfileKOL(props) {
           <Row className={classes.form_control}>
             <Col span={6}>Album ảnh:</Col>
             <Col span={18}>
-              {profile.images && <ImageSlider images={profile?.images} />}
+              {images && <ImageSlider images={images} />}
               <div className={classes.albumWrapper}>
                 <PlusOutlined /> Thêm ảnh mới
                 <input
@@ -360,7 +395,7 @@ export default function FormProfileKOL(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/${profile?.avatar}`}
+            src={`http://localhost:8080/api/images/${profile.avatar}`}
           >
             {profile?.avatar ? (
               ""

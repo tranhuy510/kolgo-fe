@@ -19,7 +19,7 @@ const ImageSlider = ({ images }) => {
       {images.map((image, index) => (
         <div key={index} className={classes.container}>
           <img
-            src={`http://localhost:8080/api/images/${image.name}`}
+            src={`http://localhost:8080/api/images/${image}`}
             alt={`Ảnh ${index}`}
             className={classes.silderImage}
           />

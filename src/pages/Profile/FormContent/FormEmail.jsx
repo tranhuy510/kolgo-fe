@@ -1,9 +1,9 @@
 import { Col, Row } from "antd";
-
-import classes from "./Form.module.css";
 import { useEffect, useState } from "react";
 import Message from "../../../components/UI/Message/Message";
 import { putData } from "../../../services/common";
+
+import classes from "./Form.module.css";
 
 export default function FormEmail(props) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -36,7 +36,6 @@ export default function FormEmail(props) {
   }, [user.email]);
 
   const inputChangeHandler = (event) => {
-    console.log(event.target.value);
     setEmail(event.target.value);
   };
 
@@ -61,11 +60,11 @@ export default function FormEmail(props) {
     console.log(email);
 
     putData("user/email", { email }).then((res) => {
-      console.log(res)
+      console.log(res);
       if (res.error) createErrorMessage(res.message);
       createSuccessMessage("Cập nhật thành công!");
       setEmail(email);
-      localStorage.setItem("user", JSON.stringify({ ...user, email }))
+      localStorage.setItem("user", JSON.stringify({ ...user, email }));
     });
   };
 

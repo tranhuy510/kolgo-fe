@@ -12,7 +12,6 @@ export default function FormProfileEnterprise(props) {
   const [speciality, setSpeciality] = useState([]);
   const [valueSpeciality, setValueSpeciality] = useState();
   const [valueCity, setValueCity] = useState();
-  const [avatar, setAvatar] = useState();
   const [showMessage, setShowMessage] = useState({
     status: false,
     type: "",
@@ -35,60 +34,26 @@ export default function FormProfileEnterprise(props) {
     setShowMessage({ status: true, type: "success", content: msg });
   };
 
-  // const setDefaultProfile = () => {
-  //   fetchData("ent/profile", true).then(data => setEnt(data))
-  //   getEntProfile()
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         return Promise.reject(res);
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       setEnt(data);
-  //     });
-  // };
-
-  // const setDefaultCity = () => {
-  //   getCities()
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         return Promise.reject(res);
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       setCity(data);
-  //     });
-  // };
-
-  // const setDefaultSpeciality = () => {
-  //   getEntFields()
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         return Promise.reject(res);
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       setSpeciality(data);
-  //     });
-  // };
-
   useEffect(() => {
     Promise.all([
       fetchData("ent/profile", true),
       fetchData("cities", false),
       fetchData("fields/ent", false),
     ]).then(([profile, cities, fields]) => {
-      setEnt(profile);
+      setEnt({
+        firstName: profile.user.firstName,
+        lastName: profile.user.lastName,
+        name: profile.name,
+        phone: profile.phone,
+        taxId: profile.taxId,
+        cityId: profile.address.city.id,
+        addressDetails: profile.address.details,
+        fieldId: profile.field.id,
+        avatar: profile.user.avatar,
+      });
       setCity(cities);
       setSpeciality(fields);
     });
-    // setDefaultProfile();
-    // setDefaultCity();
-    // setDefaultSpeciality();
   }, []);
 
   const optionCity = city.map((c) => {
@@ -129,13 +94,18 @@ export default function FormProfileEnterprise(props) {
     setEnt((prevState) => {
       return {
         ...prevState,
-        enterpriseFieldId: value,
+        fieldId: value,
       };
     });
   };
 
   const avatarChangeHandler = (event) => {
-    setAvatar(event.target.files[0]);
+    setEnt((prevState) => {
+      return {
+        ...prevState,
+        avatar: event.target.files[0],
+      };
+    });
   };
 
   const validateFormData = (formData) => {
@@ -147,13 +117,13 @@ export default function FormProfileEnterprise(props) {
       errMsg = "Vui lòng nhập họ của bạn!";
     } else if (!formData.name) {
       errMsg = "Vui lòng nhập tên doanh nghiệp!";
-    } else if (!formData.phoneNumber) {
+    } else if (!formData.phone) {
       errMsg = "Vui lòng nhập số điện thoại của bạn!";
-    } else if (!formData.taxIdentificationNumber) {
+    } else if (!formData.taxId) {
       errMsg = "Vui lòng nhập mã số thuế!";
     } else if (!formData.cityId) {
       errMsg = "Vui lòng chọn tỉnh/thành phố địa chỉ!";
-    } else if (!formData.enterpriseFieldId) {
+    } else if (!formData.fieldId) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
     } else if (!formData.addressDetails) {
       errMsg = "Vui lòng nhập địa chỉ cụ thể!";
@@ -169,30 +139,12 @@ export default function FormProfileEnterprise(props) {
     event.preventDefault();
     if (!validateFormData(ent)) return;
 
-    console.log(ent);
-
     const formData = new FormData();
     Object.keys(ent).map((key) => formData.append(key, ent[key]));
-    formData.append("avatar", avatar);
-
-    console.log(formData);
 
     putFormData("ent/profile", formData, true).then(
       createSuccessMessage("Cập nhật thành công!")
     );
-
-    // postEntProfile(formData)
-    //   .then((res) => {
-    //     if (!res.ok) {
-    //       return Promise.reject(res);
-    //     } else {
-    //       return res.json();
-    //     }
-    //   })
-    //   .then((data) => {
-    //     console.log(data);
-    //   })
-    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -214,7 +166,7 @@ export default function FormProfileEnterprise(props) {
                 className={classes.input_profile}
                 name="firstName"
                 onChange={inputChangeHandler}
-                defaultValue={ent?.firstName}
+                defaultValue={ent.firstName}
               />
             </Col>
           </Row>
@@ -226,7 +178,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Họ của bạn"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent?.lastName}
+                defaultValue={ent.lastName}
                 name="lastName"
               />
             </Col>
@@ -239,7 +191,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Tên doanh nghiệp"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent?.name}
+                defaultValue={ent.name}
                 name="name"
               />
             </Col>
@@ -252,8 +204,8 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Số điện thoại"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent?.phoneNumber}
-                name="phoneNumber"
+                defaultValue={ent.phone}
+                name="phone"
               />
             </Col>
           </Row>
@@ -265,8 +217,8 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Mã số thuế"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent?.taxIdentificationNumber}
-                name="taxIdentificationNumber"
+                defaultValue={ent.taxId}
+                name="taxId"
               />
             </Col>
           </Row>
@@ -280,9 +232,7 @@ export default function FormProfileEnterprise(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeSpecialityHandler}
-                value={
-                  valueSpeciality ? valueSpeciality : ent?.enterpriseFieldId
-                }
+                value={valueSpeciality ? valueSpeciality : ent.fieldId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -302,7 +252,7 @@ export default function FormProfileEnterprise(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeCityHandler}
-                value={valueCity ? valueCity : ent?.cityId}
+                value={valueCity ? valueCity : ent.cityId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -320,7 +270,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Địa chỉ cụ thể"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent?.addressDetails}
+                defaultValue={ent.addressDetails}
                 name="addressDetails"
               />
             </Col>
@@ -339,7 +289,7 @@ export default function FormProfileEnterprise(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/${ent?.avatar}`}
+            src={`http://localhost:8080/api/images/${ent.avatar}`}
           >
             {ent.avatar ? (
               ""

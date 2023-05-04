@@ -22,7 +22,6 @@ const componentEnt = [
 ];
 
 const SubContext = (props) => {
-  console.log(props);
   return (
     <div className="sub-context" style={{ width: "100%" }}>
       {props.user.role === "KOL" &&

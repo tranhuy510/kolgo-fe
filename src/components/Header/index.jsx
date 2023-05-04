@@ -66,7 +66,7 @@ const Header = (props) => {
             <NavBar logOutHandler={logOutHandler}>
               <Avatar
                 size={40}
-                src={`http://localhost:8080/api/images/${profile?.avatar}`}
+                src={`http://localhost:8080/api/images/${profile?.user.avatar}`}
               >
                 {user?.image ? "" : user?.email.charAt(0)?.toUpperCase()}
                 {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
