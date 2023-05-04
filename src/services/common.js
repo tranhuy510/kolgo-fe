@@ -1,7 +1,7 @@
 const apiUrl = "http://localhost:8080/api";
 
-const getAccessToken = () => `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
-
+const getAccessToken = () =>
+  `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
 
 async function fetchData(params, auth) {
   let options = {

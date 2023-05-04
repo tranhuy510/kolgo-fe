@@ -16,7 +16,6 @@ const PageEntDetail = () => {
     const navigate = useNavigate();
 
     let { id } = useParams()
-    id = id.substring(1)
 
     useEffect(() => {
         const identifier = setTimeout(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 
 import ImageDescription from "./ImageDescription/ImageDescription";
 import ContactSocials from "./ContactSocials/ContactSocials";
@@ -11,7 +11,8 @@ import Activate from "./Activate/Activate";
 import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
 
-import { getKolsId, getGenders, getCities, getFields } from "../../../services/getApi";
+import { getKolsId, getCities, getFields } from "../../../services/getApi";
+import { fetchData, postData } from "../../../services/common";
 
 import "./HomeDetails.css";
 import { Col, Row } from 'antd';
@@ -29,11 +30,8 @@ const danhgia = [
 ]
 
 const PageKolDetail = () => {
+  const { id } = useParams()
   const [infoKol, setInfoKol] = useState()
-  const [gender, setGender] = useState('')
-  const [city, setCity] = useState('')
-  const [field, setField] = useState('')
-  const [nameField, setNameField] = useState('')
   const urls = [
     infoKol?.facebookUrl,
     infoKol?.instagramUrl,
@@ -42,66 +40,11 @@ const PageKolDetail = () => {
   ]
   const navigate = useNavigate();
 
-  let { id } = useParams()
-  id = id.substring(1)
-
   useEffect(() => {
-    getKolsId(id)
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setInfoKol(data)
-      })
-  }, [id])
-
-  useEffect(() => {
-    getGenders()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setGender(data.find((item) => {
-          return item.id === infoKol?.genderId
-        }))
-      })
-  }, [infoKol?.genderId])
-
-  useEffect(() => {
-    getCities()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setCity(data.find((item) => {
-          return item.id === infoKol?.cityId
-        }))
-      })
-  }, [infoKol?.cityId])
-
-  useEffect(() => {
-    getFields()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setField(data.find((item) => {
-          return item.id === infoKol?.kolFieldId
-        }))
-      })
-  }, [infoKol?.kolFieldId])
+    console.log(id)
+    fetchData(`kols/${id}`, false)
+    .then(data => setInfoKol({...data}));
+  }, [])
 
   const navigateToChat = () => {
     const user = localStorage.getItem('user')
@@ -112,10 +55,21 @@ const PageKolDetail = () => {
   }
 
   const bookingHandler = () => {
-    const user = localStorage.getItem('user')
+    const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('../login')
     }
+
+    postData("vnpay/payment", { amount: "100000" })
+      .then(res => {
+        console.log(res);
+        const paymentUrl = res.data.paymentUrl;
+        console.log(paymentUrl)
+        if (paymentUrl) {
+          window.location.replace(paymentUrl)
+        }
+
+      })
   }
 
   const onChange = (key) => {
@@ -147,23 +101,23 @@ const PageKolDetail = () => {
             <Col span={12} className="col-12-middle">
               <Row style={{ padding: '20px' }}>
                 <NameMain
-                  firstName={infoKol?.firstName}
-                  lastName={infoKol?.lastName}
-                  gender={gender?.name}
-                  city={city?.name}
+                  firstName={infoKol?.user.firstName}
+                  lastName={infoKol?.user.lastName}
+                  gender={infoKol?.gender}
+                  city={infoKol?.address.city.name}
                 />
               </Row>
               <Row className="middle-row">
                 <InformationKOL
-                  email={infoKol?.email}
-                  phoneNumber={infoKol?.phoneNumber}
-                  gender={gender?.name}
-                  city={city?.name}
+                  email={infoKol?.user.email}
+                  phoneNumber={infoKol?.phone}
+                  gender={infoKol?.gender}
+                  city={infoKol?.address.city.name}
                 />
               </Row>
               <Row className="middle-row" >
                 <ListFields
-                  field={field}
+                  field={infoKol?.field.name}
                 />
               </Row>
               <Row className="middle-row" >

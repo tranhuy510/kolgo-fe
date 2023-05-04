@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { getKols } from "../../../services/getApi";
+import { fetchData } from "../../../services/common";
 
 const IMG = styled.img`
   width: 220px;
@@ -51,22 +52,7 @@ const PageOutstandingKOL = (props) => {
   }, [listKolHot]);
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getKols()
-        .then((res) => {
-          if (!res.ok) {
-            return Promise.reject(res);
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setListKolHot(data);
-        });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
+    fetchData("kols", false).then((res) => setListKolHot(res));
   }, []);
 
   function arrUpperCase(data) {
@@ -78,18 +64,14 @@ const PageOutstandingKOL = (props) => {
 
   return (
     <DivWrap key={"outstandingKol"}>
-      {listKolHot?.map((item) => {
-        const firstName = arrUpperCase(item.firstName);
+      {listKolHot?.map((kol) => {
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
-          <Link
-            key={item.kolId}
-            to={`/detail/kol/:${item.kolId}`}
-            style={linkStyle}
-          >
-            <IMG src={item?.ava} alt="" />
+          <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+            <IMG src={kol?.ava} alt="" />
             <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
-              <Name>{item.lastName}</Name>
+              <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
         );

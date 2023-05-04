@@ -71,7 +71,7 @@ const PageHOT = (props) => {
   }, []);
 
   function arrUpperCase(data) {
-    const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
+    const demo = data?.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
     });
     return demo;
@@ -79,18 +79,14 @@ const PageHOT = (props) => {
 
   return (
     <DivWrap key={"hotKol"}>
-      {listKolHot?.map((item) => {
-        const firstName = arrUpperCase(item.firstName);
+      {listKolHot?.map((kol) => {
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
-          <Link
-            key={item.kolId}
-            to={`/detail/kol/:${item.kolId}`}
-            style={linkStyle}
-          >
-            <IMG src={item?.avata} alt="" />
+          <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+            <IMG src={kol?.user.avatar} alt="" />
             <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
-              <Name>{item.lastName}</Name>
+              <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
         );
