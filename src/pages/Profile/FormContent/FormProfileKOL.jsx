@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
-import { fetchData, putFormData } from "../../../services/common";
+import { fetchData, putData, putFormData } from "../../../services/common";
 
 export default function FormProfileKOL(props) {
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [profile, setProfile] = useState({});
   const [city, setCity] = useState([]);
   const [speciality, setSpeciality] = useState([]);
@@ -44,21 +46,8 @@ export default function FormProfileKOL(props) {
       fetchData("cities", false),
       fetchData("fields/kol", false),
     ]).then(([profile, cities, fields]) => {
-      setProfile({
-        firstName: profile.user.firstName,
-        lastName: profile.user.lastName,
-        gender: profile.gender,
-        phone: profile.phone,
-        cityId: profile.address.city.id,
-        addressDetails: profile.address.details,
-        fieldId: profile.field.id,
-        facebookUrl: profile.facebookUrl,
-        youtubeUrl: profile.youtubeUrl,
-        instagramUrl: profile.instagramUrl,
-        tiktokUrl: profile.tiktokUrl,
-        avatar: profile.user.avatar,
-      });
-      setImages([...profile.images]);
+      setProfile(profile.kol);
+      setImages(profile.images);
       setCity(cities);
       setSpeciality(fields);
     });
@@ -133,22 +122,27 @@ export default function FormProfileKOL(props) {
   };
 
   const avatarChangeHandler = (event) => {
-    setProfile((prevState) => {
-      return {
-        ...prevState,
-        avatar: event.target.files[0],
-      };
-    });
+    const formData = new FormData();
+    formData.append("avatar", event.target.files[0]);
+    putFormData("user/avatar", formData, true)
+      .then(res => {
+        setUser(prev => ({ ...prev, avatar: res.avatar }))
+        localStorage.setItem("user", JSON.stringify({ ...user, avatar: res.avatar }))
+        window.dispatchEvent(new Event('storage'))
+      })
   };
 
   const handleFileChange = (event) => {
-    const fileList = event.target.files;
-    const newFiles = [];
-    for (let i = 0; i < fileList.length; i++) {
-      newFiles.push(fileList[i]);
+    const formData = new FormData();
+    const imageList = event.target.files;
+    console.log(imageList)
+    for (let i = 0; i < imageList.length; i++) {
+      formData.append("images", imageList[i])
     }
-    console.log(images);
-    setImages([...images, ...newFiles]);
+    putFormData("kol/images", formData)
+      .then(res => {
+        setImages(prev => ([...prev, ...res.images]))
+      })
   };
 
   const validateFormData = (formData) => {
@@ -178,13 +172,10 @@ export default function FormProfileKOL(props) {
     event.preventDefault();
     if (!validateFormData(profile)) return;
 
-    const formData = new FormData();
-    Object.keys(profile).map((key) => formData.append(key, profile[key]));
-    images.forEach((image) => formData.append("images", image));
-
-    putFormData("kol/profile", formData, true).then(
+    putData("kol/profile", profile).then(res => {
+      console.log(res)
       createSuccessMessage("Cập nhật thành công!")
-    );
+    });
   };
 
   return (
@@ -395,9 +386,9 @@ export default function FormProfileKOL(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/${profile.avatar}`}
+            src={`http://localhost:8080/api/images/${user.avatar}`}
           >
-            {profile?.avatar ? (
+            {user.avatar ? (
               ""
             ) : (
               <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />

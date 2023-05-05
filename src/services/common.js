@@ -39,11 +39,11 @@ function postData(params, body) {
   return updateData("POST", params, body, true);
 }
 
-async function putFormData(params, formData, auth) {
+async function putFormData(params, formData) {
   let options = {
     method: "PUT",
     headers: {
-      Authorization: auth && getAccessToken(),
+      Authorization: getAccessToken(),
     },
     body: formData,
   };

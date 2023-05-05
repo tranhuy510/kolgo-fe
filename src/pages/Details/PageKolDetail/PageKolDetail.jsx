@@ -11,7 +11,6 @@ import Activate from "./Activate/Activate";
 import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
 
-import { getKolsId, getCities, getFields } from "../../../services/getApi";
 import { fetchData, postData } from "../../../services/common";
 
 import "./HomeDetails.css";
@@ -43,7 +42,7 @@ const PageKolDetail = () => {
   useEffect(() => {
     console.log(id)
     fetchData(`kols/${id}`, false)
-    .then(data => setInfoKol({...data}));
+      .then(data => setInfoKol({ ...data }));
   }, [])
 
   const navigateToChat = () => {
@@ -59,17 +58,7 @@ const PageKolDetail = () => {
     if (!user) {
       navigate('../login')
     }
-
-    postData("vnpay/payment", { amount: "100000" })
-      .then(res => {
-        console.log(res);
-        const paymentUrl = res.data.paymentUrl;
-        console.log(paymentUrl)
-        if (paymentUrl) {
-          window.location.replace(paymentUrl)
-        }
-
-      })
+    navigate(`/kols/${id}/book`)
   }
 
   const onChange = (key) => {

@@ -40,17 +40,7 @@ export default function FormProfileEnterprise(props) {
       fetchData("cities", false),
       fetchData("fields/ent", false),
     ]).then(([profile, cities, fields]) => {
-      setEnt({
-        firstName: profile.user.firstName,
-        lastName: profile.user.lastName,
-        name: profile.name,
-        phone: profile.phone,
-        taxId: profile.taxId,
-        cityId: profile.address.city.id,
-        addressDetails: profile.address.details,
-        fieldId: profile.field.id,
-        avatar: profile.user.avatar,
-      });
+      setEnt(profile);
       setCity(cities);
       setSpeciality(fields);
     });

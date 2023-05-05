@@ -3,6 +3,7 @@ import { Input, Image, Avatar } from "antd";
 import classes from "./SearchModal.module.css";
 import { Link } from "react-router-dom";
 import { getUsers, getKols, getEnts } from "../../../services/getApi";
+import { fetchData } from "../../../services/common";
 
 const { Search } = Input;
 
@@ -15,31 +16,10 @@ const SearchModal = () => {
 
   const account = JSON.parse(localStorage.getItem("user"));
 
-<<<<<<< HEAD
     useEffect(() => {
-        const identifier = setTimeout(() => {
-            getUsers('users', true)
-                .then(res => {
-                    setUsers(res)
-                })
-        }, 500)
-        return () => {
-            clearTimeout(identifier)
-        }
+      fetchData("users", false)
+      .then(res => setUsers(res))
     }, [])
-=======
-  useEffect(() => {
-    const identifier = setTimeout(() => {
-      getUsers("users", true).then((res) => {
-        console.log(res);
-        setUsers(res);
-      });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, []);
->>>>>>> 7b09531d078643ab6c8ac29edb4b71553b3a9a90
 
   useEffect(() => {
     const identifier = setTimeout(() => {
