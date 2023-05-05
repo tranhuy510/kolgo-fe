@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from '../../../services/getApi';
+import { getKols } from "../../../services/getApi";
 import { fetchData } from "../../../services/common";
 
 const IMG = styled.img`
@@ -18,16 +18,24 @@ const Name = styled.p`
   line-height: 40px;
 `;
 
+const CardKOL = styled.div`
+  width: 220px;
+  height: 280px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+`;
 const linkStyle = {
-  width: '220px',
-  height: '280px',
-  margin: '5px 0',
-  boxSizing: 'border-box',
-  borderRadius: '20px',
-  border: '1px solid #ccc',
-  textDecoration: 'none',
-  color: '#000'
-}
+  width: "220px",
+  height: "280px",
+  margin: "5px 0",
+  boxSizing: "border-box",
+  borderRadius: "20px",
+  border: "1px solid #ccc",
+  textDecoration: "none",
+  color: "#000",
+};
 
 const DivWrap = styled.div`
   display: flex;
@@ -41,36 +49,35 @@ const PageOutstandingKOL = (props) => {
 
   useLayoutEffect(() => {
     props.onChangeTotalOutstandingKOL(listKolHot.length);
-  }, [listKolHot])
+  }, [listKolHot]);
 
   useEffect(() => {
-    fetchData("kols", false)
-    .then(res => setListKolHot(res))
-  }, [])
+    fetchData("kols", false).then((res) => setListKolHot(res));
+  }, []);
 
   function arrUpperCase(data) {
     const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
-    })
+    });
     return demo;
-  };
+  }
 
   return (
-    <DivWrap key={'outstandingKol'}>
+    <DivWrap key={"outstandingKol"}>
       {listKolHot?.map((kol) => {
-        const firstName = arrUpperCase(kol.user.firstName)
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
           <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
             <IMG src={kol?.ava} alt="" />
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
               <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
-        )
+        );
       })}
     </DivWrap>
-  )
-}
+  );
+};
 
-export default PageOutstandingKOL
+export default PageOutstandingKOL;

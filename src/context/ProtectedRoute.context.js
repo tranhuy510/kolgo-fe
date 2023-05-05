@@ -10,7 +10,7 @@ export function isAuthenticatedRoute(Component, name) {
     return <Navigate to="/login" />;
   }
   if (name === "admin") {
-    if (user.role === "ADMN") {
+    if (user?.role === "ADMN") {
       return <WrappedComponent />;
     } else return <NotAdmin />;
   }

@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
 
-import { Input } from 'antd';
-import { EyeTwoTone, EyeInvisibleOutlined } from '@ant-design/icons'
+import { Input } from "antd";
+import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 // import axios from "axios";
 
@@ -120,10 +120,9 @@ const Login = (props) => {
       content: `Login success`,
     });
 
-    if (response.data.role === 'ADMIN') {
+    if (response.data.role === "ADMIN") {
       return navigate("../admin");
-    }
-    else return navigate("..");
+    } else return navigate("..");
   };
 
   const errorHandler = () => {
@@ -155,7 +154,9 @@ const Login = (props) => {
       />
       <div className="login">
         <div className="login__logo">
-          <Link to='../'><img className="logo" src={logo} alt="" /></Link>
+          <Link to="../">
+            <img className="logo" src={logo} alt="" />
+          </Link>
         </div>
         <div className="login-form__control">
           <h1 className="tittle-login">Log in to KOLgo</h1>
@@ -174,11 +175,16 @@ const Login = (props) => {
             name="password"
             onChange={inputChangeHandler}
             placeholder="Enter your password"
-            className='input-login'
-            iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+            className="input-login"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
           />
           <div className="login-form__control">
-            <label className="line-forgot-password" onClick={forgotPasswordHandler}>
+            <label
+              className="line-forgot-password"
+              onClick={forgotPasswordHandler}
+            >
               Fogot password?
             </label>
           </div>

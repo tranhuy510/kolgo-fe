@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from '../../../services/getApi';
-import { UserOutlined } from '@ant-design/icons'
+import { getKols } from "../../../services/getApi";
+import { UserOutlined } from "@ant-design/icons";
 
 const IMG = styled.img`
   width: 220px;
@@ -12,22 +12,30 @@ const IMG = styled.img`
 `;
 
 const Name = styled.p`
-    margin: 0;
-    padding-left: 10px;
-    font-weight: 500;
-    line-height: 40px;
-`
+  margin: 0;
+  padding-left: 10px;
+  font-weight: 500;
+  line-height: 40px;
+`;
 
+const CardKOL = styled.div`
+  width: 220px;
+  height: 280px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+`;
 const linkStyle = {
-  width: '220px',
-  height: '280px',
-  margin: '5px 0',
-  boxSizing: 'border-box',
-  borderRadius: '20px',
-  border: '1px solid #ccc',
-  textDecoration: 'none',
-  color: '#000'
-}
+  width: "220px",
+  height: "280px",
+  margin: "5px 0",
+  boxSizing: "border-box",
+  borderRadius: "20px",
+  border: "1px solid #ccc",
+  textDecoration: "none",
+  color: "#000",
+};
 
 const DivWrap = styled.div`
   display: flex;
@@ -46,46 +54,45 @@ const PageHOT = (props) => {
   useEffect(() => {
     const identifier = setTimeout(() => {
       getKols()
-        .then(res => {
+        .then((res) => {
           if (!res.ok) {
-            return Promise.reject(res)
+            return Promise.reject(res);
           }
           return res.json();
         })
-        .then(data => {
+        .then((data) => {
           console.log(data);
-          setListKolHot(data)
-        })
-    }, 500)
+          setListKolHot(data);
+        });
+    }, 500);
     return () => {
-      clearTimeout(identifier)
-    }
-
-  }, [])
+      clearTimeout(identifier);
+    };
+  }, []);
 
   function arrUpperCase(data) {
     const demo = data?.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
-    })
+    });
     return demo;
-  };
+  }
 
   return (
-    <DivWrap key={'hotKol'}>
+    <DivWrap key={"hotKol"}>
       {listKolHot?.map((kol) => {
-        const firstName = arrUpperCase(kol.user.firstName)
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
           <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
             <IMG src={kol?.user.avatar} alt="" />
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
               <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
-        )
+        );
       })}
     </DivWrap>
-  )
-}
+  );
+};
 
 export default PageHOT;
