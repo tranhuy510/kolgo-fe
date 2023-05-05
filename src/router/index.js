@@ -16,6 +16,8 @@ import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 import PaymentResult from "../pages/Payment/PaymentResult";
 
 import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
+import BookingDetails from "../pages/Booking/BookingDetails";
+import BookingCreate from "../pages/Booking/BookingCreate";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ export const router = createBrowserRouter([
         path: "profile",
         element: isAuthenticatedRoute(Profile, "profile"),
       },
+      {
+        path: "/kols/:kolId/book/",
+        element: isAuthenticatedRoute(BookingCreate, "bookingCreate")
+      },
+      {
+        path: "/bookings/:id",
+        element: isAuthenticatedRoute(BookingDetails, "bookingDetails")
+      }
     ],
   },
   { path: "/login", element: <Login /> },

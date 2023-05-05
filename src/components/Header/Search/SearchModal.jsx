@@ -20,7 +20,6 @@ const SearchModal = () => {
         const identifier = setTimeout(() => {
             getUsers('users', true)
                 .then(res => {
-                    console.log(res);
                     setUsers(res)
                 })
         }, 500)
