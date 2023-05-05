@@ -21,18 +21,13 @@ const Header = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
       if (user && user.role === "KOL") {
         fetchData("kol/profile", true).then((data) => setProfile(data));
       }
       if (user && user.role === "ENTERPRISE") {
         fetchData("ent/profile", true).then((data) => setProfile(data));
       }
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, [user]);
+  }, []);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
