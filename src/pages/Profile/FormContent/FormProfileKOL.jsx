@@ -107,7 +107,7 @@ export default function FormProfileKOL(props) {
     setProfile((prevState) => {
       return {
         ...prevState,
-        genderId: value,
+        gender: value,
       };
     });
   };
