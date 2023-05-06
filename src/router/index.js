@@ -28,15 +28,15 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       {
-        path: "/kols/:id",
+        path: "kols/:id",
         element: <PageKolDetail />,
       },
       {
-        path: "/ents/:id",
+        path: "ents/:id",
         element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
       },
       {
-        path: "/fields/kol/:id",
+        path: "fields/kol/:id",
         element: <Fields />,
       },
       {
@@ -44,8 +44,12 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/chat",
+        path: "chat",
         element: isAuthenticatedRoute(Chat, "chat"),
+      },
+      {
+        path: "vnpay/return",
+        element: <PaymentResult />,
       },
     ],
   },
@@ -64,10 +68,7 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: isAuthenticatedRoute(Chat, "admin"),
   },
-  {
-    path: "/vnpay/return",
-    element: <PaymentResult />
-  },
+
   {
     path: "*",
     element: <NotFound />,
