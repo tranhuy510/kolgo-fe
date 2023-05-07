@@ -14,8 +14,11 @@ import Fields from "../pages/Fields/Fields";
 import NotFound from "../pages/NotFound/NotFound";
 import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 import HomeAdmin from "../pages/Admin/HomeAdmin";
+import PaymentResult from "../pages/Payment/PaymentResult";
 
 import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
+import BookingDetails from "../pages/Booking/BookingDetails";
+import BookingCreate from "../pages/Booking/BookingCreate";
 
 export const router = createBrowserRouter([
   {
@@ -28,11 +31,11 @@ export const router = createBrowserRouter([
         element: <Campaign />,
       },
       {
-        path: "/detail/kol/:id",
+        path: "/kols/:id",
         element: <PageKolDetail />,
       },
       {
-        path: "/detail/enterprise/:id",
+        path: "/ents/:id",
         element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
       },
       {
@@ -40,8 +43,24 @@ export const router = createBrowserRouter([
         element: <Fields />,
       },
       {
-        path: "profile",
-        element: isAuthenticatedRoute(Profile, "profile"),
+        path: "setting",
+        element: <Profile />,
+      },
+      {
+        path: "/chat",
+        element: isAuthenticatedRoute(Chat, "chat"),
+      },
+      {
+        path: "/kols/:kolId/book/",
+        element: isAuthenticatedRoute(BookingCreate, "bookingCreate"),
+      },
+      {
+        path: "/bookings/:id",
+        element: isAuthenticatedRoute(BookingDetails, "bookingDetails"),
+      },
+      {
+        path: "/vnpay/return",
+        element: isAuthenticatedRoute(PaymentResult, "paymentResilt"),
       },
       {
         path: "/chat",

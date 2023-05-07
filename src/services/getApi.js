@@ -25,14 +25,6 @@ export const getFields = async () => {
   return await fetch(`http://localhost:8080/api/fields/kol`);
 };
 
-export const getFieldsId = async (params) => {
-  return await fetch(`http://localhost:8080/api/kols/field/${params}`);
-};
-
-export const getGenders = async () => {
-  return await fetch(`http://localhost:8080/api/genders`);
-};
-
 export const getCities = async () => {
   return await fetch(`http://localhost:8080/api/cities`);
 };

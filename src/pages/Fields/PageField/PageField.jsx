@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getFieldsId, getKols } from '../../../services/getApi';
+import { getKolsByFieldId } from '../../../services/KolService';
 
 const IMG = styled.img`
     width: 220px;
@@ -38,23 +38,17 @@ const DivWrap = styled.div`
 
 const PageField = (props) => {
 
-    const [listField, setListField] = useState([])
+    const [kols, setKols] = useState([])
 
     useLayoutEffect(() => {
-        props.onChangeTotalKol(listField.length);
-    }, [listField])
+        props.onChangeTotalKol(kols.length);
+    }, [kols])
 
     useEffect(() => {
-        getFieldsId(props.id)
-            .then(res => {
-                if (!res.ok) {
-                    return Promise.reject(res)
-                }
-                return res.json();
-            })
+        getKolsByFieldId(props.id)
             .then(data => {
-                console.log(data);
-                setListField(data)
+                // console.log(data);
+                setKols(data)
             })
     }, [props.id])
 
@@ -68,14 +62,14 @@ const PageField = (props) => {
 
     return (
         <DivWrap key={'fieldPage'} className='page-field'>
-            {listField?.map((item) => {
-                const firstName = arrUpperCase(item.firstName)
+            {kols?.map((kol) => {
+                const firstName = arrUpperCase(kol?.user.firstName)
                 return (
-                    <Link key={item.kolId} to={`/detail/:${item.kolId}`} style={linkStyle}>
-                        <IMG src={item?.ava} />
+                    <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+                        <IMG src={kol?.user.avatar} />
                         <div style={{ display: 'flex' }}>
                             <Name>{firstName}</Name>
-                            <Name>{item.lastName}</Name>
+                            <Name>{kol.user.lastName}</Name>
                         </div>
                     </Link>
                 )

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from '../../../services/getApi';
-import { UserOutlined } from '@ant-design/icons'
+import { getKols } from "../../../services/KolService";
 
 const IMG = styled.img`
   width: 100%;
@@ -13,22 +12,30 @@ const IMG = styled.img`
 `;
 
 const Name = styled.p`
-    margin: 0;
-    padding-left: 10px;
-    font-weight: 500;
-    line-height: 40px;
-`
+  margin: 0;
+  padding-left: 10px;
+  font-weight: 500;
+  line-height: 40px;
+`;
 
+const CardKOL = styled.div`
+  width: 220px;
+  height: 280px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+`;
 const linkStyle = {
-  width: '240px',
-  height: '280px',
-  margin: '5px 0',
-  boxSizing: 'border-box',
-  borderRadius: '20px',
-  border: '1px solid #ccc',
-  textDecoration: 'none',
-  color: '#000'
-}
+  width: "220px",
+  height: "280px",
+  margin: "5px 0",
+  boxSizing: "border-box",
+  borderRadius: "20px",
+  border: "1px solid #ccc",
+  textDecoration: "none",
+  color: "#000",
+};
 
 const DivWrap = styled.div`
   display: flex;
@@ -38,55 +45,41 @@ const DivWrap = styled.div`
 `;
 
 const PageHOT = (props) => {
-  const [listKolHot, setListKolHot] = useState([]);
+  const [hotKols, setHotKols] = useState([]);
 
   useLayoutEffect(() => {
-    props.onChangeTotalHotKOL(listKolHot.length);
-  }, [listKolHot]);
+    props.onChangeTotalHotKOL(hotKols.length);
+  }, [hotKols]);
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getKols()
-        .then(res => {
-          if (!res.ok) {
-            return Promise.reject(res)
-          }
-          return res.json();
-        })
-        .then(data => {
-          console.log(data);
-          setListKolHot(data)
-        })
-    }, 500)
-    return () => {
-      clearTimeout(identifier)
-    }
-
-  }, [])
+    getKols().then((res) => {
+      setHotKols(res)
+    });
+  }, []);
 
   function arrUpperCase(data) {
-    const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
+    const demo = data?.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
-    })
+    });
     return demo;
-  };
+  }
 
   return (
-    <DivWrap key={'hotKol'}>
-      {listKolHot?.map((item) => {
-        const firstName = arrUpperCase(item.firstName)
+    <DivWrap key={"hotKol"}>
+      {hotKols?.map((kol) => {
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
-          <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
-            <IMG src={item.avata ? item.avata : 'https://playerduo.com/api/upload-service/images/b20cc91f-4fe8-4e50-9b36-f97dff81d0e2__f6546050-d17f-11ed-a19f-23a3b10d190e__player_avatar.jpg'} alt="" />
-            <div style={{ display: 'flex' }}>
+          <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+            <IMG src={kol?.user.avatar} alt="" />
+            <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
-              <Name>{item.lastName}</Name>
+              <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
-        )
+        );
       })}
     </DivWrap>
-  )
-}
+  );
+};
 
 export default PageHOT;

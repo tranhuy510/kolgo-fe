@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Spin, Avatar } from "antd";
-
-import DidLogin from "../BtnLogin/DidLogin";
+import { Avatar } from "antd";
 import NotLogin from "../BtnNotLogin/NotLogin";
 import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
@@ -17,15 +15,15 @@ import "./style.css";
 
 const Header = (props) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(false);
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }, 500)
-    return () => {
-      clearTimeout(identifier)
+    const handleStorageChange = () => {
+      setUser({ ...JSON.parse(localStorage.getItem("user")) });
     }
+    window.addEventListener("storage", handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
   }, []);
 
   const logOutHandler = () => {
@@ -58,8 +56,11 @@ const Header = (props) => {
         {user && (
           <div className="avata">
             <NavBar logOutHandler={logOutHandler}>
-              <Avatar size={40} src={user?.image}>
-                {user?.image ? "" : user?.email.charAt(0)?.toUpperCase()}
+              <Avatar
+                size={40}
+                src={user?.avatar ? `http://localhost:8080/api/images/${user.avatar}` : ''}
+              >
+                {user?.avatar ? "" : user?.firstName.charAt(0)?.toUpperCase()}
                 {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
               </Avatar>
             </NavBar>
@@ -72,7 +73,7 @@ const Header = (props) => {
           />
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from '../../../services/getApi';
+import { getKols } from "../../../services/KolService";
 
 const IMG = styled.img`
   width: 100%;
@@ -18,6 +18,14 @@ const Name = styled.p`
   line-height: 40px;
 `;
 
+const CardKOL = styled.div`
+  width: 220px;
+  height: 280px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+`;
 const linkStyle = {
   width: '240px',
   height: '280px',
@@ -41,50 +49,35 @@ const PageOutstandingKOL = (props) => {
 
   useLayoutEffect(() => {
     props.onChangeTotalOutstandingKOL(listKolHot.length);
-  }, [listKolHot])
+  }, [listKolHot]);
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getKols()
-        .then(res => {
-          if (!res.ok) {
-            return Promise.reject(res)
-          }
-          return res.json();
-        })
-        .then(data => {
-          console.log(data);
-          setListKolHot(data)
-        })
-    }, 500)
-    return () => {
-      clearTimeout(identifier)
-    }
-  }, [])
+    getKols().then((res) => setListKolHot(res));
+  }, []);
 
   function arrUpperCase(data) {
     const demo = data.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
-    })
+    });
     return demo;
-  };
+  }
 
   return (
-    <DivWrap key={'outstandingKol'}>
-      {listKolHot?.map((item) => {
-        const firstName = arrUpperCase(item.firstName)
+    <DivWrap key={"outstandingKol"}>
+      {listKolHot?.map((kol) => {
+        const firstName = arrUpperCase(kol.user.firstName);
         return (
-          <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} style={linkStyle}>
-            <IMG src={item.avata ? item.avata : 'https://playerduo.com/api/upload-service/images/01d1e26f-ebf6-4aec-960c-a4edbee3b700__7b3d51a0-e431-11ed-a19f-23a3b10d190e__player_avatar.jpg'} alt="" />
-            <div style={{ display: 'flex' }}>
+          <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+            <IMG src={kol?.ava} alt="" />
+            <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
-              <Name>{item.lastName}</Name>
+              <Name>{kol.user.lastName}</Name>
             </div>
           </Link>
-        )
+        );
       })}
     </DivWrap>
-  )
-}
+  );
+};
 
-export default PageOutstandingKOL
+export default PageOutstandingKOL;

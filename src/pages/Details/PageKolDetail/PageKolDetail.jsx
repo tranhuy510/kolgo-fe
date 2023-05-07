@@ -11,12 +11,11 @@ import Activate from "./Activate/Activate";
 import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
 
-import { getKolsId, getGenders, getCities, getFields } from "../../../services/getApi";
-
 import "./HomeDetails.css";
 import { Col, Row } from 'antd';
 import { Tabs } from "antd";
 import ButtonFull from '../../../components/UI/Button/ButtonFull'
+import { getKol } from "../../../services/KolService";
 
 const description = "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n"
 
@@ -29,96 +28,41 @@ const danhgia = [
 ]
 
 const PageKolDetail = () => {
-  const [infoKol, setInfoKol] = useState()
-  const [gender, setGender] = useState('')
-  const [city, setCity] = useState('')
-  const [field, setField] = useState('')
-  const [nameField, setNameField] = useState('')
+  const user = JSON.parse(localStorage.getItem('user'));
+  const { id } = useParams();
+  const [kol, setKol] = useState();
   const urls = [
-    infoKol?.facebookUrl,
-    infoKol?.instagramUrl,
-    infoKol?.tiktokUrl,
-    infoKol?.youtubeUrl,
+    kol?.facebookUrl,
+    kol?.instagramUrl,
+    kol?.tiktokUrl,
+    kol?.youtubeUrl,
   ]
   const navigate = useNavigate();
 
-  let { id } = useParams()
-  id = id.substring(1)
-
   useEffect(() => {
-    getKolsId(id)
+    getKol(id)
       .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setInfoKol(data)
-      })
-  }, [id])
-
-  useEffect(() => {
-    getGenders()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setGender(data.find((item) => {
-          return item.id === infoKol?.genderId
-        }))
-      })
-  }, [infoKol?.genderId])
-
-  useEffect(() => {
-    getCities()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setCity(data.find((item) => {
-          return item.id === infoKol?.cityId
-        }))
-      })
-  }, [infoKol?.cityId])
-
-  useEffect(() => {
-    getFields()
-      .then(res => {
-        if (!res.ok) {
-          return Promise.reject(res)
-        }
-        return res.json();
-      })
-      .then(data => {
-        setField(data.find((item) => {
-          return item.id === infoKol?.kolFieldId
-        }))
-      })
-  }, [infoKol?.kolFieldId])
+        setKol(res.kol)
+      });
+  }, [])
 
   const navigateToChat = () => {
     const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('../login')
     }
-    else navigate(`/chat`, { state: { userId: infoKol.userId } })
+    else navigate(`/Chat`, { state: { userId: kol.kolId } })
   }
 
   const bookingHandler = () => {
-    const user = JSON.parse(localStorage.getItem('user'))
     if (!user) {
       navigate('../login')
     }
+    navigate(`/kols/${id}/book`)
   }
 
   const onChange = (key) => {
+    console.log(user)
     console.log(key);
   };
 
@@ -131,7 +75,7 @@ const PageKolDetail = () => {
     {
       key: "2",
       label: <button className="btn-so-sanh" style={{ fontSize: '18px' }}>So sánh</button>,
-      children: <Compare infoKol={infoKol} />,
+      children: <Compare infoKol={kol} />,
     },
   ];
 
@@ -141,29 +85,29 @@ const PageKolDetail = () => {
         <div className="container">
           <Row className="detail-description">
             <Col span={6} style={{ paddingRight: '10px', boxSizing: 'border-box' }}>
-              <ImageDescription images={infoKol?.images} />
+              <ImageDescription images={kol?.images} />
               <ContactSocials urls={urls} />
             </Col>
             <Col span={12} className="col-12-middle">
               <Row style={{ padding: '20px' }}>
                 <NameMain
-                  firstName={infoKol?.firstName}
-                  lastName={infoKol?.lastName}
-                  gender={gender?.name}
-                  city={city?.name}
+                  firstName={kol?.user.firstName}
+                  lastName={kol?.user.lastName}
+                  gender={kol?.gender}
+                  city={kol?.address.city.name}
                 />
               </Row>
               <Row className="middle-row">
                 <InformationKOL
-                  email={infoKol?.email}
-                  phoneNumber={infoKol?.phoneNumber}
-                  gender={gender?.name}
-                  city={city?.name}
+                  email={kol?.user.email}
+                  phoneNumber={kol?.phone}
+                  gender={kol?.gender}
+                  city={kol?.address.city.name}
                 />
               </Row>
               <Row className="middle-row" >
                 <ListFields
-                  field={field}
+                  field={kol?.field.name}
                 />
               </Row>
               <Row className="middle-row" >
@@ -174,7 +118,8 @@ const PageKolDetail = () => {
             </Col>
             <Col span={6}>
               <div className="col-6-right" >
-                <div className="price-booking" >1.000.000</div>
+                <div className="price-booking" >{kol?.postPrice} / 1 post</div>
+                <div className="price-booking" >{kol?.videoPrice} / 1 video</div>
                 <ButtonFull onClick={bookingHandler} className="btn-function" >BOOK</ButtonFull>
                 <ButtonFull onClick={navigateToChat} className="btn-function" >NHẮN TIN</ButtonFull>
               </div>
