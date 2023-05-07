@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { fetchData, postData } from "../../services/common";
+import { getUsers } from "../../services/UserService";
+import { getChats } from "../../services/ChatService";
 import classes from "./Chat.module.css";
 import { useLocation } from "react-router";
 
@@ -27,8 +28,8 @@ const Chat = (props) => {
 
   useEffect(() => {
     Promise.all([
-      fetchData("users", true),
-      fetchData("conversations", true),
+      getUsers(),
+      getChats(),
     ]).then(([users, convoList]) => {
       console.log("users", users);
       setUserList([...users]);
@@ -200,9 +201,8 @@ const Chat = (props) => {
           {/* Public Room */}
           <li
             onClick={() => setTab("PUBLIC")}
-            className={`${classes["conversation-list-item"]} ${
-              tab === "PUBLIC" && classes["active"]
-            }`}
+            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]
+              }`}
           >
             Public Chat
           </li>
@@ -210,9 +210,8 @@ const Chat = (props) => {
           {[...privateChats.values()].map((convo, index) => (
             <li
               onClick={() => setTab(convo.id)}
-              className={`conversation-list-item ${
-                tab === convo.id && "active"
-              }`}
+              className={`conversation-list-item ${tab === convo.id && "active"
+                }`}
               key={index}
             >
               {convo.receiverFirstName} {convo.receiverLastName}

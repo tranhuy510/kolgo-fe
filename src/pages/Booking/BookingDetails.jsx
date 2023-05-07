@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchData, postData } from '../../services/common';
-import { BookingStatus } from '../../enums/BookingStatus';
+import { getBooking } from '../../services/BookingService';
+import { BookingStatus } from '../../utils/Enums';
+import { createVnPayPayment } from '../../services/PaymentService';
 
 const BookingDetails = () => {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -21,7 +22,7 @@ const BookingDetails = () => {
     });
 
     useEffect(() => {
-        fetchData(`bookings/${id}`, true)
+        getBooking(id)
             .then(res => {
                 console.log(res);
                 setBooking(res);
@@ -30,7 +31,7 @@ const BookingDetails = () => {
     }, [])
 
     const handlePayment = () => {
-        postData("vnpay/payment", { amount: booking.totalPrice })
+        createVnPayPayment({ amount: booking.totalPrice })
             .then(res => {
                 console.log(res);
                 const paymentUrl = res.data.paymentUrl;

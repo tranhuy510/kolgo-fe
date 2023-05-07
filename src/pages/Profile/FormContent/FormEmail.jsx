@@ -1,9 +1,9 @@
 import { Col, Row } from "antd";
 import { useEffect, useState } from "react";
 import Message from "../../../components/UI/Message/Message";
-import { putData } from "../../../services/common";
 
 import classes from "./Form.module.css";
+import { updateUserEmail } from "../../../services/UserService";
 
 export default function FormEmail(props) {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -33,7 +33,7 @@ export default function FormEmail(props) {
 
   useEffect(() => {
     setEmail(user.email);
-  }, [user.email]);
+  }, []);
 
   const inputChangeHandler = (event) => {
     setEmail(event.target.value);
@@ -57,14 +57,13 @@ export default function FormEmail(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(email)) return;
-    console.log(email);
 
-    putData("user/email", { email }).then((res) => {
-      console.log(res);
+    updateUserEmail(email).then((res) => {
       if (res.error) createErrorMessage(res.message);
       createSuccessMessage("Cập nhật thành công!");
       setEmail(email);
       localStorage.setItem("user", JSON.stringify({ ...user, email }));
+      window.dispatchEvent(new Event('storage'))
     });
   };
 

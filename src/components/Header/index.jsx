@@ -12,7 +12,6 @@ import home from "../../assets/logo/icon-home.svg";
 import campaign from "../../assets/logo/icon-compaign.svg";
 import chat from "../../assets/logo/icon-chat.svg";
 import "./style.css";
-import { fetchData } from "../../services/common";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const Header = (props) => {
 
   useEffect(() => {
     const handleStorageChange = () => {
-      console.log("user change")
       setUser({ ...JSON.parse(localStorage.getItem("user")) });
     }
     window.addEventListener("storage", handleStorageChange)

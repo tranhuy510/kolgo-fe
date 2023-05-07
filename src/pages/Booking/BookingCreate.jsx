@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { fetchData, postData } from '../../services/common';
+import { getKol } from '../../services/KolService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
-import { BookingStatus } from '../../enums/BookingStatus';
+import { BookingStatus } from '../../utils/Enums';
+import { createBooking } from '../../services/BookingService';
 
 const BookingCreate = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const BookingCreate = () => {
     });
 
     useEffect(() => {
-        fetchData(`kols/${kolId}`)
+        getKol(kolId)
             .then(res => setBooking(prev => ({
                 ...prev,
                 postPrice: res.postPrice,
@@ -48,7 +49,7 @@ const BookingCreate = () => {
         booking.date = formatDate(new Date());
         booking.status = BookingStatus.PENDING;
         setBooking({ ...booking });
-        postData("bookings", booking)
+        createBooking(booking)
             .then(res => {
                 console.log(res)
                 if (!res.error) navigate(`/bookings/${res.id}`);

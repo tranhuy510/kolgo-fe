@@ -18,7 +18,7 @@ import "./style.css";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const [dataInput, setdataInput] = useState({
+  const [userInput, setUserInput] = useState({
     email: "",
     password: "",
   });
@@ -38,7 +38,7 @@ const Login = (props) => {
   };
 
   const inputChangeHandler = (event) => {
-    setdataInput((prevState) => {
+    setUserInput((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -50,14 +50,14 @@ const Login = (props) => {
     if (event) {
       event.preventDefault();
     }
-    if (!dataInput.email) {
+    if (!userInput.email) {
       setError({
         title: "Invalid email",
         message: "Please enter a valid email (non-empty email)",
       });
       return;
     }
-    if (!dataInput.password) {
+    if (!userInput.password) {
       setError({
         title: "Invalid password",
         message: "Please enter a valid password (non-empty password)",
@@ -65,8 +65,7 @@ const Login = (props) => {
       return;
     }
     try {
-      let response = await authApi(dataInput);
-      console.log(response);
+      let response = await authApi(userInput);
       if (response.data && response.data.success === false) {
         return setError({
           title: "Error Login",
@@ -92,7 +91,6 @@ const Login = (props) => {
   };
 
   const setProfile = (response) => {
-    console.log(response);
 
     let accessToken = response.data.token.accessToken;
     accessToken = JSON.stringify(accessToken);
@@ -110,9 +108,8 @@ const Login = (props) => {
       avatar: response.data.user.avatar,
       role: response.data.user.role,
     };
-    user = JSON.stringify(user);
-    console.log(user);
-    localStorage.setItem("user", user);
+
+    localStorage.setItem("user", JSON.stringify(user));
 
     setCheck({
       status: true,

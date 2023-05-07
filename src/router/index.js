@@ -56,7 +56,11 @@ export const router = createBrowserRouter([
       {
         path: "/bookings/:id",
         element: isAuthenticatedRoute(BookingDetails, "bookingDetails")
-      }
+      },
+      {
+        path: "/vnpay/return",
+        element: isAuthenticatedRoute(PaymentResult, "paymentResilt")
+      },
     ],
   },
   { path: "/login", element: <Login /> },
@@ -73,10 +77,6 @@ export const router = createBrowserRouter([
   {
     path: "/admin",
     element: isAuthenticatedRoute(Chat, "admin"),
-  },
-  {
-    path: "/vnpay/return",
-    element: <PaymentResult />
   },
   {
     path: "*",

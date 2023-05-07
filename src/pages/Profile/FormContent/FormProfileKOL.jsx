@@ -5,7 +5,12 @@ import { useEffect, useState } from "react";
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
-import { fetchData, putData, putFormData } from "../../../services/common";
+import { updateKolImages, updateKolProfile } from "../../../services/KolService";
+import { updateUserAvatar } from "../../../services/UserService";
+import { GenderOptions } from "../../../utils/Enums";
+import { getKolProfile } from "../../../services/KolService";
+import { getCities } from "../../../services/CityService";
+import { getKolFields } from "../../../services/FieldService";
 
 export default function FormProfileKOL(props) {
 
@@ -13,9 +18,9 @@ export default function FormProfileKOL(props) {
   const [profile, setProfile] = useState({});
   const [city, setCity] = useState([]);
   const [speciality, setSpeciality] = useState([]);
-  const [valueGender, setValueGender] = useState("");
-  const [valueCity, setValueCity] = useState("");
-  const [valueSpeciality, setValueSpeciality] = useState("");
+  const [genderName, setGenderName] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [fieldName, setFieldName] = useState("");
   const [images, setImages] = useState([]);
 
   const [showMessage, setShowMessage] = useState({
@@ -42,9 +47,9 @@ export default function FormProfileKOL(props) {
 
   useEffect(() => {
     Promise.all([
-      fetchData("kol/profile", true),
-      fetchData("cities", false),
-      fetchData("fields/kol", false),
+      getKolProfile(),
+      getCities(),
+      getKolFields(),
     ]).then(([profile, cities, fields]) => {
       setProfile(profile.kol);
       setImages(profile.images);
@@ -52,21 +57,6 @@ export default function FormProfileKOL(props) {
       setSpeciality(fields);
     });
   }, []);
-
-  const optionGender = [
-    {
-      value: "MALE",
-      label: "Nam",
-    },
-    {
-      value: "FEMALE",
-      label: "Nữ",
-    },
-    {
-      value: "OTHERS",
-      label: "Khác",
-    },
-  ];
 
   const optionCity = city.map((c) => {
     return {
@@ -92,7 +82,7 @@ export default function FormProfileKOL(props) {
   };
 
   const changeGenderHandler = (value) => {
-    setValueGender(value);
+    setGenderName(value);
     setProfile((prevState) => {
       return {
         ...prevState,
@@ -102,7 +92,7 @@ export default function FormProfileKOL(props) {
   };
 
   const changeCityHandler = (value) => {
-    setValueCity(value);
+    setCityName(value);
     setProfile((prevState) => {
       return {
         ...prevState,
@@ -112,7 +102,7 @@ export default function FormProfileKOL(props) {
   };
 
   const changeSpecialityHandler = (value) => {
-    setValueSpeciality(value);
+    setFieldName(value);
     setProfile((prevState) => {
       return {
         ...prevState,
@@ -122,9 +112,7 @@ export default function FormProfileKOL(props) {
   };
 
   const avatarChangeHandler = (event) => {
-    const formData = new FormData();
-    formData.append("avatar", event.target.files[0]);
-    putFormData("user/avatar", formData, true)
+    updateUserAvatar(event.target.files[0])
       .then(res => {
         setUser(prev => ({ ...prev, avatar: res.avatar }))
         localStorage.setItem("user", JSON.stringify({ ...user, avatar: res.avatar }))
@@ -133,13 +121,7 @@ export default function FormProfileKOL(props) {
   };
 
   const handleFileChange = (event) => {
-    const formData = new FormData();
-    const imageList = event.target.files;
-    console.log(imageList)
-    for (let i = 0; i < imageList.length; i++) {
-      formData.append("images", imageList[i])
-    }
-    putFormData("kol/images", formData)
+    updateKolImages(event.target.files)
       .then(res => {
         setImages(prev => ([...prev, ...res.images]))
       })
@@ -172,10 +154,7 @@ export default function FormProfileKOL(props) {
     event.preventDefault();
     if (!validateFormData(profile)) return;
 
-    putData("kol/profile", profile).then(res => {
-      console.log(res)
-      createSuccessMessage("Cập nhật thành công!")
-    });
+    updateKolProfile(profile).then(createSuccessMessage("Cập nhật thành công!"));
   };
 
   return (
@@ -224,13 +203,13 @@ export default function FormProfileKOL(props) {
                 placeholder="Chọn giới tính của bạn"
                 optionFilterProp="children"
                 onChange={changeGenderHandler}
-                value={valueGender ? valueGender : profile.gender}
+                value={genderName ? genderName : profile.gender}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={optionGender}
+                options={GenderOptions}
               />
             </Col>
           </Row>
@@ -257,7 +236,7 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeCityHandler}
-                value={valueCity ? valueCity : profile.cityId}
+                value={cityName ? cityName : profile.cityId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -290,7 +269,7 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeSpecialityHandler}
-                value={valueSpeciality ? valueSpeciality : profile.fieldId}
+                value={fieldName ? fieldName : profile.fieldId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()

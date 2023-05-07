@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from "../../../services/getApi";
-import { UserOutlined } from "@ant-design/icons";
+import { getKols } from "../../../services/KolService";
 
 const IMG = styled.img`
   width: 220px;
@@ -45,29 +44,16 @@ const DivWrap = styled.div`
 `;
 
 const PageHOT = (props) => {
-  const [listKolHot, setListKolHot] = useState([]);
+  const [hotKols, setHotKols] = useState([]);
 
   useLayoutEffect(() => {
-    props.onChangeTotalHotKOL(listKolHot.length);
-  }, [listKolHot]);
+    props.onChangeTotalHotKOL(hotKols.length);
+  }, [hotKols]);
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getKols()
-        .then((res) => {
-          if (!res.ok) {
-            return Promise.reject(res);
-          }
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          setListKolHot(data);
-        });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
+    getKols().then((res) => {
+      setHotKols(res)
+    });
   }, []);
 
   function arrUpperCase(data) {
@@ -79,7 +65,7 @@ const PageHOT = (props) => {
 
   return (
     <DivWrap key={"hotKol"}>
-      {listKolHot?.map((kol) => {
+      {hotKols?.map((kol) => {
         const firstName = arrUpperCase(kol.user.firstName);
         return (
           <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>

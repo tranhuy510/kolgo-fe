@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { postData } from '../../services/common';
 
 function PaymentResult() {
     const [params, setParams] = useSearchParams();
@@ -26,7 +25,7 @@ function PaymentResult() {
             vnp_SecureHash: params.get("vnp_SecureHash")
         }
         setPayment({ ...paymentResult });
-        postData("payments", paymentResult).then()
+        // post("payments", paymentResult).then()
     }, []);
     return (
         <div>
