@@ -19,7 +19,10 @@ const SearchModal = () => {
         const identifier = setTimeout(() => {
             getUsers('users', true)
                 .then(res => {
-                    setUsers(res)
+                    if (res?.data?.message === 'Invalid token') {
+                        setUsers([''])
+                    }
+                    else setUsers(res)
                 })
         }, 500)
         return () => {
@@ -89,8 +92,8 @@ const SearchModal = () => {
 
     let x = window.innerWidth;
     const [windowChange, setWindowChange] = useState({
-        widthSearch: 400,
-        leftSearch: '200px'
+        widthSearch: 300,
+        leftSearch: '150px'
     });
 
     useLayoutEffect(() => {
@@ -99,11 +102,11 @@ const SearchModal = () => {
             setTimeout(() => {
                 if (x > 1360) {
                     setWindowChange({
-                        widthSearch: 400,
-                        leftSearch: '200px',
+                        widthSearch: 300,
+                        leftSearch: '150px',
                     })
                 }
-                if (x > 1100 && x <= 1359) {
+                if (x > 1000 && x <= 1359) {
                     setWindowChange({
                         widthSearch: 300,
                         leftSearch: '150px',
@@ -113,12 +116,14 @@ const SearchModal = () => {
         });
     }, [x])
 
-    const filteredUsers = users.filter((item) => {
-        return searchInput.toLowerCase() === ""
-            ? item
-            : (item.firstName.toLowerCase().includes(searchInput.toLowerCase()) || item.lastName.toLowerCase().includes(searchInput.toLowerCase()))
+    const filteredUsers = users?.filter((item) => {
+        if (item) {
+            return searchInput.toLowerCase() === ""
                 ? item
-                : null;
+                : item.firstName.toLowerCase().includes(searchInput.toLowerCase()) || item.lastName.toLowerCase().includes(searchInput.toLowerCase())
+                    ? item
+                    : null;
+        }
     })
 
     const filteredKols = kols?.filter((item) => {
@@ -151,7 +156,7 @@ const SearchModal = () => {
                             if (item) return (
                                 <div key={item.userId}>
                                     {item.roles == 'KOL' && <Link key={item.userId} to={`/detail/kol/:${getKolId(item.userId)}`} className={classes["item-search-user"]}>
-                                        <Avatar size={60} src={item.avatar}>
+                                        <Avatar size={40} src={item.avatar}>
                                             {item?.avatar ? "" : item?.firstName.charAt(0)?.toUpperCase()}
                                         </Avatar>
                                         <div>
@@ -161,7 +166,7 @@ const SearchModal = () => {
                                     </Link>}
                                     {item.roles == "ENTERPRISE" && (
                                         <Link key={item.userId} to={`/detail/enterprise/:${getEntId(item.userId)}`} className={classes["item-search-user"]}>
-                                            <Avatar size={60} src={item.avatar}>
+                                            <Avatar size={40} src={item.avatar}>
                                                 {item?.avatar ? "" : item?.firstName.charAt(0)?.toUpperCase()}
                                             </Avatar>
                                             <div>
@@ -182,7 +187,7 @@ const SearchModal = () => {
                             .map((item) => (
                                 <div key={item.kolId}>
                                     <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} className={classes["item-search-user"]}>
-                                        <Avatar size={60} src={item.avatar}>
+                                        <Avatar size={40} src={item.avatar}>
                                             {item?.avatar ? "" : item?.firstName.charAt(0)?.toUpperCase()}
                                         </Avatar>
                                         <div>

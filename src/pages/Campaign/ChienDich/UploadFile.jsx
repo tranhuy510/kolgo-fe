@@ -6,6 +6,7 @@ const UploadFile = (props) => {
   const [imageBase64, setImageBase64] = useState("");
 
   const handleChangeImage = (event) => {
+    props.onChangeAvataMainHandler(event.target.files[0].name)
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = function (event) {

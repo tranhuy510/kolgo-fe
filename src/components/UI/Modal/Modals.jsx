@@ -5,11 +5,11 @@ const Modals = ({ status, title, email, message, content, changeNotification }) 
 
     const success = () => {
         Modal.success({
-            title: `Register ${title}`,
+            title: `${title}`,
             content: (
                 <div>
                     <p>{content}</p>
-                    <p>Please go to {email} {message}</p>
+                    {message && email && <p>Please go to {email} {message}</p>}
                 </div>
             ),
         });

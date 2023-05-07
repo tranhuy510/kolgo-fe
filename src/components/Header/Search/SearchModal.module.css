@@ -45,7 +45,7 @@ background: rgba(0,0,0,.9);
 
 .item-search-user {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     justify-content: flex-start;
     align-items: center;
     position: relative;
@@ -68,14 +68,14 @@ background: rgba(0,0,0,.9);
 
 .item-search-user .name-item-user {
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     color: #000;
 }
 
 .item-search-user .role-item-user {
     margin-left: 20px;
-    font-size: 20px;
+    font-size: 16px;
     color: #ccc;
 }
 

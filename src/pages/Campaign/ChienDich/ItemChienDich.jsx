@@ -85,7 +85,7 @@ const ItemChienDich = (props) => {
           <div className="linh-vuc">
             <label style={{ fontWeight: 600 }}>Lĩnh Vực: </label>
             {props.data.linhvuc.map((item, index) => (
-              <button key={index}>{item}</button>
+              <button key={index}>{item.name}</button>
             ))}
           </div>
           <div className="mo-ta">

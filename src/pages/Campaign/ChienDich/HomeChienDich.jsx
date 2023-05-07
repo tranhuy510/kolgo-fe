@@ -54,7 +54,7 @@ const HomeChienDich = () => {
   };
 
   const checkStringInArrayIgnoreCase = (str, arr) => {
-    return arr.map((item) => item.toLowerCase()).includes(str.toLowerCase());
+    return arr.map((item) => item.name.toLowerCase()).includes(str.toLowerCase());
   };
 
   const handleChange = (event) => {
@@ -101,7 +101,7 @@ const HomeChienDich = () => {
             linhVuc.length > 0 &&
             linhVuc.map((item, index) => (
               <option key={index} value={item}>
-                {item}
+                {item.name}
               </option>
             ))}
         </select>
