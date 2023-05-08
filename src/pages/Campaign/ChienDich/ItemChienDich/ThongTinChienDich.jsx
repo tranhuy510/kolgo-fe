@@ -46,16 +46,13 @@ const ThongTinChienDich = (props) => {
             title=""
             open={props.openThongTin}
             onCancel={props.handleCancelThongTin}
-            footer={[
-
-            ]}
+            footer={[]}
         >
             <div className={classes['modal-chienDich-thongTin']}>
                 {noti.status &&
                     <Modals status={noti.status} title={noti.title} content={noti.content} changeNotification={changeNotificationHandler} />
                 }
                 <div className={classes['chienDich-thongTin-chiTiet']}>
-                    {/* <span className={classes["chienDich-item-title"]}>CHI TIẾT CHIẾN DỊCH</span> */}
                     <Descriptions title="CHI TIẾT CHIẾN DỊCH">
                         <Descriptions.Item label="Tên chiến dịch" span={3} className={classes['chiTiet-item-name']}>
                             {props.data.tenchiendich}
@@ -102,7 +99,6 @@ const ThongTinChienDich = (props) => {
                     </Descriptions>
                 </div>
                 <div className={classes['chienDich-thongTin-moTa']}>
-                    {/* <span className={classes["chienDich-item-title"]}>MÔ TẢ CHIẾN DỊCH</span> */}
                     <Descriptions title="MÔ TẢ CHIẾN DỊCH">
                         <Descriptions.Item className={classes['moTa-description']} span={3}>
                             {props.data?.mota}

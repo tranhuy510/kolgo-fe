@@ -50,10 +50,10 @@ export const router = createBrowserRouter([
         path: "/chat",
         element: isAuthenticatedRoute(Chat, "chat"),
       },
-      {
-        path: "/kols/:kolId/book/",
-        element: isAuthenticatedRoute(BookingCreate, "bookingCreate"),
-      },
+      // {
+      //   path: "/kols/:kolId/book/",
+      //   element: isAuthenticatedRoute(BookingCreate, "bookingCreate"),
+      // },
       {
         path: "/bookings/:id",
         element: isAuthenticatedRoute(BookingDetails, "bookingDetails"),

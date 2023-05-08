@@ -46,6 +46,7 @@ export default function FormProfileEnterprise(props) {
       getCities(),
       getEntFields(),
     ]).then(([profile, cities, fields]) => {
+      console.log(profile);
       setProfile(profile);
       setCities(cities);
       setFields(fields);

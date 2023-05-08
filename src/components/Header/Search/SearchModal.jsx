@@ -23,6 +23,7 @@ const SearchModal = () => {
       getKols(),
       getEnts()
     ]).then(([userList, kolList, entList]) => {
+      console.log(userList);
       setUsers(userList);
       setKols(kolList);
       setEnts(entList);
@@ -43,6 +44,7 @@ const SearchModal = () => {
   const onChangeInputHandler = (e) => {
     setSearchInput(e.target.value)
     setShow(true)
+    console.log(e.target.value);
   }
 
   const onSearch = (value) => {
@@ -60,15 +62,15 @@ const SearchModal = () => {
     window.addEventListener("resize", function () {
       x = window.innerWidth;
       setTimeout(() => {
-        if (x > 1360) {
+        if (x > 1100 && x <= 1359) {
           setWindowChange({
             widthSearch: 300,
             leftSearch: '150px',
           })
         }
-        if (x > 1000 && x <= 1359) {
+        if (x > 800 && x <= 1099) {
           setWindowChange({
-            widthSearch: 300,
+            widthSearch: 250,
             leftSearch: '150px',
           })
         }
@@ -78,7 +80,7 @@ const SearchModal = () => {
 
   const filteredUsers = users?.filter((item) => {
     if (item) {
-      return searchInput.toLowerCase() === ""
+      return searchInput === ""
         ? item
         : item.firstName.toLowerCase().includes(searchInput.toLowerCase()) || item.lastName.toLowerCase().includes(searchInput.toLowerCase())
           ? item
@@ -87,11 +89,14 @@ const SearchModal = () => {
   })
 
   const filteredKols = kols?.filter((item) => {
-    return searchInput.toLowerCase() === ""
-      ? item
-      : item.firstName.toLowerCase().includes(searchInput.toLowerCase()) || item.lastName.toLowerCase().includes(searchInput.toLowerCase())
+    if (item) {
+      return searchInput === ""
         ? item
-        : null
+        : item.firstName.includes(searchInput) || item.lastName.includes(searchInput)
+          ? item
+          : null;
+    }
+
   });
 
   return (
@@ -110,7 +115,7 @@ const SearchModal = () => {
       {show && <div className={classes.backdrop} onClick={() => { setShow(false) }}></div>}
       {show && <div className={classes['result-search']} >
         <div className={classes['wrap-result-search']}>
-          {user !== null && searchInput &&
+          {/* {user !== null && searchInput &&
             filteredUsers ? (
             filteredUsers?.map((user) => {
               if (user) return (
@@ -159,7 +164,7 @@ const SearchModal = () => {
               ))) : (user === null &&
                 <div>Không có kết quả tìm kiếm</div>
           )
-          }
+          } */}
         </div>
 
       </div>}

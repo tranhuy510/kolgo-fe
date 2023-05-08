@@ -10,8 +10,6 @@ import classes from "./Campaign.module.css";
 import "./index.css";
 import { Row, Col } from "antd";
 
-
-
 const Campaign = (props) => {
   const [activeTab, setActiveTab] = useState(0);
   const [user, setUser] = useState({})
@@ -24,54 +22,42 @@ const Campaign = (props) => {
   }, [])
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      if (user) {
-        if (user.role === "KOL") {
-          getKols()
-            .then(res => {
-              return res.json()
-            })
-            .then(data => {
-              setKols(data)
-            })
-        }
-        if (user.role === "ENTERPRISE") {
-          getEnts()
-            .then(res => {
-              return res.json()
-            })
-            .then(data => {
-              setEnts(data)
-            })
-        }
-      }
-    }, 500)
-    return () => {
-      clearTimeout(identifier)
+    if (user.role === "KOL") {
+      getKols()
+        .then(res => {
+          return res.json()
+        })
+        .then(data => {
+          setKols(data)
+        })
+    }
+    if (user.role === "ENTERPRISE") {
+      getEnts()
+        .then(res => {
+          return res.json()
+        })
+        .then(data => {
+          setEnts(data)
+        })
     }
   }, [user])
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getIdRole();
-    }, 1000)
-    return () => {
-      clearTimeout(identifier)
-    }
+    getIdRole();
   }, [kols, ents])
 
   const getIdRole = () => {
     if (user.role === 'KOL') {
-      kols.map((item) => {
-        if (item.userId === user.id) {
-          setIdRole(item.kolId)
+      kols.map((kol) => {
+        if (kol.user.id === user.id) {
+          setIdRole(kol.id)
         }
       })
     }
     if (user.role === 'ENTERPRISE') {
-      ents.map((item) => {
-        if (item.userId === user.id) {
-          setIdRole(item.enterpriseId)
+      ents.map((ent) => {
+        if (ent.user.id === user.id) {
+          setIdRole(ent.id)
         }
       })
     }
@@ -84,29 +70,6 @@ const Campaign = (props) => {
   return (
     <CampaignContext.Provider value={{ user: user, idRole: idRole }}>
       <div className={classes.campaign}>
-        {/* auth: Chan */}
-        {/* <div className="tab-buttons">
-          <button
-            className={`tab-button ${activeTab === 1 ? "active" : ""}`}
-            onClick={() => setActiveTab(1)}
-          >
-            Chiến Dịch
-          </button>
-          <button
-            className={`tab-button ${activeTab === 2 ? "active" : ""}`}
-            onClick={() => setActiveTab(2)}
-          >
-            Combo
-          </button>
-        </div>
-        {activeTab === 1 && (
-          <div>
-            <HomeChienDich />
-          </div>
-        )}
-        {activeTab === 2 && <div>Content 2</div>} */}
-
-        {/* auth: Thang */}
         <Row className={classes['campaign-row-1']}>
           <Col span={6} className={classes['campaign-col-6-left']}>
             <SubMenu

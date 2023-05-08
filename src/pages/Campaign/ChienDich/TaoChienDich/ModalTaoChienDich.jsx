@@ -149,8 +149,6 @@ const ModalTaoChienDich = (props) => {
                 wrapperCol={{ span: 19, }}
                 style={{ minWidth: 600, maxWidth: 920, }}
                 initialValues={{ remember: true, }}
-                // onFinish={onFinish}
-                // onFinishFailed={onFinishFailed}
                 autoComplete="off"
             >
                 {/* tên chiến dịch */}
@@ -255,7 +253,7 @@ const ModalTaoChienDich = (props) => {
                     />
                 </Form.Item>
 
-                {/* mode */}
+                {/* mode: bật - cho kol/ent tham gia | tắt - ko cho tham gia */}
                 {/* <Form.Item
                     name="remember"
                     valuePropName="checked"

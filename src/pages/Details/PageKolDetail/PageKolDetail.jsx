@@ -10,12 +10,14 @@ import IntroduceKOL from "./IntroduceKOL/IntroduceKOL";
 import Activate from "./Activate/Activate";
 import Compare from './Compare/Compare'
 import Rate from "./Rate/Rate";
+import BookingCreate from "../../Booking/BookingCreate";
 
 import "./HomeDetails.css";
 import { Col, Row } from 'antd';
 import { Tabs } from "antd";
 import ButtonFull from '../../../components/UI/Button/ButtonFull'
 import { getKol } from "../../../services/KolService";
+
 
 const description = "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n"
 
@@ -38,27 +40,35 @@ const PageKolDetail = () => {
     kol?.youtubeUrl,
   ]
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false)
+
+  const onCancelOpenHandler = () => {
+    setOpen(false)
+  }
 
   useEffect(() => {
     getKol(id)
       .then(res => {
+        console.log(res);
         setKol(res.kol)
       });
   }, [])
 
   const navigateToChat = () => {
     const user = JSON.parse(localStorage.getItem('user'))
+    console.log(user);
     if (!user) {
       navigate('../login')
     }
-    else navigate(`/Chat`, { state: { userId: kol.kolId } })
+    else navigate(`/Chat`, { state: { userId: user.id } })
   }
 
   const bookingHandler = () => {
     if (!user) {
       navigate('../login')
     }
-    navigate(`/kols/${id}/book`)
+    setOpen(true);
+    // navigate(`/kols/${id}/book`)
   }
 
   const onChange = (key) => {
@@ -82,6 +92,7 @@ const PageKolDetail = () => {
   return (
     <>
       <main className="main-details">
+        <BookingCreate id={id} onCancelOpenHandler={onCancelOpenHandler} open={open} />
         <div className="container">
           <Row className="detail-description">
             <Col span={6} style={{ paddingRight: '10px', boxSizing: 'border-box' }}>
@@ -107,7 +118,7 @@ const PageKolDetail = () => {
               </Row>
               <Row className="middle-row" >
                 <ListFields
-                  field={kol?.field.name}
+                  field={kol?.field}
                 />
               </Row>
               <Row className="middle-row" >

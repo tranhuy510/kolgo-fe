@@ -5,11 +5,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
 import { BookingStatus } from '../../utils/Enums';
 import { createBooking } from '../../services/BookingService';
+import { Modal, Form, Input, Button } from 'antd';
+import classes from './Booking.module.css'
+const { TextArea } = Input;
 
-const BookingCreate = () => {
+const BookingCreate = (props) => {
     const navigate = useNavigate();
     const { kolId } = useParams();
-    const [bookings, setBookings] = useState();
+    const [booked, setBooked] = useState(false);
     const [booking, setBooking] = useState({
         date: "",
         postPrice: 0,
@@ -18,16 +21,24 @@ const BookingCreate = () => {
         videoNumber: 0,
         totalPrice: 0,
         status: "",
-        kolId: kolId
+        description: "",
+        // kolId: kolId
+        kolId: props.id
     });
 
+    console.log(props.id);
+
     useEffect(() => {
-        getKol(kolId)
-            .then(res => setBooking(prev => ({
-                ...prev,
-                postPrice: res.postPrice,
-                videoPrice: res.videoPrice
-            })));
+        // getKol(kolId)
+        getKol(props.id)
+            .then(res =>
+                setBooking(prev => ({
+                    ...prev,
+                    postPrice: res.kol.postPrice,
+                    videoPrice: res.kol.videoPrice
+                }))
+
+            );
     }, []);
 
     const updateTotalPrice = (postPrice, postNumber, videoPrice, videoNumber) => {
@@ -45,6 +56,10 @@ const BookingCreate = () => {
         updateTotalPrice(booking.postPrice, booking.postNumber, booking.videoPrice, e.target.value);
     }
 
+    const handleDescriptionChange = (e) => {
+        setBooking(prev => ({ ...prev, description: e.target.value }));
+    }
+
     const handleBooking = () => {
         booking.date = formatDate(new Date());
         booking.status = BookingStatus.PENDING;
@@ -53,46 +68,91 @@ const BookingCreate = () => {
             .then(res => {
                 console.log(res)
                 if (!res.error) navigate(`/bookings/${res.id}`);
-
+                if (res.error) {
+                    setBooked(true)
+                }
             })
     }
 
+    const onCloseModal = () => {
+        setBooked(false)
+        props.onCancelOpenHandler()
+        booking.status = "";
+    }
+
     return (
-        <div style={{ padding: '100px 20px' }}>
-            <div>
-                <label htmlFor="postPrice">Post price</label>
-                <label>${booking.postPrice}</label>
+        <Modal
+            width={600}
+            title=""
+            open={props.open}
+            onCancel={onCloseModal}
+            footer={[]}
+        >
+            <div className={classes['modal-booking-create']}>
+                <Form
+                    name="basic"
+                    labelCol={{ span: 5, }}
+                    wrapperCol={{ span: 19, }}
+                    style={{ maxWidth: 600 }}
+                    initialValues={{ remember: true, }}
+                    autoComplete="off"
+                >
+                    <Form.Item label="Post price" >
+                        ${booking.postPrice}
+                    </Form.Item>
+                    <Form.Item label="Post number" >
+                        <Input
+                            rows={2}
+                            type="number"
+                            placeholder="Nhập số lượng bài viết"
+                            onChange={handlePostNumberChange}
+                            value={booking.postNumber}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Video price" >
+                        ${booking.videoPrice}
+                    </Form.Item>
+                    <Form.Item label="Video number" >
+                        <Input
+                            rows={2}
+                            type="number"
+                            placeholder="Nhập số lượng video"
+                            onChange={handleVideoNumberChange}
+                            value={booking.videoNumber}
+                        />
+                    </Form.Item>
+                    <Form.Item label="Total cost" >
+                        ${booking.totalPrice}
+                    </Form.Item>
+                    <Form.Item
+                        label="Mô tả"
+                        name="mota"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Hãy nhập mô tả!',
+                            },
+                        ]}
+                    >
+                        <TextArea
+                            rows={4}
+                            placeholder="Nhập mô tả"
+                            value={booking.description}
+                            onChange={handleDescriptionChange}
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        wrapperCol={{
+                            offset: 5,
+                            span: 15,
+                        }}
+                    >
+                        {!booking.status && <Button onClick={handleBooking}>Book</Button>}
+                        {booked && <span>Bạn đã đặt kol này, vào thông báo để xem chi tiết</span>}
+                    </Form.Item>
+                </Form>
             </div>
-            <div>
-                <label htmlFor="postNumber">Post number</label>
-                <input
-                    type="number"
-                    className="postNumber"
-                    value={booking.postNumber}
-                    min="0"
-                    onChange={handlePostNumberChange}
-                />
-            </div>
-            <div>
-                <label htmlFor="postPrice">Post price</label>
-                <label>${booking.videoPrice}</label>
-            </div>
-            <div>
-                <label htmlFor="postNumber">Post number</label>
-                <input
-                    type="number"
-                    className="postNumber"
-                    value={booking.videoNumber}
-                    min="0"
-                    onChange={handleVideoNumberChange}
-                />
-            </div>
-            <div>
-                <label>Total: </label>
-                <label>{booking.totalPrice}</label>
-            </div>
-            {!booking.status && <button onClick={handleBooking}>Book</button>}
-        </div>
+        </Modal>
     );
 };
 

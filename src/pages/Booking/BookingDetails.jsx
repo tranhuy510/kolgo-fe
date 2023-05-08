@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getBooking } from '../../services/BookingService';
 import { BookingStatus } from '../../utils/Enums';
 import { createVnPayPayment } from '../../services/PaymentService';
+import { Descriptions, Button } from 'antd';
+import classes from './Booking.module.css'
 
 const BookingDetails = () => {
     const user = JSON.parse(localStorage.getItem("user"))
@@ -51,100 +53,96 @@ const BookingDetails = () => {
     }
 
     return (
-        <div style={{ padding: "100px 20px" }}>
-            <h3>Thông tin KOL</h3>
-            <div>
-                <div>
-                    <label>Tên: </label>
-                    <label>{booking.kol.user.firstName} {booking.kol.user.lastName}</label>
-                </div>
-                <div>
-                    <label>Lĩnh vực hoạt động: </label>
-                    <label>{booking.kol.field.name}</label>
-                </div>
-                <div>
-                    <label>Email: </label>
-                    <label>{booking.kol.user.email}</label>
-                </div>
-                <div>
-                    <label>Số điện thoại: </label>
-                    <label>{booking.kol.phone}</label>
-                </div>
-            </div>
-            <h3>Thông tin booking</h3>
-            <div>
-                <div>
-                    <label>Thời gian tạo booking: </label>
-                    <label>{booking.date}</label>
-                </div>
+        <div className={classes['modal-booking-detail']}>
+            <Descriptions title="Thông tin KOL" >
+                <Descriptions.Item label="Tên KOL" span={3} >
+                    {booking.kol.user?.firstName} {booking.kol.user?.lastName}
+                </Descriptions.Item>
 
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Giá / 1 bài viết</th>
-                        <th>Số lượng bài viết</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{booking.postPrice}</td>
-                        <td>{booking.postNumber}</td>
-                        <td>{booking.postPrice * booking.postNumber}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Giá / 1 video</th>
-                        <th>Số lượng video</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{booking.videoPrice}</td>
-                        <td>{booking.videoNumber}</td>
-                        <td>{booking.videoPrice * booking.videoNumber}</td>
-                    </tr>
+                <Descriptions.Item label="Lĩnh vực hoạt động" span={3} >
+                    {booking.kol.field?.name}
+                </Descriptions.Item>
 
-                </tbody>
-            </table>
-            <div>
-                <label>Tổng tiền cần thanh toán: </label>
-                <label>{booking.totalPrice}</label>
-            </div>
-            <div>
-                <label>Trạng thái: </label>
-                {booking.status === BookingStatus.PENDING && <label>Đang chờ KOL xác nhận</label>}
-                {booking.status === BookingStatus.ACCEPTED && <div>
-                    <div>
-                        <label>
-                            KOL đã chấp nhận yêu cầu, vui lòng thanh toán
-                        </label>
-                    </div>
-                    <button onClick={handlePayment}>Thanh toán</button>
-                </div>}
-                {booking.status === BookingStatus.REJECTED
-                    && <label>KOL từ chối booking</label>
+                <Descriptions.Item label="Email" span={3} >
+                    {booking.kol.user?.email}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Số điện thoại" span={3} >
+                    {booking.kol?.phone}
+                </Descriptions.Item>
+            </Descriptions>
+
+            <Descriptions title="Thông tin booking" bordered>
+                <Descriptions.Item label="Thời gian tạo" span={3} >
+                    {booking?.date}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Giá 1 bài viết"  >
+                    {booking?.postPrice}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số lượng bài viết"  >
+                    {booking?.postNumber}
+                </Descriptions.Item>
+                <Descriptions.Item label="Tổng tiền"  >
+                    {booking?.postPrice * booking.postNumber}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Giá 1 video"  >
+                    {booking?.videoPrice}
+                </Descriptions.Item>
+                <Descriptions.Item label="Số lượng video"  >
+                    {booking?.videoNumber}
+                </Descriptions.Item>
+                <Descriptions.Item label="Tổng tiền"  >
+                    {booking?.videoPrice * booking.videoNumber}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Tổng tiền cần thanh toán" span={3} >
+                    {booking?.totalPrice}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Mô tả" span={3} >
+                    {booking?.description}
+                </Descriptions.Item>
+
+                {booking.status === BookingStatus.PENDING && <Descriptions.Item label="Trạng thái" span={3} >Đang chờ KOL xác nhận</Descriptions.Item>}
+                {booking.status === BookingStatus.ACCEPTED &&
+                    <Descriptions.Item label="Trạng thái" span={3}>
+                        KOL đã chấp nhận yêu cầu, vui lòng thanh toán
+                    </Descriptions.Item>
                 }
-                {booking.status === BookingStatus.PAID
-                    && <label>ĐÃ THANH TOÁN</label>
+                {booking.status === BookingStatus.ACCEPTED &&
+                    <Descriptions.Item label="" span={3}>
+                        <Button onClick={handlePayment}>Thanh toán</Button>
+                    </Descriptions.Item>
+                }
+                {booking.status === BookingStatus.REJECTED &&
+                    <Descriptions.Item label="Trạng thái" span={3}>
+                        KOL từ chối booking
+                    </Descriptions.Item>
+                }
+                {booking.status === BookingStatus.PAID &&
+                    <Descriptions.Item label="Trạng thái" span={3}>
+                        ĐÃ THANH TOÁN
+                    </Descriptions.Item>
                 }
                 {booking.status !== BookingStatus.CANCELED
                     && booking.status !== BookingStatus.PAID
                     && booking.status !== BookingStatus.REJECTED
-                    && <div>
-                        <button onClick={handleCancel}>Cancel Booking</button>
-                    </div>
+                    &&
+                    <Descriptions.Item label="" span={3}>
+                        <Button onClick={handleCancel}>Cancel Booking</Button>
+                    </Descriptions.Item>
                 }
                 {(booking.status === BookingStatus.CANCELED
                     || booking.status === BookingStatus.REJECTED
                     || booking.status === BookingStatus.PAID)
-                    && <div>
-                        <button onClick={handleReBooking}>Đặt lại</button>
-                    </div>}
-            </div>
+                    &&
+                    <Descriptions.Item label="" span={3}>
+                        <Button onClick={handleReBooking}>Đặt lại</Button>
+                    </Descriptions.Item>
+                }
+            </Descriptions>
         </div>
     );
 };
