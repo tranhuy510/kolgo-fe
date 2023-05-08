@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { postData } from "../../services/common";
+import { post } from "../../services/Common.js";
 
 import classes from "./PaymentResult.module.css";
 import { Col, Row } from "antd";
@@ -29,7 +29,7 @@ function PaymentResult() {
       vnp_SecureHash: params.get("vnp_SecureHash"),
     };
     setPayment({ ...paymentResult });
-    postData("payments", paymentResult).then();
+    post("payments", paymentResult).then();
   }, []);
   return (
     <div className={classes.payment}>
@@ -56,46 +56,6 @@ function PaymentResult() {
             </p>
 
             <Link to="/">Trở về trang chủ</Link>
-
-            {/* <div class="table-responsive">
-              <div class="form-group">
-                <label>Merchant Transaction Code: </label>
-                <b>{payment.vnp_TxnRef}</b>
-              </div>
-              <div class="form-group">
-                <label>Amount: </label>
-                <b>{payment.vnp_Amount}</b>
-              </div>
-              <div class="form-group">
-                <label>Order info: </label>
-                <b>{payment.vnp_OrderInfo}</b>
-              </div>
-              <div class="form-group">
-                <label>VNPAY Response Code: </label>
-                <b>{payment.vnp_ResponseCode}</b>
-              </div>
-              <div class="form-group">
-                <label>VNPAY Transaction Code: </label>
-                <b>{payment.vnp_TransactionNo}</b>
-              </div>
-              <div class="form-group">
-                <label>Bank Code: </label>
-                <b>{payment.vnp_BankCode}</b>
-              </div>
-              <div class="form-group">
-                <label>Pay Date:</label>
-                <b>{payment.vnp_PayDate}</b>
-              </div>
-              <div class="form-group">
-                <label>Payment Status: </label>
-                <b>
-                  {payment.vnp_TransactionStatus === "00"
-                    ? "Success"
-                    : "Failed"}
-                </b>
-              </div>
-            </div> */}
-            {/* <p>&nbsp;</p> */}
             <footer class="footer">
               <p>&copy; VNPAY 2023</p>
             </footer>

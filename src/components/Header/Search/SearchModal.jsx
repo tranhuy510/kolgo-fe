@@ -2,85 +2,46 @@ import React, { useState, useEffect } from "react";
 import { Input, Image, Avatar } from "antd";
 import classes from "./SearchModal.module.css";
 import { Link } from "react-router-dom";
-import { getUsers, getKols, getEnts } from "../../../services/getApi";
+import { getUsers } from "../../../services/UserService";
+import { getKols } from "../../../services/KolService";
+import { getEnts } from "../../../services/EnterpriseService";
 
 const { Search } = Input;
 
 const SearchModal = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const [searchInput, setSearchInput] = useState("");
   const [users, setUsers] = useState([]);
   const [kols, setKols] = useState([]);
   const [ents, setEnts] = useState([]);
   const [show, setShow] = useState(false);
 
-  const account = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      getUsers("users", true).then((res) => {
-        console.log(res);
-        setUsers(res);
-      });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, []);
-
-  useEffect(() => {
-    const identifier = setTimeout(() => {
-      getKols()
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setKols(data);
-        });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, []);
-
-  useEffect(() => {
-    const identifier = setTimeout(() => {
+    Promise.all([
+      getUsers(),
+      getKols(),
       getEnts()
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setEnts(data);
-        });
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
-    };
-  }, []);
-
-  const getKolId = (userId) => {
-    let kolId = null;
-    kols.map((kol) => {
-      if (kol.userId === userId) {
-        kolId = kol.kolId;
-      }
+    ]).then(([userList, kolList, entList]) => {
+      setUsers(userList);
+      setKols(kolList);
+      setEnts(entList);
     });
-    return kolId;
+  }, [])
+
+  const getKolIdByUserId = (userId) => {
+    const kol = kols.find(kol => kol.user.id === userId);
+    return kol.id;
   };
 
-  const getEntId = (userId) => {
-    let entId = null;
-    ents.map((ent) => {
-      if (ent.userId === userId) {
-        entId = ent.enterpriseId;
-      }
-    });
-    return entId;
+  const getEntIdByUserId = (userId) => {
+    const ent = ents.find(ent => ent.user.id === userId);
+    return ent.id;
   };
 
   const onChangeInputHandler = (e) => {
     setSearchInput(e.target.value);
     setShow(true);
-    console.log(searchInput);
   };
 
   const onSearch = (value) => {
@@ -113,51 +74,51 @@ const SearchModal = () => {
             users &&
             users.length > 0 &&
             users
-              .filter((item) => {
+              .filter((user) => {
                 return searchInput.toLowerCase() === ""
-                  ? item
-                  : item.firstName
-                      .toLowerCase()
-                      .includes(searchInput.toLowerCase()) ||
-                      item.lastName
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase());
+                  ? user
+                  : user.firstName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                  user.lastName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase());
               })
-              .map((item) => (
-                <div key={item.userId}>
-                  {item.roles == "KOL" && (
+              .map((user) => (
+                <div key={user.id}>
+                  {user.role === "KOL" && (
                     <Link
-                      key={item.userId}
-                      to={`/detail/kol/:${getKolId(item.userId)}`}
+                      key={user.id}
+                      to={`/kols/${getKolIdByUserId(user.id)}`}
                       className={classes["item-search-user"]}
                     >
-                      <Avatar size={60} src={item.avatar}>
-                        {item?.avatar
+                      <Avatar size={60} src={user.avatar}>
+                        {user?.avatar
                           ? ""
-                          : item?.firstName.charAt(0)?.toUpperCase()}
+                          : user?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
                         <div className={classes["name-item-user"]}>
-                          {item.firstName.toLowerCase()} {item.lastName}
+                          {user.firstName.toLowerCase()} {user.lastName}
                         </div>
                         <div className={classes["role-item-user"]}>kol</div>
                       </div>
                     </Link>
                   )}
-                  {item.roles == "ENTERPRISE" && (
+                  {user.role === "ENTERPRISE" && (
                     <Link
-                      key={item.userId}
-                      to={`/detail/enterprise/:${getEntId(item.userId)}`}
+                      key={user.id}
+                      to={`/ents/${getEntIdByUserId(user.id)}`}
                       className={classes["item-search-user"]}
                     >
-                      <Avatar size={60} src={item.avatar}>
-                        {item?.avatar
+                      <Avatar size={60} src={user.avatar}>
+                        {user?.avatar
                           ? ""
-                          : item?.firstName.charAt(0)?.toUpperCase()}
+                          : user?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
                         <div className={classes["name-item-user"]}>
-                          {item.firstName.toLowerCase()} {item.lastName}
+                          {user.firstName.toLowerCase()} {user.lastName}
                         </div>
                         <div className={classes["role-item-user"]}>
                           Enterprise
@@ -167,36 +128,36 @@ const SearchModal = () => {
                   )}
                 </div>
               ))}
-          {!account &&
+          {!user &&
             searchInput &&
             kols &&
             kols.length > 0 &&
             kols
-              .filter((item) => {
+              .filter((kol) => {
                 return searchInput.toLowerCase() === ""
-                  ? item
-                  : item.firstName
-                      .toLowerCase()
-                      .includes(searchInput.toLowerCase()) ||
-                      item.lastName
-                        .toLowerCase()
-                        .includes(searchInput.toLowerCase());
+                  ? kol
+                  : kol.firstName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase()) ||
+                  kol.lastName
+                    .toLowerCase()
+                    .includes(searchInput.toLowerCase());
               })
-              .map((item) => (
-                <div key={item.kolId}>
+              .map((kol) => (
+                <div key={kol.id}>
                   <Link
-                    key={item.kolId}
-                    to={`/detail/kol/:${item.kolId}`}
+                    key={kol.id}
+                    to={`/kols/${kol.id}`}
                     className={classes["item-search-user"]}
                   >
-                    <Avatar size={60} src={item.avatar}>
-                      {item?.avatar
+                    <Avatar size={60} src={kol?.user.avatar}>
+                      {kol?.user.avatar
                         ? ""
-                        : item?.firstName.charAt(0)?.toUpperCase()}
+                        : kol?.user.firstName.charAt(0)?.toUpperCase()}
                     </Avatar>
                     <div>
                       <div className={classes["name-item-user"]}>
-                        {item.firstName.toLowerCase()} {item.lastName}
+                        {kol?.user.firstName.toLowerCase()} {kol.user.lastName}
                       </div>
                       <div className={classes["role-item-user"]}>kol</div>
                     </div>

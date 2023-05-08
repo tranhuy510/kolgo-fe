@@ -1,22 +1,8 @@
 const apiUrl = "http://localhost:8080/api";
 
-const getAccessToken = () =>
-  `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
+const getAccessToken = () => `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
 
-async function fetchData(params, auth) {
-  let options = {
-    method: "GET",
-    Accept: "application/json",
-    headers: {
-      Authorization: auth && getAccessToken(),
-    },
-  };
-  const res = await fetch(`${apiUrl}/${params}`, options);
-  const data = await res.json();
-  return data;
-}
-
-async function updateData(method, params, body, auth) {
+async function httpRequestJson(method, uri, auth, body) {
   let options = {
     method: method,
     headers: {
@@ -24,32 +10,46 @@ async function updateData(method, params, body, auth) {
       "Content-Type": "application/json",
       Authorization: auth && getAccessToken(),
     },
-    body: JSON.stringify(body),
+    body: body && JSON.stringify(body),
   };
-  const res = await fetch(`${apiUrl}/${params}`, options);
+  const res = await fetch(`${apiUrl}/${uri}`, options);
   const data = await res.json();
   return data;
 }
 
-function putData(params, body) {
-  return updateData("PUT", params, body, true);
-}
-
-function postData(params, body) {
-  return updateData("POST", params, body, true);
-}
-
-async function putFormData(params, formData, auth) {
+export async function httpRequestFormData(method, uri, auth, formData) {
   let options = {
-    method: "PUT",
+    method: method,
     headers: {
       Authorization: auth && getAccessToken(),
     },
     body: formData,
   };
-  const res = await fetch(`${apiUrl}/${params}`, options);
+  const res = await fetch(`${apiUrl}/${uri}`, options);
   const data = await res.json();
   return data;
 }
 
-export { fetchData, putData, postData, putFormData };
+export function post(uri, body) {
+  return httpRequestJson("POST", uri, false, body);
+}
+
+export function postAuth(uri, body) {
+  return httpRequestJson("POST", uri, true, body);
+}
+
+export function get(uri) {
+  return httpRequestJson("GET", uri, false);
+}
+
+export function getAuth(uri) {
+  return httpRequestJson("GET", uri, true);
+}
+
+export function putAuth(uri, body) {
+  return httpRequestJson("PUT", uri, true, body);
+}
+
+export function putFormDataAuth(uri, formData) {
+  return httpRequestFormData("PUT", uri, true, formData)
+}

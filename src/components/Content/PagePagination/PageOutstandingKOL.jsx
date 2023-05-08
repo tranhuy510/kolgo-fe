@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { getKols } from "../../../services/getApi";
-import { fetchData } from "../../../services/common";
+import { getKols } from "../../../services/KolService";
 
 const IMG = styled.img`
   width: 220px;
@@ -52,7 +51,7 @@ const PageOutstandingKOL = (props) => {
   }, [listKolHot]);
 
   useEffect(() => {
-    fetchData("kols", false).then((res) => setListKolHot(res));
+    getKols().then((res) => setListKolHot(res));
   }, []);
 
   function arrUpperCase(data) {

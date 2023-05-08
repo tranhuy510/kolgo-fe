@@ -12,27 +12,19 @@ import home from "../../assets/logo/icon-home.svg";
 import campaign from "../../assets/logo/icon-compaign.svg";
 import chat from "../../assets/logo/icon-chat.svg";
 import "./style.css";
-import { fetchData } from "../../services/common";
 
 const Header = (props) => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState();
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
-    const identifier = setTimeout(() => {
-      if (user && user.role === "KOL") {
-        fetchData("kol/profile", true).then((data) => setProfile(data));
-      }
-      if (user && user.role === "ENTERPRISE") {
-        fetchData("ent/profile", true).then((data) => setProfile(data));
-      }
-    }, 500);
-    return () => {
-      clearTimeout(identifier);
+    const handleStorageChange = () => {
+      setUser({ ...JSON.parse(localStorage.getItem("user")) });
     };
-  }, [user]);
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
@@ -66,9 +58,13 @@ const Header = (props) => {
             <NavBar logOutHandler={logOutHandler}>
               <Avatar
                 size={40}
-                src={`http://localhost:8080/api/images/${profile?.user?.avatar}`}
+                src={
+                  user?.avatar
+                    ? `http://localhost:8080/api/images/${user.avatar}`
+                    : ""
+                }
               >
-                {user?.image ? "" : user?.email.charAt(0)?.toUpperCase()}
+                {user?.avatar ? "" : user?.firstName.charAt(0)?.toUpperCase()}
                 {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
               </Avatar>
             </NavBar>

@@ -4,14 +4,20 @@ import { Avatar, Col, Row, Select } from "antd";
 
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
-import { fetchData, putFormData } from "../../../services/common";
+import { updateUserAvatar } from "../../../services/UserService";
+import { updateEntProfile } from "../../../services/EnterpriseService";
+import { getEntProfile } from "../../../services/EnterpriseService";
+import { getEntFields } from "../../../services/FieldService";
+import { getCities } from "../../../services/CityService";
 
 export default function FormProfileEnterprise(props) {
-  const [ent, setEnt] = useState({});
-  const [city, setCity] = useState([]);
-  const [speciality, setSpeciality] = useState([]);
-  const [valueSpeciality, setValueSpeciality] = useState();
-  const [valueCity, setValueCity] = useState();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
+  const [profile, setProfile] = useState({});
+  const [cities, setCities] = useState([]);
+  const [fields, setFields] = useState([]);
+  const [fieldName, setFieldName] = useState();
+  const [cityName, setCityName] = useState();
   const [showMessage, setShowMessage] = useState({
     status: false,
     type: "",
@@ -36,34 +42,24 @@ export default function FormProfileEnterprise(props) {
 
   useEffect(() => {
     Promise.all([
-      fetchData("ent/profile", true),
-      fetchData("cities", false),
-      fetchData("fields/ent", false),
+      getEntProfile(),
+      getCities(),
+      getEntFields(),
     ]).then(([profile, cities, fields]) => {
-      setEnt({
-        firstName: profile.user.firstName,
-        lastName: profile.user.lastName,
-        name: profile.name,
-        phone: profile.phone,
-        taxId: profile.taxId,
-        cityId: profile.address.city.id,
-        addressDetails: profile.address.details,
-        fieldId: profile.field.id,
-        avatar: profile.user.avatar,
-      });
-      setCity(cities);
-      setSpeciality(fields);
+      setProfile(profile);
+      setCities(cities);
+      setFields(fields);
     });
   }, []);
 
-  const optionCity = city.map((c) => {
+  const cityOptions = cities.map((c) => {
     return {
       value: c.id,
       label: c.name,
     };
   });
 
-  const optionSpeciality = speciality.map((s) => {
+  const fieldOptions = fields.map((s) => {
     return {
       value: s.id,
       label: s.name,
@@ -71,7 +67,7 @@ export default function FormProfileEnterprise(props) {
   });
 
   const inputChangeHandler = (event) => {
-    setEnt((prevState) => {
+    setProfile((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -80,8 +76,8 @@ export default function FormProfileEnterprise(props) {
   };
 
   const changeCityHandler = (value) => {
-    setValueCity(value);
-    setEnt((prevState) => {
+    setCityName(value);
+    setProfile((prevState) => {
       return {
         ...prevState,
         cityId: value,
@@ -90,8 +86,8 @@ export default function FormProfileEnterprise(props) {
   };
 
   const changeSpecialityHandler = (value) => {
-    setValueSpeciality(value);
-    setEnt((prevState) => {
+    setFieldName(value);
+    setProfile((prevState) => {
       return {
         ...prevState,
         fieldId: value,
@@ -100,12 +96,12 @@ export default function FormProfileEnterprise(props) {
   };
 
   const avatarChangeHandler = (event) => {
-    setEnt((prevState) => {
-      return {
-        ...prevState,
-        avatar: event.target.files[0],
-      };
-    });
+    updateUserAvatar(event.target.files[0])
+      .then(res => {
+        setUser(prev => ({ ...prev, avatar: res.avatar }))
+        localStorage.setItem("user", JSON.stringify({ ...user, avatar: res.avatar }))
+        window.dispatchEvent(new Event('storage'))
+      })
   };
 
   const validateFormData = (formData) => {
@@ -137,14 +133,9 @@ export default function FormProfileEnterprise(props) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (!validateFormData(ent)) return;
-
-    const formData = new FormData();
-    Object.keys(ent).map((key) => formData.append(key, ent[key]));
-
-    putFormData("ent/profile", formData, true).then(
-      createSuccessMessage("Cập nhật thành công!")
-    );
+    if (!validateFormData(profile)) return;
+    updateEntProfile(profile)
+      .then(createSuccessMessage("Cập nhật thành công!"));
   };
 
   return (
@@ -166,7 +157,7 @@ export default function FormProfileEnterprise(props) {
                 className={classes.input_profile}
                 name="firstName"
                 onChange={inputChangeHandler}
-                defaultValue={ent.firstName}
+                defaultValue={profile.firstName}
               />
             </Col>
           </Row>
@@ -178,7 +169,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Họ của bạn"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent.lastName}
+                defaultValue={profile.lastName}
                 name="lastName"
               />
             </Col>
@@ -191,7 +182,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Tên doanh nghiệp"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent.name}
+                defaultValue={profile.name}
                 name="name"
               />
             </Col>
@@ -204,7 +195,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Số điện thoại"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent.phone}
+                defaultValue={profile.phone}
                 name="phone"
               />
             </Col>
@@ -217,7 +208,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Mã số thuế"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent.taxId}
+                defaultValue={profile.taxId}
                 name="taxId"
               />
             </Col>
@@ -232,13 +223,13 @@ export default function FormProfileEnterprise(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeSpecialityHandler}
-                value={valueSpeciality ? valueSpeciality : ent.fieldId}
+                value={fieldName ? fieldName : profile.fieldId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={optionSpeciality}
+                options={fieldOptions}
               />
             </Col>
           </Row>
@@ -252,13 +243,13 @@ export default function FormProfileEnterprise(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeCityHandler}
-                value={valueCity ? valueCity : ent.cityId}
+                value={cityName ? cityName : profile.cityId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={optionCity}
+                options={cityOptions}
               />
             </Col>
           </Row>
@@ -270,7 +261,7 @@ export default function FormProfileEnterprise(props) {
                 placeholder="Địa chỉ cụ thể"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={ent.addressDetails}
+                defaultValue={profile.addressDetails}
                 name="addressDetails"
               />
             </Col>
@@ -289,9 +280,9 @@ export default function FormProfileEnterprise(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/${ent.avatar}`}
+            src={`http://localhost:8080/api/images/${user?.avatar}`}
           >
-            {ent.avatar ? (
+            {user?.avatar ? (
               ""
             ) : (
               <UserOutlined style={{ fontSize: 70, lineHeight: "200px" }} />

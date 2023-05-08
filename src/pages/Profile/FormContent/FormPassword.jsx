@@ -3,11 +3,11 @@ import { Col, Row } from "antd";
 
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
-import { putData } from "../../../services/common";
+import { updateUserPassword } from "../../../services/UserService";
 
 export default function FormPassword(props) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const [formData, setFormData] = useState({});
+  const [passwordInput, setPasswordInput] = useState({});
 
   const [showMessage, setShowMessage] = useState({
     status: false,
@@ -32,7 +32,7 @@ export default function FormPassword(props) {
   };
 
   const inputChangeHandler = (event) => {
-    setFormData((prevState) => {
+    setPasswordInput((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -63,15 +63,14 @@ export default function FormPassword(props) {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    if (!validateFormData(formData)) return;
+    if (!validateFormData(passwordInput)) return;
 
-    console.log(formData);
-
-    putData("user/password", formData).then((res) => {
-      console.log(res);
-      if (res.error) createErrorMessage(res.message);
-      else createSuccessMessage("Cập nhật thành công!");
-    });
+    updateUserPassword(passwordInput)
+      .then((res) => {
+        console.log(res);
+        if (res.error) createErrorMessage(res.message);
+        else createSuccessMessage("Cập nhật thành công!");
+      });
   };
 
   return (

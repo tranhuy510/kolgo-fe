@@ -16,6 +16,8 @@ import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 import PaymentResult from "../pages/Payment/PaymentResult";
 
 import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
+import BookingDetails from "../pages/Booking/BookingDetails";
+import BookingCreate from "../pages/Booking/BookingCreate";
 
 export const router = createBrowserRouter([
   {
@@ -48,8 +50,16 @@ export const router = createBrowserRouter([
         element: isAuthenticatedRoute(Chat, "chat"),
       },
       {
-        path: "vnpay/return",
-        element: <PaymentResult />,
+        path: "/kols/:kolId/book/",
+        element: isAuthenticatedRoute(BookingCreate, "bookingCreate"),
+      },
+      {
+        path: "/bookings/:id",
+        element: isAuthenticatedRoute(BookingDetails, "bookingDetails"),
+      },
+      {
+        path: "/vnpay/return",
+        element: isAuthenticatedRoute(PaymentResult, "paymentResult"),
       },
     ],
   },
@@ -68,7 +78,6 @@ export const router = createBrowserRouter([
     path: "/admin",
     element: isAuthenticatedRoute(Chat, "admin"),
   },
-
   {
     path: "*",
     element: <NotFound />,
