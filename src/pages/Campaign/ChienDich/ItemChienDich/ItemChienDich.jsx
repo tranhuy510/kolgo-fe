@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import { Button, Modal } from "antd";
+import { Button, Modal, Avatar } from "antd";
 import { format } from "date-fns";
 import Modals from "../../../../components/UI/Modal/Modals";
 
@@ -18,6 +18,7 @@ const ItemChienDich = (props) => {
         content: '',
     });
     const userCtx = useContext(CampaignContext);
+    console.log(userCtx);
 
     // show modal
     const showModalThamGia = () => {
@@ -87,11 +88,14 @@ const ItemChienDich = (props) => {
             </div>
             <div className={classes["infor-chien-dich"]}>
                 <div className={classes["left-infor"]}>
-                    <img
+                    {props.data.author.avatar && <img
                         className={classes["anh"]}
-                        src={props.data.anh}
+                        src={props.data.author.avatar}
                         alt={props.data.tenchiendich}
-                    />
+                    />}
+                    {!props.data.author.avatar && <Avatar shape="square" size={150}>
+                        {!props.data.author.avatar && props.data.author.name.toUpperCase()}
+                    </Avatar>}
                 </div>
                 <div className={classes["right-infor"]}>
                     <div className={classes["thoi-gian"]}>

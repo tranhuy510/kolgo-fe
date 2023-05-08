@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import HomeChienDich from "./ChienDich/HomeChienDich";
 import SubMenu from "./SubMenu";
 import SubTab from "./SubTab";
 import CampaignContext from "../../context/campaign.context";
 import { getEnts, getKols } from "../../services/getApi";
 
 import classes from "./Campaign.module.css";
-import "./index.css";
 import { Row, Col } from "antd";
 
 const Campaign = (props) => {

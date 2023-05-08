@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import classes from '../../Campaign.module.css'
 import InformationCampaign from './InformationCampaign'
-import { Button } from 'antd'
+import { Button, Avatar } from 'antd'
 import { Link } from 'react-router-dom';
 import ModalUpdateCampaign from './ModalUpdateCampaign'
 
@@ -24,7 +24,14 @@ const CampaignCreated = ({ data }) => {
         <div className={classes["created-campaign-container"]}>
             <div className={classes["created-item"]}>
                 <div className={classes["item-left"]} >
-                    <img src={data.anh} alt="" />
+                    {data.author.avatar && <img
+                        className={classes["anh"]}
+                        src={data.author.avatar}
+                        alt={data.tenchiendich}
+                    />}
+                    {!data.author.avatar && <Avatar shape="square" size={150}>
+                        {!data.author.avatar && data.author.name.toUpperCase()}
+                    </Avatar>}
                 </div>
                 <div className={classes["item-right"]}>
                     <div className={classes["item-right-top"]}>{data.tenchiendich}</div>

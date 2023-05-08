@@ -422,6 +422,7 @@
   display: flex;
   justify-content: space-around;
   box-sizing: border-box;
+  margin-right: 20px;
 }
 
 .item-left img {

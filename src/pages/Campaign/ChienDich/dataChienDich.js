@@ -11,10 +11,10 @@ export const listChienDich = [
     ],
     mota: `*Câu chuyện về thương hiệu SHANEN :
     - Với kinh nghiệm 8 năm phục vụ hơn 30 triệu chủ xe và gia đình trên toàn cầu, SHANEN cung cấp cho khách hàng máy hút bụi xe hơi, nhà ở, chất lượng hàng đầu thế giới`,
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty SHANEN",
+      avatar: "",
     },
     trangthai: {
       status: "success",
@@ -89,10 +89,10 @@ export const listChienDich = [
       { id: 4, name: "Thể Thao (Sport)" },
     ],
     mota: "",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty SHANEN",
+      avatar: "",
     },
     trangthai: {
       status: "warning",
@@ -144,10 +144,10 @@ export const listChienDich = [
       { id: 4, name: "Thể Thao (Sport)" },
     ],
     mota: "This property is useful for creating a clean and organized user interface.",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty B",
+      avatar: "",
     },
     listKOL: [
       { id: "1", name: "Nguyen Van A" },
@@ -171,10 +171,10 @@ export const listChienDich = [
       { id: 4, name: "Thể Thao (Sport)" },
     ],
     mota: "mô tả chiến dịch",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty B",
+      avatar: "",
     },
     listKOL: [
       { id: "1", name: "Nguyen Van A" },
@@ -199,10 +199,10 @@ export const listChienDich = [
       { id: 9, name: "Giải Trí (Entertainment)" },
     ],
     mota: "mô tả chiến dịch",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty A",
+      avatar: "",
     },
     listKOL: [
       { id: "1", name: "Nguyen Van A" },
@@ -227,10 +227,10 @@ export const listChienDich = [
       { id: 6, name: "Thời Trang (Fashion)" },
     ],
     mota: "mô tả chiến dịch",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty B",
+      avatar: "",
     },
     listKOL: [
       { id: "1", name: "Nguyen Van A" },
@@ -254,10 +254,10 @@ export const listChienDich = [
       { id: 2, name: "Ẩm Thực (Food)" },
     ],
     mota: "mô tả chiến dịch",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 8,
       name: "Cty B",
+      avatar: "",
     },
     listKOL: [
       { id: "kol1", name: "Nguyen Van A" },
@@ -281,10 +281,10 @@ export const listChienDich = [
       { id: 2, name: "Ẩm Thực (Food)" },
     ],
     mota: "mô tả chiến dịch",
-    anh: "https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-gai-xinh-de-thuong.jpg",
     author: {
       userId: 9,
       name: "Cty C",
+      avatar: "",
     },
     trangthai: {
       status: "success",

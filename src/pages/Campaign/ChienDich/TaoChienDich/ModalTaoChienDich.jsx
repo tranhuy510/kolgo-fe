@@ -14,7 +14,6 @@ const ModalTaoChienDich = (props) => {
     const [openChild, setOpenChild] = useState(false);
 
     const [nameCampaign, setNameCampaign] = useState("");
-    const [avataMain, setAvataMain] = useState("")
     const [listFields, setListFields] = useState([]);
     const [startDate, setStartDate] = useState({
         day: null,
@@ -62,7 +61,6 @@ const ModalTaoChienDich = (props) => {
     const onCreateCampaignHandler = () => {
 
         console.log(nameCampaign);
-        console.log(avataMain);
         console.log(listFields);
         console.log(startDate);
         console.log(endDate);
@@ -76,10 +74,6 @@ const ModalTaoChienDich = (props) => {
 
     const onChangeNameCampaignHandler = (e) => {
         setNameCampaign(e.target.value);
-    };
-
-    const onChangeAvataMainHandler = (data) => {
-        setAvataMain(data);
     };
 
     const onChangeFieldsHandler = (value) => {
@@ -167,22 +161,6 @@ const ModalTaoChienDich = (props) => {
                         placeholder="Nhập tên chiến dịch"
                         onChange={onChangeNameCampaignHandler}
                         value={nameCampaign}
-                    />
-                </Form.Item>
-
-                {/* Ảnh đại diện chiến dịch */}
-                <Form.Item
-                    label="Ảnh đại diện chiến dịch"
-                    name="avataMain"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy chọn ảnh đại diện cho chiến dịch!',
-                        },
-                    ]}
-                >
-                    <UploadFile
-                        onChangeAvataMainHandler={onChangeAvataMainHandler}
                     />
                 </Form.Item>
 
