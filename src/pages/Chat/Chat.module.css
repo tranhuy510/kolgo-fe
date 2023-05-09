@@ -7,14 +7,15 @@ ul {
   list-style: none;
 }
 
-.messenger li.active {
-  background: var(--color-primary-1);
+.mesenger li.active {
+  background: blueviolet;
   color: #fff;
 }
 
 .messenger li:hover {
   background: grey;
   color: #fff;
+  cursor: pointer;
 }
 
 .messenger input {
@@ -24,17 +25,14 @@ ul {
 .messenger button {
   border: none;
   padding: 10px;
-  background: var(--color-primary-1);
+  background: green;
   color: #fff;
   font-size: 1.2em;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .messenger button:hover {
-  color: var(--color-primary-1);
-  background-color: #fff;
-  cursor: pointer;
-  border: 1px solid var(--color-primary-1);
+  opacity: 0.75;
 }
 
 .messenger button:active {
@@ -53,7 +51,7 @@ ul {
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
-.conversation-list {
+.messenger .conversation-list {
   width: 20%;
 }
 
@@ -69,7 +67,7 @@ ul {
   border: none;
 }
 
-.conversation-list-item {
+.messenger .conversation-list-item {
   padding: 10px;
   background: #eee;
   border: #000;
@@ -120,14 +118,12 @@ ul {
 
 .message-input {
   width: 90%;
-  outline: none;
-  border-top: 2px solid var(--color-primary-1);
-  border-bottom: none;
-  border-right: none;
-  border-left: none;
+  border-radius: 50px;
 }
 
 .send-button {
   width: 10%;
+  border-radius: 50px;
+  margin-left: 5px;
   cursor: pointer;
 }
