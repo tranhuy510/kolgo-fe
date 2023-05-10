@@ -18,14 +18,6 @@ const Name = styled.p`
   line-height: 40px;
 `;
 
-const CardKOL = styled.div`
-  width: 220px;
-  height: 280px;
-  margin: 5px 0;
-  box-sizing: border-box;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-`;
 const linkStyle = {
   width: "220px",
   height: "280px",

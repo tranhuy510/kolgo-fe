@@ -18,7 +18,6 @@ const ItemChienDich = (props) => {
         content: '',
     });
     const userCtx = useContext(CampaignContext);
-    console.log(userCtx);
 
     // show modal
     const showModalThamGia = () => {

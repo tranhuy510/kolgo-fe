@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { getKol } from '../../services/KolService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
 import { BookingStatus } from '../../utils/Enums';
 import { createBooking } from '../../services/BookingService';
@@ -11,7 +11,6 @@ const { TextArea } = Input;
 
 const BookingCreate = (props) => {
     const navigate = useNavigate();
-    const { kolId } = useParams();
     const [booked, setBooked] = useState(false);
     const [booking, setBooking] = useState({
         date: "",
@@ -22,20 +21,16 @@ const BookingCreate = (props) => {
         totalPrice: 0,
         status: "",
         description: "",
-        // kolId: kolId
         kolId: props.id
     });
 
-    console.log(props.id);
-
     useEffect(() => {
-        // getKol(kolId)
         getKol(props.id)
             .then(res =>
                 setBooking(prev => ({
                     ...prev,
-                    postPrice: res.kol.postPrice,
-                    videoPrice: res.kol.videoPrice
+                    postPrice: res.kol?.postPrice,
+                    videoPrice: res.kol?.videoPrice
                 }))
 
             );

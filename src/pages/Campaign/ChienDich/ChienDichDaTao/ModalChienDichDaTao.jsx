@@ -44,17 +44,10 @@ const ModalChienDichDaTao = () => {
 
     const regex = /(.*)\s\((.*)\)/;
 
-    const checkStringInArrayIgnoreCase = (searchLinhVuc, inputSearch, chienDich) => {
-        if (searchLinhVuc !== '' && inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase()) && chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (searchLinhVuc !== '') {
-            return chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase());
-        }
-    };
+    const resultSearch = campaigns.filter((cp) => {
+        return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
+            && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
+    })
 
     return (
         <div className={classes['campaign-modal-created']}>
@@ -69,7 +62,7 @@ const ModalChienDichDaTao = () => {
                     }}
                 />
                 <select
-                    className={classes['search-modal-select']}
+                    className={classes['created-modal-select']}
                     value={searchField}
                     onChange={onChangeHandler}
                 >
@@ -83,17 +76,10 @@ const ModalChienDichDaTao = () => {
                 </select>
             </div>
             <div className={classes["created-modal-listChienDich"]}>
-                {campaigns &&
-                    campaigns.length > 0 &&
-                    campaigns.map((item, index) => (
+                {resultSearch && resultSearch.length > 0 &&
+                    resultSearch.map((campaign, index) => (
                         <div className={classes["listChienDich-item"]} key={index}>
-                            {searchField.toLowerCase() === "" ? (
-                                userCtx.user.id === item.author.userId && <CampaignCreated data={item} />
-                            ) : (
-                                checkStringInArrayIgnoreCase(searchField, inputSearch, item) && (
-                                    userCtx.user.id === item.author.userId && <CampaignCreated data={item} />
-                                )
-                            )}
+                            {userCtx.user.id === campaign.author.userId && <CampaignCreated data={campaign} />}
                         </div>
                     ))}
             </div>

@@ -11,20 +11,14 @@ const ModalDangThamGia = () => {
     const userCtx = useContext(CampaignContext);
     const [campaigns, setCampaigns] = useState([])
     const [inputSearch, setInputSearch] = useState("");
-    const [searchLinhVuc, setSearchLinhVuc] = useState("");
+    const [searchField, setSearchField] = useState("");
     const [linhVuc, setLinhVuc] = useState(listLinhVuc);
-    // console.log(userCtx);
 
     useEffect(() => {
-        // const identifier = setTimeout(() => {
         if (userCtx.idRole) {
             getCampaigns()
             console.log(userCtx.idRole);
         }
-        // }, 1000)
-        // return () => {
-        //     clearTimeout(identifier)
-        // }
     }, [userCtx.idRole])
 
     const getCampaigns = () => {
@@ -46,6 +40,11 @@ const ModalDangThamGia = () => {
         })
     }
 
+    const resultSearch = campaigns.filter((cp) => {
+        return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
+            && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
+    })
+
     const onKeyDownHandler = (event) => {
         if (event.key === "Enter" || event.keyCode === 13) {
             setInputSearch(event.target.value);
@@ -53,14 +52,17 @@ const ModalDangThamGia = () => {
     };
 
     const onChangeHandler = (event) => {
-        setSearchLinhVuc(event.target.value);
+        setSearchField(event.target.value);
     };
 
     const onSearchHandler = (value) => {
         setInputSearch(value);
+        console.log(resultSearch);
     }
 
     const regex = /(.*)\s\((.*)\)/;
+
+
 
     const checkStringInArrayIgnoreCase = (searchLinhVuc, inputSearch, chienDich) => {
         if (searchLinhVuc !== '' && inputSearch !== '') {
@@ -93,7 +95,7 @@ const ModalDangThamGia = () => {
                         />
                         <select
                             className={classes['search-modal-select']}
-                            value={searchLinhVuc}
+                            value={searchField}
                             onChange={onChangeHandler}
                         >
                             {linhVuc &&
@@ -106,17 +108,10 @@ const ModalDangThamGia = () => {
                         </select>
                     </div>
                     <div className={classes["dangThamGia-modal-listChienDich"]}>
-                        {campaigns &&
-                            campaigns.length > 0 &&
-                            campaigns.map((item, index) => (
-                                <div className={classes["listChienDich-item"]} key={item.id}>
-                                    {searchLinhVuc.toLowerCase() === "" ? (
-                                        <ItemChienDich data={item} />
-                                    ) : (
-                                        checkStringInArrayIgnoreCase(searchLinhVuc, inputSearch, item) && (
-                                            <ItemChienDich data={item} />
-                                        )
-                                    )}
+                        {resultSearch && resultSearch.length > 0 &&
+                            resultSearch.map((campaign, index) => (
+                                <div className={classes["listChienDich-item"]} key={index}>
+                                    <ItemChienDich data={campaign} />
                                 </div>
                             ))}
                     </div>

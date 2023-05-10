@@ -33,3 +33,21 @@
     padding: 10px 50px;
     box-sizing: border-box;
 }
+
+.search-container .search-filter {
+    display: flex;
+}
+
+.search-container .search-filter .search-filter-name {
+    width: 40%;
+}
+
+.search-container .search-filter .search-filter-field,.search-filter-city,.btn-search,.btn-renew {
+    width: 10%;
+    margin-left: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+

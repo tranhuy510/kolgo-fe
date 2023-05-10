@@ -6,21 +6,27 @@ import { Input } from 'antd';
 const { Search } = Input;
 
 const ModalDangDienRa = () => {
-    const [chienDich, setChienDich] = useState([]);
+    const [campaigns, setCampaigns] = useState([]);
     const [inputSearch, setInputSearch] = useState("");
-    const [searchLinhVuc, setSearchLinhVuc] = useState("");
-    const [linhVuc, setLinhVuc] = useState([]);
+    const [searchField, setSearchField] = useState("");
+    const [fileds, setFileds] = useState([]);
 
     useEffect(() => {
         const getPersentData = async () => {
             const chiendichData = await listChienDich;
-            setChienDich([...chiendichData]);
+            setCampaigns([...chiendichData]);
 
             const linhvucData = await listLinhVuc;
-            setLinhVuc([...linhvucData]);
+            setFileds([...linhvucData]);
         };
         getPersentData();
     }, []);
+
+
+    const resultSearch = campaigns.filter((cp) => {
+        return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
+            && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
+    })
 
     const onKeyDownHandler = (event) => {
         if (event.key === "Enter" || event.keyCode === 13) {
@@ -28,20 +34,8 @@ const ModalDangDienRa = () => {
         }
     };
 
-    const checkStringInArrayIgnoreCase = (searchLinhVuc, inputSearch, chienDich) => {
-        if (searchLinhVuc !== '' && inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase()) && chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (searchLinhVuc !== '') {
-            return chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase());
-        }
-    };
-
     const onChangeHandler = (event) => {
-        setSearchLinhVuc(event.target.value);
+        setSearchField(event.target.value);
     };
 
     const onSearchHandler = (value) => {
@@ -64,12 +58,12 @@ const ModalDangDienRa = () => {
                 />
                 <select
                     className={classes['search-modal-select']}
-                    value={searchLinhVuc}
+                    value={searchField}
                     onChange={onChangeHandler}
                 >
-                    {linhVuc &&
-                        linhVuc.length > 0 &&
-                        linhVuc.map((item) => (
+                    {fileds &&
+                        fileds.length > 0 &&
+                        fileds.map((item) => (
                             <option key={item.id} value={item.name}>
                                 {item?.name?.match(regex)[1]}
                             </option>
@@ -77,17 +71,10 @@ const ModalDangDienRa = () => {
                 </select>
             </div>
             <div className={classes["dangDienRa-modal-listChienDich"]}>
-                {chienDich &&
-                    chienDich.length > 0 &&
-                    chienDich.map((item, index) => (
+                {resultSearch && resultSearch.length > 0 &&
+                    resultSearch.map((campaign, index) => (
                         <div className={classes["listChienDich-item"]} key={index}>
-                            {searchLinhVuc.toLowerCase() === "" ? (
-                                <ItemChienDich data={item} />
-                            ) : (
-                                checkStringInArrayIgnoreCase(searchLinhVuc, inputSearch, item) && (
-                                    <ItemChienDich data={item} />
-                                )
-                            )}
+                            <ItemChienDich data={campaign} />
                         </div>
                     ))}
             </div>
