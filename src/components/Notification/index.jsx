@@ -2,57 +2,19 @@ import { BellOutlined } from "@ant-design/icons";
 
 import classes from "./Notification.module.css";
 import { Col, Row } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotiItem from "./NotiItem";
-
-const DUMMY_NOTI = [
-  {
-    avatar: "like.jpg",
-    name: "Doanh nghiệp A",
-    action: "book",
-    date: "2023-05-09",
-    read: false,
-  },
-  {
-    avatar: "tuyệt vọng chết mẹ.jpg",
-    name: "Doanh nghiệp B",
-    action: "campain",
-    date: "2023-05-08",
-    read: false,
-  },
-  {
-    avatar: "tuyệt vọng chết mẹ.jpg",
-    name: "Doanh nghiệp A",
-    action: "campain",
-    date: "2023-05-04",
-    read: false,
-  },
-  {
-    avatar: "tuyệt vọng chết mẹ.jpg",
-    name: "Doanh nghiệp A",
-    action: "campain",
-    date: "2023-05-01",
-    read: true,
-  },
-  {
-    avatar: "tuyệt vọng chết mẹ.jpg",
-    name: "Doanh nghiệp A",
-    action: "campain",
-    date: "2023-04-30",
-    read: true,
-  },
-  {
-    avatar: "tuyệt vọng chết mẹ.jpg",
-    name: "Doanh nghiệp A",
-    action: "campain",
-    date: "2023-04-29",
-    read: true,
-  },
-];
+import { useContext } from "react";
+import { MessageContext } from "../../context/Message.context";
 
 export default function Notification() {
+  const { notifications } = useContext(MessageContext);
   const [notiActive, setNotiActive] = useState(false);
   const [tab, setTab] = useState(true);
+
+  useEffect(() => {
+    console.log(notifications);
+  }, [notifications])
 
   const handlerActive = () => {
     setNotiActive(!notiActive);
@@ -62,9 +24,8 @@ export default function Notification() {
   };
   return (
     <div
-      className={`${classes["noti-button"]} ${
-        notiActive ? classes["active"] : ""
-      }`}
+      className={`${classes["noti-button"]} ${notiActive ? classes["active"] : ""
+        }`}
       onClick={handlerActive}
     >
       <BellOutlined className={classes["icon-noti"]} />
@@ -90,12 +51,12 @@ export default function Notification() {
               Chưa đọc
             </Col>
           </Row>
-          {!DUMMY_NOTI && (
+          {notifications?.length === 0 && (
             <p className={classes["noti-mgs"]}>Không có thông báo</p>
           )}
           <ul>
-            {DUMMY_NOTI.map((item) => (
-              <NotiItem item={item} />
+            {notifications?.length > 0 && notifications.map((noti) => (
+              <NotiItem noti={noti} key={noti?.id} />
             ))}
           </ul>
         </div>

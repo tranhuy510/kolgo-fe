@@ -26,7 +26,7 @@ const BookingDetails = () => {
             .then(res => {
                 console.log(res);
                 setBooking(res);
-                setBooking(prev => ({ ...prev, status: BookingStatus.REJECTED }))
+                setBooking(prev => ({ ...prev, status: BookingStatus.ACCEPTED }))
             });
     }, [])
 
@@ -56,26 +56,26 @@ const BookingDetails = () => {
             <div>
                 <div>
                     <label>Tên: </label>
-                    <label>{booking.kol.user.firstName} {booking.kol.user.lastName}</label>
+                    <label>{booking.kol.user?.firstName} {booking.kol.user?.lastName}</label>
                 </div>
                 <div>
                     <label>Lĩnh vực hoạt động: </label>
-                    <label>{booking.kol.field.name}</label>
+                    <label>{booking.kol.field?.name}</label>
                 </div>
                 <div>
                     <label>Email: </label>
-                    <label>{booking.kol.user.email}</label>
+                    <label>{booking.kol.user?.email}</label>
                 </div>
                 <div>
                     <label>Số điện thoại: </label>
-                    <label>{booking.kol.phone}</label>
+                    <label>{booking.kol?.phone}</label>
                 </div>
             </div>
             <h3>Thông tin booking</h3>
             <div>
                 <div>
                     <label>Thời gian tạo booking: </label>
-                    <label>{booking.date}</label>
+                    <label>{booking?.date}</label>
                 </div>
 
             </div>
@@ -88,9 +88,9 @@ const BookingDetails = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{booking.postPrice}</td>
-                        <td>{booking.postNumber}</td>
-                        <td>{booking.postPrice * booking.postNumber}</td>
+                        <td>{booking?.postPrice}</td>
+                        <td>{booking?.postNumber}</td>
+                        <td>{booking?.postPrice * booking?.postNumber}</td>
                     </tr>
                 </tbody>
             </table>

@@ -156,10 +156,7 @@ const Chat = (props) => {
   const sendPrivateMessage = () => {
     // TODO: if msg.conversationId == 0, post data to server
     // server response conversation id
-    stompClient.send(
-      `${appPrefix}/private`,
-      {},
-      JSON.stringify({
+stompClient.send(`${appPrefix}/private`, {}, JSON.stringify({
         ...message,
         conversationId: tab,
         receiverId: privateChats.get(tab).receiverId,

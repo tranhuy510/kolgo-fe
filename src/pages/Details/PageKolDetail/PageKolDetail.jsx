@@ -58,7 +58,7 @@ const PageKolDetail = () => {
     if (!user) {
       navigate('../login')
     }
-    navigate(`/kols/${id}/book`)
+    navigate(`/bookings/create`, { state: { kol }})
   }
 
   const onChange = (key) => {

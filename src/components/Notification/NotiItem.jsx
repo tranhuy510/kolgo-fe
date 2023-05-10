@@ -2,18 +2,18 @@ import { Avatar } from "antd";
 
 import classes from "./Notification.module.css";
 
-export default function NotiItem({ item }) {
-  const startDate = new Date(item.date);
+export default function NotiItem({ noti }) {
+  // const startDate = new Date(notification.timestamp);
 
-  const now = new Date();
-  const diff = now.getTime() - startDate.getTime();
-  const daysPassed = Math.round(diff / (1000 * 60 * 60 * 24));
+  // const now = new Date();
+  // const diff = now.getTime() - startDate.getTime();
+  // const daysPassed = Math.round(diff / (1000 * 60 * 60 * 24));
 
   const daysText = () => {
-    if (daysPassed === 0) return "Hôm nay";
-    if (daysPassed === 1) return "Hôm qua";
-    if (daysPassed <= 7) return `${daysPassed} ngày trước`;
-    if (daysPassed > 7) return `${Math.floor(daysPassed / 7)} tuần trước`;
+    // if (daysPassed === 0) return "Hôm nay";
+    // if (daysPassed === 1) return "Hôm qua";
+    // if (daysPassed <= 7) return `${daysPassed} ngày trước`;
+    // if (daysPassed > 7) return `${Math.floor(daysPassed / 7)} tuần trước`;
   };
 
   const displayDays = daysText();
@@ -23,23 +23,24 @@ export default function NotiItem({ item }) {
       <Avatar
         size={60}
         src={
-          item?.avatar ? `http://localhost:8080/api/images/${item.avatar}` : ""
+          noti.user?.avatar ? `http://localhost:8080/api/images/${noti.user.avatar}` : ""
         }
         className={classes.avatar}
       >
-        {item?.avatar ? "" : item?.firstName.charAt(0)?.toUpperCase()}
+        {noti.user?.avatar ? "" : noti.user?.firstName.charAt(0)?.toUpperCase()}
       </Avatar>
 
       <div
-        className={`${classes["item-content"]} ${item.read && classes["read"]}`}
+        className={`${classes["item-content"]} ${noti.status === 'READ' && classes["read"]}`}
       >
-        <p>
-          <b>{item.name}</b>{" "}
-          {item.action === "book" && "đã gửi lời mời hợp tác đến bạn"}
-          {item.action === "campain" && "đã tạo chiến dịch mới"}
-        </p>
+        <p>{noti?.content}</p>
+        {/* <p>
+          <b>{notification.user?.name}</b>{" "}
+          {notification.action === "book" && "đã gửi lời mời hợp tác đến bạn"}
+          {notification.action === "campain" && "đã tạo chiến dịch mới"}
+        </p> */}
 
-        <p>{displayDays}</p>
+        <p>{noti?.timestamp}</p>
       </div>
     </div>
   );

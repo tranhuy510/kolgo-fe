@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { getKol } from '../../services/KolService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
 import { BookingStatus } from '../../utils/Enums';
 import { createBooking } from '../../services/BookingService';
+import { MessageContext } from '../../context/Message.context';
+
 
 const BookingCreate = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const { state } = useLocation();
+    const { sendPublicMessage, sendPrivateMessage } = useContext(MessageContext);
     const navigate = useNavigate();
-    const { kolId } = useParams();
     const [bookings, setBookings] = useState();
     const [booking, setBooking] = useState({
         date: "",
@@ -18,20 +22,19 @@ const BookingCreate = () => {
         videoNumber: 0,
         totalPrice: 0,
         status: "",
-        kolId: kolId
+        kolId: state.kol.id
     });
 
     useEffect(() => {
-        getKol(kolId)
-            .then(res => setBooking(prev => ({
-                ...prev,
-                postPrice: res.postPrice,
-                videoPrice: res.videoPrice
-            })));
+        setBooking(prev => ({
+            ...prev,
+            postPrice: state.kol.postPrice,
+            videoPrice: state.kol.videoPrice
+        }))
     }, []);
 
     const updateTotalPrice = (postPrice, postNumber, videoPrice, videoNumber) => {
-        const totalPrice = postPrice * postNumber + videoPrice * videoNumber
+        const totalPrice = postPrice * postNumber + videoPrice * videoNumber;
         setBooking(prev => ({ ...prev, totalPrice }))
     }
 
@@ -46,22 +49,36 @@ const BookingCreate = () => {
     }
 
     const handleBooking = () => {
-        booking.date = formatDate(new Date());
-        booking.status = BookingStatus.PENDING;
-        setBooking({ ...booking });
-        createBooking(booking)
-            .then(res => {
-                console.log(res)
-                if (!res.error) navigate(`/bookings/${res.id}`);
+        sendPrivateMessage({
+            type: 'NOTIFICATION',
+            notification: {
+                id: "",
+                type: "BOOKING",
+                title: "",
+                content: "test notification",
+                status: "UNREAD",
+                timestamp: formatDate(new Date()),
+                user: state.kol.user
+            },
+            senderId: user.id,
+            receiverIds: [state.kol.user.id]
+        })
+        // booking.date = formatDate(new Date());
+        // booking.status = BookingStatus.PENDING;
+        // setBooking({ ...booking });
+        // createBooking(booking)
+        //     .then(res => {
+        //         console.log(res)
+        //         if (!res.error) navigate(`/bookings/${res.id}`);
 
-            })
+        //     })
     }
 
     return (
         <div style={{ padding: '100px 20px' }}>
             <div>
                 <label htmlFor="postPrice">Post price</label>
-                <label>${booking.postPrice}</label>
+                <label>${booking?.postPrice}</label>
             </div>
             <div>
                 <label htmlFor="postNumber">Post number</label>
@@ -75,7 +92,7 @@ const BookingCreate = () => {
             </div>
             <div>
                 <label htmlFor="postPrice">Post price</label>
-                <label>${booking.videoPrice}</label>
+                <label>${booking?.videoPrice}</label>
             </div>
             <div>
                 <label htmlFor="postNumber">Post number</label>
