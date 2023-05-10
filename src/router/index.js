@@ -13,6 +13,7 @@ import Chat from "../pages/Chat/Chat";
 import Fields from "../pages/Fields/Fields";
 import NotFound from "../pages/NotFound/NotFound";
 import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
+import HomeAdmin from "../pages/Admin/HomeAdmin";
 import PaymentResult from "../pages/Payment/PaymentResult";
 
 import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
@@ -50,10 +51,6 @@ export const router = createBrowserRouter([
         element: isAuthenticatedRoute(Chat, "chat"),
       },
       {
-        path: "/kols/:kolId/book/",
-        element: isAuthenticatedRoute(BookingCreate, "bookingCreate"),
-      },
-      {
         path: "/bookings/:id",
         element: isAuthenticatedRoute(BookingDetails, "bookingDetails"),
       },
@@ -76,7 +73,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: isAuthenticatedRoute(Chat, "admin"),
+    element: isAuthenticatedRoute(HomeAdmin, "admin"),
   },
   {
     path: "*",

@@ -5,8 +5,9 @@ import styled from "styled-components";
 import ScrollAuto from "../Banner/ScrollAuto";
 import PageHot from "./PagePagination/PageHOT";
 import PageOutStanding from "./PagePagination/PageOutstandingKOL";
+import ModalSearch from "./PagePagination/ModalSearch";
 
-import "./content.css";
+import classes from './content.module.css';
 import { Pagination } from "antd";
 
 const Title = styled.h2`
@@ -39,19 +40,22 @@ const Content = () => {
   };
 
   return (
-    <div className="content">
-      <div className="content-top">
+    <div className={classes["content"]}>
+      <div className={classes["content-top"]}>
         <ScrollAuto />
       </div>
-      <div className="content-middle">
+      <div className={classes["content-middle"]}>
+        <div className={classes["content-page"]}>
+          <ModalSearch />
+        </div>
         <Title>Hot KOL</Title>
-        <div className="content-page">
+        <div className={classes["content-page"]}>
           <PageHot
             current={currentHotKOL}
             onChangeTotalHotKOL={onChangeTotalHotKOL}
           />
         </div>
-        <div className="content-pagination">
+        <div className={classes["content-pagination"]}>
           <Pagination
             current={currentHotKOL}
             onChange={onChangeHotKOL}
@@ -59,15 +63,15 @@ const Content = () => {
           />
         </div>
       </div>
-      <div className="content-bottom">
+      <div className={classes["content-bottom"]}>
         <Title>Outstanding KOL</Title>
-        <div className="content-page">
+        <div className={classes["content-page"]}>
           <PageOutStanding
             current={currentOutstandingKOL}
             onChangeTotalOutstandingKOL={onChangeTotalOutstandingKOL}
           />
         </div>
-        <div className="content-pagination">
+        <div className={classes["content-pagination"]}>
           <Pagination
             current={currentOutstandingKOL}
             onChange={onChangeOutstandingKOL}

@@ -1,15 +1,37 @@
-.sidebar::-webkit-scrollbar {
+/* .sidebar::-webkit-scrollbar {
     display: none; 
-}
+} */
 
 .sidebar {
     width: 250px;
-    height: 700px;
     background-color: #fff;
     box-sizing: border-box;
     position: fixed;
     margin-top: 67px;
     overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+  
+.sidebar::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
+}
+  
+.sidebar::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+}
+  
+.sidebar::-webkit-scrollbar-thumb:hover{
+    background: rgba(0,0,0,0.4);
+}
+  
+.sidebar::-webkit-scrollbar-thumb:active{
+    background: rgba(0,0,0,.9);
 }
 
 .item-sidebar {

@@ -1,0 +1,46 @@
+.out-standing-container {
+  padding: 50px 20px 0 20px;
+}
+.out-standing-container .text-data {
+  padding-left: 20px;
+}
+.out-standing-container .action-btn {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+}
+.out-standing-container .btn-add-noibat {
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  background-color: rgb(240, 86, 74);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+.out-standing-container .out-standing-title {
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+.out-standing-container .out-standing-search {
+  margin-bottom: 20px;
+}
+.out-standing-container .out-standing-search .input-search {
+  font-size: 15px;
+  width: 200px;
+  margin-left: 50px;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+}
+.out-standing-container .out-standing-search .select-search {
+  margin-left: 20px;
+  width: 200px;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+}

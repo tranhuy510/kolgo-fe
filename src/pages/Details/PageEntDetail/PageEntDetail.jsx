@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-import { getEntsId, getFields } from "../../../services/getApi";
+import { getFields } from "../../../services/getApi";
+import { getEnts, getEntProfile } from '../../../services/EnterpriseService'
 import classes from './PageEntDetail.module.css'
 import InformationHeader from "./InformationHeader/InformationHeader";
 import Introduce from "./Introduce/Introduce";
@@ -18,22 +19,11 @@ const PageEntDetail = () => {
     let { id } = useParams()
 
     useEffect(() => {
-        const identifier = setTimeout(() => {
-            getEntsId(id)
-                .then(res => {
-                    if (!res.ok) {
-                        return Promise.reject(res)
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    setInfoEnt(data)
-                })
-        }, 500)
-        return () => {
-            clearTimeout(identifier)
-        }
+        getEnts()
+            .then(res => {
+                setInfoEnt(res.find(ent => ent.id == id))
+                console.log(res.find(ent => ent.id == id));
+            })
     }, [id])
 
     useEffect(() => {

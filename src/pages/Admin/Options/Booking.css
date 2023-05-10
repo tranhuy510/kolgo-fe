@@ -1,0 +1,39 @@
+.booking-container {
+  padding: 50px 20px 0 20px;
+}
+.booking-container .text-data {
+  padding-left: 20px;
+  font-size: 15px;
+}
+.booking-container .booking-title {
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+.booking-container .booking-status {
+  display: flex;
+}
+.booking-container .booking-status .radio-btn-status {
+  margin-left: 50px;
+  margin-bottom: 20px;
+}
+.radio-btn-status .btn-book {
+  margin-right: 20px;
+}
+.booking-container .booking-search {
+  margin-bottom: 20px;
+}
+.booking-container .booking-search .input-search {
+  font-size: 15px;
+  width: 200px;
+  margin-left: 50px;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+}
+.booking-container .booking-search .select-search {
+  margin-left: 20px;
+  width: 200px;
+  height: 40px;
+  outline: none;
+  padding-left: 10px;
+}

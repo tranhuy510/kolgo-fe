@@ -8,7 +8,7 @@ const ThongTinCoBan = (props) => {
         <div >
             <div className={classes['coban-item']}>
                 <h2>Hạng mục</h2>
-                <p>Công ty phần mềm</p>
+                <p>{props.infoEnt?.field.name}</p>
             </div>
             <div className={classes['coban-item']}>
                 <h2>Thông tin liên hệ</h2>
@@ -16,21 +16,21 @@ const ThongTinCoBan = (props) => {
                 <div className={classes['coban-item-address']}>
                     <div style={{ marginRight: '10px' }}><HomeFilled style={{ fontSize: '30px', opacity: '0.6', lineHeight: '45px' }} /></div>
                     <div>
-                        <div style={{ fontSize: '20px' }}>7 Phan Châu Trinh, Da Nang, Vietnam, 550000</div>
+                        <div style={{ fontSize: '20px' }}>{props.infoEnt?.address.city?.name} - {props.infoEnt?.address.details}</div>
                         <div>Địa chỉ</div>
                     </div>
                 </div>
                 <div className={classes['coban-item-phone']}>
                     <div style={{ marginRight: '10px' }}><PhoneFilled style={{ fontSize: '30px', opacity: '0.6', lineHeight: '45px' }} /></div>
                     <div>
-                        <div style={{ fontSize: '20px' }}>0236 3531 773</div>
+                        <div style={{ fontSize: '20px' }}>{props.infoEnt?.phone}</div>
                         <div>Di động</div>
                     </div>
                 </div>
                 <div className={classes['coban-item-email']}>
                     <div style={{ marginRight: '10px' }}><MailFilled style={{ fontSize: '30px', opacity: '0.6', lineHeight: '45px' }} /></div>
                     <div>
-                        <div style={{ fontSize: '20px' }}>{props.infoEnt?.email}</div>
+                        <div style={{ fontSize: '20px' }}>{props.infoEnt?.user.email}</div>
                         <div>Email</div>
                     </div>
                 </div>
