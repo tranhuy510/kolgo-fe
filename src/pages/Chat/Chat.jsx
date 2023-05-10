@@ -1,118 +1,113 @@
 import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import { getUsers } from "../../services/UserService";
-import { getChats } from "../../services/ChatService";
+import { getUserById, getUsers } from "../../services/UserService";
+import { createChat, getChats } from "../../services/ChatService";
 import classes from "./Chat.module.css";
 import { useLocation } from "react-router";
+import { formatDate } from '../../services/DateTimeUtil';
 
 let stompClient = null;
-const websocketEndpoint = "http://localhost:8080/api/websocket";
-const appPrefix = "chat";
+const websocketEndpoint = "http://localhost:8080/api/ws";
+const appPrefix = "app";
 
 const Chat = (props) => {
+  const user = JSON.parse(localStorage.getItem("user"));
   const { state } = useLocation();
   const [publicChats, setPublicChats] = useState([]);
   const [privateChats, setPrivateChats] = useState(new Map());
-  const [userList, setUserList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [tab, setTab] = useState("PUBLIC");
-  const [message, setMessage] = useState({
-    conversationId: "",
-    senderId: "",
-    receiverId: "",
-    type: "",
-    content: "",
+  const [chatMessage, setChatMessage] = useState({
+    user: user,
     timestamp: "",
+    content: "",
+    chatId: ""
+  });
+
+  const [message, setMessage] = useState({
+    type: "",
+    body: "",
+    senderId: user.id,
+    receiverIds: []
   });
 
   useEffect(() => {
     Promise.all([
-      getUsers(),
       getChats(),
-    ]).then(([users, convoList]) => {
-      console.log("users", users);
-      setUserList([...users]);
-      console.log("private chats", convoList);
-      // setPrivateChats([...convoList])
+    ]).then(([chats]) => {
+      console.log('PRIVATE CHATS', chats)
+      const chatMap = new Map();
+      if (chats.length > 0) {
+        console.log('SET NEW CHAT MAP')
+        chats.forEach(chat => chatMap.set(chat.id, chat))
+        setPrivateChats(chatMap);
+      }
+
+      if (state.user && state.user.id) {
+        console.log(state.user, state.user.id)
+        const chat = chats.find(chat => chat.type === 'PRIVATE' && chat.users[0]?.id === state.user.id);
+        console.log(chat)
+
+        if (chat) {
+          console.log('SETTING TAB')
+          setTab(chat.id)
+        }
+        else {
+          console.log('CHAT NOT FOUND');
+          console.log('CREATING NEW CHAT')
+          privateChats.set(0, {
+            id: 0,
+            type: 'PRIVATE',
+            date: formatDate(new Date()),
+            user: user,
+            users: [state.user],
+            messages: []
+          })
+          setPrivateChats(prev => new Map([...privateChats]));
+          // createNewChat([user.id, state.user.id]);
+        };
+      }
     });
 
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    setMessage((prev) => ({ ...prev, senderId: currentUser.id }));
+    // const currentUser = JSON.parse(localStorage.getItem("user"));
+    // setMessage((prev) => ({ ...prev, senderId: currentUser.id }));
 
     connect();
   }, []);
 
   useEffect(() => {
-    checkConversationExistence();
-  }, [userList]);
-
-  useEffect(() => {
-    // console.log("current tab", tab)
+    console.log("current tab", tab)
   }, [tab]);
 
-  const checkConversationExistence = () => {
-    if (state && state.receiverId) {
-      const receiver = userList.find((u) => u.id === state.receiverId);
-      if (receiver) {
-        privateChats.set(0, {
-          id: 0,
-          conversationType: "PRIVATE",
-          receiverId: receiver.id,
-          receiverFirstName: receiver.firstName,
-          receiverLastName: receiver.lastName,
-          messages: [],
-        });
-        setPrivateChats((prev) => new Map([...prev, ...privateChats]));
-        setTab(0);
-      } else {
-        const convo = [...privateChats.values()].find(
-          (c) => c.receiverId === receiver.id
-        );
-        setTab(convo?.conversationId);
-      }
-    }
-  };
+  const createNewChat = (ids) => {
+    createChat({
+      type: "PRIVATE",
+      date: formatDate(new Date()),
+      userId: user.id,
+      userIds: [...ids]
+    }).then(res => {
+      console.log(res);
+    })
+  }
 
   const connect = () => {
     if (!stompClient) {
       const sock = new SockJS(websocketEndpoint);
       stompClient = over(sock);
-      stompClient.connect({}, onConnected, onError);
+      stompClient.connect({}, onConnected, err => console.log(err));
     }
   };
 
-  // const disconnect = () => {
-  //   if (stompClient) {
-  //     stompClient.disconnect();
-  //   }
-  //   setConnected(false);
-  // }
-
   const onConnected = () => {
-    subscribePublicChannel();
-    subscribePrivateChannel();
-  };
-
-  const onError = (err) => {
-    console.log(err);
-  };
-
-  const subscribePublicChannel = () => {
     stompClient.subscribe("public/messages", onPublicMessageReceived);
-  };
-
-  const subscribePrivateChannel = () => {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    stompClient.subscribe(
-      `user/${currentUser.id}/messages`,
-      onPrivateMessageReceived
-    );
+    stompClient.subscribe(`user/${user.id}/messages`, onPrivateMessageReceived);
   };
 
   const onPublicMessageReceived = (payload) => {
     const msg = JSON.parse(payload.body);
-    setPublicChats((prev) => [...prev, msg]);
+    console.log(JSON.parse(msg.body))
+    setPublicChats((prev) => [...prev, JSON.parse(msg.body)]);
   };
 
   const onPrivateMessageReceived = (payload) => {
@@ -135,16 +130,15 @@ const Chat = (props) => {
   };
 
   const sendMessage = (e) => {
-    if (message.content) {
-      setMessage((prev) => ({
-        ...prev,
-        type: "MESSAGE",
-        timestamp: new Date().toISOString(),
-      }));
+    if (chatMessage.content) {
+      chatMessage.timestamp = formatDate(new Date());
+      message.type = 'MESSAGE';
+      message.body = JSON.stringify(chatMessage);
+
       if (tab === "PUBLIC") sendPublicMessage();
       else sendPrivateMessage();
 
-      setMessage((prev) => ({ ...prev, content: "" }));
+      setChatMessage((prev) => ({ ...prev, timestamp: "", content: "" }));
     }
     e.preventDefault();
   };
@@ -157,8 +151,7 @@ const Chat = (props) => {
     // TODO: if msg.conversationId == 0, post data to server
     // server response conversation id
     stompClient.send(
-      `${appPrefix}/private`,
-      {},
+      `${appPrefix}/private`, {},
       JSON.stringify({
         ...message,
         conversationId: tab,
@@ -201,20 +194,16 @@ const Chat = (props) => {
           {/* Public Room */}
           <li
             onClick={() => setTab("PUBLIC")}
-            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]
-              }`}
+            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]}`}
           >
             Public Chat
           </li>
           {/* Private Receivers */}
-          {[...privateChats.values()].map((convo, index) => (
+          {privateChats.size > 0 && [...privateChats.values()].map((chat, index) => (
             <li
-              onClick={() => setTab(convo.id)}
-              className={`conversation-list-item ${tab === convo.id && "active"
-                }`}
-              key={index}
-            >
-              {convo.receiverFirstName} {convo.receiverLastName}
+              onClick={() => setTab(chat.id)}
+              className={`${classes['conversation-list-item']}`} key={index}>
+              {chat.users[0].firstName} {chat.users[0].lastName}
             </li>
           ))}
         </ul>
@@ -226,14 +215,14 @@ const Chat = (props) => {
             {tab === "PUBLIC" &&
               publicChats.map((msg, index) => (
                 <li className={classes["message-list-item"]} key={index}>
-                  {msg.authorFirstName} {msg.authorLastName}: {msg.content}
+                  {msg.user.firstName} {msg.user.lastName}: {msg.content}
                 </li>
               ))}
             {tab !== "PUBLIC" &&
               privateChats.has(tab) &&
               privateChats.get(tab).messages.map((msg, index) => (
                 <li className={classes["message-list-item"]} key={index}>
-                  {msg.authorFirstName} {msg.authorLastName}: {msg.content}
+                  {msg.user.firstName} {msg.user.lastName}: {msg.content}
                 </li>
               ))}
           </ul>
@@ -243,9 +232,9 @@ const Chat = (props) => {
               type="text"
               className={classes["message-input"]}
               placeholder="Enter the message"
-              value={message.content}
+              value={chatMessage.content}
               onChange={(e) =>
-                setMessage((prev) => ({ ...prev, content: e.target.value }))
+                setChatMessage((prev) => ({ ...prev, content: e.target.value }))
               }
             />
             <button

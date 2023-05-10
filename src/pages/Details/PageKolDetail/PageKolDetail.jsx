@@ -55,12 +55,9 @@ const PageKolDetail = () => {
   }, [])
 
   const navigateToChat = () => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    console.log(user);
-    if (!user) {
+    if (!user)
       navigate('../login')
-    }
-    else navigate(`/Chat`, { state: { userId: user.id } })
+    navigate(`/chat`, { state: { user: kol.user } })
   }
 
   const bookingHandler = () => {

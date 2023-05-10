@@ -16,14 +16,14 @@ import "./style.css";
 const Header = (props) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
     const handleStorageChange = () => {
       setUser({ ...JSON.parse(localStorage.getItem("user")) });
-    }
-    window.addEventListener("storage", handleStorageChange)
-    return () => window.removeEventListener('storage', handleStorageChange)
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const logOutHandler = () => {
@@ -58,7 +58,11 @@ const Header = (props) => {
             <NavBar logOutHandler={logOutHandler}>
               <Avatar
                 size={40}
-                src={user?.avatar ? `http://localhost:8080/api/images/${user.avatar}` : ''}
+                src={
+                  user?.avatar
+                    ? `http://localhost:8080/api/images/${user.avatar}`
+                    : ""
+                }
               >
                 {user?.avatar ? "" : user?.firstName.charAt(0)?.toUpperCase()}
                 {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
@@ -73,7 +77,7 @@ const Header = (props) => {
           />
         )}
       </div>
-    </div >
+    </div>
   );
 };
 

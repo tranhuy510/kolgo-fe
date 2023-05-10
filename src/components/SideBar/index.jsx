@@ -43,6 +43,7 @@ const SideBar = () => {
                         return (
                             <Link to={`/fields/kol/${field.id}`} className="box-item" key={field.id}>
                                 <p className="">{name}</p>
+                                {/* <FontAwesomeIcon icon="fa-regular fa-pot-food" /> */}
                             </Link>
                         )
                     })
