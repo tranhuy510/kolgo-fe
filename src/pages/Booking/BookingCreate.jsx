@@ -1,39 +1,33 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { getKol } from '../../services/KolService';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
-import { BookingStatus } from '../../utils/Enums';
 import { createBooking } from '../../services/BookingService';
 import { Modal, Form, Input, Button } from 'antd';
 import classes from './Booking.module.css'
 const { TextArea } = Input;
 
 const BookingCreate = (props) => {
+    const kol = props.kol;
     const navigate = useNavigate();
     const [booked, setBooked] = useState(false);
     const [booking, setBooking] = useState({
-        date: "",
+        timestamp: "",
         postPrice: 0,
         postNumber: 0,
         videoPrice: 0,
         videoNumber: 0,
         totalPrice: 0,
-        status: "",
-        description: "",
-        kolId: props.id
+        description: ""
     });
 
     useEffect(() => {
-        getKol(props.id)
-            .then(res =>
-                setBooking(prev => ({
-                    ...prev,
-                    postPrice: res.kol?.postPrice,
-                    videoPrice: res.kol?.videoPrice
-                }))
-
-            );
+        console.log(kol)
+        setBooking(prev => ({
+            ...prev,
+            postPrice: kol?.postPrice,
+            videoPrice: kol?.videoPrice
+        }))
     }, []);
 
     const updateTotalPrice = (postPrice, postNumber, videoPrice, videoNumber) => {
@@ -56,16 +50,12 @@ const BookingCreate = (props) => {
     }
 
     const handleBooking = () => {
-        booking.date = formatDate(new Date());
-        booking.status = BookingStatus.PENDING;
+        booking.timestamp = formatDate(new Date());
         setBooking({ ...booking });
-        createBooking(booking)
+        createBooking(kol.id, booking)
             .then(res => {
                 console.log(res)
                 if (!res.error) navigate(`/bookings/${res.id}`);
-                if (res.error) {
-                    setBooked(true)
-                }
             })
     }
 

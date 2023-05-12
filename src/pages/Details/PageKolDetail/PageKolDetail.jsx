@@ -65,7 +65,6 @@ const PageKolDetail = () => {
       navigate('../login')
     }
     setOpen(true);
-    // navigate(`/kols/${id}/book`)
   }
 
   const onChange = (key) => {
@@ -89,7 +88,7 @@ const PageKolDetail = () => {
   return (
     <>
       <main className="main-details">
-        <BookingCreate id={id} onCancelOpenHandler={onCancelOpenHandler} open={open} />
+        {kol && <BookingCreate kol={kol} onCancelOpenHandler={onCancelOpenHandler} open={open} />}
         <div className="container">
           <Row className="detail-description">
             <Col span={6} style={{ paddingRight: '10px', boxSizing: 'border-box' }}>
