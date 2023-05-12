@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import classes from "./Form.module.css";
 import Message from "../../../components/UI/Message/Message";
 import ImageSlider from "../../../components/UI/ImageSlider/ImageSlider";
-import { updateKolImages, updateKolProfile } from "../../../services/KolService";
+import {
+  updateKolImages,
+  updateKolProfile,
+} from "../../../services/KolService";
 import { updateUserAvatar } from "../../../services/UserService";
 import { GenderOptions } from "../../../utils/Enums";
 import { getKolProfile } from "../../../services/KolService";
@@ -13,11 +16,10 @@ import { getCities } from "../../../services/CityService";
 import { getKolFields } from "../../../services/FieldService";
 
 export default function FormProfileKOL(props) {
-
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [profile, setProfile] = useState({});
-  const [city, setCity] = useState([]);
-  const [speciality, setSpeciality] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [fields, setFields] = useState([]);
   const [genderName, setGenderName] = useState("");
   const [cityName, setCityName] = useState("");
   const [fieldName, setFieldName] = useState("");
@@ -46,26 +48,24 @@ export default function FormProfileKOL(props) {
   };
 
   useEffect(() => {
-    Promise.all([
-      getKolProfile(),
-      getCities(),
-      getKolFields(),
-    ]).then(([profile, cities, fields]) => {
-      setProfile(profile.kol);
-      setImages(profile.images);
-      setCity(cities);
-      setSpeciality(fields);
-    });
+    Promise.all([getKolProfile(), getCities(), getKolFields()]).then(
+      ([profile, cities, fields]) => {
+        setProfile(profile.kol);
+        setImages(profile.images);
+        setCities(cities);
+        setFields(fields);
+      }
+    );
   }, []);
 
-  const optionCity = city.map((c) => {
+  const optionCity = cities.map((c) => {
     return {
       value: c.id,
       label: c.name,
     };
   });
 
-  const optionSpeciality = speciality.map((s) => {
+  const optionFields = fields.map((s) => {
     return {
       value: s.id,
       label: s.name,
@@ -101,30 +101,31 @@ export default function FormProfileKOL(props) {
     });
   };
 
-  const changeSpecialityHandler = (value) => {
+  const changeFieldHandler = (value) => {
     setFieldName(value);
     setProfile((prevState) => {
       return {
         ...prevState,
-        fieldId: value,
+        fieldIds: value,
       };
     });
   };
 
   const avatarChangeHandler = (event) => {
-    updateUserAvatar(event.target.files[0])
-      .then(res => {
-        setUser(prev => ({ ...prev, avatar: res.avatar }))
-        localStorage.setItem("user", JSON.stringify({ ...user, avatar: res.avatar }))
-        window.dispatchEvent(new Event('storage'))
-      })
+    updateUserAvatar(event.target.files[0]).then((res) => {
+      setUser((prev) => ({ ...prev, avatar: res.avatar }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, avatar: res.avatar })
+      );
+      window.dispatchEvent(new Event("storage"));
+    });
   };
 
   const handleFileChange = (event) => {
-    updateKolImages(event.target.files)
-      .then(res => {
-        setImages(prev => ([...prev, ...res.images]))
-      })
+    updateKolImages(event.target.files).then((res) => {
+      setImages((prev) => [...prev, ...res.images]);
+    });
   };
 
   const validateFormData = (formData) => {
@@ -140,8 +141,12 @@ export default function FormProfileKOL(props) {
       errMsg = "Vui lòng nhập số điện thoại của bạn!";
     } else if (!formData.cityId) {
       errMsg = "Vui lòng chọn thành phố làm việc!";
-    } else if (!formData.fieldId) {
+    } else if (!formData.fieldIds) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
+    } else if (!formData.postPrice) {
+      errMsg = "Vui lòng nhập giá của 1 bài đăng!";
+    } else if (!formData.videoPrice) {
+      errMsg = "Vui lòng nhập giá của 1 video!";
     }
     if (errMsg) {
       createErrorMessage(errMsg);
@@ -154,7 +159,9 @@ export default function FormProfileKOL(props) {
     event.preventDefault();
     if (!validateFormData(profile)) return;
 
-    updateKolProfile(profile).then(createSuccessMessage("Cập nhật thành công!"));
+    updateKolProfile(profile).then(
+      createSuccessMessage("Cập nhật thành công!")
+    );
   };
 
   return (
@@ -265,17 +272,19 @@ export default function FormProfileKOL(props) {
             <Col span={18}>
               <Select
                 showSearch
+                mode="multiple"
+                allowClear
                 placeholder="Chọn lĩnh vực hoạt động"
                 className={classes.select_profile}
                 optionFilterProp="children"
-                onChange={changeSpecialityHandler}
-                value={fieldName ? fieldName : profile.fieldId}
+                onChange={changeFieldHandler}
+                value={fieldName ? fieldName : profile.fieldIds}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={optionSpeciality}
+                options={optionFields}
               />
             </Col>
           </Row>
@@ -332,6 +341,34 @@ export default function FormProfileKOL(props) {
                 defaultValue={profile.tiktokUrl}
                 name="tiktokUrl"
                 type="url"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={6}>Giá bài đăng:</Col>
+            <Col span={18}>
+              <input
+                placeholder="Giá của 1 bài đăng"
+                onChange={inputChangeHandler}
+                type="number"
+                className={classes.input_profile}
+                defaultValue={profile.postPrice}
+                name="postPrice"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={6}>Giá video:</Col>
+            <Col span={18}>
+              <input
+                placeholder="Giá của 1 video"
+                onChange={inputChangeHandler}
+                type="number"
+                className={classes.input_profile}
+                defaultValue={profile.videoPrice}
+                name="videoPrice"
               />
             </Col>
           </Row>

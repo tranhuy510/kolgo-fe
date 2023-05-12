@@ -41,16 +41,14 @@ export default function FormProfileEnterprise(props) {
   };
 
   useEffect(() => {
-    Promise.all([
-      getEntProfile(),
-      getCities(),
-      getEntFields(),
-    ]).then(([profile, cities, fields]) => {
-      console.log(profile);
-      setProfile(profile);
-      setCities(cities);
-      setFields(fields);
-    });
+    Promise.all([getEntProfile(), getCities(), getEntFields()]).then(
+      ([profile, cities, fields]) => {
+        console.log(profile);
+        setProfile(profile);
+        setCities(cities);
+        setFields(fields);
+      }
+    );
   }, []);
 
   const cityOptions = cities.map((c) => {
@@ -86,23 +84,25 @@ export default function FormProfileEnterprise(props) {
     });
   };
 
-  const changeSpecialityHandler = (value) => {
+  const changeFieldsHandler = (value) => {
     setFieldName(value);
     setProfile((prevState) => {
       return {
         ...prevState,
-        fieldId: value,
+        fieldIds: value,
       };
     });
   };
 
   const avatarChangeHandler = (event) => {
-    updateUserAvatar(event.target.files[0])
-      .then(res => {
-        setUser(prev => ({ ...prev, avatar: res.avatar }))
-        localStorage.setItem("user", JSON.stringify({ ...user, avatar: res.avatar }))
-        window.dispatchEvent(new Event('storage'))
-      })
+    updateUserAvatar(event.target.files[0]).then((res) => {
+      setUser((prev) => ({ ...prev, avatar: res.avatar }));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, avatar: res.avatar })
+      );
+      window.dispatchEvent(new Event("storage"));
+    });
   };
 
   const validateFormData = (formData) => {
@@ -120,7 +120,7 @@ export default function FormProfileEnterprise(props) {
       errMsg = "Vui lòng nhập mã số thuế!";
     } else if (!formData.cityId) {
       errMsg = "Vui lòng chọn tỉnh/thành phố địa chỉ!";
-    } else if (!formData.fieldId) {
+    } else if (!formData.fieldIds) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
     } else if (!formData.addressDetails) {
       errMsg = "Vui lòng nhập địa chỉ cụ thể!";
@@ -135,8 +135,9 @@ export default function FormProfileEnterprise(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(profile)) return;
-    updateEntProfile(profile)
-      .then(createSuccessMessage("Cập nhật thành công!"));
+    updateEntProfile(profile).then(
+      createSuccessMessage("Cập nhật thành công!")
+    );
   };
 
   return (
@@ -220,11 +221,13 @@ export default function FormProfileEnterprise(props) {
             <Col span={17}>
               <Select
                 showSearch
+                mode="multiple"
+                allowClear
                 placeholder="Chọn lĩnh vực hoạt động"
                 className={classes.select_profile}
                 optionFilterProp="children"
-                onChange={changeSpecialityHandler}
-                value={fieldName ? fieldName : profile.fieldId}
+                onChange={changeFieldsHandler}
+                value={fieldName ? fieldName : profile.fieldIds}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
