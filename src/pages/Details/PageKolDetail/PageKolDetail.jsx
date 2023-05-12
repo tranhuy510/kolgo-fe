@@ -79,28 +79,17 @@ const PageKolDetail = () => {
   }, []);
 
   const navigateToChat = () => {
-<<<<<<< HEAD
     if (!user)
       navigate('../login')
     navigate(`/chat`, { state: { kol } })
   }
-=======
-    if (!user) navigate("../login");
-    navigate(`/chat`, { state: { user: kol.user } });
-  };
->>>>>>> ace77b49e075d69cfc5f2d0611ee42f5af0cca62
 
   const bookingHandler = () => {
     if (!user) {
       navigate("../login");
     }
     setOpen(true);
-<<<<<<< HEAD
   }
-=======
-    // navigate(`/kols/${id}/book`)
-  };
->>>>>>> ace77b49e075d69cfc5f2d0611ee42f5af0cca62
 
   const onChange = (key) => {
     console.log(user);
@@ -131,15 +120,7 @@ const PageKolDetail = () => {
   return (
     <>
       <main className="main-details">
-<<<<<<< HEAD
         {kol && <BookingCreate kol={kol} onCancelOpenHandler={onCancelOpenHandler} open={open} />}
-=======
-        <BookingCreate
-          id={id}
-          onCancelOpenHandler={onCancelOpenHandler}
-          open={open}
-        />
->>>>>>> ace77b49e075d69cfc5f2d0611ee42f5af0cca62
         <div className="container">
           <Row className="detail-description">
             <Col
@@ -166,15 +147,10 @@ const PageKolDetail = () => {
                   city={kol?.city.name}
                 />
               </Row>
-<<<<<<< HEAD
               <Row className="middle-row" >
                 <ListFields
                   fields={kol?.fields}
                 />
-=======
-              <Row className="middle-row">
-                <ListFields field={kol?.field} />
->>>>>>> ace77b49e075d69cfc5f2d0611ee42f5af0cca62
               </Row>
               <Row className="middle-row">
                 <IntroduceKOL description={description} />

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
 import { createBooking } from '../../services/BookingService';
+import { BookingStatus } from '../../utils/Enums';
 import { Modal, Form, Input, Button } from 'antd';
 import classes from './Booking.module.css'
 const { TextArea } = Input;
