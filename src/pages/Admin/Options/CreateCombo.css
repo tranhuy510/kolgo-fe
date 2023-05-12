@@ -1,0 +1,59 @@
+.create-combo-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  overflow: auto;
+}
+.create-combo-container .content-left {
+  width: 75%;
+  height: 100%;
+  padding: 80px 20px 0px 20px;
+}
+.content-left .information-combo .child-input .valid-value {
+  border: 1px solid #333;
+}
+.create-combo-container .content-right {
+  width: 25%;
+  height: 100%;
+}
+.create-combo-container .content-right .btn-add-account {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  height: 50%;
+  padding-top: 40px;
+}
+.content-right .btn-add-account button {
+  width: 200px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: rgb(240, 86, 74);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+.create-combo-container .content-right .btn-create-combo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  height: 50%;
+  padding-bottom: 40px;
+}
+.content-right .btn-create-combo button {
+  width: 200px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: rgb(240, 86, 74);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+button:hover {
+  opacity: 0.9;
+}

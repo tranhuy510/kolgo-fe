@@ -17,7 +17,7 @@ const Introduce = (props) => {
     return (
         <div className={classes['enterprise-detail-container']}>
             <div className={classes['enterprise-detail-introduce']}>
-                <Row tyle={{ boxSizing: 'border-box' }}>
+                <Row style={{ boxSizing: 'border-box' }}>
                     <Col span={8}>
                         <h1 style={{ marginBottom: '0' }}>Giới thiệu</h1>
                         <MenuIntroduce

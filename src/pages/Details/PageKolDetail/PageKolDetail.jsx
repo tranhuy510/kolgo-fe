@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
 
 import ImageDescription from "./ImageDescription/ImageDescription";
 import ContactSocials from "./ContactSocials/ContactSocials";
@@ -8,27 +8,54 @@ import ListFields from "./ListFields/ListFields";
 import NameMain from "./NameMain/NameMain";
 import IntroduceKOL from "./IntroduceKOL/IntroduceKOL";
 import Activate from "./Activate/Activate";
-import Compare from './Compare/Compare'
+import Compare from "./Compare/Compare";
 import Rate from "./Rate/Rate";
+import BookingCreate from "../../Booking/BookingCreate";
 
 import "./HomeDetails.css";
-import { Col, Row } from 'antd';
+import { Col, Row } from "antd";
 import { Tabs } from "antd";
-import ButtonFull from '../../../components/UI/Button/ButtonFull'
+import ButtonFull from "../../../components/UI/Button/ButtonFull";
 import { getKol } from "../../../services/KolService";
 
-const description = "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n"
+const description =
+  "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
 
 const danhgia = [
-  { enterpriseId: 1, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { enterpriseId: 2, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { enterpriseId: 3, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { enterpriseId: 4, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-  { enterpriseId: 5, name: 'Công ty TNHH 1 thành viên Thắng Trần', content: 'quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot', date: new Date(2022, 5, 12) },
-]
+  {
+    enterpriseId: 1,
+    name: "Công ty TNHH 1 thành viên Thắng Trần",
+    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
+    date: new Date(2022, 5, 12),
+  },
+  {
+    enterpriseId: 2,
+    name: "Công ty TNHH 1 thành viên Thắng Trần",
+    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
+    date: new Date(2022, 5, 12),
+  },
+  {
+    enterpriseId: 3,
+    name: "Công ty TNHH 1 thành viên Thắng Trần",
+    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
+    date: new Date(2022, 5, 12),
+  },
+  {
+    enterpriseId: 4,
+    name: "Công ty TNHH 1 thành viên Thắng Trần",
+    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
+    date: new Date(2022, 5, 12),
+  },
+  {
+    enterpriseId: 5,
+    name: "Công ty TNHH 1 thành viên Thắng Trần",
+    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
+    date: new Date(2022, 5, 12),
+  },
+];
 
 const PageKolDetail = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   const { id } = useParams();
   const [kol, setKol] = useState();
   const urls = [
@@ -36,45 +63,56 @@ const PageKolDetail = () => {
     kol?.instagramUrl,
     kol?.tiktokUrl,
     kol?.youtubeUrl,
-  ]
+  ];
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  const onCancelOpenHandler = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
-    getKol(id)
-      .then(res => {
-        setKol(res.kol)
-      });
-  }, [])
+    getKol(id).then((res) => {
+      console.log(res);
+      setKol(res.kol);
+    });
+  }, []);
 
   const navigateToChat = () => {
-    const user = localStorage.getItem('user')
-    if (!user) {
-      navigate('../login')
-    }
-    else navigate(`/Chat`, { state: { userId: kol.kolId } })
-  }
+    if (!user) navigate("../login");
+    navigate(`/chat`, { state: { user: kol.user } });
+  };
 
   const bookingHandler = () => {
     if (!user) {
-      navigate('../login')
+      navigate("../login");
     }
-    navigate(`/bookings/create`, { state: { kol }})
-  }
+    setOpen(true);
+    // navigate(`/kols/${id}/book`)
+  };
 
   const onChange = (key) => {
-    console.log(user)
+    console.log(user);
     console.log(key);
   };
 
   const items = [
     {
       key: "1",
-      label: <button className="btn-hoat-dong" style={{ fontSize: '18px' }}>Hoạt động</button>,
+      label: (
+        <button className="btn-hoat-dong" style={{ fontSize: "18px" }}>
+          Hoạt động
+        </button>
+      ),
       children: <Activate />,
     },
     {
       key: "2",
-      label: <button className="btn-so-sanh" style={{ fontSize: '18px' }}>So sánh</button>,
+      label: (
+        <button className="btn-so-sanh" style={{ fontSize: "18px" }}>
+          So sánh
+        </button>
+      ),
       children: <Compare infoKol={kol} />,
     },
   ];
@@ -82,14 +120,22 @@ const PageKolDetail = () => {
   return (
     <>
       <main className="main-details">
+        <BookingCreate
+          id={id}
+          onCancelOpenHandler={onCancelOpenHandler}
+          open={open}
+        />
         <div className="container">
           <Row className="detail-description">
-            <Col span={6} style={{ paddingRight: '10px', boxSizing: 'border-box' }}>
+            <Col
+              span={6}
+              style={{ paddingRight: "10px", boxSizing: "border-box" }}
+            >
               <ImageDescription images={kol?.images} />
               <ContactSocials urls={urls} />
             </Col>
             <Col span={12} className="col-12-middle">
-              <Row style={{ padding: '20px' }}>
+              <Row style={{ padding: "20px" }}>
                 <NameMain
                   firstName={kol?.user.firstName}
                   lastName={kol?.user.lastName}
@@ -105,27 +151,27 @@ const PageKolDetail = () => {
                   city={kol?.address.city.name}
                 />
               </Row>
-              <Row className="middle-row" >
-                <ListFields
-                  field={kol?.field.name}
-                />
+              <Row className="middle-row">
+                <ListFields field={kol?.field} />
               </Row>
-              <Row className="middle-row" >
-                <IntroduceKOL
-                  description={description}
-                />
+              <Row className="middle-row">
+                <IntroduceKOL description={description} />
               </Row>
             </Col>
             <Col span={6}>
-              <div className="col-6-right" >
-                <div className="price-booking" >{kol?.postPrice} / 1 post</div>
-                <div className="price-booking" >{kol?.videoPrice} / 1 video</div>
-                <ButtonFull onClick={bookingHandler} className="btn-function" >BOOK</ButtonFull>
-                <ButtonFull onClick={navigateToChat} className="btn-function" >NHẮN TIN</ButtonFull>
+              <div className="col-6-right">
+                <div className="price-booking">{kol?.postPrice} / 1 post</div>
+                <div className="price-booking">{kol?.videoPrice} / 1 video</div>
+                <ButtonFull onClick={bookingHandler} className="btn-function">
+                  BOOK
+                </ButtonFull>
+                <ButtonFull onClick={navigateToChat} className="btn-function">
+                  NHẮN TIN
+                </ButtonFull>
               </div>
             </Col>
           </Row>
-        </div >
+        </div>
         <div className="bottom-details">
           <Tabs
             className="tab-item"
@@ -137,7 +183,7 @@ const PageKolDetail = () => {
         <div className="bottom-details">
           <Rate danhgia={danhgia} />
         </div>
-      </main >
+      </main>
     </>
   );
 };

@@ -7,22 +7,22 @@ import { Pagination } from 'antd';
 import { getFields } from '../../services/FieldService';
 
 import './Fields.css'
+import { getKols, getKolsByFieldId } from '../../services/KolService';
 
 const Fields = () => {
 
     let { id } = useParams()
-    id = id.substring(1)
+    // console.log(id);
 
     const [currentKol, setCurrentKol] = useState(1);
     const [totalKol, setTotalKol] = useState(30);
     const [field, setField] = useState();
-    // const [fieldName, setFieldName] = useState([])
 
     useEffect(() => {
-        getFields()
-            .then(data => {
-                // setFieldName(data.find(field => field.id === id))
-                setField(data.find(field => field.id === id))
+        getKolsByFieldId(id)
+            .then(res => {
+                setField(res)
+                // console.log(res);
             })
     }, [id])
 

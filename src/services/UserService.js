@@ -4,7 +4,7 @@ export function getUsers() {
     return get('users');
 }
 
-export function getUser(id) {
+export function getUserById(id) {
     return get(`users/${id}`);
 }
 

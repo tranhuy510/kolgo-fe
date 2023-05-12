@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Input, Image, Avatar } from "antd";
-import classes from "./SearchModal.module.css";
+import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { Input, Image, Avatar } from 'antd';
+import classes from './SearchModal.module.css'
 import { Link } from "react-router-dom";
-import { getUsers } from "../../../services/UserService";
+
 import { getKols } from "../../../services/KolService";
 import { getEnts } from "../../../services/EnterpriseService";
 
@@ -12,162 +12,135 @@ const SearchModal = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const [searchInput, setSearchInput] = useState("");
-  const [users, setUsers] = useState([]);
+  const [changeSearch, setChangeSearch] = useState(false);
   const [kols, setKols] = useState([]);
   const [ents, setEnts] = useState([]);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     Promise.all([
-      getUsers(),
       getKols(),
       getEnts()
-    ]).then(([userList, kolList, entList]) => {
-      setUsers(userList);
+    ]).then(([kolList, entList]) => {
       setKols(kolList);
       setEnts(entList);
     });
   }, [])
 
-  const getKolIdByUserId = (userId) => {
-    const kol = kols.find(kol => kol.user.id === userId);
-    return kol.id;
-  };
-
-  const getEntIdByUserId = (userId) => {
-    const ent = ents.find(ent => ent.user.id === userId);
-    return ent.id;
-  };
-
   const onChangeInputHandler = (e) => {
-    setSearchInput(e.target.value);
-    setShow(true);
-  };
+    setSearchInput(e.target.value)
+    setShow(true)
+    setChangeSearch(true)
+  }
 
   const onSearch = (value) => {
-    setSearchInput(value);
-    setShow(true);
-  };
+    setSearchInput(value)
+    setShow(true)
+  }
+
+  let x = window.innerWidth;
+  const [windowChange, setWindowChange] = useState({
+    widthSearch: 300,
+    leftSearch: '150px'
+  });
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", function () {
+      x = window.innerWidth;
+      setTimeout(() => {
+        if (x > 1100 && x <= 1359) {
+          setWindowChange({
+            widthSearch: 300,
+            leftSearch: '150px',
+          })
+        }
+        if (x > 800 && x <= 1099) {
+          setWindowChange({
+            widthSearch: 250,
+            leftSearch: '150px',
+          })
+        }
+      }, 500)
+    });
+  }, [x])
+
+  const filteredEnts = ents?.filter((ent) => {
+    if (ent) {
+      return searchInput === ""
+        ? ent
+        : ent.user.firstName.includes(searchInput) || ent.user.lastName.includes(searchInput)
+          ? ent
+          : null;
+    }
+  });
+
+  const filteredKols = kols?.filter((kol) => {
+    if (kol) {
+      return searchInput === ""
+        ? kol
+        : kol.user.firstName.includes(searchInput) || kol.user.lastName.includes(searchInput)
+          ? kol
+          : null;
+    }
+  });
 
   return (
-    <div className={classes["search-modal"]}>
+    <div className={classes['search-modal']}
+      style={{ left: windowChange.leftSearch, }}
+    >
       <Search
         size="large"
         placeholder="input search text"
         onSearch={onSearch}
         onChange={onChangeInputHandler}
         style={{
-          width: "100%",
+          width: windowChange.widthSearch,
         }}
       />
-      {show && (
-        <div
-          className={classes.backdrop}
-          onClick={() => {
-            setShow(false);
-          }}
-        ></div>
-      )}
-      {show && (
-        <div className={classes["result-search"]}>
-          {searchInput &&
-            users &&
-            users.length > 0 &&
-            users
-              .filter((user) => {
-                return searchInput.toLowerCase() === ""
-                  ? user
-                  : user.firstName
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase()) ||
-                  user.lastName
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase());
-              })
-              .map((user) => (
-                <div key={user.id}>
-                  {user.role === "KOL" && (
-                    <Link
-                      key={user.id}
-                      to={`/kols/${getKolIdByUserId(user.id)}`}
-                      className={classes["item-search-user"]}
-                    >
-                      <Avatar size={60} src={user.avatar}>
-                        {user?.avatar
-                          ? ""
-                          : user?.firstName.charAt(0)?.toUpperCase()}
+      {show && <div className={classes.backdrop} onClick={() => { setShow(false) }}></div>}
+      {show && <div className={classes['result-search']} >
+        <div className={classes['wrap-result-search']}>
+          {searchInput && kols &&
+            filteredKols.length > 0 && (
+              filteredKols
+                .map((kol) => (
+                  <div key={kol.user.id}>
+                    <Link key={kol.user.id} to={`kols/${kol.id}`} className={classes["item-search-user"]}>
+                      <Avatar size={40} src={kol.avatar}>
+                        {kol.user?.avatar ? "" : kol.user?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
-                        <div className={classes["name-item-user"]}>
-                          {user.firstName.toLowerCase()} {user.lastName}
-                        </div>
-                        <div className={classes["role-item-user"]}>kol</div>
+                        <div className={classes['name-item-user']}>{kol.user.firstName.toLowerCase()} {kol.user.lastName}</div>
+                        <div className={classes['role-item-user']}>Kol</div>
                       </div>
                     </Link>
-                  )}
-                  {user.role === "ENTERPRISE" && (
-                    <Link
-                      key={user.id}
-                      to={`/ents/${getEntIdByUserId(user.id)}`}
-                      className={classes["item-search-user"]}
-                    >
-                      <Avatar size={60} src={user.avatar}>
-                        {user?.avatar
-                          ? ""
-                          : user?.firstName.charAt(0)?.toUpperCase()}
+                  </div>
+                )))
+          }
+          {user && searchInput && ents &&
+            filteredEnts.length > 0 && (
+              filteredEnts
+                .map((ent) => (
+                  <div key={ent.user.id}>
+                    <Link key={ent.user.id} to={`ents/${ent.id}`} className={classes["item-search-user"]}>
+                      <Avatar size={40} src={ent.avatar}>
+                        {ent.user?.avatar ? "" : ent.user?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
-                        <div className={classes["name-item-user"]}>
-                          {user.firstName.toLowerCase()} {user.lastName}
-                        </div>
-                        <div className={classes["role-item-user"]}>
-                          Enterprise
-                        </div>
+                        <div className={classes['name-item-user']}>{ent.user.firstName.toLowerCase()} {ent.user.lastName}</div>
+                        <div className={classes['role-item-user']}>Enterprise</div>
                       </div>
                     </Link>
-                  )}
-                </div>
-              ))}
-          {!user &&
-            searchInput &&
-            kols &&
-            kols.length > 0 &&
-            kols
-              .filter((kol) => {
-                return searchInput.toLowerCase() === ""
-                  ? kol
-                  : kol.firstName
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase()) ||
-                  kol.lastName
-                    .toLowerCase()
-                    .includes(searchInput.toLowerCase());
-              })
-              .map((kol) => (
-                <div key={kol.id}>
-                  <Link
-                    key={kol.id}
-                    to={`/kols/${kol.id}`}
-                    className={classes["item-search-user"]}
-                  >
-                    <Avatar size={60} src={kol?.user.avatar}>
-                      {kol?.user.avatar
-                        ? ""
-                        : kol?.user.firstName.charAt(0)?.toUpperCase()}
-                    </Avatar>
-                    <div>
-                      <div className={classes["name-item-user"]}>
-                        {kol?.user.firstName.toLowerCase()} {kol.user.lastName}
-                      </div>
-                      <div className={classes["role-item-user"]}>kol</div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                  </div>
+                )))
+          }
+          {changeSearch && filteredKols.length === 0 && <div>Không có kết quả tìm kiếm</div>}
+          {changeSearch && !searchInput && <div>Hãy nhập tên cần tìm</div>}
         </div>
-      )}
-    </div>
-  );
-};
+      </div>}
+    </div >
+  )
+}
 
-export default SearchModal;
+export default SearchModal
+
