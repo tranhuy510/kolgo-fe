@@ -12,6 +12,7 @@ import home from "../../assets/logo/icon-home.svg";
 import campaign from "../../assets/logo/icon-compaign.svg";
 import chat from "../../assets/logo/icon-chat.svg";
 import "./style.css";
+import Notification from "../Notification";
 
 const Header = (props) => {
   const navigate = useNavigate();
@@ -52,7 +53,13 @@ const Header = (props) => {
       <div className="header__room">
         <Menu icons={[home, campaign, chat]} />
       </div>
+      {user && <Notification />}
       <div className="header__button">
+        {user && (
+          <h4>
+            {user?.firstName.charAt(0).toUpperCase() + user?.firstName.slice(1)}
+          </h4>
+        )}
         {user && (
           <div className="avata">
             <NavBar logOutHandler={logOutHandler}>

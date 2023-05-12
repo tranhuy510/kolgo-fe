@@ -1,0 +1,121 @@
+.noti-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  display: block;
+  background-color: #eff5f7;
+  position: absolute;
+  margin: 10px 0;
+  right: 10%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.noti-button:hover,
+.noti-button.active {
+  background-color: #fff;
+  box-shadow: 0px 0 3px 3px #ccc;
+}
+
+.noti-button:hover .icon-noti,
+.noti-button.active .icon-noti {
+  color: var(--color-primary-1);
+}
+
+.icon-noti {
+  font-size: 25px;
+  line-height: 45px;
+}
+
+.noti-badge {
+  background-color: var(--color-primary-1);
+  position: absolute;
+  right: 10px;
+  top: 20px;
+  display: block;
+  border-radius: 50px;
+  height: 10px;
+  width: 10px;
+}
+
+.noti-list {
+  position: absolute;
+  top: 123%;
+  width: 400px;
+  right: -200%;
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 0 1px 3.125rem 0 rgb(0 0 0 / 20%);
+  animation: FadeIn ease 0.4s;
+  cursor: default;
+  z-index: 100;
+  max-height: 500px;
+  overflow: scroll;
+}
+
+.noti-list h4 {
+  text-align: left;
+  margin: 8px 0 8px 12px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.noti-list ul {
+  list-style: none;
+}
+
+.noti-mgs {
+  margin: 40px auto;
+  font-size: 20px;
+}
+
+.noti-tab {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 2rem;
+}
+
+.noti-tab:hover,
+.noti-tab.active {
+  background-color: var(--color-primary-2);
+  border-radius: 25px;
+  cursor: pointer;
+  color: var(--color-primary-1);
+  font-size: 1.1rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
+.item-wrap {
+  display: flex;
+  margin: 10px 0;
+}
+
+.item-wrap:hover {
+  background-color: var(--color-primary-2);
+  cursor: pointer;
+}
+
+.avatar {
+  margin-left: 10px;
+}
+
+.item-content {
+  text-align: left;
+  margin-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.item-content.read {
+  opacity: 0.5;
+}
+
+.item-content p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.item-content b {
+  font-weight: 550;
+}

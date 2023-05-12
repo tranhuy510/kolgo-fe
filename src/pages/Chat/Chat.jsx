@@ -5,7 +5,7 @@ import { getUserById, getUsers } from "../../services/UserService";
 import { createChat, getChats } from "../../services/ChatService";
 import classes from "./Chat.module.css";
 import { useLocation } from "react-router";
-import { formatDate } from '../../services/DateTimeUtil';
+import { formatDate } from "../../services/DateTimeUtil";
 
 let stompClient = null;
 const websocketEndpoint = "http://localhost:8080/api/ws";
@@ -22,51 +22,51 @@ const Chat = (props) => {
     user: user,
     timestamp: "",
     content: "",
-    chatId: ""
+    chatId: "",
   });
 
   const [message, setMessage] = useState({
     type: "",
     body: "",
     senderId: user.id,
-    receiverIds: []
+    receiverIds: [],
   });
 
   useEffect(() => {
-    Promise.all([
-      getChats(),
-    ]).then(([chats]) => {
-      console.log('PRIVATE CHATS', chats)
+    Promise.all([getChats()]).then(([chats]) => {
+      console.log("PRIVATE CHATS", chats);
       const chatMap = new Map();
       if (chats.length > 0) {
-        console.log('SET NEW CHAT MAP')
-        chats.forEach(chat => chatMap.set(chat.id, chat))
+        console.log("SET NEW CHAT MAP");
+        chats.forEach((chat) => chatMap.set(chat.id, chat));
         setPrivateChats(chatMap);
       }
 
       if (state.user && state.user.id) {
-        console.log(state.user, state.user.id)
-        const chat = chats.find(chat => chat.type === 'PRIVATE' && chat.users[0]?.id === state.user.id);
-        console.log(chat)
+        console.log(state.user, state.user.id);
+        const chat = chats.find(
+          (chat) =>
+            chat.type === "PRIVATE" && chat.users[0]?.id === state.user.id
+        );
+        console.log(chat);
 
         if (chat) {
-          console.log('SETTING TAB')
-          setTab(chat.id)
-        }
-        else {
-          console.log('CHAT NOT FOUND');
-          console.log('CREATING NEW CHAT')
+          console.log("SETTING TAB");
+          setTab(chat.id);
+        } else {
+          console.log("CHAT NOT FOUND");
+          console.log("CREATING NEW CHAT");
           privateChats.set(0, {
             id: 0,
-            type: 'PRIVATE',
+            type: "PRIVATE",
             date: formatDate(new Date()),
             user: user,
             users: [state.user],
-            messages: []
-          })
-          setPrivateChats(prev => new Map([...privateChats]));
+            messages: [],
+          });
+          setPrivateChats((prev) => new Map([...privateChats]));
           // createNewChat([user.id, state.user.id]);
-        };
+        }
       }
     });
 
@@ -77,7 +77,7 @@ const Chat = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log("current tab", tab)
+    console.log("current tab", tab);
   }, [tab]);
 
   const createNewChat = (ids) => {
@@ -85,17 +85,17 @@ const Chat = (props) => {
       type: "PRIVATE",
       date: formatDate(new Date()),
       userId: user.id,
-      userIds: [...ids]
-    }).then(res => {
+      userIds: [...ids],
+    }).then((res) => {
       console.log(res);
-    })
-  }
+    });
+  };
 
   const connect = () => {
     if (!stompClient) {
       const sock = new SockJS(websocketEndpoint);
       stompClient = over(sock);
-      stompClient.connect({}, onConnected, err => console.log(err));
+      stompClient.connect({}, onConnected, (err) => console.log(err));
     }
   };
 
@@ -106,7 +106,7 @@ const Chat = (props) => {
 
   const onPublicMessageReceived = (payload) => {
     const msg = JSON.parse(payload.body);
-    console.log(JSON.parse(msg.body))
+    console.log(JSON.parse(msg.body));
     setPublicChats((prev) => [...prev, JSON.parse(msg.body)]);
   };
 
@@ -132,7 +132,7 @@ const Chat = (props) => {
   const sendMessage = (e) => {
     if (chatMessage.content) {
       chatMessage.timestamp = formatDate(new Date());
-      message.type = 'MESSAGE';
+      message.type = "MESSAGE";
       message.body = JSON.stringify(chatMessage);
 
       if (tab === "PUBLIC") sendPublicMessage();
@@ -151,7 +151,8 @@ const Chat = (props) => {
     // TODO: if msg.conversationId == 0, post data to server
     // server response conversation id
     stompClient.send(
-      `${appPrefix}/private`, {},
+      `${appPrefix}/private`,
+      {},
       JSON.stringify({
         ...message,
         conversationId: tab,
@@ -194,18 +195,23 @@ const Chat = (props) => {
           {/* Public Room */}
           <li
             onClick={() => setTab("PUBLIC")}
-            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]}`}
+            className={`${classes["conversation-list-item"]} ${
+              tab === "PUBLIC" && classes["active"]
+            }`}
           >
             Public Chat
           </li>
           {/* Private Receivers */}
-          {privateChats.size > 0 && [...privateChats.values()].map((chat, index) => (
-            <li
-              onClick={() => setTab(chat.id)}
-              className={`${classes['conversation-list-item']}`} key={index}>
-              {chat.users[0].firstName} {chat.users[0].lastName}
-            </li>
-          ))}
+          {privateChats.size > 0 &&
+            [...privateChats.values()].map((chat, index) => (
+              <li
+                onClick={() => setTab(chat.id)}
+                className={`${classes["conversation-list-item"]}`}
+                key={index}
+              >
+                {chat.users[0].firstName} {chat.users[0].lastName}
+              </li>
+            ))}
         </ul>
         {/* End Receiver List */}
         <div className={classes["message-content"]}>
