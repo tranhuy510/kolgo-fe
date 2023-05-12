@@ -4,10 +4,9 @@ import SideBar from "../../components/SideBar/index";
 import Header from '../../components/Header';
 import PageField from './PageField/PageField';
 import { Pagination } from 'antd';
-import { getFields } from '../../services/FieldService';
 
 import './Fields.css'
-import { getKols, getKolsByFieldId } from '../../services/KolService';
+import {  getKolsByFieldIds } from '../../services/KolService';
 
 const Fields = () => {
 
@@ -19,7 +18,7 @@ const Fields = () => {
     const [field, setField] = useState();
 
     useEffect(() => {
-        getKolsByFieldId(id)
+        getKolsByFieldIds(id)
             .then(res => {
                 setField(res)
                 // console.log(res);
@@ -33,9 +32,6 @@ const Fields = () => {
     const onChangeTotalKol = (total) => {
         setTotalKol(total)
     }
-
-    // const regex = /(.*)\s\((.*)\)/;
-    // const name = fieldName?.name?.match(regex)[1]
 
     return (
         <div>

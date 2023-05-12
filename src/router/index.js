@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
         element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
       },
       {
-        path: "fields/kol/:id",
+        path: "/kols",
         element: <Fields />,
       },
       {

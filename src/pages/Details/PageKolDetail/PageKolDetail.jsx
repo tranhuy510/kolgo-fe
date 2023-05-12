@@ -57,7 +57,7 @@ const PageKolDetail = () => {
   const navigateToChat = () => {
     if (!user)
       navigate('../login')
-    navigate(`/chat`, { state: { user: kol.user } })
+    navigate(`/chat`, { state: { kol } })
   }
 
   const bookingHandler = () => {
@@ -99,23 +99,23 @@ const PageKolDetail = () => {
             <Col span={12} className="col-12-middle">
               <Row style={{ padding: '20px' }}>
                 <NameMain
-                  firstName={kol?.user.firstName}
-                  lastName={kol?.user.lastName}
+                  firstName={kol?.firstName}
+                  lastName={kol?.lastName}
                   gender={kol?.gender}
-                  city={kol?.address.city.name}
+                  city={kol?.city.name}
                 />
               </Row>
               <Row className="middle-row">
                 <InformationKOL
-                  email={kol?.user.email}
+                  email={kol?.email}
                   phoneNumber={kol?.phone}
                   gender={kol?.gender}
-                  city={kol?.address.city.name}
+                  city={kol?.city.name}
                 />
               </Row>
               <Row className="middle-row" >
                 <ListFields
-                  field={kol?.field}
+                  fields={kol?.fields}
                 />
               </Row>
               <Row className="middle-row" >
