@@ -59,13 +59,13 @@ const PageHOT = (props) => {
   return (
     <DivWrap key={"hotKol"}>
       {hotKols?.map((kol) => {
-        const firstName = arrUpperCase(kol.user.firstName);
+        const firstName = arrUpperCase(kol.firstName);
         return (
-          <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
-            <IMG src={kol?.user.avatar} alt="" />
+          <Link key={kol?.id} to={`/kols/${kol.id}`} style={linkStyle}>
+            <IMG src={kol?.avatar} alt="" />
             <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
-              <Name>{kol.user.lastName}</Name>
+              <Name>{kol.lastName}</Name>
             </div>
           </Link>
         );

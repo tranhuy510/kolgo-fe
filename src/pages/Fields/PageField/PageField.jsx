@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { getKolsByFieldId } from '../../../services/KolService';
+import { Link, useSearchParams } from "react-router-dom";
+import { getKolsByFieldIds } from '../../../services/KolService';
 
 const IMG = styled.img`
     width: 220px;
@@ -39,18 +39,23 @@ const DivWrap = styled.div`
 const PageField = (props) => {
 
     const [kols, setKols] = useState([])
+    const [searchParams] = useSearchParams();
+    const fieldIds = searchParams.get("fieldIds")
 
     useLayoutEffect(() => {
         props.onChangeTotalKol(kols.length);
     }, [kols])
 
     useEffect(() => {
-        getKolsByFieldId(props.id)
-            .then(data => {
-                // console.log(data);
-                setKols(data)
-            })
-    }, [props.id])
+        console.log(fieldIds)
+        if (fieldIds) {
+            getKolsByFieldIds(fieldIds)
+                .then(data => {
+                    console.log(data)
+                    setKols(data)
+                })
+        }
+    }, [])
 
 
     function arrUpperCase(data) {
@@ -63,13 +68,13 @@ const PageField = (props) => {
     return (
         <DivWrap key={'fieldPage'} className='page-field'>
             {kols?.map((kol) => {
-                const firstName = arrUpperCase(kol?.user.firstName)
+                const firstName = arrUpperCase(kol?.firstName)
                 return (
                     <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
-                        <IMG src={kol?.user.avatar} />
+                        <IMG src={kol?.avatar} />
                         <div style={{ display: 'flex' }}>
                             <Name>{firstName}</Name>
-                            <Name>{kol.user.lastName}</Name>
+                            <Name>{kol?.lastName}</Name>
                         </div>
                     </Link>
                 )

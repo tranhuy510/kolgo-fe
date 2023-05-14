@@ -110,7 +110,10 @@ const Login = (props) => {
       role: response.data.user.role,
     };
 
-    localStorage.setItem("user", JSON.stringify(user));
+    // localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify({ ...user }))
+    window.dispatchEvent(new Event('storage'))
+
 
     setCheck({
       status: true,

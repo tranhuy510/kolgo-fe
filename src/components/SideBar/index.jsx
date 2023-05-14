@@ -16,7 +16,6 @@ const SideBar = () => {
     const regex = /(.*)\s\((.*)\)/;
 
     let windowHeight = window.innerHeight;
-    console.log(windowHeight);
     const [windowChange, setWindowChange] = useState({
         height: '600px',
     });

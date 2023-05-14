@@ -68,7 +68,7 @@ const SearchModal = () => {
     if (ent) {
       return searchInput === ""
         ? ent
-        : ent.user.firstName.includes(searchInput) || ent.user.lastName.includes(searchInput)
+        : ent.firstName.includes(searchInput) || ent.lastName.includes(searchInput)
           ? ent
           : null;
     }
@@ -78,7 +78,7 @@ const SearchModal = () => {
     if (kol) {
       return searchInput === ""
         ? kol
-        : kol.user.firstName.includes(searchInput) || kol.user.lastName.includes(searchInput)
+        : kol.firstName.includes(searchInput) || kol.lastName.includes(searchInput)
           ? kol
           : null;
     }
@@ -104,13 +104,13 @@ const SearchModal = () => {
             filteredKols.length > 0 && (
               filteredKols
                 .map((kol) => (
-                  <div key={kol.user.id}>
-                    <Link key={kol.user.id} to={`kols/${kol.id}`} className={classes["item-search-user"]}>
-                      <Avatar size={40} src={kol.avatar}>
-                        {kol.user?.avatar ? "" : kol.user?.firstName.charAt(0)?.toUpperCase()}
+                  <div key={kol.id}>
+                    <Link key={kol.id} to={`kols/${kol.id}`} className={classes["item-search-user"]}>
+                      <Avatar size={40} src={kol?.avatar}>
+                        {kol?.avatar ? "" : kol?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
-                        <div className={classes['name-item-user']}>{kol.user.firstName.toLowerCase()} {kol.user.lastName}</div>
+                        <div className={classes['name-item-user']}>{kol.firstName.toLowerCase()} {kol.lastName}</div>
                         <div className={classes['role-item-user']}>Kol</div>
                       </div>
                     </Link>
@@ -121,13 +121,13 @@ const SearchModal = () => {
             filteredEnts.length > 0 && (
               filteredEnts
                 .map((ent) => (
-                  <div key={ent.user.id}>
-                    <Link key={ent.user.id} to={`ents/${ent.id}`} className={classes["item-search-user"]}>
+                  <div key={ent.id}>
+                    <Link key={ent.id} to={`ents/${ent.id}`} className={classes["item-search-user"]}>
                       <Avatar size={40} src={ent.avatar}>
-                        {ent.user?.avatar ? "" : ent.user?.firstName.charAt(0)?.toUpperCase()}
+                        {ent?.avatar ? "" : ent?.firstName.charAt(0)?.toUpperCase()}
                       </Avatar>
                       <div>
-                        <div className={classes['name-item-user']}>{ent.user.firstName.toLowerCase()} {ent.user.lastName}</div>
+                        <div className={classes['name-item-user']}>{ent.firstName.toLowerCase()} {ent.lastName}</div>
                         <div className={classes['role-item-user']}>Enterprise</div>
                       </div>
                     </Link>

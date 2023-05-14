@@ -47,14 +47,14 @@ const Campaign = (props) => {
   const getIdRole = () => {
     if (user.role === 'KOL') {
       kols.map((kol) => {
-        if (kol.user.id === user.id) {
+        if (kol.id === user.id) {
           setIdRole(kol.id)
         }
       })
     }
     if (user.role === 'ENTERPRISE') {
       ents.map((ent) => {
-        if (ent.user.id === user.id) {
+        if (ent.id === user.id) {
           setIdRole(ent.id)
         }
       })

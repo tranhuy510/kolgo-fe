@@ -55,9 +55,9 @@ const ModalSearch = () => {
     const regex = /(.*)\s\((.*)\)/;
 
     const resultKolFlter = kols.filter((kol) => {
-        return (searchName === "" ? kol : kol.user.firstName.includes(searchName) || kol.user.lastName.includes(searchName))
-            && (searchField === "" ? kol : kol.field.name === searchField)
-            && (searchCity === "" ? kol : kol.address.city.name === searchCity)
+        return (searchName === "" ? kol : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
+            && (searchField === "" ? kol : kol.fields.some(field => field.name === searchField))
+            && (searchCity === "" ? kol : kol.city.name === searchCity)
     })
 
     const onSearchHandler = () => {
