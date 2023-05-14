@@ -1,0 +1,16 @@
+
+.admin-field-container {
+    margin: 20px;
+}
+
+.modal-search {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-search-input {
+    width: 50%;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+}

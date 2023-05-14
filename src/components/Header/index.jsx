@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Spin, Avatar } from "antd";
-
-import DidLogin from "../BtnLogin/DidLogin";
+import { Avatar } from "antd";
 import NotLogin from "../BtnNotLogin/NotLogin";
 import Menu from "./Menu";
 import NavBar from "../Navbar/NavBar";
+import SearchModal from "./Search/SearchModal";
 
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 import home from "../../assets/logo/icon-home.svg";
@@ -16,17 +15,22 @@ import "./style.css";
 
 const Header = (props) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(false);
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+    const handleStorageChange = () => {
+      setUser({ ...JSON.parse(localStorage.getItem("user")) });
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
-  console.log(user);
 
   const logOutHandler = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     window.location.replace("http://localhost:3000/");
-    // navigate('./')
   };
 
   const loginHandler = () => {
@@ -44,6 +48,7 @@ const Header = (props) => {
           <img className="icon-logo" src={logo} alt="" />
         </a>
       </div>
+      <SearchModal />
       <div className="header__room">
         <Menu icons={[home, campaign, chat]} />
       </div>
@@ -51,8 +56,16 @@ const Header = (props) => {
         {user && (
           <div className="avata">
             <NavBar logOutHandler={logOutHandler}>
-              <Avatar size={40} src={user?.image}>
-                {user?.image ? "" : user?.username.charAt(0)?.toUpperCase()}
+              <Avatar
+                size={40}
+                src={
+                  user?.avatar
+                    ? `http://localhost:8080/api/images/${user.avatar}`
+                    : ""
+                }
+              >
+                {user?.avatar ? "" : user?.firstName.charAt(0)?.toUpperCase()}
+                {/* {user?.image ? "" : user?.email.slice(0, 1).toUpperCase()} */}
               </Avatar>
             </NavBar>
           </div>

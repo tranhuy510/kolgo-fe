@@ -1,0 +1,53 @@
+.content {
+    margin-left: 250px;
+    padding-top: 67px;
+    padding-left: 2px;
+    padding-bottom: 50px;
+    width: calc(100% - 250px);
+}
+
+.content-pagination .ant-pagination-options {
+    display: none !important;
+}
+
+.content-pagination .ant-pagination {
+    text-align: center;
+}
+
+.content-middle .content-page {
+    margin: 10px 0;
+}
+
+.content-bottom .content-page {
+    margin: 10px 0;
+}
+
+.content-top {
+    background-color: #fff;
+    padding: 10px 50px;
+    box-sizing: border-box;
+}
+
+.content-middle,.content-bottom {
+    background-color: #fff;
+    padding: 10px 50px;
+    box-sizing: border-box;
+}
+
+.search-container .search-filter {
+    display: flex;
+}
+
+.search-container .search-filter .search-filter-name {
+    width: 40%;
+}
+
+.search-container .search-filter .search-filter-field,.search-filter-city,.btn-search,.btn-renew {
+    width: 10%;
+    margin-left: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+

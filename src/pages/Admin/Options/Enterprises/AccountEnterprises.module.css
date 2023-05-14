@@ -1,0 +1,23 @@
+.admin-user-container {
+  margin: 20px;
+}
+
+.modal-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-search-input {
+  width: 50%;
+  border: 1px solid #ccc;
+}
+
+.admin-modal-delete {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.modal-delete-btn {
+  margin: 5px 10px;
+}

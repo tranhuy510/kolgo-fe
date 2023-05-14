@@ -1,8 +1,10 @@
 import React from "react";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
-import useAuth from "../../context/useAuth.context";
+
+import { Input } from "antd";
+import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 // import axios from "axios";
 
@@ -16,8 +18,8 @@ import "./style.css";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const [dataInput, setdataInput] = useState({
-    userInput: "",
+  const [userInput, setUserInput] = useState({
+    email: "",
     password: "",
   });
   const [error, setError] = useState();
@@ -26,7 +28,6 @@ const Login = (props) => {
     type: "",
     content: "",
   });
-  // const setUser = useAuth();
 
   const changeMessage = () => {
     setCheck({
@@ -37,7 +38,7 @@ const Login = (props) => {
   };
 
   const inputChangeHandler = (event) => {
-    setdataInput((prevState) => {
+    setUserInput((prevState) => {
       return {
         ...prevState,
         [event.target.name]: event.target.value,
@@ -49,14 +50,14 @@ const Login = (props) => {
     if (event) {
       event.preventDefault();
     }
-    if (!dataInput.userInput) {
+    if (!userInput.email) {
       setError({
-        title: "Invalid input",
-        message: "Please enter a valid name (non-empty name)",
+        title: "Invalid email",
+        message: "Please enter a valid email (non-empty email)",
       });
       return;
     }
-    if (!dataInput.password) {
+    if (!userInput.password) {
       setError({
         title: "Invalid password",
         message: "Please enter a valid password (non-empty password)",
@@ -64,14 +65,14 @@ const Login = (props) => {
       return;
     }
     try {
-      let response = await authApi(dataInput);
-      console.log(response);
+      let response = await authApi(userInput);
       if (response.data && response.data.success === false) {
         return setError({
           title: "Error Login",
           message: response.data.msg,
         });
       }
+
       return setProfile(response);
     } catch (err) {
       console.log(err);
@@ -90,21 +91,26 @@ const Login = (props) => {
   };
 
   const setProfile = (response) => {
-    let accessToken = response.data.token.access_token;
+    console.log(typeof response.data.user.role);
+
+    let accessToken = response.data.token.accessToken;
     accessToken = JSON.stringify(accessToken);
     localStorage.setItem("accessToken", accessToken);
 
-    let refreshToken = response.data.token.refresh_token;
+    let refreshToken = response.data.token.refreshToken;
     refreshToken = JSON.stringify(refreshToken);
     localStorage.setItem("refreshToken", refreshToken);
 
     let user = {
-      id: response.data.id,
-      email: response.data.email,
-      username: response.data.username,
+      id: response.data.user.id,
+      email: response.data.user.email,
+      firstName: response.data.user.firstName,
+      lastName: response.data.user.lastName,
+      avatar: response.data.user.avatar,
+      role: response.data.user.role,
     };
-    user = JSON.stringify(user);
-    localStorage.setItem("user", user);
+
+    localStorage.setItem("user", JSON.stringify(user));
 
     setCheck({
       status: true,
@@ -112,7 +118,9 @@ const Login = (props) => {
       content: `Login success`,
     });
 
-    return navigate("..");
+    if (response.data.user.role === "ADMIN") {
+      return navigate("../admin");
+    } else return navigate("..");
   };
 
   const errorHandler = () => {
@@ -120,7 +128,7 @@ const Login = (props) => {
   };
 
   const forgotPasswordHandler = () => {
-    navigate("../forgotpassword");
+    navigate("../forgot_password");
   };
 
   const comeRegisterHandler = () => {
@@ -144,7 +152,9 @@ const Login = (props) => {
       />
       <div className="login">
         <div className="login__logo">
-          <img className="logo" src={logo} alt="" />
+          <Link to="../">
+            <img className="logo" src={logo} alt="" />
+          </Link>
         </div>
         <div className="login-form__control">
           <h1 className="tittle-login">Log in to KOLgo</h1>
@@ -154,22 +164,25 @@ const Login = (props) => {
             <input
               className="input-login"
               type="text"
-              name="userInput"
+              name="email"
               onChange={inputChangeHandler}
-              placeholder="User name"
+              placeholder="Enter your email"
             ></input>
           </div>
+          <Input.Password
+            name="password"
+            onChange={inputChangeHandler}
+            placeholder="Enter your password"
+            className="input-login"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
+          />
           <div className="login-form__control">
-            <input
-              className="input-login"
-              type="password"
-              name="password"
-              onChange={inputChangeHandler}
-              placeholder="Password"
-            ></input>
-          </div>
-          <div className="login-form__control">
-            <label className="forgot-password" onClick={forgotPasswordHandler}>
+            <label
+              className="line-forgot-password"
+              onClick={forgotPasswordHandler}
+            >
               Fogot password?
             </label>
           </div>

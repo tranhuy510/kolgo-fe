@@ -1,0 +1,61 @@
+.form-hoat-dong {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.form-hoat-dong .char-layout {
+  height: 200px;
+  margin: 30px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+.char-layout .char-layout-item {
+  color: #fff;
+  text-align: center;
+  width: 30px;
+  background-color: rgb(240, 86, 74);
+}
+.char-layout .title-char-layout {
+  position: absolute;
+  left: 0;
+  font-size: 15px;
+}
+.form-hoat-dong .count-book {
+  margin: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+.count-book .count-book-item {
+  text-align: center;
+  width: 40px;
+}
+.count-book .title-count-book {
+  position: absolute;
+  left: 0;
+  font-size: 15px;
+}
+.form-hoat-dong .month-book {
+  margin: 30px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+.month-book .month {
+  text-align: center;
+  width: 40px;
+}
+.month-book .title-month {
+  position: absolute;
+  left: 0;
+  font-size: 15px;
+}

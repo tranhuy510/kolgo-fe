@@ -11,3 +11,11 @@ npm install --save styled-components
 # axios
 
 npm install axios
+
+# dotenv
+
+npm install dotenv --save
+
+# react-datepicker
+
+npm install react-datepicker

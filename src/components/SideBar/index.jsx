@@ -1,122 +1,55 @@
-import React from 'react'
-import {
-    MenuFoldOutlined,
-    MenuUnfoldOutlined,
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined
-} from '@ant-design/icons';
+import React, { useState, useEffect, useLayoutEffect } from 'react'
+import { getKolFields } from '../../services/FieldService';
+import { Link } from "react-router-dom";
 import './sidebar.css'
 
 const SideBar = () => {
 
-    const listsIcon = [MenuFoldOutlined,
-        MenuUnfoldOutlined,
-        UploadOutlined,
-        UserOutlined,
-        VideoCameraOutlined];
-    const items = [{
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 2,
-        title: "cong viec 1",
-        icon: <MenuUnfoldOutlined />,
-    }, {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    }, {
-        key: 4,
-        title: "cong viec 1",
-        icon: <UserOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    }, {
-        key: 5,
-        title: "cong viec 1",
-        icon: <VideoCameraOutlined />,
-    },
-    {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    }, {
-        key: 1,
-        title: "cong viec 1",
-        icon: <MenuFoldOutlined />,
-    },
-    {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    },
-    {
-        key: 3,
-        title: "cong viec 1",
-        icon: <UploadOutlined />,
-    },]
+    const [fields, setFields] = useState([])
+
+    useEffect(() => {
+        getKolFields().then(res => {
+            setFields(res)
+        });
+    }, [])
+
+    const regex = /(.*)\s\((.*)\)/;
+
+    let windowHeight = window.innerHeight;
+    console.log(windowHeight);
+    const [windowChange, setWindowChange] = useState({
+        height: '600px',
+    });
+
+    useLayoutEffect(() => {
+        window.addEventListener("resize", function () {
+            windowHeight = window.innerHeight
+            if (windowHeight > 700) {
+                setWindowChange({ height: '700px' })
+            }
+            if (windowHeight <= 599) {
+                setWindowChange({ height: `${windowHeight - 60}px` })
+            }
+        });
+    }, [windowHeight])
 
     return (
-        <div className="sidebar">
+        <div className="sidebar" style={{ height: windowChange.height }}>
             <div className='item-sidebar' >
+                <p style={{ textAlign: 'center', fontWeight: '500', fontSize: '20px' }}>Lĩnh vực</p>
                 {
-                    items.map((item) => {
+                    fields?.map((field) => {
+                        const name = field?.name?.match(regex)[1]
                         return (
-                            <a href="#" className="box-item" key={item.key}>
-                                {item.icon}
-                                <p className="">{item.title}</p>
-                            </a>
+                            <Link to={`/fields/kol/${field.id}`} className="box-item" key={field.id}>
+                                <p className="">{name}</p>
+                                {/* <FontAwesomeIcon icon="fa-regular fa-pot-food" /> */}
+                            </Link>
                         )
                     })
                 }
             </div>
-        </div>
+        </div >
     )
 }
 
