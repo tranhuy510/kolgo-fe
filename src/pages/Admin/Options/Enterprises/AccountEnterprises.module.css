@@ -21,3 +21,17 @@
 .modal-delete-btn {
   margin: 5px 10px;
 }
+
+.modal-update-row {
+  margin: 10px;
+}
+
+.modal-update-col-input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  outline: none;
+}

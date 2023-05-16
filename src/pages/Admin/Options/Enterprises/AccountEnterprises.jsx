@@ -7,9 +7,14 @@ import { getEnts } from "../../../../services/EnterpriseService";
 
 import ModalView from "./ModalView";
 import ModalUpdate from "./ModalUpdate";
+import { getEntFields } from "../../../../services/FieldService";
+import { getCities } from "../../../../services/CityService";
+
 
 const AccountEnterprises = () => {
   const [ents, setEnts] = useState([])
+  const [fieldList, setFieldList] = useState([])
+  const [cityList, setCityList] = useState([])
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -17,13 +22,12 @@ const AccountEnterprises = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const [dataProps, setDataProps] = useState({})
+  const [data, setData] = useState({})
 
   useEffect(() => {
-    getEnts()
-      .then((res) => {
-        setEnts(res)
-      })
+    getEnts().then((res) => { setEnts(res)})
+    getEntFields().then((res) => { setFieldList(res) })
+    getCities().then((res) => { setCityList(res) })
   }, [])
 
   const columns = [
@@ -33,14 +37,14 @@ const AccountEnterprises = () => {
       key: "firstName",
       fixed: 'left',
       width: 100,
-      render: (text, data) => <div className="name-title-table">{data.user.firstName}</div>,
+      render: (text, data) => <div className="name-title-table">{data.firstName}</div>,
     },
     {
       title: "Họ",
       dataIndex: "lastName",
       key: "lastName",
       width: 100,
-      render: (text, data) => <div className="name-title-table">{data.user.lastName}</div>,
+      render: (text, data) => <div className="name-title-table">{data.lastName}</div>,
     },
     {
       title: "Tên doanh nghiệp",
@@ -52,13 +56,13 @@ const AccountEnterprises = () => {
       title: "Lĩnh vực",
       dataIndex: "field.name",
       key: "field",
-      render: (text, data) => <div className="name-title-table">{data.field.name}</div>,
+      render: (text, data) => <div className="name-title-table">{data.field?.name}</div>,
     },
     {
       title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
-      render: (text, data) => <div className="name-title-table">{data.address.city.name} - {data.address.details}</div>,
+      render: (text, data) => <div className="name-title-table">{data.address?.city?.name} - {data.address?.details}</div>,
     },
     {
       title: "Điện thoại",
@@ -109,8 +113,9 @@ const AccountEnterprises = () => {
   };
 
   const onOpenViewHandler = (data) => {
+    // console.log(data);
     setOpenViewModal(true);
-    setDataProps(data)
+    setData(data)
   };
 
   const onCloseViewHandler = () => {
@@ -119,7 +124,7 @@ const AccountEnterprises = () => {
 
   const onOpenDeleteModalHandler = (data) => {
     setOpenDeleteModal(true)
-    setDataProps(data);
+    setData(data);
   };
 
   const onDeleteUserHandler = (id) => {
@@ -127,8 +132,9 @@ const AccountEnterprises = () => {
   };
 
   const onOpenUpdateModalHandler = (data) => {
+    // console.log(data);
     setOpenUpdateModal(true);
-    setDataProps(data)
+    setData(data)
   };
 
   const onCloseUpdateModalHandler = () => {
@@ -167,7 +173,7 @@ const AccountEnterprises = () => {
         />
       </div>
 
-      <ModalView openView={openViewModal} onCloseViewHandler={onCloseViewHandler} data={dataProps} />
+      <ModalView openView={openViewModal} onCloseViewHandler={onCloseViewHandler} data={data} />
 
       <Modal
         open={openDeleteModal}
@@ -176,11 +182,11 @@ const AccountEnterprises = () => {
         footer={[]}
       >
         <div>
-          Bạn có muốn xóa {dataProps.name} ?
+          Bạn có muốn xóa {data.name} ?
         </div>
         <div className={classes['admin-modal-delete']}>
           <Button
-            onClick={() => { onDeleteUserHandler(dataProps.user.id) }}
+            onClick={() => { onDeleteUserHandler(data.user.id) }}
             className={classes['modal-delete-btn']}
           >
             Xóa
@@ -197,7 +203,9 @@ const AccountEnterprises = () => {
       <ModalUpdate
         openUpdate={openUpdateModal}
         onCloseUpdateModalHandler={onCloseUpdateModalHandler}
-        data={dataProps}
+        data={data}
+        fieldList={fieldList}
+        cityList={cityList}
       />
     </>
   );

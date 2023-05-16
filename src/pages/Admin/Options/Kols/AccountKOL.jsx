@@ -7,9 +7,13 @@ import { getKols } from "../../../../services/KolService.js";
 
 import ModalView from "./ModalView";
 import ModalUpdate from "./ModalUpdate";
+import { getEntFields } from "../../../../services/FieldService";
+import { getCities } from "../../../../services/CityService";
 
 const AccountEnterprises = () => {
   const [kols, setKols] = useState([])
+  const [fieldList, setFieldList] = useState([])
+  const [cityList, setCityList] = useState([])
 
   const [inputSearch, setInputSearch] = useState("");
 
@@ -20,10 +24,9 @@ const AccountEnterprises = () => {
   const [dataProps, setDataProps] = useState({})
 
   useEffect(() => {
-    getKols()
-      .then((res) => {
-        setKols(res)
-      })
+    getKols().then((res) => { setKols(res) })
+    getEntFields().then((res) => { setFieldList(res) })
+    getCities().then((res) => { setCityList(res) })
   }, [])
 
   const columns = [
@@ -31,13 +34,13 @@ const AccountEnterprises = () => {
       title: "Tên ",
       dataIndex: "firstName",
       key: "firstName",
-      render: (text, data) => <div className="name-title-table">{data.user.firstName}</div>,
+      render: (text, data) => <div className="name-title-table">{data?.firstName}</div>,
     },
     {
       title: "Họ ",
       dataIndex: "lastName",
       key: "lastName",
-      render: (text, data) => <div className="name-title-table">{data.user.lastName}</div>,
+      render: (text, data) => <div className="name-title-table">{data?.lastName}</div>,
     },
     {
       title: "Điện thoại",
@@ -100,6 +103,7 @@ const AccountEnterprises = () => {
   const onOpenViewHandler = (data) => {
     setOpenViewModal(true);
     setDataProps(data)
+    console.log(data);
   };
 
   const onCloseViewHandler = () => {
@@ -188,6 +192,8 @@ const AccountEnterprises = () => {
         openUpdate={openUpdateModal}
         onCloseUpdateModalHandler={onCloseUpdateModalHandler}
         data={dataProps}
+        fieldList={fieldList}
+        cityList={cityList}
       />
     </>
   );

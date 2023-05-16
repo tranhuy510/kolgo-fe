@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
+import { login } from "../../services/AuthService";
 
 import { Input } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
@@ -16,6 +17,7 @@ import Message from "../../components/UI/Message/Message";
 // import { users } from '../../json/db'
 import "./style.css";
 
+
 const Login = (props) => {
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
@@ -28,6 +30,8 @@ const Login = (props) => {
     type: "",
     content: "",
   });
+
+  document.title = 'KOLgo - Đăng nhập'
 
   const changeMessage = () => {
     setCheck({
@@ -64,34 +68,20 @@ const Login = (props) => {
       });
       return;
     }
-    try {
-      let response = await authApi(userInput);
-      if (response.data && response.data.success === false) {
-        return setError({
-          title: "Error Login",
-          message: response.data.msg,
-        });
-      }
 
-      return setProfile(response);
-    } catch (err) {
-      console.log(err);
-      if (err.response) {
-        if (err.response.data.message)
-          return setError({
-            title: "Error",
-            message: err.response.data.message,
-          });
-      }
-      return setError({
-        title: "Error",
-        message: err.message,
+    // let response = await login(userInput);
+    let response = await authApi(userInput);
+    if (response.status !== 200) {
+      setCheck({
+        status: true,
+        type: "error",
+        content: `Đăng nhập thất bại`,
       });
     }
+    else setProfile(response);
   };
 
   const setProfile = (response) => {
-    console.log(typeof response.data.user.role);
 
     let accessToken = response.data.token.accessToken;
     accessToken = JSON.stringify(accessToken);
@@ -110,15 +100,13 @@ const Login = (props) => {
       role: response.data.user.role,
     };
 
-    // localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("user", JSON.stringify({ ...user }))
     window.dispatchEvent(new Event('storage'))
-
 
     setCheck({
       status: true,
       type: "success",
-      content: `Login success`,
+      content: `Đăng nhập thành công`,
     });
 
     if (response.data.user.role === "ADMIN") {
@@ -160,7 +148,7 @@ const Login = (props) => {
           </Link>
         </div>
         <div className="login-form__control">
-          <h1 className="tittle-login">Log in to KOLgo</h1>
+          <h1 className="tittle-login">Đăng nhập vào KOLgo</h1>
         </div>
         <form onSubmit={loginHandler} className="login-form">
           <div className="login-form__control">
@@ -169,13 +157,13 @@ const Login = (props) => {
               type="text"
               name="email"
               onChange={inputChangeHandler}
-              placeholder="Enter your email"
+              placeholder="Nhập email"
             ></input>
           </div>
           <Input.Password
             name="password"
             onChange={inputChangeHandler}
-            placeholder="Enter your password"
+            placeholder="Nhập mật khẩu"
             className="input-login"
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
@@ -186,16 +174,16 @@ const Login = (props) => {
               className="line-forgot-password"
               onClick={forgotPasswordHandler}
             >
-              Fogot password?
+              Quên mật khẩu?
             </label>
           </div>
           <div className="login-form__control">
-            <ButtonFull type="submit">Log in</ButtonFull>
+            <ButtonFull type="submit">Đăng nhập</ButtonFull>
           </div>
         </form>
         <div className="login-form__control">
           <button onClick={comeRegisterHandler} className="register-line">
-            You do not have an account, register?
+            Bạn chưa có tài khoản?
           </button>
         </div>
       </div>

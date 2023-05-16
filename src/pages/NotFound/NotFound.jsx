@@ -7,8 +7,8 @@ const NotFound = () => {
         <Result
             status="404"
             title="404"
-            subTitle="Sorry, the page you visited does not exist."
-            extra={<Button onClick={() => navigate(-1)} type="primary">Go Back</Button>}
+            subTitle="Xin lỗi, trang này không tồn tại."
+            extra={<Button onClick={() => navigate(-1)} type="primary">Trở lại</Button>}
         />
     )
 };

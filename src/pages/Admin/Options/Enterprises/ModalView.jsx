@@ -14,13 +14,13 @@ const ModalView = (props) => {
             <div className={classes['admin-modal-view']}>
                 <Descriptions title="Thông tin chi tiết">
                     <Descriptions.Item label="Tên" span={3} className={classes['view-item-name']}>
-                        {props.data.user?.firstName} {props.data.user?.lastName}
+                        {props.data?.firstName} {props.data?.lastName}
                     </Descriptions.Item>
                     <Descriptions.Item label="Vai trò" span={3}>
-                        {props.data.user?.role}
+                        {props.data?.role}
                     </Descriptions.Item>
                     <Descriptions.Item label="Email" span={3}>
-                        {props.data.user?.email}
+                        {props.data?.email}
                     </Descriptions.Item>
                     <Descriptions.Item label="Số điện thoại" span={3}>
                         {props.data?.phone}
@@ -32,8 +32,8 @@ const ModalView = (props) => {
                         {props.data?.name}
                     </Descriptions.Item>
                     <Descriptions.Item label="Ảnh" span={3}>
-                        <Image src={props.data.user?.avatar ? props.data.user?.avatar : ""}>
-                            {props.data.user?.avatar ? "" : props.data.user?.firstName.charAt(0)?.toUpperCase()}
+                        <Image src={props.data?.avatar ? props.data?.avatar : ""}>
+                            {/* {props.data?.avatar ? "" : props.data?.firstName.charAt(0)?.toUpperCase()} */}
                         </Image>
                     </Descriptions.Item>
                     <Descriptions.Item label="Lĩnh vực" span={3}>

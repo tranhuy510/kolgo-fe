@@ -25,7 +25,7 @@ const ListFields = ({ fields }) => {
     }
 
     return (
-        <div style={{ fontSize: '18px', lineHeight: '36px', fontWeight: '400' }}>
+        <div className='modal-fields-list'>
             {fields?.length > 0 && fields?.map(field => (
                 <Link to={`/kols?fieldIds=${field?.id}`}>
                     <DivWrap>

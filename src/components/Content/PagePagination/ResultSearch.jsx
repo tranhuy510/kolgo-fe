@@ -43,22 +43,28 @@ function arrUpperCase(data) {
 }
 
 const ResultSearch = (props) => {
-    console.log(props.resultKolFlter);
+    console.log(props.resultKolFlter.length > 0 ? "true" : "false");
     return (
-        <DivWrap key={"ResultSearch"}>
-            {props.resultKolFlter?.map((kol) => {
-                const firstName = arrUpperCase(kol?.firstName);
-                return (
-                    <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
-                        <IMG src={kol?.avatar} alt="" />
-                        <div style={{ display: "flex" }}>
-                            <Name>{firstName}</Name>
-                            <Name>{kol?.lastName}</Name>
-                        </div>
-                    </Link>
-                );
-            })}
-        </DivWrap>
+        <>
+            {(props.resultKolFlter && props.resultKolFlter.length > 0)
+                ? <DivWrap key={"ResultSearch"}>
+                    {props.resultKolFlter?.map((kol) => {
+                        const firstName = arrUpperCase(kol?.firstName);
+                        return (
+                            <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+                                <IMG src={kol?.avatar} alt="" />
+                                <div style={{ display: "flex" }}>
+                                    <Name>{firstName}</Name>
+                                    <Name>{kol?.lastName}</Name>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </DivWrap>
+                : <>Không có kết quả tìm kiếm</>}
+        </>
+
+
     )
 }
 

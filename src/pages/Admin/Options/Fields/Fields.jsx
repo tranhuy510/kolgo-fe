@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 
 import { Table, Input, Modal, Button } from "antd";
-import { getFields } from "../../../../services/FieldService";
+import { getFields, getKolFields, getEntFields } from "../../../../services/FieldService";
 
 import classes from './Fields.module.css'
 
 
 const Fields = () => {
-    const [fields, setFields] = useState([])
+    const [kolFields, setKolFields] = useState([])
+    const [entFields, setEntFields] = useState([])
 
     const [inputSearch, setInputSearch] = useState("");
-    const [typeFieldSearch, setTypeFieldSearch] = useState("");
+    const [typeFieldSearch, setTypeFieldSearch] = useState("KOL");
 
     const [openModalAdd, setOpenModalAdd] = useState(false)
+    const [dataAdd, setDataAdd] = useState({
+        name: "",
+        id: "KOL"
+    })
 
     useEffect(() => {
-        getFields()
-            .then((res) => {
-                setFields(res)
-            })
+        getKolFields().then((res) => { setKolFields(res) })
+        getEntFields().then((res) => { setEntFields(res) })
     }, [])
 
     const columns = [
@@ -74,10 +77,20 @@ const Fields = () => {
         console.log(data);
     }
 
-    const resultSearch = fields.filter((field) => {
-        return (inputSearch === "" ? field : field.name.includes(inputSearch))
-            && (typeFieldSearch === "" ? field : field.type.includes(typeFieldSearch))
-    })
+    const resultSearch = () => {
+        let data = []
+        if (typeFieldSearch === "KOL") {
+            data = kolFields.filter((field) => {
+                return (inputSearch === "" ? field : field.name.includes(inputSearch))
+            })
+        }
+        if (typeFieldSearch === "ENTERPRISE") {
+            data = entFields.filter((field) => {
+                return (inputSearch === "" ? field : field.name.includes(inputSearch))
+            })
+        }
+        return data
+    }
 
     const onOpenModalAddField = () => {
         setOpenModalAdd(true)
@@ -87,8 +100,17 @@ const Fields = () => {
         setOpenModalAdd(false)
     }
 
-    const onAddFieldHandler = () => {
+    const onChangeDataAddField = (event) => {
+        setDataAdd((prevState) => {
+            return {
+                ...prevState,
+                [event.target.name]: event.target.value,
+            };
+        });
+    }
 
+    const onAddFieldHandler = () => {
+        console.log(dataAdd);
     }
 
     return (
@@ -106,9 +128,6 @@ const Fields = () => {
                         value={typeFieldSearch}
                         onChange={onChangeTypeFieldHandler}
                     >
-                        <option key="ALL" value="">
-                            Tất cả
-                        </option>
                         <option key="KOL" value="KOL">
                             KOL
                         </option>
@@ -116,15 +135,12 @@ const Fields = () => {
                             ENTERPRISE
                         </option>
                     </select>
-                </div>
-
-                <div className={classes["modal-add-field"]}>
-                    <Button onClick={onOpenModalAddField}>Thêm lĩnh vực</Button>
+                    <Button onClick={onOpenModalAddField} >Thêm lĩnh vực</Button>
                 </div>
 
                 <Table
                     columns={columns}
-                    dataSource={resultSearch}
+                    dataSource={resultSearch()}
                     pagination={{
                         defaultPageSize: 10,
                         showSizeChanger: true,
@@ -134,13 +150,32 @@ const Fields = () => {
             </div>
 
             <Modal
-                width={1000}
+                width={800}
                 title=""
                 open={openModalAdd}
                 onCancel={onCloseModalAddField}
                 footer={[]}
             >
-
+                <input
+                    type="text"
+                    placeholder="Nhập tên"
+                    className={classes['add-modal-input']}
+                    onChange={onChangeDataAddField}
+                    name="name"
+                />
+                <select
+                    className={classes['add-modal-select']}
+                    onChange={onChangeDataAddField}
+                    name="id"
+                >
+                    <option key="KOL" value="KOL">
+                        KOL
+                    </option>
+                    <option key="ENTERPRISE" value="ENTERPRISE">
+                        ENTERPRISE
+                    </option>
+                </select>
+                <Button onClick={onAddFieldHandler}>Thêm</Button>
             </Modal>
         </>
     )

@@ -16,7 +16,10 @@ import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 import HomeAdmin from "../pages/Admin/HomeAdmin";
 import PaymentResult from "../pages/Payment/PaymentResult";
 
-import { isAuthenticatedRoute } from "../context/ProtectedRoute.context";
+import {
+  isAuthenticatedRoute,
+  isAuthenticatedAdmin,
+} from "../context/ProtectedRoute.context";
 import BookingDetails from "../pages/Booking/BookingDetails";
 
 export const router = createBrowserRouter([
@@ -35,7 +38,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "ents/:id",
-        element: isAuthenticatedRoute(PageEntDetail, "entDetail"),
+        element: isAuthenticatedRoute(PageEntDetail),
       },
       {
         path: "/kols",
@@ -47,15 +50,15 @@ export const router = createBrowserRouter([
       },
       {
         path: "chat",
-        element: isAuthenticatedRoute(Chat, "chat"),
+        element: isAuthenticatedRoute(Chat),
       },
       {
         path: "/bookings/:id",
-        element: isAuthenticatedRoute(BookingDetails, "bookingDetails"),
+        element: isAuthenticatedRoute(BookingDetails),
       },
       {
         path: "/vnpay/return",
-        element: isAuthenticatedRoute(PaymentResult, "paymentResult"),
+        element: isAuthenticatedRoute(PaymentResult),
       },
     ],
   },
@@ -70,9 +73,13 @@ export const router = createBrowserRouter([
     path: "/reset_password",
     element: <ResetPassword />,
   },
+  // {
+  //   path: "/admin",
+  //   element: isAuthenticatedAdmin(HomeAdmin),
+  // },
   {
     path: "/admin",
-    element: isAuthenticatedRoute(HomeAdmin, "admin"),
+    element: <HomeAdmin />,
   },
   {
     path: "*",

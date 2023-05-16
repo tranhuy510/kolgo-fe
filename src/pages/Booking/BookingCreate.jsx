@@ -9,27 +9,25 @@ import classes from './Booking.module.css'
 const { TextArea } = Input;
 
 const BookingCreate = (props) => {
-    const kol = props.kol;
-    const navigate = useNavigate();
-    const [booked, setBooked] = useState(false);
-    const [booking, setBooking] = useState({
-        timestamp: "",
-        postPrice: 0,
-        postNumber: 0,
-        videoPrice: 0,
-        videoNumber: 0,
-        totalPrice: 0,
-        description: ""
-    });
+  const kol = props.kol;
+  const navigate = useNavigate();
+  const [booking, setBooking] = useState({
+    timestamp: "",
+    postPrice: 0,
+    postNumber: 0,
+    videoPrice: 0,
+    videoNumber: 0,
+    totalPrice: 0,
+    description: ""
+  });
 
-    useEffect(() => {
-        console.log(kol)
-        setBooking(prev => ({
-            ...prev,
-            postPrice: kol?.postPrice,
-            videoPrice: kol?.videoPrice
-        }))
-    }, []);
+  useEffect(() => {
+    setBooking(prev => ({
+      ...prev,
+      postPrice: kol?.postPrice,
+      videoPrice: kol?.videoPrice
+    }))
+  }, []);
 
   const updateTotalPrice = (postPrice, postNumber, videoPrice, videoNumber) => {
     const totalPrice = postPrice * postNumber + videoPrice * videoNumber;
@@ -61,22 +59,22 @@ const BookingCreate = (props) => {
   };
 
   const handleBooking = () => {
-    booking.date = formatDate(new Date());
+    booking.timestamp = formatDate(new Date());
     booking.status = BookingStatus.PENDING;
     setBooking({ ...booking });
-    createBooking(booking).then((res) => {
+    console.log(kol.id);
+    console.log(booking);
+    createBooking(kol.id, booking).then((res) => {
       console.log(res);
-      if (!res.error) navigate(`/bookings/${res.id}`);
-      if (res.error) {
-        setBooked(true);
+      if (!res.error) {
+        navigate(`/bookings/${res.id}`);
       }
+
     });
   };
 
   const onCloseModal = () => {
-    setBooked(false);
     props.onCancelOpenHandler();
-    booking.status = "";
   };
 
   return (
@@ -140,10 +138,7 @@ const BookingCreate = (props) => {
               span: 15,
             }}
           >
-            {!booking.status && <Button onClick={handleBooking}>Book</Button>}
-            {booked && (
-              <span>Bạn đã đặt kol này, vào thông báo để xem chi tiết</span>
-            )}
+            <Button onClick={handleBooking}>Đặt</Button>
           </Form.Item>
         </Form>
       </div>

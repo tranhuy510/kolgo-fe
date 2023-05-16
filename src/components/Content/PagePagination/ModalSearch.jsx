@@ -55,16 +55,12 @@ const ModalSearch = () => {
     const regex = /(.*)\s\((.*)\)/;
 
     const resultKolFlter = kols.filter((kol) => {
-        return (searchName === "" ? kol : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
-            && (searchField === "" ? kol : kol.fields.some(field => field.name === searchField))
-            && (searchCity === "" ? kol : kol.city.name === searchCity)
+        return (searchName === "" ? null : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
+            && (searchField === "" ? kol : kol.fields.find(field => field?.name === searchField))
+            && (searchCity === "" ? kol : kol.city?.name === searchCity)
     })
 
     const onSearchHandler = () => {
-        console.log(searchName);
-        console.log(searchField);
-        console.log(searchCity);
-        console.log(resultKolFlter);
         setOpenResult(true)
     }
 

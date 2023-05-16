@@ -41,7 +41,6 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
 
     const [cities, setCities] = useState([]);
     const [fields, setFileds] = useState([]);
-    // const [componentDisabled, setComponentDisabled] = useState(true);
 
     useEffect(() => {
         getCities()

@@ -1,251 +1,281 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { Button, Modal, Input, Select, Form, Skeleton, Upload, Cascader } from "antd";
+import { Button, Modal, Select, Cascader, Row, Col } from "antd";
+
+import classes from './AccountKOL.module.css'
+
 import { getEntFields } from '../../../../services/FieldService';
 import { getCities } from '../../../../services/CityService';
 
-const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, onUpdateHandler }) => {
+const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, cityList }) => {
 
-    const [listFields, setListFields] = useState([])
-    const [listCities, setListCities] = useState([])
+    const [profile, setProfile] = useState({});
 
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [name, setName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [taxId, setTaxId] = useState("")
-    const [fields, setFields] = useState(null)
-    const [city, setCity] = useState(null)
-    const [addressDetail, setAddressDetail] = useState("")
-
-    const [isLoading, setIsLoading] = useState(false)
-
-    useLayoutEffect(() => {
-        setFirstName(data.user?.firstName)
-        setLastName(data.user?.lastName)
-        setName(data?.name)
-        setPhone(data?.phone)
-        setTaxId(data?.taxId)
-        setFields(data.field?.id)
-        setCity(data?.address?.city?.id)
-        setAddressDetail(data?.address?.details)
-
-        setIsLoading(true)
+    useEffect(() => {
+        setProfile(data)
     }, [data])
 
-    // console.log(firstName);
-    useEffect(() => {
-        getEntFields().then((res) => { setListFields(res) })
-        getCities().then((res) => { setListCities(res) })
-    }, [])
-
-    const onChangefirstNameHandler = (e) => {
-        setFirstName(e.target.value)
-    }
-
-    const onChangelastNameHandler = (e) => {
-        setLastName(e.target.value)
-    }
-
-    const onChangeNameHandler = (e) => {
-        setName(e.target.value)
-    }
-
-    const onChangePhoneHandler = (e) => {
-        setPhone(e.target.value)
-    }
-
-    const onChangeTaxIdHandler = (e) => {
-        setTaxId(e.target.value)
-    }
-
-    const onChangeFieldsHandler = (value) => {
-        setFields(value);
-    };
-
-    const optionFields = listFields.map((field) => {
+    const optionFields = fieldList.map((field) => {
         return {
             value: field.id,
             label: field.name,
         };
     });
 
-    const onChangeCityHandler = (value) => {
-        setCity(value);
-    };
-
-    const optionCities = listCities.map((city) => {
+    const optionCities = cityList.map((city) => {
         return {
             value: city.id,
             label: city.name,
         };
     });
 
-    const onChangeAddressDetailHandler = (e) => {
-        setAddressDetail(e.target.value);
+    const inputChangeHandler = (event) => {
+        setProfile((prevState) => {
+            return {
+                ...prevState,
+                [event.target.name]: event.target.value,
+            };
+        });
     };
 
-    const onUpdate = () => {
-        // console.log(firstName);
-        // console.log(lastName);
-        // console.log(name);
-        // console.log(phone);
-        // console.log(taxId);
-        // console.log(fields);
-        // console.log(city);
-        // console.log(addressDetail);
+    const onChangeCityHandler = (value) => {
+        setProfile((prevState) => {
+            return {
+                ...prevState,
+                city: value[0],
+            };
+        });
+    };
 
-        // onUpdateHandler({
-        //     firstName: firstName,
-        //     lastName: lastName,
-        //     name: name,
-        //     phone: phone,
-        //     taxId: taxId,
-        //     fields: fields,
-        //     city: city,
-        //     addressDetail: addressDetail
-        // })
+    const onChangeFieldsHandler = (value) => {
+        setProfile((prevState) => {
+            return {
+                ...prevState,
+                fields: value,
+            };
+        });
+    };
+
+    const onUpdate = (event) => {
+        event.preventDefault();
+        console.log(profile);
     }
 
     return (
-        <Modal
-            width={1000}
-            title=""
-            open={openUpdate}
-            onCancel={onCloseUpdateModalHandler}
-            footer={[]}
-        >
-            {!isLoading && (<Skeleton active />)}
-            {isLoading &&
-                <Form
-                    name="basic"
-                    labelCol={{ span: 4, }}
-                    wrapperCol={{ span: 19, }}
-                    style={{ minWidth: 600, maxWidth: 920, }}
-                    initialValues={{ remember: false }}
-                    autoComplete="off"
-                >
-                    <Form.Item
-                        label="Tên"
-                        name="firstName"
-                        rules={[{ required: true, message: 'Không được để trống tên!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập tên"
-                            onChange={onChangefirstNameHandler}
-                            value={firstName}
-                            defaultValue={firstName}
+        <>
+            <Modal
+                width={800}
+                title=""
+                open={openUpdate}
+                onCancel={onCloseUpdateModalHandler}
+                footer={[]}
+            >
+                <h1>Thông tin chi tiết</h1>
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Tên:</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Tên của bạn"
+                            className={classes['modal-update-col-input']}
+                            value={profile.firstName}
+                            name="firstName"
+                            onChange={inputChangeHandler}
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Họ"
-                        name="lastName"
-                        rules={[{ required: true, message: 'Không được để trống họ!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập họ"
-                            onChange={onChangelastNameHandler}
-                            value={lastName}
-                            defaultValue={lastName}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Họ:</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Họ của bạn"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.lastName}
+                            name="lastName"
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Tên doanh nghệp"
-                        name="name"
-                        rules={[{ required: true, message: 'Không được để trống tên doanh nghiệp!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập tên doanh nghệp"
-                            onChange={onChangeNameHandler}
-                            value={name}
-                            defaultValue={name}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Giới tính :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Giới tính"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.gender === "MALE" ? "Nam" : "Nữ"}
+                            name="gender"
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Số điện thoại"
-                        name="phone"
-                        rules={[{ required: true, message: 'Không được để trống số điện thoại!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập số điện thoại"
-                            onChange={onChangePhoneHandler}
-                            value={phone}
-                            defaultValue={phone}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Vai trò :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Vai trò"
+                            className={classes['modal-update-col-input']}
+                            value={profile.role}
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Mã số thuế"
-                        name="taxId"
-                        rules={[{ required: true, message: 'Không được để trống mã số thuế!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập mã số thuế"
-                            onChange={onChangeTaxIdHandler}
-                            value={taxId}
-                            defaultValue={taxId}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Email :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Email"
+                            className={classes['modal-update-col-input']}
+                            value={profile.email}
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Lĩnh vực"
-                        name="fields"
-                        rules={[{ required: true, message: 'Không được để trống lĩnh vực!' }]}
-                    >
-                        <Cascader
-                            options={optionFields}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Số điện thoại:</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Số điện thoại"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.phone}
+                            name="phone"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Giá 1 video:</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Giá 1 video"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.videoPrice}
+                            name="videoPrice"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Giá 1 bài viết :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Giá 1 bài viết"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.postPrice}
+                            name="postPrice"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Lĩnh vực:</Col>
+                    <Col span={18}>
+                        <Select
+                            mode="tags"
+                            style={{
+                                width: "100%",
+                            }}
+                            placeholder="Chọn lĩnh Vực"
                             onChange={onChangeFieldsHandler}
-                            value={fields}
-                            defaultValue={fields}
+                            value={profile.fields}
+                            options={optionFields}
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Địa chỉ"
-                        name="city"
-                        rules={[{ required: true, message: 'Hãy chọn địa chỉ!' }]}
-                    >
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Tỉnh/Thành phố:</Col>
+                    <Col span={18}>
                         <Cascader
+                            style={{
+                                width: "100%",
+                            }}
                             options={optionCities}
                             onChange={onChangeCityHandler}
-                            value={city}
-                            defaultValue={city}
+                            value={profile.city}
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        label="Địa chỉ cụ thể"
-                        name="addressDetail"
-                        rules={[{ required: false, message: 'Không được để trống mã số thuế!' }]}
-                    >
-                        <Input
-                            rows={2}
-                            placeholder="Nhập địa chỉ cụ thể"
-                            onChange={onChangeAddressDetailHandler}
-                            value={addressDetail}
-                            defaultValue={addressDetail}
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Địa chỉ cụ thể:</Col>
+                    <Col span={18}>
+                        <input
+                            className={classes['modal-update-col-input']}
+                            placeholder="Địa chỉ cụ thể"
+                            onChange={inputChangeHandler}
+                            value={profile.addressDetails}
+                            name="addressDetails"
                         />
-                    </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 4,
-                            span: 15,
-                        }}
-                    >
-                        <Button type="primary" onClick={onUpdate}>
-                            Cập nhập
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Link Facebook:</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Mã số thuế"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.facebookUrl}
+                            name="facebookUrl"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Link Instagram :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Mã số thuế"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.instagramUrl}
+                            name="instagramUrl"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Link Tiktok :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Mã số thuế"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.tiktokUrl}
+                            name="tiktokUrl"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col span={6}>Link Youtube :</Col>
+                    <Col span={18}>
+                        <input
+                            placeholder="Mã số thuế"
+                            className={classes['modal-update-col-input']}
+                            onChange={inputChangeHandler}
+                            value={profile.youtubeUrl}
+                            name="youtubeUrl"
+                        />
+                    </Col>
+                </Row>
+
+                <Row style={{ margin: '20px 10px' }}>
+                    <Col offset={6}></Col>
+                    <Col span={18}>
+                        <Button onClick={onUpdate}>
+                            Cập nhật
                         </Button>
-                    </Form.Item>
-                </Form>}
-        </Modal>
+                    </Col>
+                </Row>
+            </Modal>
+        </>
+
     )
 }
 

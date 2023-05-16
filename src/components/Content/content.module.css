@@ -6,6 +6,10 @@
     width: calc(100% - 250px);
 }
 
+.content-pagination {
+    text-align: center;
+}
+
 .content-pagination .ant-pagination-options {
     display: none !important;
 }
