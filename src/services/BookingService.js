@@ -11,3 +11,11 @@ export function getBooking(id) {
 export function updateBookingStatus(id, status) {
     return putAuth(`user/bookings/${id}?status=${status}`);
 }
+
+export function addBookingVnPayPayment(bookingId, paymentResult) {
+    return postAuth(`user/bookings/${bookingId}/payments/vnpay`, paymentResult);
+}
+
+export function addBookingFeedback(bookingId, feedback) {
+    return postAuth(`user/bookings/${bookingId}/feedbacks`, feedback)
+}
