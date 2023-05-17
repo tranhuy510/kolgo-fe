@@ -22,6 +22,7 @@ const Compare = (props) => {
             })
             .then(data => {
                 setKols(data);
+                console.log(data);
             }).catch(function (error) {
                 console.error(error);
             });
@@ -47,7 +48,7 @@ const Compare = (props) => {
         setDataUser2(data);
         cancelShowHandler();
     };
-    console.log(dataUser2);
+    console.log(props.infoKol);
 
     return (
         <div className="form-so-sanh">

@@ -31,7 +31,7 @@ const Feedback = (props) => {
                                 <div className="rate-item__content">
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <div className="busines" style={{ color: color }}>
-                                            <Link to={`/detail/enterprise/:${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
+                                            <Link to={`/ents/${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
                                         </div>
                                         <RateDate date={item.date} />
                                     </div>

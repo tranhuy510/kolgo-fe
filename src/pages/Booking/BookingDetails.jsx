@@ -43,8 +43,6 @@ const BookingDetails = () => {
   useEffect(() => {
     getBooking(id)
       .then(res => {
-        console.log(res);
-        // if (res.error.code === 404) setError(true);
         setBooking(res);
         setFeedback((prevState) => {
           return {
@@ -100,10 +98,10 @@ const BookingDetails = () => {
       return;
     }
     setRenderFeedback(true)
-    const date = new Date();
-    feedback.dateCreate.day = date.getDate();
-    feedback.dateCreate.month = date.getMonth() + 1;
-    feedback.dateCreate.year = date.getFullYear();
+    // const timestamp = DateTimeUtils.formatDate(new Date(), 'dd/MM/yyyy');
+    // feedback.dateCreate.day = date.getDate();
+    // feedback.dateCreate.month = date.getMonth() + 1;
+    // feedback.dateCreate.year = date.getFullYear();
     console.log(feedback);
   }
 

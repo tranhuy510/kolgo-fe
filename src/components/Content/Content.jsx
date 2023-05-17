@@ -16,10 +16,10 @@ const Title = styled.h2`
 
 const Content = () => {
   const [currentHotKOL, setCurrentHotKOL] = useState(1);
-  const [totalHotKOL, setTotalHotKOL] = useState(30);
+  const [totalHotKOL, setTotalHotKOL] = useState(10);
 
   const [currentOutstandingKOL, setCurrentOutstandingKOL] = useState(1);
-  const [totalOutstandingKOL, setTotalOutstandingKOL] = useState(30);
+  const [totalOutstandingKOL, setTotalOutstandingKOL] = useState(10);
 
   const onChangeHotKOL = (page) => {
     console.log(page);

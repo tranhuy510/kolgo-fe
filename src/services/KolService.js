@@ -8,8 +8,8 @@ export function getKol(id) {
   return get(`kols/${id}`);
 }
 
-export function getKolsByFieldIds(fieldIds) {
-  return get(`kols?fieldIds=${fieldIds}`);
+export function getKolsByFieldIds(fieldId) {
+  return get(`kols?fieldIds=${fieldId}`);
 }
 
 export function getKolProfile() {

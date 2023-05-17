@@ -60,15 +60,8 @@ const danhgia = [
 
 const PageKolDetail = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user);
   const { id } = useParams();
   const [kol, setKol] = useState();
-  const urls = [
-    kol?.facebookUrl,
-    kol?.instagramUrl,
-    kol?.tiktokUrl,
-    kol?.youtubeUrl,
-  ];
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("")
@@ -82,7 +75,7 @@ const PageKolDetail = () => {
       .then((res) => {
         setKol(res);
         checkStatus(res.bookings, user, res.kol)
-        console.log(res.kol);
+        console.log(res);
       });
   }, []);
 
@@ -138,7 +131,7 @@ const PageKolDetail = () => {
           So sánh
         </button>
       ),
-      children: <Compare infoKol={kol} />,
+      children: <Compare infoKol={kol?.kol} />,
     },
   ];
 
@@ -152,8 +145,13 @@ const PageKolDetail = () => {
               span={6}
               style={{ paddingRight: "10px", boxSizing: "border-box" }}
             >
-              <ImageDescription images={kol?.kol?.images} />
-              <ContactSocials urls={urls} />
+              <ImageDescription images={kol?.images} />
+              <ContactSocials
+                facebookUrl={kol?.kol?.facebookUrl}
+                instagramUrl={kol?.kol?.instagramUrl}
+                tiktokUrl={kol?.kol?.tiktokUrl}
+                youtubeUrl={kol?.kol?.youtubeUrl}
+              />
             </Col>
             <Col span={12} className="col-12-middle">
               <Row style={{ padding: "20px" }}>
@@ -169,12 +167,13 @@ const PageKolDetail = () => {
                   email={kol?.kol?.email}
                   phoneNumber={kol?.kol?.phone}
                   gender={kol?.kol?.gender}
-                  city={kol?.kol?.city?.name}
+                  city={kol?.kol?.cityName}
                 />
               </Row>
               <Row className="middle-row" >
                 <ListFields
-                  fields={kol?.kol?.fields}
+                  fieldNames={kol?.kol?.fieldNames}
+                  fieldIds={kol?.kol?.fieldIds}
                 />
               </Row>
               <Row className="middle-row">

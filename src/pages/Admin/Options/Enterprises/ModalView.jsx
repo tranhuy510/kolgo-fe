@@ -32,18 +32,18 @@ const ModalView = (props) => {
                         {props.data?.name}
                     </Descriptions.Item>
                     <Descriptions.Item label="Ảnh" span={3}>
-                        <Image src={props.data?.avatar ? props.data?.avatar : ""}>
+                        <Image src={`http://localhost:8080/api/images/${props.data?.avatar}`}>
                             {/* {props.data?.avatar ? "" : props.data?.firstName.charAt(0)?.toUpperCase()} */}
                         </Image>
                     </Descriptions.Item>
                     <Descriptions.Item label="Lĩnh vực" span={3}>
-                        {props.data.field?.name}
+                        {props.data?.fieldName}
                     </Descriptions.Item>
                     <Descriptions.Item label="Khu vực" span={3}>
-                        {props.data.address?.city.name}
+                        {props.data?.cityName}
                     </Descriptions.Item>
                     <Descriptions.Item label="Địa chỉ cụ thể" span={3}>
-                        {props.data.address?.details}
+                        {props.data?.addressDetails}
                     </Descriptions.Item>
                 </Descriptions>
             </div>

@@ -19,14 +19,15 @@ const Name = styled.p`
 `;
 
 const linkStyle = {
-  width: "220px",
-  height: "280px",
+  width: "180px",
+  height: "270px",
   margin: "5px 0",
   boxSizing: "border-box",
   borderRadius: "20px",
   border: "1px solid #ccc",
   textDecoration: "none",
   color: "#000",
+  cursor: 'pointer',
 };
 
 const DivWrap = styled.div`
@@ -49,6 +50,10 @@ const PageHOT = (props) => {
     });
   }, []);
 
+  useLayoutEffect(() => {
+    changeRender()
+  }, [props.current]);
+
   function arrUpperCase(data) {
     const demo = data?.replace(/^(.)(.*)$/, function (match, p1, p2) {
       return p1.toUpperCase() + p2;
@@ -56,13 +61,17 @@ const PageHOT = (props) => {
     return demo;
   }
 
+  const changeRender = () => {
+    return hotKols?.slice((props.current - 1) * 10, (((props.current - 1) * 10) + 10));
+  }
+
   return (
     <DivWrap key={"hotKol"}>
-      {hotKols?.map((kol) => {
+      {changeRender()?.map((kol) => {
         const firstName = arrUpperCase(kol.firstName);
         return (
           <Link key={kol?.id} to={`/kols/${kol.id}`} style={linkStyle}>
-            <IMG src={kol?.avatar} alt="" />
+            <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
             <div style={{ display: "flex" }}>
               <Name>{firstName}</Name>
               <Name>{kol.lastName}</Name>

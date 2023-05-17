@@ -34,6 +34,8 @@ const AccountEnterprises = () => {
       title: "Tên ",
       dataIndex: "firstName",
       key: "firstName",
+      fixed: 'left',
+      width: 100,
       render: (text, data) => <div className="name-title-table">{data?.firstName}</div>,
     },
     {
@@ -69,6 +71,8 @@ const AccountEnterprises = () => {
     {
       title: "",
       key: "action",
+      with: 300,
+      fixed: 'right',
       render: (_, record) => (
         <div className="btn-action-group">
           <Button
@@ -145,6 +149,7 @@ const AccountEnterprises = () => {
         </div>
 
         <Table
+          className={classes["table"]}
           columns={columns}
           dataSource={kols.filter((kol) => {
             return inputSearch.toLowerCase() === ""
@@ -157,6 +162,7 @@ const AccountEnterprises = () => {
             showSizeChanger: true,
             pageSizeOptions: ["1", "5", "10", "20"],
           }}
+          scroll={{ x: 1500, }}
         />
 
       </div>

@@ -5,7 +5,7 @@ import { getKols } from '../../../services/KolService';
 
 import classes from '../content.module.css';
 import styled from "styled-components";
-import { Input } from 'antd';
+import { Input, Pagination } from 'antd';
 import ResultSearch from './ResultSearch';
 
 const Title = styled.h2`
@@ -22,6 +22,9 @@ const ModalSearch = () => {
     const [searchField, setSearchField] = useState("");
     const [searchName, setSearchName] = useState("");
     const [searchCity, setSearchCity] = useState("");
+
+    const [current, setCurrent] = useState(1);
+    const [total, setTotal] = useState(10);
 
     useEffect(() => {
         getKolFields()

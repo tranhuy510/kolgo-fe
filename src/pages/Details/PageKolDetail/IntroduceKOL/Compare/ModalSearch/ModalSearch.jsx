@@ -36,7 +36,7 @@ const ModalSearch = (props) => {
                         })
                         .map((item, index) => (
                             <div className="item-search-user" key={index}>
-                                <Image className="image-item-user" src={item.avatar} />
+                                <Image className="image-item-user" src={`http://localhost:8080/api/images/${item?.avatar}`} />
                                 <div className="name-item-user">{item.firstName} {item.lastName}</div>
                                 <div
                                     className="content-item-user"

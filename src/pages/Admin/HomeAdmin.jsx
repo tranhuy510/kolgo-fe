@@ -64,7 +64,7 @@ const HomeAdmin = () => {
               className={classes['btn-logout']}
             >Đăng xuất</Button>
           </Sider>
-          <Layout>
+          <Layout className={classes['admin-menu']}>
             <Layout.Content className={classes["site-layout-content"]}>
               {selectedMenuItem === "1" && <AccountEnterprises />}
               {selectedMenuItem === "2" && <AccountKOL />}

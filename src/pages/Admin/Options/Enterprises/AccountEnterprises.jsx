@@ -25,7 +25,7 @@ const AccountEnterprises = () => {
   const [data, setData] = useState({})
 
   useEffect(() => {
-    getEnts().then((res) => { setEnts(res)})
+    getEnts().then((res) => { setEnts(res) })
     getEntFields().then((res) => { setFieldList(res) })
     getCities().then((res) => { setCityList(res) })
   }, [])
@@ -158,6 +158,7 @@ const AccountEnterprises = () => {
         </div>
 
         <Table
+          className={classes["table"]}
           columns={columns}
           dataSource={ents.filter((ent) => {
             return inputSearch.toLowerCase() === ""

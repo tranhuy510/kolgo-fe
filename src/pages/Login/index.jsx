@@ -24,7 +24,7 @@ const Login = (props) => {
     email: "",
     password: "",
   });
-  const [error, setError] = useState();
+
   const [check, setCheck] = useState({
     status: false,
     type: "",
@@ -55,27 +55,38 @@ const Login = (props) => {
       event.preventDefault();
     }
     if (!userInput.email) {
-      setError({
-        title: "Invalid email",
-        message: "Please enter a valid email (non-empty email)",
+      setCheck({
+        status: true,
+        type: "error",
+        content: `Email không được để trống, hãy nhập email`,
       });
       return;
     }
-    if (!userInput.password) {
-      setError({
-        title: "Invalid password",
-        message: "Please enter a valid password (non-empty password)",
+    else if (userInput.email.indexOf('@') < 0 || userInput.email.indexOf('.com') < 0) {
+      setCheck({
+        status: true,
+        type: "error",
+        content: `Cấu trúc email không đúng xin hãy nhập lại, vs dụ: "abc@kolgo.com"`,
+      });
+      return;
+    }
+    else if (!userInput.password) {
+      setCheck({
+        status: true,
+        type: "error",
+        content: `Mật khẩu không được để trống, hãy nhập mật khẩu`,
       });
       return;
     }
 
-    // let response = await login(userInput);
-    let response = await authApi(userInput);
-    if (response.status !== 200) {
+    let response = await login(userInput);
+    // let response = await authApi(userInput);
+    console.log(response);
+    if (!response) {
       setCheck({
         status: true,
         type: "error",
-        content: `Đăng nhập thất bại`,
+        content: `Đăng nhập thất bại, kiểm tra lại email và mật khẩu!`,
       });
     }
     else setProfile(response);
@@ -83,21 +94,21 @@ const Login = (props) => {
 
   const setProfile = (response) => {
 
-    let accessToken = response.data.token.accessToken;
+    let accessToken = response.token.accessToken;
     accessToken = JSON.stringify(accessToken);
     localStorage.setItem("accessToken", accessToken);
 
-    let refreshToken = response.data.token.refreshToken;
+    let refreshToken = response.token.refreshToken;
     refreshToken = JSON.stringify(refreshToken);
     localStorage.setItem("refreshToken", refreshToken);
 
     let user = {
-      id: response.data.user.id,
-      email: response.data.user.email,
-      firstName: response.data.user.firstName,
-      lastName: response.data.user.lastName,
-      avatar: response.data.user.avatar,
-      role: response.data.user.role,
+      id: response.user.id,
+      email: response.user.email,
+      firstName: response.user.firstName,
+      lastName: response.user.lastName,
+      avatar: response.user.avatar,
+      role: response.user.role,
     };
 
     localStorage.setItem("user", JSON.stringify({ ...user }))
@@ -109,13 +120,11 @@ const Login = (props) => {
       content: `Đăng nhập thành công`,
     });
 
-    if (response.data.user.role === "ADMIN") {
-      return navigate("../admin");
-    } else return navigate("..");
-  };
-
-  const errorHandler = () => {
-    setError(null);
+    setTimeout(() => {
+      if (response.user.role === "ADMIN") {
+        return navigate("../admin");
+      } else return navigate("..");
+    }, 500)
   };
 
   const forgotPasswordHandler = () => {
@@ -128,13 +137,6 @@ const Login = (props) => {
 
   return (
     <div>
-      {error && (
-        <ErrorModal
-          title={error.title}
-          message={error.message}
-          onConfirm={errorHandler}
-        />
-      )}
       <Message
         status={check.status}
         type={check.type}

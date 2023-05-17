@@ -18,14 +18,15 @@ const Name = styled.p`
 `;
 
 const linkStyle = {
-    width: "220px",
-    height: "280px",
+    width: "180px",
+    height: "270px",
     margin: "5px 0",
     boxSizing: "border-box",
     borderRadius: "20px",
     border: "1px solid #ccc",
     textDecoration: "none",
     color: "#000",
+    cursor: 'pointer',
 };
 
 const DivWrap = styled.div`
@@ -52,7 +53,7 @@ const ResultSearch = (props) => {
                         const firstName = arrUpperCase(kol?.firstName);
                         return (
                             <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
-                                <IMG src={kol?.avatar} alt="" />
+                                <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
                                 <div style={{ display: "flex" }}>
                                     <Name>{firstName}</Name>
                                     <Name>{kol?.lastName}</Name>
