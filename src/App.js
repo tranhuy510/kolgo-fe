@@ -2,17 +2,16 @@ import { RouterProvider } from "react-router-dom";
 import React from "react";
 
 import { AuthProvider } from "./context/auth.context";
-import { router } from "./router";
+import Router from "./router";
 import { MessageProvider } from "./context/Message.context";
 
+// , { router } <RouterProvider router={router}/ >
+
 export default function App() {
-
-  let user = JSON.parse(localStorage.getItem("user"));
-
   return (
-    <AuthProvider userData={user} >
+    <AuthProvider>
       <MessageProvider>
-        <RouterProvider router={router} />
+        <Router />
       </MessageProvider>
     </AuthProvider>
   );

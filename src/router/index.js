@@ -3,7 +3,12 @@ import Campaign from "../pages/Campaign";
 import Login from "../pages/Login";
 import Register from "../pages/Register/Register";
 import Profile from "../pages/Profile/Profile";
-import { createBrowserRouter } from "react-router-dom";
+import {
+  BrowserRouter,
+  createBrowserRouter,
+  Route,
+  Routes,
+} from "react-router-dom";
 import RootLayout from "../pages/Root";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import PageKolDetail from "../pages/Details/PageKolDetail/PageKolDetail";
@@ -15,76 +20,119 @@ import NotFound from "../pages/NotFound/NotFound";
 import PageEntDetail from "../pages/Details/PageEntDetail/PageEntDetail";
 import HomeAdmin from "../pages/Admin/HomeAdmin";
 import PaymentResult from "../pages/Payment/PaymentResult";
-
-import {
-  isAuthenticatedRoute,
-  isAuthenticatedAdmin,
-} from "../context/ProtectedRoute.context";
 import BookingDetails from "../pages/Booking/BookingDetails";
 
-export const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      { index: true, element: <Home /> },
-      {
-        path: "campaign",
-        element: <Campaign />,
-      },
-      {
-        path: "kols/:id",
-        element: <PageKolDetail />,
-      },
-      {
-        path: "ents/:id",
-        element: isAuthenticatedRoute(PageEntDetail),
-      },
-      {
-        path: "field/:id",
-        element: <Fields />,
-      },
-      {
-        path: "setting",
-        element: <Profile />,
-      },
-      {
-        path: "chat",
-        element: isAuthenticatedRoute(Chat),
-      },
-      {
-        path: "bookings/:id",
-        element: isAuthenticatedRoute(BookingDetails),
-      },
-      {
-        path: "/vnpay/return",
-        element: isAuthenticatedRoute(PaymentResult),
-      },
-    ],
-  },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/forgot_password", element: <ForgotPassword /> },
-  {
-    path: "/verify_account",
-    element: <VerifyRegister />,
-  },
-  {
-    path: "/reset_password",
-    element: <ResetPassword />,
-  },
-  // {
-  //   path: "/admin",
-  //   element: isAuthenticatedAdmin(HomeAdmin),
-  // },
-  {
-    path: "/admin",
-    element: <HomeAdmin />,
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
+import { ProtectedRoute } from "../context/ProtectedRoute.context";
+import { useContext } from "react";
+import { AuthContext } from "../context/auth.context";
 
-export const privateRouters = [];
+// export const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <RootLayout />,
+//     children: [
+//       { index: true, element: <Home /> },
+//       {
+//         path: "campaign",
+//         element: <Campaign />,
+//       },
+//       {
+//         path: "kols/:id",
+//         element: <PageKolDetail />,
+//       },
+//       {
+//         path: "ents/:id",
+//         element: ProtectedRoute(PageEntDetail),
+//       },
+//       {
+//         path: "field/:id",
+//         element: <Fields />,
+//       },
+//       {
+//         path: "setting",
+//         element: <Profile />,
+//       },
+//       {
+//         path: "chat",
+//         element: ProtectedRoute(Chat),
+//       },
+//       {
+//         path: "bookings/:id",
+//         element: ProtectedRoute(BookingDetails),
+//       },
+//       {
+//         path: "/vnpay/return",
+//         element: ProtectedRoute(PaymentResult),
+//       },
+//     ],
+//   },
+//   { path: "/login", element: <Login /> },
+//   { path: "/register", element: <Register /> },
+//   { path: "/forgot_password", element: <ForgotPassword /> },
+//   {
+//     path: "/verify_account",
+//     element: <VerifyRegister />,
+//   },
+//   {
+//     path: "/reset_password",
+//     element: <ResetPassword />,
+//   },
+//   // {
+//   //   path: "/admin",
+//   //   element: isAuthenticatedAdmin(HomeAdmin),
+//   // },
+//   {
+//     path: "/admin",
+//     element: <HomeAdmin />,
+//   },
+//   {
+//     path: "*",
+//     element: <NotFound />,
+//   },
+// ]);
+
+// export const privateRouters = [];
+
+const Router = () => {
+  const { user, setUser } = useContext(AuthContext);
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="kols/:id" element={<PageKolDetail />} />
+        <Route
+          path="ents/:id"
+          element=<ProtectedRoute Component={PageEntDetail} />
+        />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/admin"
+          element=<ProtectedRoute Component={HomeAdmin} role={"ADMIN"} />
+        />
+        <Route path="/campaign" element={<Campaign />} />
+        <Route path="/field/:id" element={<Fields />} />
+        <Route path="/reset_password" element={<ResetPassword />} />
+        <Route path="/verify_account" element={<VerifyRegister />} />
+        <Route path="/chat" element={<ProtectedRoute Component={Chat} />} />
+        <Route path="/forgot_password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/setting"
+          element={<ProtectedRoute Component={Profile} />}
+        />
+        <Route
+          path="/bookings/:id"
+          element={<ProtectedRoute Component={BookingDetails} />}
+        />
+        <Route
+          path="/vnpay/return"
+          element={<ProtectedRoute Component={PaymentResult} />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default Router;
