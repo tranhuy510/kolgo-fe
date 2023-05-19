@@ -11,16 +11,13 @@ export const MessageContext = createContext();
 export const MessageProvider = ({ children }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
-    // const [stompClient, setStompClient] = useState(null)
     const [chatMessages, setChatMessages] = useState([]);
     const [notifications, setNotification] = useState([]);
-    // const [stompClient, setStompClient] = useState(null);
 
     useEffect(() => {
         Promise.all([
             getNotification(),
         ]).then(([notificationList]) => {
-            console.log(notificationList)
             setNotification(notificationList);
         })
     }, [])

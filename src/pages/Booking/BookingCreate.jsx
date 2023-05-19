@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
@@ -6,30 +6,33 @@ import { createBooking } from '../../services/BookingService';
 import { BookingStatus } from '../../utils/Enums';
 import { Modal, Form, Input, Button } from 'antd';
 import classes from './Booking.module.css'
+import { MessageContext } from '../../context/Message.context';
 const { TextArea } = Input;
 
 const BookingCreate = (props) => {
-    const kol = props.kol;
-    const navigate = useNavigate();
-    const [booked, setBooked] = useState(false);
-    const [booking, setBooking] = useState({
-        timestamp: "",
-        postPrice: 0,
-        postNumber: 0,
-        videoPrice: 0,
-        videoNumber: 0,
-        totalPrice: 0,
-        description: ""
-    });
+  const user = JSON.parse(localStorage.getItem('user'));
+  const kol = props.kol;
+  const { sendPrivateMessage } = useContext(MessageContext);
+  const navigate = useNavigate();
+  const [booked, setBooked] = useState(false);
+  const [booking, setBooking] = useState({
+    timestamp: "",
+    postPrice: 0,
+    postNumber: 0,
+    videoPrice: 0,
+    videoNumber: 0,
+    totalPrice: 0,
+    description: ""
+  });
 
-    useEffect(() => {
-        console.log(kol)
-        setBooking(prev => ({
-            ...prev,
-            postPrice: kol?.postPrice,
-            videoPrice: kol?.videoPrice
-        }))
-    }, []);
+  useEffect(() => {
+    console.log(kol)
+    setBooking(prev => ({
+      ...prev,
+      postPrice: kol?.postPrice,
+      videoPrice: kol?.videoPrice
+    }))
+  }, []);
 
   const updateTotalPrice = (postPrice, postNumber, videoPrice, videoNumber) => {
     const totalPrice = postPrice * postNumber + videoPrice * videoNumber;
@@ -61,17 +64,45 @@ const BookingCreate = (props) => {
   };
 
   const handleBooking = () => {
-    booking.date = formatDate(new Date());
+    booking.timestamp = formatDate(new Date());
     booking.status = BookingStatus.PENDING;
     setBooking({ ...booking });
-    createBooking(booking).then((res) => {
+    createBooking(kol.id, booking).then((res) => {
       console.log(res);
-      if (!res.error) navigate(`/bookings/${res.id}`);
+      if (!res.error) {
+        sendBookingNotification(res, user, kol);
+        navigate(`/bookings/${res.id}`);
+      }
       if (res.error) {
         setBooked(true);
       }
     });
   };
+
+  const sendBookingNotification = (booking, user, kol) => {
+    sendPrivateMessage({
+      type: 'NOTIFICATION',
+      notification: {
+        type: 'BOOKING',
+        kolId: kol.id,
+        bookingId: booking.id,
+        content: 'Ban co 1 booking moi',
+        status: 'READ',
+        timestamp: formatDate(new Date()),
+        user: {
+          id: kol.userId,
+          firstName: kol.firstName,
+          lastName: kol.lastName,
+          email: kol.email,
+          avatar: kol.avatar,
+          role: 'KOL'
+        }
+      },
+      senderId: user.id,
+      receiverIds: [kol.userId]
+    })
+
+  }
 
   const onCloseModal = () => {
     setBooked(false);

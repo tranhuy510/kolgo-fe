@@ -30,13 +30,17 @@ const BookingDetails = () => {
     getBooking(id)
       .then(res => {
         console.log(res);
-        // if (res.error.code === 404) setError(true);
         setBooking(res);
       });
   }, [])
 
   const handlePayment = () => {
-
+    // TODO:
+    //  post fields:
+    //  amount = amount
+    //  txnRef = bookingId
+    createVnPayPayment(booking.totalPrice, booking.id)
+    .then(res => console.log(res));
   }
 
   const handleReBooking = () => {
