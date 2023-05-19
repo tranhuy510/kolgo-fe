@@ -8,6 +8,8 @@ import { Pagination } from 'antd';
 import './Fields.css'
 import { getKols, getKolsByFieldIds } from '../../services/KolService';
 
+
+
 const Fields = () => {
 
     let { id } = useParams()

@@ -6,6 +6,7 @@ import { createChat, getChats } from "../../services/ChatService";
 import classes from "./Chat.module.css";
 import { useLocation } from "react-router";
 import { formatDate } from "../../services/DateTimeUtil";
+import Header from '../../components/Header/index'
 
 let stompClient = null;
 const websocketEndpoint = "http://localhost:8080/api/ws";
@@ -177,6 +178,7 @@ const Chat = (props) => {
 
   return (
     <>
+      <Header />
       {/* Flex Container */}
       <div className={classes.messenger}>
         {/* Conversation List */}
@@ -195,9 +197,8 @@ const Chat = (props) => {
           {/* Public Room */}
           <li
             onClick={() => setTab("PUBLIC")}
-            className={`${classes["conversation-list-item"]} ${
-              tab === "PUBLIC" && classes["active"]
-            }`}
+            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]
+              }`}
           >
             Public Chat
           </li>

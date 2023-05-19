@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import ImageDescription from "./ImageDescription/ImageDescription";
@@ -11,11 +11,15 @@ import Activate from "./Activate/Activate";
 import Compare from "./Compare/Compare";
 import Feedback from "./Feedback/Feedback";
 import BookingCreate from "../../Booking/BookingCreate";
+import Header from "../../../components/Header";
 
 import "./HomeDetails.css";
 import { Col, Row, Tabs } from "antd";
 import ButtonFull from "../../../components/UI/Button/ButtonFull";
 import { getKol } from "../../../services/KolService";
+import { AuthContext } from "../../../context/auth.context";
+
+
 
 const description =
   "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
@@ -59,7 +63,9 @@ const danhgia = [
 ];
 
 const PageKolDetail = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const { user, setUser } = useContext(AuthContext)
+  console.log(user);
+  // const user = JSON.parse(localStorage.getItem("user"));
   const { id } = useParams();
   const [kol, setKol] = useState();
   const navigate = useNavigate();
@@ -145,6 +151,7 @@ const PageKolDetail = () => {
 
   return (
     <>
+      <Header />
       <main className="main-details">
         {kol && <BookingCreate kol={kol.kol} onCancelOpenHandler={onCancelOpenHandler} open={open} />}
         <div className="container">

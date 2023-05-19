@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SubMenu from "./SubMenu";
 import SubTab from "./SubTab";
 import CampaignContext from "../../context/campaign.context";
+import Header from '../../components/Header/index'
 import { getEnts, getKols } from "../../services/getApi";
 
 import classes from "./Campaign.module.css";
@@ -71,6 +72,7 @@ const Campaign = (props) => {
 
   return (
     <CampaignContext.Provider value={{ user: user, idRole: idRole }}>
+      <Header />
       <div className={classes.campaign}>
         <Row className={classes['campaign-row-1']}>
           <Col span={6} className={classes['campaign-col-6-left']}>

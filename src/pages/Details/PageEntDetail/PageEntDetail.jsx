@@ -7,6 +7,7 @@ import InformationHeader from "./InformationHeader/InformationHeader";
 import Introduce from "./Introduce/Introduce";
 import Activity from "./Activity/Activity";
 import Campaign from "./Campaign/Campaign";
+import Header from "../../../components/Header";
 
 import { Col, Row } from 'antd';
 
@@ -34,45 +35,29 @@ const PageEntDetail = () => {
         };
     }, [infoEnt?.id])
 
-    // useEffect(() => {
-    //     const identifier = setTimeout(() => {
-    //         getFields()
-    //             .then(res => {
-    //                 if (!res.ok) {
-    //                     return Promise.reject(res)
-    //                 }
-    //                 return res.json();
-    //             })
-    //             .then(data => {
-    //                 setFields(data.find((item) => {
-    //                     return item.id === infoEnt?.fieldIds
-    //                 }))
-    //             })
-    //     }, 500)
-    //     return () => {
-    //         clearTimeout(identifier)
-    //     }
-    // }, [infoEnt?.fieldIds])
-
     const onClickShowHandler = (index) => {
         setShow(index)
     }
 
     return (
-        <div className={classes["main-detail-enterprise"]}>
-            <Row className={classes["detail-enterprise-row-1-header"]}>
-                <Col span={16}>
-                    <InformationHeader infoEnt={infoEnt} onClickShowHandler={onClickShowHandler}></InformationHeader>
-                </Col>
-            </Row>
-            <Row className={classes["detail-enterprise-row-2-middle"]}>
-                <Col span={16} className={classes["row-2-col-1"]}>
-                    {show == 0 && (<Introduce infoEnt={infoEnt} />)}
-                    {show == 1 && (<Activity />)}
-                    {show == 2 && (<Campaign />)}
-                </Col>
-            </Row>
-        </div>
+        <>
+            <Header />
+            <div className={classes["main-detail-enterprise"]}>
+                <Row className={classes["detail-enterprise-row-1-header"]}>
+                    <Col span={16}>
+                        <InformationHeader infoEnt={infoEnt} onClickShowHandler={onClickShowHandler}></InformationHeader>
+                    </Col>
+                </Row>
+                <Row className={classes["detail-enterprise-row-2-middle"]}>
+                    <Col span={16} className={classes["row-2-col-1"]}>
+                        {show == 0 && (<Introduce infoEnt={infoEnt} />)}
+                        {show == 1 && (<Activity />)}
+                        {show == 2 && (<Campaign />)}
+                    </Col>
+                </Row>
+            </div>
+        </>
+
     )
 }
 

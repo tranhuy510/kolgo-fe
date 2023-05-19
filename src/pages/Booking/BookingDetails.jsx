@@ -8,6 +8,7 @@ import classes from './Booking.module.css'
 import NotFound from '../NotFound/NotFound';
 import { formatDate } from '../../services/DateTimeUtil';
 import BookingCreate from './BookingCreate';
+import Header from '../../components/Header/index'
 
 
 const BookingDetails = () => {
@@ -131,84 +132,87 @@ const BookingDetails = () => {
   }
 
   return (
-    <div className={classes['modal-booking-detail']}>
-      {contextHolder}
-      <Descriptions title="Thông tin KOL" >
-        <Descriptions.Item label="Tên KOL" span={3} >
-          {booking.kol?.firstName} {booking.kol?.lastName}
-        </Descriptions.Item>
+    <>
+      <Header />
+      <div className={classes['modal-booking-detail']}>
 
-        <Descriptions.Item label="Lĩnh vực hoạt động" span={3} >
-          {booking.kol?.fields?.name}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Email" span={3} >
-          {booking.kol?.email}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Số điện thoại" span={3} >
-          {booking.kol?.phone}
-        </Descriptions.Item>
-      </Descriptions>
-
-      <Descriptions title="Thông tin booking" bordered>
-        <Descriptions.Item label="Thời gian tạo" span={3} >
-          {booking?.timestamp}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Giá 1 bài viết"  >
-          {booking?.postPrice}
-        </Descriptions.Item>
-        <Descriptions.Item label="Số lượng bài viết"  >
-          {booking?.postNumber}
-        </Descriptions.Item>
-        <Descriptions.Item label="Tổng tiền"  >
-          {booking?.postPrice * booking.postNumber}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Giá 1 video"  >
-          {booking?.videoPrice}
-        </Descriptions.Item>
-        <Descriptions.Item label="Số lượng video"  >
-          {booking?.videoNumber}
-        </Descriptions.Item>
-        <Descriptions.Item label="Tổng tiền"  >
-          {booking?.videoPrice * booking.videoNumber}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Tổng tiền cần thanh toán" span={3} >
-          {booking?.totalPrice}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="Mô tả" span={3} >
-          {booking?.description}
-        </Descriptions.Item>
-
-        {booking.status === BookingStatus.PENDING &&
-          <Descriptions.Item label="Trạng thái" span={3} >
-            Đang chờ xác nhận
-          </Descriptions.Item>}
-        {booking.status === BookingStatus.ACCEPTED &&
-          <Descriptions.Item label="Trạng thái" span={3}>
-            Đang chờ thanh toán
+        {contextHolder}
+        <Descriptions title="Thông tin KOL" >
+          <Descriptions.Item label="Tên KOL" span={3} >
+            {booking.kol?.firstName} {booking.kol?.lastName}
           </Descriptions.Item>
-        }
-        {booking.status === BookingStatus.ACCEPTED && validateUser() &&
-          <Descriptions.Item label="" span={3}>
-            <Button onClick={handlePayment}>Thanh toán</Button>
+
+          <Descriptions.Item label="Lĩnh vực hoạt động" span={3} >
+            {booking.kol?.fields?.name}
           </Descriptions.Item>
-        }
-        {booking.status === BookingStatus.REJECTED &&
-          <Descriptions.Item label="Trạng thái" span={3}>
-            KOL từ chối yêu cầu
+
+          <Descriptions.Item label="Email" span={3} >
+            {booking.kol?.email}
           </Descriptions.Item>
-        }
-        {booking.status === BookingStatus.PAID &&
-          <Descriptions.Item label="Trạng thái" span={3}>
-            Giao dịch đã thanh toán
+
+          <Descriptions.Item label="Số điện thoại" span={3} >
+            {booking.kol?.phone}
           </Descriptions.Item>
-        }
-        {/* {booking.status !== BookingStatus.CANCELED
+        </Descriptions>
+
+        <Descriptions title="Thông tin booking" bordered>
+          <Descriptions.Item label="Thời gian tạo" span={3} >
+            {booking?.timestamp}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Giá 1 bài viết"  >
+            {booking?.postPrice}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số lượng bài viết"  >
+            {booking?.postNumber}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tổng tiền"  >
+            {booking?.postPrice * booking.postNumber}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Giá 1 video"  >
+            {booking?.videoPrice}
+          </Descriptions.Item>
+          <Descriptions.Item label="Số lượng video"  >
+            {booking?.videoNumber}
+          </Descriptions.Item>
+          <Descriptions.Item label="Tổng tiền"  >
+            {booking?.videoPrice * booking.videoNumber}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Tổng tiền cần thanh toán" span={3} >
+            {booking?.totalPrice}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Mô tả" span={3} >
+            {booking?.description}
+          </Descriptions.Item>
+
+          {booking.status === BookingStatus.PENDING &&
+            <Descriptions.Item label="Trạng thái" span={3} >
+              Đang chờ xác nhận
+            </Descriptions.Item>}
+          {booking.status === BookingStatus.ACCEPTED &&
+            <Descriptions.Item label="Trạng thái" span={3}>
+              Đang chờ thanh toán
+            </Descriptions.Item>
+          }
+          {booking.status === BookingStatus.ACCEPTED && validateUser() &&
+            <Descriptions.Item label="" span={3}>
+              <Button onClick={handlePayment}>Thanh toán</Button>
+            </Descriptions.Item>
+          }
+          {booking.status === BookingStatus.REJECTED &&
+            <Descriptions.Item label="Trạng thái" span={3}>
+              KOL từ chối yêu cầu
+            </Descriptions.Item>
+          }
+          {booking.status === BookingStatus.PAID &&
+            <Descriptions.Item label="Trạng thái" span={3}>
+              Giao dịch đã thanh toán
+            </Descriptions.Item>
+          }
+          {/* {booking.status !== BookingStatus.CANCELED
           && booking.status !== BookingStatus.PAID
           && booking.status !== BookingStatus.REJECTED
           &&
@@ -216,101 +220,76 @@ const BookingDetails = () => {
             <Button onClick={handleAccept}>Chấp nhận</Button>
           </Descriptions.Item>
         } */}
-        {booking.status !== BookingStatus.CANCELED
-          && booking.status !== BookingStatus.PAID
-          && booking.status !== BookingStatus.REJECTED
-          && booking.status !== BookingStatus.ACCEPTED
-          &&
-          <Descriptions.Item label="" span={3}>
-            {!validateUser() && <Button onClick={handleAccept}>Chấp nhận</Button>}
-            <Button onClick={handleRejectOrCancel}>{validateUser() ? "Hủy đặt" : "Từ chối"}</Button>
+          {booking.status !== BookingStatus.CANCELED
+            && booking.status !== BookingStatus.PAID
+            && booking.status !== BookingStatus.REJECTED
+            && booking.status !== BookingStatus.ACCEPTED
+            &&
+            <Descriptions.Item label="" span={3}>
+              {!validateUser() && <Button onClick={handleAccept}>Chấp nhận</Button>}
+              <Button onClick={handleRejectOrCancel}>{validateUser() ? "Hủy đặt" : "Từ chối"}</Button>
 
-          </Descriptions.Item>
-        }
-        {(booking.status === BookingStatus.CANCELED
-          || booking.status === BookingStatus.REJECTED
-          || booking.status === BookingStatus.PAID)
-          &&
-          <Descriptions.Item label="" span={3}>
-            <Button onClick={handleReBooking}>Đặt lại</Button>
-          </Descriptions.Item>
-        }
-        {(booking.status === BookingStatus.PAID &&
-          booking.payment.status === "successful" &&
-          booking.feedback === null) &&
-          <Descriptions.Item label="Phản hồi" span={3}>
-            {renderFeedback ?
-              <>
-                <textarea
-                  readonly
-                  value={feedback.comment}
-                  className={classes['textarea-feedback']}
-                ></textarea>
-                <Rate disabled value={feedback.rate} />
-              </> :
-              <>
-                <textarea onClick={handleReBooking}
-                  rows={10}
-                  placeholder="Nhập phản hồi"
-                  className={classes['textarea-feedback']}
-                  onChange={onChangeFeedbackMessage}
-                ></textarea>
-                <Rate onChange={onChangeFeedbackRate} />
-              </>}
-          </Descriptions.Item>
-        }
-        {!renderFeedback &&
-          booking.status === BookingStatus.PAID &&
-          booking.payment.status === "successful" &&
-          booking.feedback === null &&
-          <Descriptions.Item label="" span={3}>
-            <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
-          </Descriptions.Item>
-        }
-        {(booking.status === BookingStatus.PAID &&
-          booking.payment.status === "successful" &&
-          booking.feedback !== null) &&
-          <Descriptions.Item label="Phản hồi" span={3}>
-            <textarea
-              readonly
-              value={feedback.comment}
-              className={classes['textarea-feedback']}
-            ></textarea>
-            <Rate disabled value={feedback.rate} />
-          </Descriptions.Item>
-        }
-
-        {/* <Descriptions.Item label="Phản hồi" span={3}>
-          {renderFeedback ?
-            <>
+            </Descriptions.Item>
+          }
+          {(booking.status === BookingStatus.CANCELED
+            || booking.status === BookingStatus.REJECTED
+            || booking.status === BookingStatus.PAID)
+            &&
+            <Descriptions.Item label="" span={3}>
+              <Button onClick={handleReBooking}>Đặt lại</Button>
+            </Descriptions.Item>
+          }
+          {(booking.status === BookingStatus.PAID &&
+            booking.payment.status === "successful" &&
+            booking.feedback === null) &&
+            <Descriptions.Item label="Phản hồi" span={3}>
+              {renderFeedback ?
+                <>
+                  <textarea
+                    readonly
+                    value={feedback.comment}
+                    className={classes['textarea-feedback']}
+                  ></textarea>
+                  <Rate disabled value={feedback.rate} />
+                </> :
+                <>
+                  <textarea onClick={handleReBooking}
+                    rows={10}
+                    placeholder="Nhập phản hồi"
+                    className={classes['textarea-feedback']}
+                    onChange={onChangeFeedbackMessage}
+                  ></textarea>
+                  <Rate onChange={onChangeFeedbackRate} />
+                </>}
+            </Descriptions.Item>
+          }
+          {!renderFeedback &&
+            booking.status === BookingStatus.PAID &&
+            booking.payment.status === "successful" &&
+            booking.feedback === null &&
+            <Descriptions.Item label="" span={3}>
+              <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
+            </Descriptions.Item>
+          }
+          {(booking.status === BookingStatus.PAID &&
+            booking.payment.status === "successful" &&
+            booking.feedback !== null) &&
+            <Descriptions.Item label="Phản hồi" span={3}>
               <textarea
                 readonly
                 value={feedback.comment}
                 className={classes['textarea-feedback']}
               ></textarea>
               <Rate disabled value={feedback.rate} />
-            </> :
-            <>
-              <textarea
-                rows={10}
-                placeholder="Nhập phản hồi"
-                className={classes['textarea-feedback']}
-                onChange={onChangeFeedbackMessage}
-              ></textarea>
-              <Rate onChange={onChangeFeedbackRate} />
-            </>}
-        </Descriptions.Item>
+            </Descriptions.Item>
+          }
+        </Descriptions>
 
-        <Descriptions.Item label="" span={3}>
-          <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
-        </Descriptions.Item> */}
-
-      </Descriptions>
+        <BookingCreate open={open} kol={booking.kol} onCancelOpenHandler={onCancelOpenHandler} />
+      </div>
+    </>
 
 
-
-      <BookingCreate open={open} kol={booking.kol} onCancelOpenHandler={onCancelOpenHandler} />
-    </div>
   );
 };
 
