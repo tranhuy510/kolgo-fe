@@ -20,23 +20,27 @@ const Campaign = (props) => {
   }, [])
 
   useEffect(() => {
+    document.title = 'KOLgo | Chiến dịch';
+
+    const originalTitle = document.title
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        document.title = 'Go back'
+      }
+      else document.title = `${originalTitle}`
+    })
+
+    return () => {
+      document.title = 'KOLgo';
+    };
+  }, []);
+
+  useEffect(() => {
     if (user.role === "KOL") {
-      getKols()
-        .then(res => {
-          return res.json()
-        })
-        .then(data => {
-          setKols(data)
-        })
+      getKols().then(res => { return res.json() }).then(data => { setKols(data) })
     }
     if (user.role === "ENTERPRISE") {
-      getEnts()
-        .then(res => {
-          return res.json()
-        })
-        .then(data => {
-          setEnts(data)
-        })
+      getEnts().then(res => { return res.json() }).then(data => { setEnts(data) })
     }
   }, [user])
 

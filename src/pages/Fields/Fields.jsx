@@ -6,22 +6,22 @@ import PageField from './PageField/PageField';
 import { Pagination } from 'antd';
 
 import './Fields.css'
-import {  getKolsByFieldIds } from '../../services/KolService';
+import { getKols, getKolsByFieldIds } from '../../services/KolService';
 
 const Fields = () => {
 
     let { id } = useParams()
-    // console.log(id);
 
     const [currentKol, setCurrentKol] = useState(1);
     const [totalKol, setTotalKol] = useState(30);
-    const [field, setField] = useState();
+    const [listOfKol, setListOfKol] = useState();
 
     useEffect(() => {
         getKolsByFieldIds(id)
             .then(res => {
-                setField(res)
-                // console.log(res);
+                setTotalKol(res.length);
+                setTotalKol(res.length);
+                console.log(res);
             })
     }, [id])
 
@@ -29,18 +29,14 @@ const Fields = () => {
         setCurrentKol(page);
     };
 
-    const onChangeTotalKol = (total) => {
-        setTotalKol(total)
-    }
-
     return (
         <div>
             <Header />
             <SideBar />
             <div className='fields'>
-                <h2>Lĩnh vực {field?.name}</h2>
+                <h2>Lĩnh vực {listOfKol?.name}</h2>
                 <div className='content-page'>
-                    <PageField id={id} current={currentKol} onChangeTotalKol={onChangeTotalKol} />
+                    <PageField listOfKol={listOfKol} current={currentKol} />
                 </div>
                 <div className='content-pagination'>
                     <Pagination current={currentKol} onChange={onChangeCurrentKol} total={totalKol} />

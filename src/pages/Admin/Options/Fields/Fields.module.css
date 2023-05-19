@@ -1,0 +1,41 @@
+
+.admin-field-container {
+    margin: 20px;
+}
+
+.modal-search {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.modal-search-input {
+    width: 50%;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+}
+
+.modal-add-field {
+    margin-left: 20px;
+}
+
+.add-modal-input {
+    width: 60%;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.add-modal-select {
+    width: 15%;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+    margin: 0 20px;
+}

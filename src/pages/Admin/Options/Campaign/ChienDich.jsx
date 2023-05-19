@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { ChienDichData } from "./DataAdmin";
+import { ChienDichData } from "../DataAdmin";
 import "./ChienDich.css";
 
 const ChienDich = () => {
@@ -149,8 +149,8 @@ const ChienDich = () => {
               return selectedMonth + selectedStatus === ""
                 ? item
                 : (item.ngaytao.slice(3, 5) + item.trangthai).includes(
-                    selectedMonth + selectedStatus
-                  );
+                  selectedMonth + selectedStatus
+                );
             })
             .filter((item) => {
               return changeInput.toLowerCase() === ""

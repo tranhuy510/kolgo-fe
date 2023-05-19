@@ -5,6 +5,7 @@
     height: 480px;
     align-items: center;
     border-radius: 20px;
+    max-height: 520px;
 }
 
 .slider-image {

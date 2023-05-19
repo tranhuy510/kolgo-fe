@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { post } from "../../services/Common.js";
+import { createPayment } from "../../services/PaymentService.js"
 
 import classes from "./PaymentResult.module.css";
 import { Col, Row } from "antd";
@@ -29,7 +29,14 @@ function PaymentResult() {
       vnp_SecureHash: params.get("vnp_SecureHash"),
     };
     setPayment({ ...paymentResult });
-    post("payments", paymentResult).then();
+    createPayment({
+      method: paymentResult.method,
+      txnRef: paymentResult.vnp_TxnRef,
+      amount: paymentResult.vnp_Amount,
+      description: paymentResult.vnp_OrderInfo,
+      timestamp: paymentResult.vnp_PayDate,
+      status: paymentResult.vnp_ResponseCode === "00" ? "SUCCESS" : "FAILED"
+    })
   }, []);
   return (
     <div className={classes.payment}>

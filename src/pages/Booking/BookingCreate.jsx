@@ -14,7 +14,6 @@ const BookingCreate = (props) => {
   const kol = props.kol;
   const { sendPrivateMessage } = useContext(MessageContext);
   const navigate = useNavigate();
-  const [booked, setBooked] = useState(false);
   const [booking, setBooking] = useState({
     timestamp: "",
     postPrice: 0,
@@ -26,7 +25,6 @@ const BookingCreate = (props) => {
   });
 
   useEffect(() => {
-    console.log(kol)
     setBooking(prev => ({
       ...prev,
       postPrice: kol?.postPrice,
@@ -74,8 +72,9 @@ const BookingCreate = (props) => {
         navigate(`/bookings/${res.id}`);
       }
       if (res.error) {
-        setBooked(true);
+
       }
+
     });
   };
 
@@ -105,9 +104,7 @@ const BookingCreate = (props) => {
   }
 
   const onCloseModal = () => {
-    setBooked(false);
     props.onCancelOpenHandler();
-    booking.status = "";
   };
 
   return (
@@ -171,10 +168,7 @@ const BookingCreate = (props) => {
               span: 15,
             }}
           >
-            {!booking.status && <Button onClick={handleBooking}>Book</Button>}
-            {booked && (
-              <span>Bạn đã đặt kol này, vào thông báo để xem chi tiết</span>
-            )}
+            <Button onClick={handleBooking}>Đặt</Button>
           </Form.Item>
         </Form>
       </div>

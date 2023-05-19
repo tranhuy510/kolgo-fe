@@ -41,7 +41,6 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
 
     const [cities, setCities] = useState([]);
     const [fields, setFileds] = useState([]);
-    // const [componentDisabled, setComponentDisabled] = useState(true);
 
     useEffect(() => {
         getCities()
@@ -148,9 +147,7 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
             title=""
             open={open.status}
             onCancel={onCancelShowHandler}
-            footer={[
-
-            ]}
+            footer={[]}
         >
             <Form
                 name="basic"

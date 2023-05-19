@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { OutStandingData } from "./DataAdmin";
+import { OutStandingData } from "../DataAdmin";
 import "./OutStanding.css";
 
 const OutStanding = () => {

@@ -44,20 +44,19 @@ const SimpleSlider = ({ images, onChangeImageHandler }) => {
     ],
   };
 
-
   return (
     <>
       <div className="detail-simple-slider">
         <Slider {...settings}>
           {images &&
             images.length > 0 &&
-            images.map((item, index) => (
+            images.map((img, index) => (
               <img
-                onClick={(item) => { onChangeImageHandler(item.target.currentSrc) }}
+                onClick={() => { onChangeImageHandler(img) }}
                 className="image-item"
                 key={index}
                 height={90}
-                src={item}
+                src={`http://localhost:8080/api/images/${img}`}
               />
             ))}
         </Slider>

@@ -255,7 +255,7 @@ export const listChienDich = [
     ],
     mota: "mô tả chiến dịch",
     author: {
-      userId: 8,
+      userId: 9,
       name: "Cty B",
       avatar: "",
     },

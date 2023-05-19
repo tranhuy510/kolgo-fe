@@ -2,9 +2,9 @@ import React, { useState, useLayoutEffect } from 'react'
 import RateDate from './RateDate';
 import { Link } from 'react-router-dom';
 
-import { Avatar } from "antd";
+import { Avatar, Rate } from "antd";
 
-const Rate = (props) => {
+const Feedback = (props) => {
 
     function getRandomColorHex() {
         var letters = "0123456789ABCDEF";
@@ -31,10 +31,11 @@ const Rate = (props) => {
                                 <div className="rate-item__content">
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <div className="busines" style={{ color: color }}>
-                                            <Link to={`/detail/enterprise/:${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
+                                            <Link to={`/ents/${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
                                         </div>
                                         <RateDate date={item.date} />
                                     </div>
+                                    <Rate disabled value={item.rate} />
                                     <div className="content-is-rated">
                                         {item.content}
                                     </div>
@@ -47,4 +48,4 @@ const Rate = (props) => {
     )
 }
 
-export default Rate
+export default Feedback

@@ -1,17 +1,17 @@
-import { get, getAuth, putAuth } from "./Common"
+import { get, getAuth, putAuth } from "./Common";
 
 export function getEnts() {
-    return get('ents');
+  return get("ents");
 }
 
 export function getEnt(id) {
-    return get(`ents/${id}`)
+  return get(`ents/${id}`);
 }
 
 export function getEntProfile() {
-    return getAuth('ent/profile');
+  return getAuth("ent/profile");
 }
 
 export function updateEntProfile(profile) {
-    return putAuth('ent/profile', profile);
+  return putAuth("ent/profile", profile);
 }

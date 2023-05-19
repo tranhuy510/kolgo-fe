@@ -14,15 +14,15 @@ const InformationHeader = ({ infoEnt, onClickShowHandler }) => {
             <div className={classes['row-1-header-banner']}>
                 <img
                     className={classes['header-banner-img']}
-                    src={infoEnt?.user?.avatar} alt=""
+                    src={`http://localhost:8080/api/images/${infoEnt?.avatar}`}
                 />
             </div>
             <div className={classes['row-1-middle']}>
                 <div className={classes['wrap-middle-avatar']}>
-                    <img className={classes['middle-avatar']} src="https://scontent.fsgn3-1.fna.fbcdn.net/v/t39.30808-6/324588603_550887590419417_9151690991090339183_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=IGHslF-6-DgAX9TFjcj&_nc_ht=scontent.fsgn3-1.fna&oh=00_AfB3PBoG-MGYpzPB1QBwonx8YYLQjb-gZwUgXlyDgQcCqg&oe=644A269B" alt="" />
+                    <img className={classes['middle-avatar']} src={`http://localhost:8080/api/images/${infoEnt?.avatar}`} alt="" />
                 </div>
                 <div className={classes['middle-name']}>
-                    <h1>{infoEnt?.user.firstName} {infoEnt?.user.lastName}</h1>
+                    <h1>{infoEnt?.firstName} {infoEnt?.lastName}</h1>
                     <p>{infoEnt?.name}</p>
                 </div>
             </div>

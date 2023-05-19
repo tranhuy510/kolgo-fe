@@ -34,13 +34,13 @@ const ModalSearch = (props) => {
                                     .toLowerCase()
                                     .includes(inputSearch.toLowerCase())
                         })
-                        .map((item, index) => (
+                        .map((kol, index) => (
                             <div className="item-search-user" key={index}>
-                                <Image className="image-item-user" src={item.avatar} />
-                                <div className="name-item-user">{item.firstName} {item.lastName}</div>
+                                <Image className="image-item-user" src={`http://localhost:8080/api/images/${kol.avatar}`} />
+                                <div className="name-item-user">{kol.firstName} {kol.lastName}</div>
                                 <div
                                     className="content-item-user"
-                                    onClick={() => props.chooseUserCompare(item)}
+                                    onClick={() => props.chooseUserCompare(kol)}
                                 >
                                     Thêm so sánh
                                 </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BookingData } from "./DataAdmin";
+import { BookingData } from "../DataAdmin";
 import { Table, Radio } from "antd";
 import "./Booking.css";
 
@@ -117,8 +117,8 @@ const Booking = () => {
             return monthSelect + statusBooking === ""
               ? item
               : (item.thoigianbook.slice(3, 5) + item.status).includes(
-                  monthSelect + statusBooking
-                );
+                monthSelect + statusBooking
+              );
           })
           .filter((item) => {
             return nameKOL.toLowerCase() === ""

@@ -5,7 +5,7 @@ import {
   ListAccountEnterprises,
   ListAccountKOL,
   DataListLinhVuc,
-} from "./DataAdmin";
+} from "../DataAdmin";
 
 const { TextArea } = Input;
 

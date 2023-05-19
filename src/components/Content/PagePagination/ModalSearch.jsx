@@ -5,7 +5,7 @@ import { getKols } from '../../../services/KolService';
 
 import classes from '../content.module.css';
 import styled from "styled-components";
-import { Input } from 'antd';
+import { Input, Pagination } from 'antd';
 import ResultSearch from './ResultSearch';
 
 const Title = styled.h2`
@@ -22,6 +22,9 @@ const ModalSearch = () => {
     const [searchField, setSearchField] = useState("");
     const [searchName, setSearchName] = useState("");
     const [searchCity, setSearchCity] = useState("");
+
+    const [current, setCurrent] = useState(1);
+    const [total, setTotal] = useState(10);
 
     useEffect(() => {
         getKolFields()
@@ -55,16 +58,12 @@ const ModalSearch = () => {
     const regex = /(.*)\s\((.*)\)/;
 
     const resultKolFlter = kols.filter((kol) => {
-        return (searchName === "" ? kol : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
-            && (searchField === "" ? kol : kol.fields.some(field => field.name === searchField))
-            && (searchCity === "" ? kol : kol.city.name === searchCity)
+        return (searchName === "" ? null : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
+            && (searchField === "" ? kol : kol.fields.find(field => field?.name === searchField))
+            && (searchCity === "" ? kol : kol.city?.name === searchCity)
     })
 
     const onSearchHandler = () => {
-        console.log(searchName);
-        console.log(searchField);
-        console.log(searchCity);
-        console.log(resultKolFlter);
         setOpenResult(true)
     }
 
