@@ -8,15 +8,16 @@ const IMG = styled.img`
   width: 100%;
   height: 220px;
   box-sizing: border-box;
-  border-radius: 10px 10px 0 0;
+  border-radius: 10px;
   border: none;
 `;
 
 const Name = styled.p`
   margin: 0;
-  padding-left: 10px;
+  padding-right: 10px;
   font-weight: 500;
-  line-height: 40px;
+  line-height: 30px;
+  box-sizing: border-box;
 `;
 
 const DivWrap = styled.div`
@@ -59,13 +60,27 @@ const PageHOT = (props) => {
       {changeRender()?.map((kol) => {
         const firstName = arrUpperCase(kol.firstName);
         return (
-          <Link key={kol?.id} to={`/kols/${kol.id}`} className={classes["link-kol-detail"]}>
+          <div key={kol?.id} className={classes["item-kol-detail"]}>
             <IMG src={`http://localhost:8080/api/images/images/${kol?.avatar}`} />
-            <div style={{ display: "flex" }}>
-              <Name>{firstName}</Name>
-              <Name>{kol.lastName}</Name>
+            <div className={classes['kol-detail']}>
+              <div className={classes['kol-name']}>
+                <Name>{firstName}</Name>
+                <Name>{kol.lastName}</Name>
+              </div>
+              <div className={classes['kol-info']} >
+                <Name>{firstName} {kol.lastName}</Name>
+                <p>{kol.postPrice} / Bài viết</p>
+                <p>{kol.videoPrice} / Video</p>
+                <div className={classes['wrap-kol-link']}>
+                  <Link to={`/kols/${kol.id}`} className={classes['kol-link']}>Xem thêm</Link>
+                </div>
+              </div>
+
             </div>
-          </Link>
+
+
+
+          </div>
         );
       })}
     </DivWrap>
