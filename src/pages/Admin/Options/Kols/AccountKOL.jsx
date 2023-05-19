@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-import { Table, Input, Modal, Button } from "antd";
+import { Table, Input, Modal, Button, message } from "antd";
 import classes from "./AccountKOL.module.css";
 
 import { getKols } from "../../../../services/KolService.js";
+import { getEntFields } from "../../../../services/FieldService";
+import { getCities } from "../../../../services/CityService";
+import { deleteUser } from "../../../../services/UserService";
 
 import ModalView from "./ModalView";
 import ModalUpdate from "./ModalUpdate";
-import { getEntFields } from "../../../../services/FieldService";
-import { getCities } from "../../../../services/CityService";
 
 const AccountEnterprises = () => {
   const [kols, setKols] = useState([])
@@ -22,6 +23,7 @@ const AccountEnterprises = () => {
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const [dataProps, setDataProps] = useState({})
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     getKols().then((res) => { setKols(res) })
@@ -107,7 +109,7 @@ const AccountEnterprises = () => {
   const onOpenViewHandler = (data) => {
     setOpenViewModal(true);
     setDataProps(data)
-    console.log(data);
+    // console.log(data);
   };
 
   const onCloseViewHandler = () => {
@@ -120,7 +122,15 @@ const AccountEnterprises = () => {
   };
 
   const onDeleteUserHandler = (id) => {
-    console.log(id);
+    deleteUser(id).then(
+      () => {
+        messageApi.open({
+          type: 'success',
+          content: "Xóa thành công!",
+        })
+      }
+    )
+    setOpenDeleteModal(false)
   };
 
   const onOpenUpdateModalHandler = (data) => {
@@ -136,8 +146,9 @@ const AccountEnterprises = () => {
     <>
       <div className={classes["admin-user-container"]}>
         <div className={classes["modal-search"]}>
+          {contextHolder}
           <div className={classes["total-user-enterprise"]}>
-            Total enterprise :
+            Total kol :
             <label> {kols && kols.length}</label>
           </div>
           <Input
@@ -176,11 +187,11 @@ const AccountEnterprises = () => {
         footer={[]}
       >
         <div>
-          Bạn có muốn xóa "{dataProps.user?.firstName} {dataProps.user?.lastName}" không?
+          Bạn có muốn xóa "{dataProps?.firstName} {dataProps?.lastName}" không?
         </div>
         <div className={classes['admin-modal-delete']}>
           <Button
-            onClick={() => { onDeleteUserHandler(dataProps.user.id) }}
+            onClick={() => { onDeleteUserHandler(dataProps?.userId) }}
             className={classes['modal-delete-btn']}
           >
             Xóa

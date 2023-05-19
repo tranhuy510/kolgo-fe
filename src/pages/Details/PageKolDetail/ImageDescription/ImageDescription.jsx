@@ -19,7 +19,7 @@ const ImageDescription = ({ images, avatar }) => {
     return (
         <>
             <div className={classes['image-show']}>
-                <Image className={classes.image} src={`http://localhost:8080/api/images/images/${imageShow}`} width={340} />
+                <Image className={classes.image} src={`http://localhost:8080/api/images/${imageShow}`} width={340} />
             </div>
             <div className={classes["slider-image"]}>
                 <SimpleSlider images={images} onChangeImageHandler={onChangeImageHandler} />

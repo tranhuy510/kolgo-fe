@@ -32,8 +32,6 @@ const BookingDetails = () => {
   const [feedback, setFeedback] = useState({
     rating: null,
     comment: "",
-    user: null,
-    kolId: null,
     timestamp: ""
   })
   const [renderFeedback, setRenderFeedback] = useState(false)
@@ -44,13 +42,6 @@ const BookingDetails = () => {
     getBooking(id)
       .then(res => {
         setBooking(res);
-        setFeedback((prevState) => {
-          return {
-            ...prevState,
-            user: res.user,
-            kolId: res.kol.id
-          };
-        })
       });
   }, [])
 
@@ -94,7 +85,7 @@ const BookingDetails = () => {
 
   const onFeedbackHandler = (event) => {
     event.preventDefault();
-    if (!feedback.rate) {
+    if (!feedback.rating) {
       messageApi.open({
         type: 'warning',
         content: 'Bạn chưa đánh giá, hãy đánh giá trước khi gửi phản hồi',
@@ -106,7 +97,7 @@ const BookingDetails = () => {
 
     addBookingFeedback(id, feedback).then((res) => {
       messageApi.open({
-        type: 'sussess',
+        type: 'success',
         content: 'Phản hồi thành công!',
       });
     })
@@ -250,11 +241,35 @@ const BookingDetails = () => {
             <Rate disabled value={feedback.rate} />
           </Descriptions.Item>
         }
+
+        {/* <Descriptions.Item label="Phản hồi" span={3}>
+          {renderFeedback ?
+            <>
+              <textarea
+                readonly
+                value={feedback.comment}
+                className={classes['textarea-feedback']}
+              ></textarea>
+              <Rate disabled value={feedback.rate} />
+            </> :
+            <>
+              <textarea
+                rows={10}
+                placeholder="Nhập phản hồi"
+                className={classes['textarea-feedback']}
+                onChange={onChangeFeedbackMessage}
+              ></textarea>
+              <Rate onChange={onChangeFeedbackRate} />
+            </>}
+        </Descriptions.Item>
+
+        <Descriptions.Item label="" span={3}>
+          <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
+        </Descriptions.Item> */}
+
       </Descriptions>
 
-      <Descriptions.Item label="" span={3}>
-        <Button onClick={handlePayment}>Thanh toán</Button>
-      </Descriptions.Item>
+
 
       <BookingCreate open={open} kol={booking.kol} onCancelOpenHandler={onCancelOpenHandler} />
     </div>

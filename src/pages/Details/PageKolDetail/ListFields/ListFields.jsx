@@ -26,11 +26,14 @@ const ListFields = ({ fieldNames, fieldIds }) => {
 
     return (
         <div className='modal-fields-list'>
-            <Link to={`/kols?fieldIds=${fieldIds}`}>
-                <DivWrap>
-                    {capitalizeName(fieldNames)}
-                </DivWrap>
-            </Link>
+            {fieldIds?.map((field, index) => {
+                <Link to={`/kols?fieldIds=${field}`}>
+                    <DivWrap>
+                        {capitalizeName(fieldNames[index])}
+                    </DivWrap>
+                </Link>
+            })}
+
         </div>
     )
 }

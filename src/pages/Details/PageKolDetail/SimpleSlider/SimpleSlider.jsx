@@ -56,7 +56,7 @@ const SimpleSlider = ({ images, onChangeImageHandler }) => {
                 className="image-item"
                 key={index}
                 height={90}
-                src={`http://localhost:8080/api/images/images/${img}`}
+                src={`http://localhost:8080/api/images/${img}`}
               />
             ))}
         </Slider>

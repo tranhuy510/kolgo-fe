@@ -75,7 +75,7 @@ const PageKolDetail = () => {
       .then((res) => {
         setKol(res);
         checkStatus(res.bookings, user, res.kol)
-        console.log(res.kol);
+        console.log(res);
       });
   }, []);
 
@@ -153,7 +153,7 @@ const PageKolDetail = () => {
               span={6}
               style={{ paddingRight: "10px", boxSizing: "border-box" }}
             >
-              <ImageDescription images={kol?.images} avatar={kol?.kol?.avatar} />
+              <ImageDescription images={kol?.kol?.images} avatar={kol?.kol?.avatar} />
               <ContactSocials
                 facebookUrl={kol?.kol?.facebookUrl}
                 instagramUrl={kol?.kol?.instagramUrl}

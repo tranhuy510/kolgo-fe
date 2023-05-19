@@ -14,12 +14,12 @@ const InformationHeader = ({ infoEnt, onClickShowHandler }) => {
             <div className={classes['row-1-header-banner']}>
                 <img
                     className={classes['header-banner-img']}
-                    src={`http://localhost:8080/api/images/images/${infoEnt?.avatar}`}
+                    src={`http://localhost:8080/api/images/${infoEnt?.avatar}`}
                 />
             </div>
             <div className={classes['row-1-middle']}>
                 <div className={classes['wrap-middle-avatar']}>
-                    <img className={classes['middle-avatar']} src={`http://localhost:8080/api/images/images/${infoEnt?.avatar}`} alt="" />
+                    <img className={classes['middle-avatar']} src={`http://localhost:8080/api/images/${infoEnt?.avatar}`} alt="" />
                 </div>
                 <div className={classes['middle-name']}>
                     <h1>{infoEnt?.firstName} {infoEnt?.lastName}</h1>

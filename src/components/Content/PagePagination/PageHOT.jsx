@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components";
+
 import { Link } from "react-router-dom";
+
 import { getKols } from "../../../services/KolService";
 import classes from '../content.module.css'
 
@@ -61,7 +63,7 @@ const PageHOT = (props) => {
         const firstName = arrUpperCase(kol.firstName);
         return (
           <div key={kol?.id} className={classes["item-kol-detail"]}>
-            <IMG src={`http://localhost:8080/api/images/images/${kol?.avatar}`} />
+            <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
             <div className={classes['kol-detail']}>
               <div className={classes['kol-name']}>
                 <Name>{firstName}</Name>
@@ -75,11 +77,7 @@ const PageHOT = (props) => {
                   <Link to={`/kols/${kol.id}`} className={classes['kol-link']}>Xem thêm</Link>
                 </div>
               </div>
-
             </div>
-
-
-
           </div>
         );
       })}

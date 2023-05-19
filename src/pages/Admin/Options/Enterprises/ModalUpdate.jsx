@@ -88,10 +88,13 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
         if (!validateFormData(profile)) return;
 
         updateEntProfile(profile).then(
-            messageApi.open({
-                type: 'success',
-                content: "Cập nhật thành công!",
-            })
+            (res) => {
+                console.log(res);
+            }
+            // messageApi.open({
+            //     type: 'success',
+            //     content: "Cập nhật thành công!",
+            // })
         )
     }
 

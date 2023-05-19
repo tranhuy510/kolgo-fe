@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
         element: isAuthenticatedRoute(Chat),
       },
       {
-        path: "/bookings/:id",
+        path: "bookings/:id",
         element: isAuthenticatedRoute(BookingDetails),
       },
       {

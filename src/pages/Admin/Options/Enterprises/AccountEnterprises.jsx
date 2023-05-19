@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Table, Input, Modal, Button } from "antd";
+import { Table, Input, Modal, Button, message } from "antd";
 import classes from "./AccountEnterprises.module.css";
 
 import { getEnts } from "../../../../services/EnterpriseService";
@@ -9,7 +9,7 @@ import ModalView from "./ModalView";
 import ModalUpdate from "./ModalUpdate";
 import { getEntFields } from "../../../../services/FieldService";
 import { getCities } from "../../../../services/CityService";
-
+import { deleteUser } from "../../../../services/UserService";
 
 const AccountEnterprises = () => {
   const [ents, setEnts] = useState([])
@@ -22,7 +22,8 @@ const AccountEnterprises = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const [data, setData] = useState({})
+  const [dataProps, setDataProps] = useState({})
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     getEnts().then((res) => { setEnts(res) })
@@ -115,7 +116,7 @@ const AccountEnterprises = () => {
   const onOpenViewHandler = (data) => {
     // console.log(data);
     setOpenViewModal(true);
-    setData(data)
+    setDataProps(data)
   };
 
   const onCloseViewHandler = () => {
@@ -124,16 +125,25 @@ const AccountEnterprises = () => {
 
   const onOpenDeleteModalHandler = (data) => {
     setOpenDeleteModal(true)
-    setData(data);
+    setDataProps(data);
   };
 
   const onDeleteUserHandler = (id) => {
     console.log(id);
+    deleteUser(id).then(
+      () => {
+        messageApi.open({
+          type: 'success',
+          content: "Xóa thành công!",
+        })
+      }
+    )
+    setOpenDeleteModal(false)
   };
 
   const onOpenUpdateModalHandler = (data) => {
     setOpenUpdateModal(true);
-    setData(data)
+    setDataProps(data)
   };
 
   const onCloseUpdateModalHandler = () => {
@@ -144,6 +154,7 @@ const AccountEnterprises = () => {
     <>
       <div className={classes["admin-user-container"]}>
         <div className={classes["modal-search"]}>
+          {contextHolder}
           <div className={classes["total-user-enterprise"]}>
             Total enterprise :
             <label> {ents && ents.length}</label>
@@ -173,7 +184,7 @@ const AccountEnterprises = () => {
         />
       </div>
 
-      <ModalView openView={openViewModal} onCloseViewHandler={onCloseViewHandler} data={data} />
+      <ModalView openView={openViewModal} onCloseViewHandler={onCloseViewHandler} data={dataProps} />
 
       <Modal
         open={openDeleteModal}
@@ -182,11 +193,11 @@ const AccountEnterprises = () => {
         footer={[]}
       >
         <div>
-          Bạn có muốn xóa {data.name} ?
+          Bạn có muốn xóa "{dataProps?.firstName} {dataProps?.lastName}" không ?
         </div>
         <div className={classes['admin-modal-delete']}>
           <Button
-            onClick={() => { onDeleteUserHandler(data.id) }}
+            onClick={() => { onDeleteUserHandler(dataProps.userId) }}
             className={classes['modal-delete-btn']}
           >
             Xóa
@@ -203,7 +214,7 @@ const AccountEnterprises = () => {
       <ModalUpdate
         openUpdate={openUpdateModal}
         onCloseUpdateModalHandler={onCloseUpdateModalHandler}
-        data={data}
+        data={dataProps}
         fieldList={fieldList}
         cityList={cityList}
       />

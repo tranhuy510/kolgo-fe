@@ -59,7 +59,7 @@ const PageOutstandingKOL = (props) => {
         const firstName = arrUpperCase(kol.firstName);
         return (
           <div key={kol?.id} className={classes["item-kol-detail"]}>
-            <IMG src={`http://localhost:8080/api/images/images/${kol?.avatar}`} />
+            <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
             <div className={classes['kol-detail']}>
               <div className={classes['kol-name']}>
                 <Name>{firstName}</Name>

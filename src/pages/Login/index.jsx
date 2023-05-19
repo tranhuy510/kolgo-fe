@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
-import authApi from "../../api/auth";
 import { login } from "../../services/AuthService";
 
 import { Input } from "antd";
@@ -14,7 +12,6 @@ import Message from "../../components/UI/Message/Message";
 
 // import { users } from '../../json/db'
 import "./style.css";
-
 
 const Login = (props) => {
   const navigate = useNavigate();
