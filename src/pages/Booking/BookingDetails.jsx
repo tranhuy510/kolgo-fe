@@ -46,12 +46,10 @@ const BookingDetails = () => {
   }, [])
 
   const handlePayment = () => {
-    // TODO:
-    //  post fields:
-    //  amount = amount
-    //  txnRef = bookingId
     createVnPayPayment(booking.totalPrice, booking.id)
-      .then(res => console.log(res));
+      .then(res => {
+        window.location.replace(res.paymentUrl)
+      });
   }
 
   const handleReBooking = () => {
@@ -62,13 +60,37 @@ const BookingDetails = () => {
     setOpen(false);
   };
 
-  const handleCancel = () => {
+  const handleRejectOrCancel = () => {
     // send request update booking status to cancel
-    updateBookingStatus(booking.id, BookingStatus.CANCELED)
+    if (validateUser()) {
+      updateBookingStatus(booking.id, BookingStatus.CANCELED)
+        .then(res => {
+          setBooking(res);
+        });
+    }
+    else {
+      updateBookingStatus(booking.id, BookingStatus.REJECTED)
+        .then(res => {
+          setBooking(res);
+        });
+    }
+  }
+
+  const handleAccept = () => {
+    updateBookingStatus(booking.id, BookingStatus.ACCEPTED)
       .then(res => {
         setBooking(res);
       });
   }
+
+  const validateUser = () => {
+    if (user.id === booking.user.id) {
+      return true;
+    }
+    return false;
+  }
+
+
 
   const onChangeFeedbackRate = (value) => {
     setFeedback((prevState) => {
@@ -164,14 +186,14 @@ const BookingDetails = () => {
 
         {booking.status === BookingStatus.PENDING &&
           <Descriptions.Item label="Trạng thái" span={3} >
-            Đang chờ KOL xác nhận
+            Đang chờ xác nhận
           </Descriptions.Item>}
         {booking.status === BookingStatus.ACCEPTED &&
           <Descriptions.Item label="Trạng thái" span={3}>
-            KOL đã chấp nhận yêu cầu, vui lòng thanh toán
+            Đang chờ thanh toán
           </Descriptions.Item>
         }
-        {booking.status === BookingStatus.ACCEPTED &&
+        {booking.status === BookingStatus.ACCEPTED && validateUser() &&
           <Descriptions.Item label="" span={3}>
             <Button onClick={handlePayment}>Thanh toán</Button>
           </Descriptions.Item>
@@ -186,12 +208,23 @@ const BookingDetails = () => {
             Giao dịch đã thanh toán
           </Descriptions.Item>
         }
-        {booking.status !== BookingStatus.CANCELED
+        {/* {booking.status !== BookingStatus.CANCELED
           && booking.status !== BookingStatus.PAID
           && booking.status !== BookingStatus.REJECTED
           &&
           <Descriptions.Item label="" span={3}>
-            <Button onClick={handleCancel}>Hủy đặt</Button>
+            <Button onClick={handleAccept}>Chấp nhận</Button>
+          </Descriptions.Item>
+        } */}
+        {booking.status !== BookingStatus.CANCELED
+          && booking.status !== BookingStatus.PAID
+          && booking.status !== BookingStatus.REJECTED
+          && booking.status !== BookingStatus.ACCEPTED
+          &&
+          <Descriptions.Item label="" span={3}>
+            {!validateUser() && <Button onClick={handleAccept}>Chấp nhận</Button>}
+            <Button onClick={handleRejectOrCancel}>{validateUser() ? "Hủy đặt" : "Từ chối"}</Button>
+
           </Descriptions.Item>
         }
         {(booking.status === BookingStatus.CANCELED
