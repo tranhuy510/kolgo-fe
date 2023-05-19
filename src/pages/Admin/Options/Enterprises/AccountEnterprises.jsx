@@ -132,7 +132,6 @@ const AccountEnterprises = () => {
   };
 
   const onOpenUpdateModalHandler = (data) => {
-    // console.log(data);
     setOpenUpdateModal(true);
     setData(data)
   };
@@ -187,7 +186,7 @@ const AccountEnterprises = () => {
         </div>
         <div className={classes['admin-modal-delete']}>
           <Button
-            onClick={() => { onDeleteUserHandler(data.user.id) }}
+            onClick={() => { onDeleteUserHandler(data.id) }}
             className={classes['modal-delete-btn']}
           >
             Xóa

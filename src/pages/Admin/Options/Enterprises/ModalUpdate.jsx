@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Modal, Select, Cascader, Row, Col } from "antd";
+import { Button, Modal, Select, Cascader, Row, Col, message } from "antd";
 
 import classes from './AccountEnterprises.module.css'
+import { updateEntProfile } from '../../../../services/EnterpriseService';
 
 const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, cityList }) => {
-
+    const [messageApi, contextHolder] = message.useMessage();
     const [profile, setProfile] = useState({});
 
     useEffect(() => {
@@ -38,7 +39,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
         setProfile((prevState) => {
             return {
                 ...prevState,
-                city: value[0],
+                cityId: value,
             };
         });
     };
@@ -47,14 +48,51 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
         setProfile((prevState) => {
             return {
                 ...prevState,
-                fields: value,
+                fieldIds: value,
             };
         });
     };
 
+    const validateFormData = (formData) => {
+        let res = true;
+        let errMsg = "";
+        if (!formData.firstName) {
+            errMsg = "Vui lòng nhập tên của bạn!";
+        } else if (!formData.lastName) {
+            errMsg = "Vui lòng nhập họ của bạn!";
+        } else if (!formData.name) {
+            errMsg = "Vui lòng nhập tên doanh nghiệp!";
+        } else if (!formData.phone) {
+            errMsg = "Vui lòng nhập số điện thoại của bạn!";
+        } else if (!formData.taxId) {
+            errMsg = "Vui lòng nhập mã số thuế!";
+        } else if (!formData.cityId) {
+            errMsg = "Vui lòng chọn tỉnh/thành phố địa chỉ!";
+        } else if (!formData.fieldIds) {
+            errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
+        } else if (!formData.addressDetails) {
+            errMsg = "Vui lòng nhập địa chỉ cụ thể!";
+        }
+        if (errMsg) {
+            messageApi.open({
+                type: 'warning',
+                content: errMsg,
+            });
+            res = false;
+        }
+        return res;
+    };
+
     const onUpdate = (event) => {
         event.preventDefault();
-        console.log(profile);
+        if (!validateFormData(profile)) return;
+
+        updateEntProfile(profile).then(
+            messageApi.open({
+                type: 'success',
+                content: "Cập nhật thành công!",
+            })
+        )
     }
 
     return (
@@ -65,6 +103,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
             onCancel={onCloseUpdateModalHandler}
             footer={[]}
         >
+            {contextHolder}
             <h1>Thông tin chi tiết</h1>
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Tên:</Col>
@@ -119,6 +158,19 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
             </Row>
 
             <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Email:</Col>
+                <Col span={18}>
+                    <input
+                        placeholder="Email"
+                        className={classes['modal-update-col-input']}
+                        onChange={inputChangeHandler}
+                        value={profile.email}
+                        name="phone"
+                    />
+                </Col>
+            </Row>
+
+            <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Mã số thuế:</Col>
                 <Col span={18}>
                     <input
@@ -141,7 +193,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                         }}
                         placeholder="Chọn lĩnh Vực"
                         onChange={onChangeFieldsHandler}
-                        value={profile.fields}
+                        value={profile.fieldIds}
                         options={optionFields}
                     />
                 </Col>
@@ -156,7 +208,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                         }}
                         options={optionCities}
                         onChange={onChangeCityHandler}
-                        value={profile.city}
+                        value={profile.cityId}
                     />
                 </Col>
             </Row>
@@ -182,30 +234,6 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                     </Button>
                 </Col>
             </Row>
-
-            {/* <Col span={8} style={{ marginTop: "30px", textAlign: "center" }}>
-                    <h3>Ảnh đại diện</h3>
-                    <Avatar
-                        size={200}
-                        src={`http://localhost:8080/api/images/${user?.avatar}`}
-                    >
-                        {user?.avatar ? (
-                            ""
-                        ) : (
-                            <UserOutlined style={{ fontSize: 60, lineHeight: "200px" }} />
-                        )}
-                    </Avatar>
-                    <div className={classes.avatarWrapper}>
-                        <EditOutlined /> Thay đổi
-                        <input
-                            type="file"
-                            accept="image/*"
-                        //   onChange={avatarChangeHandler}
-                        />
-                    </div>
-                </Col> */}
-
-
         </Modal>
     )
 }

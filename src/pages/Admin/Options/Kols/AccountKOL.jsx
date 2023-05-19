@@ -154,8 +154,8 @@ const AccountEnterprises = () => {
           dataSource={kols.filter((kol) => {
             return inputSearch.toLowerCase() === ""
               ? kol
-              : kol.user.firstName.toLowerCase().includes(inputSearch.toLowerCase())
-              || kol.user.lastName.toLowerCase().includes(inputSearch.toLowerCase())
+              : kol.user?.firstName.toLowerCase().includes(inputSearch.toLowerCase())
+              || kol.user?.lastName.toLowerCase().includes(inputSearch.toLowerCase())
           })}
           pagination={{
             defaultPageSize: 10,

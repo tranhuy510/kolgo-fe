@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
-import { Button, Modal, Select, Cascader, Row, Col } from "antd";
+import React, { useEffect, useState } from 'react'
+import { Button, Modal, Select, Cascader, Row, Col, message } from "antd";
 
 import classes from './AccountKOL.module.css'
 
 import { getEntFields } from '../../../../services/FieldService';
 import { getCities } from '../../../../services/CityService';
+import { updateKolProfile } from '../../../../services/KolService';
 
 const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, cityList }) => {
-
+    const [messageApi, contextHolder] = message.useMessage();
     const [profile, setProfile] = useState({});
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
         setProfile((prevState) => {
             return {
                 ...prevState,
-                city: value[0],
+                cityId: value,
             };
         });
     };
@@ -50,14 +51,52 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
         setProfile((prevState) => {
             return {
                 ...prevState,
-                fields: value,
+                fieldIds: value,
             };
         });
     };
 
+    const validateFormData = (formData) => {
+        let res = true;
+        let errMsg = "";
+        if (!formData.firstName) {
+            errMsg = "Vui lòng nhập tên của bạn!";
+        } else if (!formData.lastName) {
+            errMsg = "Vui lòng nhập họ của bạn!";
+        } else if (!formData.gender) {
+            errMsg = "Vui lòng chọn giới tính của bạn!";
+        } else if (!formData.phone) {
+            errMsg = "Vui lòng nhập số điện thoại của bạn!";
+        } else if (!formData.cityId) {
+            errMsg = "Vui lòng chọn thành phố làm việc!";
+        } else if (!formData.fieldIds) {
+            errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
+        } else if (!formData.postPrice) {
+            errMsg = "Vui lòng nhập giá của 1 bài đăng!";
+        } else if (!formData.videoPrice) {
+            errMsg = "Vui lòng nhập giá của 1 video!";
+        }
+        if (errMsg) {
+            messageApi.open({
+                type: 'warning',
+                content: errMsg,
+            });
+            res = false;
+        }
+        return res;
+    };
+
     const onUpdate = (event) => {
         event.preventDefault();
-        console.log(profile);
+        if (!validateFormData(profile)) return;
+
+        updateKolProfile(profile).then((res) => {
+            console.log(res);
+            messageApi.open({
+                type: 'success',
+                content: "Cập nhật thành công!",
+            })
+        })
     }
 
     return (
@@ -69,6 +108,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                 onCancel={onCloseUpdateModalHandler}
                 footer={[]}
             >
+                {contextHolder}
                 <h1>Thông tin chi tiết</h1>
                 <Row style={{ margin: '20px 10px' }}>
                     <Col span={6}>Tên:</Col>
@@ -180,7 +220,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                             }}
                             placeholder="Chọn lĩnh Vực"
                             onChange={onChangeFieldsHandler}
-                            value={profile.fields}
+                            value={profile.fieldIds}
                             options={optionFields}
                         />
                     </Col>
@@ -195,7 +235,7 @@ const ModalUpdate = ({ openUpdate, onCloseUpdateModalHandler, data, fieldList, c
                             }}
                             options={optionCities}
                             onChange={onChangeCityHandler}
-                            value={profile.city}
+                            value={profile.cityId}
                         />
                     </Col>
                 </Row>

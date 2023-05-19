@@ -75,7 +75,7 @@ const PageKolDetail = () => {
       .then((res) => {
         setKol(res);
         checkStatus(res.bookings, user, res.kol)
-        console.log(res);
+        console.log(res.kol);
       });
   }, []);
 

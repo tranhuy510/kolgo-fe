@@ -7,6 +7,7 @@ import { Descriptions, Button, TextArea, Rate, message } from 'antd';
 import classes from './Booking.module.css'
 import NotFound from '../NotFound/NotFound';
 import { formatDate } from '../../services/DateTimeUtil';
+import BookingCreate from './BookingCreate';
 
 
 const BookingDetails = () => {
@@ -37,6 +38,7 @@ const BookingDetails = () => {
   })
   const [renderFeedback, setRenderFeedback] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     getBooking(id)
@@ -57,8 +59,12 @@ const BookingDetails = () => {
   }
 
   const handleReBooking = () => {
-
+    setOpen(true)
   }
+
+  const onCancelOpenHandler = () => {
+    setOpen(false);
+  };
 
   const handleCancel = () => {
     // send request update booking status to cancel
@@ -245,6 +251,12 @@ const BookingDetails = () => {
           </Descriptions.Item>
         }
       </Descriptions>
+
+      <Descriptions.Item label="" span={3}>
+        <Button onClick={handlePayment}>Thanh toán</Button>
+      </Descriptions.Item>
+
+      <BookingCreate open={open} kol={booking.kol} onCancelOpenHandler={onCancelOpenHandler} />
     </div>
   );
 };
