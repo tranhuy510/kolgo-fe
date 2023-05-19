@@ -46,7 +46,12 @@ const BookingDetails = () => {
   }, [])
 
   const handlePayment = () => {
-
+    // TODO:
+    //  post fields:
+    //  amount = amount
+    //  txnRef = bookingId
+    createVnPayPayment(booking.totalPrice, booking.id)
+      .then(res => console.log(res));
   }
 
   const handleReBooking = () => {

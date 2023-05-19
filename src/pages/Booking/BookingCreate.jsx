@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../services/DateTimeUtil';
@@ -6,10 +6,13 @@ import { createBooking } from '../../services/BookingService';
 import { BookingStatus } from '../../utils/Enums';
 import { Modal, Form, Input, Button } from 'antd';
 import classes from './Booking.module.css'
+import { MessageContext } from '../../context/Message.context';
 const { TextArea } = Input;
 
 const BookingCreate = (props) => {
+  const user = JSON.parse(localStorage.getItem('user'));
   const kol = props.kol;
+  const { sendPrivateMessage } = useContext(MessageContext);
   const navigate = useNavigate();
   const [booking, setBooking] = useState({
     timestamp: "",
@@ -62,16 +65,43 @@ const BookingCreate = (props) => {
     booking.timestamp = formatDate(new Date());
     booking.status = BookingStatus.PENDING;
     setBooking({ ...booking });
-    console.log(kol.id);
-    console.log(booking);
     createBooking(kol.id, booking).then((res) => {
       console.log(res);
       if (!res.error) {
+        sendBookingNotification(res, user, kol);
         navigate(`/bookings/${res.id}`);
+      }
+      if (res.error) {
+
       }
 
     });
   };
+
+  const sendBookingNotification = (booking, user, kol) => {
+    sendPrivateMessage({
+      type: 'NOTIFICATION',
+      notification: {
+        type: 'BOOKING',
+        kolId: kol.id,
+        bookingId: booking.id,
+        content: 'Ban co 1 booking moi',
+        status: 'READ',
+        timestamp: formatDate(new Date()),
+        user: {
+          id: kol.userId,
+          firstName: kol.firstName,
+          lastName: kol.lastName,
+          email: kol.email,
+          avatar: kol.avatar,
+          role: 'KOL'
+        }
+      },
+      senderId: user.id,
+      receiverIds: [kol.userId]
+    })
+
+  }
 
   const onCloseModal = () => {
     props.onCancelOpenHandler();
