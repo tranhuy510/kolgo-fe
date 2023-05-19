@@ -47,7 +47,7 @@ const Compare = (props) => {
         setDataUser2(data);
         cancelShowHandler();
     };
-    console.log(dataUser2);
+    console.log(props.infoKol);
 
     return (
         <div className="form-so-sanh">

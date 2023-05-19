@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getBooking, updateBookingStatus } from '../../services/BookingService';
+import { addBookingFeedback, getBooking, updateBookingStatus } from '../../services/BookingService';
 import { BookingStatus } from '../../utils/Enums';
 import { createVnPayPayment } from '../../services/PaymentService';
 import { Descriptions, Button, TextArea, Rate, message } from 'antd';
 import classes from './Booking.module.css'
 import NotFound from '../NotFound/NotFound';
+import { formatDate } from '../../services/DateTimeUtil';
+
 
 const BookingDetails = () => {
   const user = JSON.parse(localStorage.getItem("user"))
@@ -24,18 +26,14 @@ const BookingDetails = () => {
     status: '',
     user: {},
     kol: {},
-    feedback: null
+    feedback: {}
   });
   const [feedback, setFeedback] = useState({
-    rate: null,
+    rating: null,
     comment: "",
-    userId: null,
+    user: null,
     kolId: null,
-    dateCreate: {
-      year: null,
-      month: null,
-      day: null,
-    }
+    timestamp: ""
   })
   const [renderFeedback, setRenderFeedback] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,7 +45,7 @@ const BookingDetails = () => {
         setFeedback((prevState) => {
           return {
             ...prevState,
-            userId: res.user.id,
+            user: res.user,
             kolId: res.kol.id
           };
         })
@@ -74,7 +72,7 @@ const BookingDetails = () => {
     setFeedback((prevState) => {
       return {
         ...prevState,
-        rate: value,
+        rating: value,
       };
     })
   }
@@ -98,11 +96,14 @@ const BookingDetails = () => {
       return;
     }
     setRenderFeedback(true)
-    // const timestamp = DateTimeUtils.formatDate(new Date(), 'dd/MM/yyyy');
-    // feedback.dateCreate.day = date.getDate();
-    // feedback.dateCreate.month = date.getMonth() + 1;
-    // feedback.dateCreate.year = date.getFullYear();
-    console.log(feedback);
+    feedback.timestamp = formatDate(new Date());
+
+    addBookingFeedback(id, feedback).then((res) => {
+      messageApi.open({
+        type: 'sussess',
+        content: 'Phản hồi thành công!',
+      });
+    })
   }
 
   return (
@@ -233,7 +234,7 @@ const BookingDetails = () => {
         }
         {(booking.status === BookingStatus.PAID &&
           booking.payment.status === "successful" &&
-          booking.feedback === null) &&
+          booking.feedback !== null) &&
           <Descriptions.Item label="Phản hồi" span={3}>
             <textarea
               readonly

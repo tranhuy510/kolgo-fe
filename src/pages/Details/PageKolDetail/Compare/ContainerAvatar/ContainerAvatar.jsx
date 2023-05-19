@@ -6,7 +6,7 @@ const ContainerAvatar = (props) => {
             <div
                 className="image image-left"
                 style={{
-                    backgroundImage: `url(${props.user?.avatar ? props.user.avatar : ''})`,
+                    backgroundImage: `url(http://localhost:8080/api/images/${props.user?.avatar})`,
                 }}
             ></div>
             <div style={{ textAlign: 'center', fontSize: '18px' }}>{props.user?.firstName} {props.user?.lastName}</div>

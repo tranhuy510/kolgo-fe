@@ -79,6 +79,14 @@ const PageKolDetail = () => {
       });
   }, []);
 
+  useEffect(() => {
+    document.title = `KOLgo | ${kol?.kol?.firstName} ${kol?.kol?.lastName}`
+
+    return () => {
+      document.title = 'KOLgo';
+    };
+  }, [kol?.kol?.id])
+
   const checkStatus = (bookings, user, kol) => {
     if (!user) {
       setStatus("GUEST")
@@ -145,7 +153,7 @@ const PageKolDetail = () => {
               span={6}
               style={{ paddingRight: "10px", boxSizing: "border-box" }}
             >
-              <ImageDescription images={kol?.images} />
+              <ImageDescription images={kol?.images} avatar={kol?.kol?.avatar} />
               <ContactSocials
                 facebookUrl={kol?.kol?.facebookUrl}
                 instagramUrl={kol?.kol?.instagramUrl}
@@ -158,8 +166,6 @@ const PageKolDetail = () => {
                 <NameMain
                   firstName={kol?.kol?.firstName}
                   lastName={kol?.kol?.lastName}
-                  gender={kol?.kol?.gender}
-                  city={kol?.kol?.city?.name}
                 />
               </Row>
               <Row className="middle-row">
@@ -168,6 +174,7 @@ const PageKolDetail = () => {
                   phoneNumber={kol?.kol?.phone}
                   gender={kol?.kol?.gender}
                   city={kol?.kol?.cityName}
+                  addressDetails={kol?.kol?.addressDetails}
                 />
               </Row>
               <Row className="middle-row" >

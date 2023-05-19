@@ -55,3 +55,19 @@
     cursor: pointer;
 }
 
+.link-kol-detail {
+    width: 180px;
+  height: 270px;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+}
+
+.link-kol-detail:hover {
+    box-shadow: 0 0 6px #F0564A;
+}
+

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
 import authApi from "../../api/auth";
@@ -8,8 +8,6 @@ import { Input } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
 // import axios from "axios";
-
-import ErrorModal from "../../components/UI/ErrorModal/ErrorModal";
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 import ButtonFull from "../../components/UI/Button/ButtonFull";
 import Message from "../../components/UI/Message/Message";
@@ -31,7 +29,13 @@ const Login = (props) => {
     content: "",
   });
 
-  document.title = 'KOLgo - Đăng nhập'
+  useEffect(() => {
+    document.title = `KOLgo | Đăng nhập`
+
+    return () => {
+      document.title = 'KOLgo';
+    };
+  }, [])
 
   const changeMessage = () => {
     setCheck({
@@ -80,8 +84,6 @@ const Login = (props) => {
     }
 
     let response = await login(userInput);
-    // let response = await authApi(userInput);
-    console.log(response);
     if (!response) {
       setCheck({
         status: true,
