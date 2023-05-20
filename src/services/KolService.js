@@ -29,3 +29,7 @@ export function updateKolImages(images) {
 
   return putFormDataAuth("kol/images", formData);
 }
+
+export function joinCampaign(campaignId) {
+  return putAuth(`kol/campaigns/${campaignId}`)
+}
