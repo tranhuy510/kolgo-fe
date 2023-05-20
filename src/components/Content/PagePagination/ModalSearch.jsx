@@ -6,6 +6,8 @@ import { getKols } from '../../../services/KolService';
 import classes from '../content.module.css';
 import styled from "styled-components";
 import { Input, Pagination } from 'antd';
+import { ReloadOutlined, SearchOutlined } from '@ant-design/icons'
+
 import ResultSearch from './ResultSearch';
 
 const Title = styled.h2`
@@ -118,8 +120,8 @@ const ModalSearch = () => {
                             </option>
                         ))}
                 </select>
-                <button onClick={onSearchHandler} className={classes['btn-search']}>Tìm kiếm</button>
-                <button onClick={onResetHandler} className={classes['btn-renew']}>Làm mới</button>
+                <button onClick={onSearchHandler} className={classes['btn-search']}>Tìm kiếm <SearchOutlined /></button>
+                <button onClick={onResetHandler} className={classes['btn-renew']}>Làm mới <ReloadOutlined /></button>
             </div>
             {openResult && <div className={classes['search-result']}>
                 <Title>Kết quả tìm kiếm</Title>
