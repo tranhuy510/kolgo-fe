@@ -1,15 +1,16 @@
-import Home from "../pages/Home";
-import Campaign from "../pages/Campaign";
-import Login from "../pages/Login";
-import Register from "../pages/Register/Register";
-import Profile from "../pages/Profile/Profile";
 import {
   BrowserRouter,
   createBrowserRouter,
   Route,
   Routes,
 } from "react-router-dom";
+
 import RootLayout from "../pages/Root";
+import Home from "../pages/Home";
+import Campaign from "../pages/Campaign";
+import Login from "../pages/Login";
+import Register from "../pages/Register/Register";
+import Profile from "../pages/Profile/Profile";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import PageKolDetail from "../pages/Details/PageKolDetail/PageKolDetail";
 import VerifyRegister from "../pages/VerifyRegister/VerifyRegister";
@@ -23,8 +24,6 @@ import PaymentResult from "../pages/Payment/PaymentResult";
 import BookingDetails from "../pages/Booking/BookingDetails";
 
 import { ProtectedRoute } from "../context/ProtectedRoute.context";
-import { useContext } from "react";
-import { AuthContext } from "../context/auth.context";
 
 // export const router = createBrowserRouter([
 //   {
@@ -94,8 +93,6 @@ import { AuthContext } from "../context/auth.context";
 // export const privateRouters = [];
 
 const Router = () => {
-  const { user, setUser } = useContext(AuthContext);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -112,7 +109,10 @@ const Router = () => {
         />
         <Route path="/campaign" element={<Campaign />} />
         <Route path="/field/:id" element={<Fields />} />
-        <Route path="/reset_password" element={<ResetPassword />} />
+        <Route
+          path="/reset_password"
+          element={<ProtectedRoute Component={ResetPassword} />}
+        />
         <Route path="/verify_account" element={<VerifyRegister />} />
         <Route path="/chat" element={<ProtectedRoute Component={Chat} />} />
         <Route path="/forgot_password" element={<ForgotPassword />} />
