@@ -33,14 +33,13 @@ const ModalCampaignIsProgress = () => {
         setCurrent(page);
     };
 
-
     const resultSearch = campaigns.filter((cp) => {
         return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
             && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
     })
 
     const changeRender = () => {
-        return campaigns?.slice((current - 1) * 10, (((current - 1) * 10) + 10));
+        return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
     }
 
     const onKeyDownHandler = (event) => {
@@ -104,6 +103,8 @@ const ModalCampaignIsProgress = () => {
                     current={current}
                     onChange={onChangePage}
                     total={total}
+                    pageSizeOptions={["1", "5", "10"]}
+                    pageSize={6}
                 />
             </div>
 

@@ -5,13 +5,11 @@ import { login } from "../../services/AuthService";
 import { Input } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
-// import axios from "axios";
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 import ButtonFull from "../../components/UI/Button/ButtonFull";
 import Message from "../../components/UI/Message/Message";
 import { AuthContext } from "../../context/auth.context";
 
-// import { users } from '../../json/db'
 import "./style.css";
 
 

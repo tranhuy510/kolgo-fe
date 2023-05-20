@@ -26,7 +26,7 @@ const Campaign = (props) => {
     const originalTitle = document.title
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        document.title = 'Go back'
+        document.title = 'Quay lại 凸(￣ヘ￣)'
       }
       else document.title = `${originalTitle}`
     })
@@ -37,10 +37,10 @@ const Campaign = (props) => {
   }, []);
 
   useEffect(() => {
-    if (user.role === "KOL") {
+    if (user?.role === "KOL") {
       getKols().then(res => { return res.json() }).then(data => { setKols(data) })
     }
-    if (user.role === "ENTERPRISE") {
+    if (user?.role === "ENTERPRISE") {
       getEnts().then(res => { return res.json() }).then(data => { setEnts(data) })
     }
   }, [user])
