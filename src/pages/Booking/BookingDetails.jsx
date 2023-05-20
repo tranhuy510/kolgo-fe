@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addBookingFeedback, getBooking, updateBookingStatus } from '../../services/BookingService';
+import { addBookingFeedback, getBookingByBookingId, updateBookingStatus } from '../../services/BookingService';
 import { BookingStatus } from '../../utils/Enums';
 import { createVnPayPayment } from '../../services/PaymentService';
 import { Descriptions, Button, TextArea, Rate, message } from 'antd';
@@ -8,13 +8,23 @@ import classes from './Booking.module.css'
 import NotFound from '../NotFound/NotFound';
 import { formatDate } from '../../services/DateTimeUtil';
 import BookingCreate from './BookingCreate';
+import { useContext } from 'react';
+import { MessageContext } from '../../context/Message.context';
 
 
 const BookingDetails = () => {
   const user = JSON.parse(localStorage.getItem("user"))
+  const { sendPrivateNotification } = useContext(MessageContext);
   const [error, setError] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
+  const [noti, setNoti] = useState({
+    type: 'BOOKING',
+    bookingId: id,
+    content: '',
+    timestamp: '',
+    userId: 0,
+  })
   const [booking, setBooking] = useState({
     id: '',
     timestamp: '',
@@ -39,7 +49,7 @@ const BookingDetails = () => {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    getBooking(id)
+    getBookingByBookingId(id)
       .then(res => {
         setBooking(res);
       });
@@ -65,12 +75,20 @@ const BookingDetails = () => {
     if (validateUser()) {
       updateBookingStatus(booking.id, BookingStatus.CANCELED)
         .then(res => {
+          noti.timestamp = formatDate(new Date());
+          noti.content = `${user.firstName} đã hủy yêu cầu booking`
+          noti.userId = res.kol.id;
+          sendPrivateNotification(noti);
           setBooking(res);
         });
     }
     else {
       updateBookingStatus(booking.id, BookingStatus.REJECTED)
         .then(res => {
+          noti.timestamp = formatDate(new Date());
+          noti.content = `${res.kol.firstName} đã từ chối yêu cầu booking`
+          noti.userId = res.user.id;
+          sendPrivateNotification(noti);
           setBooking(res);
         });
     }
@@ -79,6 +97,10 @@ const BookingDetails = () => {
   const handleAccept = () => {
     updateBookingStatus(booking.id, BookingStatus.ACCEPTED)
       .then(res => {
+          noti.timestamp = formatDate(new Date());
+          noti.content = `${res.kol.firstName} đã chấp nhận yêu cầu booking`
+          noti.userId = res.user.id;
+          sendPrivateNotification(noti);
         setBooking(res);
       });
   }
