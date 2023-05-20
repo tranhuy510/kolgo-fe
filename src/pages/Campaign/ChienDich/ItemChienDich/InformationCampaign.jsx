@@ -7,7 +7,7 @@ import Modals from '../../../../components/UI/Modal/Modals';
 import CampaignContext from '../../../../context/campaign.context';
 
 
-const ThongTinChienDich = (props) => {
+const InformationCampaign = (props) => {
     const [noti, setNoti] = useState({
         status: false,
         title: '',
@@ -31,12 +31,19 @@ const ThongTinChienDich = (props) => {
     const regex = /(.*)\s\((.*)\)/;
 
     useEffect(() => {
-        if (userCtx.user?.role === 'KOL') {
-            setJoined(props.data.listKOL.find(item => item.kolId === userCtx.idRole))
+        if (userCtx.user) {
+            if (userCtx.user?.role === 'KOL') {
+                const find = props.data.listKOL.find(kol => kol.id === userCtx.idRole)
+                if (find) { setJoined("JOINED") }
+                else setJoined("NOTJOIN")
+            }
+            if (userCtx.user?.role === 'ENTERPRISE') {
+                const find = props.data.listEnter.find(ent => ent.id === userCtx.idRole)
+                if (find) { setJoined("JOINED") }
+                else setJoined("NOTJOIN")
+            }
         }
-        if (userCtx.user?.role === 'ENTERPRISE') {
-            setJoined(props.data.listEnter.find(item => item.kolId === userCtx.enterpriseId))
-        }
+        else setJoined("GUEST")
     }, [userCtx])
 
 
@@ -44,8 +51,8 @@ const ThongTinChienDich = (props) => {
         <Modal
             width={1000}
             title=""
-            open={props.openThongTin}
-            onCancel={props.handleCancelThongTin}
+            open={props.openModal}
+            onCancel={props.onCloseModalhandler}
             footer={[]}
         >
             <div className={classes['modal-chienDich-thongTin']}>
@@ -119,11 +126,11 @@ const ThongTinChienDich = (props) => {
                 </div>
             </div>
             < div className={classes["bottom-infor-btn"]} >
-                {joined && <Button className={classes["btn-tham-gia"]} onClick={cancelJoinHandler}>Hủy tham gia</Button>}
-                {!joined && <Button className={classes["btn-tham-gia"]} onClick={props.joinHandler}>Tham gia</Button>}
+                {joined !== "GUEST" && joined === "JOINED" && <Button className={classes["btn-tham-gia"]} onClick={cancelJoinHandler}>Hủy tham gia</Button>}
+                {joined !== "GUEST" && joined === "NOTJOIN" && <Button className={classes["btn-tham-gia"]} onClick={props.onJoinHandler}>Tham gia</Button>}
             </ div>
         </Modal >
     )
 }
 
-export default ThongTinChienDich
+export default InformationCampaign

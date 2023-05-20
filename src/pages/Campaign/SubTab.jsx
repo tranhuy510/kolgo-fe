@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import classes from './Campaign.module.css'
 import ModalChienDichDaTao from './ChienDich/ChienDichDaTao/ModalChienDichDaTao';
 import ModalDangThamGia from './ChienDich/Dangthamgia/ModalDangThamGia';
-import ModalDangDienRa from './ChienDich/DangDienRa/ModalDangDienRa';
+import ModalCampaignIsProgress from './ChienDich/CampaignIsProgress/ModalCampaignIsProgress';
 import ModalTaoChienDich from './ChienDich/TaoChienDich/ModalTaoChienDich';
 
 const SubTab = (props) => {
@@ -13,7 +13,7 @@ const SubTab = (props) => {
     }
 
     const components = [
-        <ModalDangDienRa />,
+        <ModalCampaignIsProgress />,
         <ModalDangThamGia />,
         <ModalTaoChienDich />,
         <ModalChienDichDaTao />,

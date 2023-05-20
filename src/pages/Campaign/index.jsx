@@ -12,7 +12,7 @@ import { Row, Col } from "antd";
 const Campaign = (props) => {
   const [activeTab, setActiveTab] = useState(0);
   const [user, setUser] = useState({})
-  const [idRole, setIdRole] = useState('')
+  const [idRole, setIdRole] = useState(null)
   const [kols, setKols] = useState([])
   const [ents, setEnts] = useState([])
 
