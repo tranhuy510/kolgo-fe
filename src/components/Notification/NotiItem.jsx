@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 export default function NotiItem({ noti }) {
   const navigate = useNavigate();
 
-  console.log(noti);
   // const startDate = new Date(notification.timestamp);
 
   // const now = new Date();
@@ -45,12 +44,6 @@ export default function NotiItem({ noti }) {
         className={`${classes["item-content"]} ${noti.status === 'READ' && classes["read"]}`}
       >
         <p>{noti?.content}</p>
-        {/* <p>
-          <b>{notification.user?.name}</b>{" "}
-          {notification.action === "book" && "đã gửi lời mời hợp tác đến bạn"}
-          {notification.action === "campain" && "đã tạo chiến dịch mới"}
-        </p> */}
-
         <p>{noti?.timestamp}</p>
       </div>
     </div>

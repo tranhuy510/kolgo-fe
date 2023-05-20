@@ -12,13 +12,15 @@ export const MessageProvider = ({ children }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
     const [chatMessages, setChatMessages] = useState([]);
-    const [notifications, setNotification] = useState([]);
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
         Promise.all([
             getNotification(),
         ]).then(([notificationList]) => {
-            setNotification(notificationList);
+            console.log(notificationList)
+            if (notificationList && notificationList.length > 0)
+                setNotifications(notificationList);
         })
     }, [])
 
@@ -36,7 +38,7 @@ export const MessageProvider = ({ children }) => {
         if (!stompClient) {
             const socket = new SockJS(websocketUrl);
             stompClient = Stomp.over(socket);
-            stompClient.debug = null;
+            // stompClient.debug = null;
             stompClient.connect({}, onConnected, (err) => console.log(err));
         }
     }
@@ -49,31 +51,46 @@ export const MessageProvider = ({ children }) => {
 
     const onConnected = () => {
         console.log("Connected to STOMP server");
-        stompClient.subscribe("public/messages", onPublicMessageReceived);
+        stompClient.subscribe("public/chats", onPublicMessageReceived);
+        stompClient.subscribe("public/notifications", onPublicNotificationReceived);
         stompClient.subscribe(`user/${user.id}/messages`, onPrivateMessageReceived);
+        stompClient.subscribe(`user/${user.id}/notifications`, onPrivateNotificationReceived)
     }
 
     const onPublicMessageReceived = (payload) => {
         const msg = JSON.parse(payload.body);
+        console.log(msg)
+    }
+
+    const onPublicNotificationReceived = (payload) => {
+        const msg = JSON.parse(payload.body);
+        console.log(msg)
     }
 
     const onPrivateMessageReceived = (payload) => {
         const msg = JSON.parse(payload.body);
         console.log(msg)
-        if (msg.type === 'NOTIFICATION') {
-            setNotification(prev => [...prev, msg.notification])
-        }
 
         if (msg.messageType === 'CHAT_MESSAGE')
             setChatMessages(prev => [...prev, msg.chatMessage]);
     }
 
+    const onPrivateNotificationReceived = (payload) => {
+        const notification = JSON.parse(payload.body);
+        console.log(notification)
+        setNotifications(prev => [...prev, notification])
+    }
+
     const sendPublicMessage = (msg) => {
-        stompClient.send(`app/public`, {}, JSON.stringify(msg));
+        stompClient.send(`app/public/messages`, {}, JSON.stringify(msg));
     }
 
     const sendPrivateMessage = (msg) => {
-        stompClient.send(`app/private`, {}, JSON.stringify(msg))
+        stompClient.send(`app/private/messages`, {}, JSON.stringify(msg))
+    }
+
+    const sendPrivateNotification = (notification) => {
+        stompClient.send(`app/private/notifications`, {}, JSON.stringify(notification));
     }
 
     return (
@@ -81,7 +98,8 @@ export const MessageProvider = ({ children }) => {
             chatMessages,
             notifications,
             sendPublicMessage,
-            sendPrivateMessage
+            sendPrivateMessage,
+            sendPrivateNotification
         }}>
             {children}
         </MessageContext.Provider>
