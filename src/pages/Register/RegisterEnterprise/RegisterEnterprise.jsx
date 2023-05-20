@@ -145,13 +145,13 @@ const RegisterEnterprise = (props) => {
                 <Modals status={noti.status} title={noti.title} email={noti.email} message={noti.message} changeNotification={changeNotificationHandler} />
             }
             <Message status={showMessage.status} type={showMessage.type} content={showMessage.content} changeMessage={changeMessage} />
-            <ButtonBack onClickBackHandler={onClickBackHandler}>Come back</ButtonBack>
+            <ButtonBack onClickBackHandler={onClickBackHandler}>Trở lại</ButtonBack>
             <div className="register__logo">
                 <img className='logo' src={logo} alt="" />
             </div>
             <form onSubmit={handleRegister} className="register-form">
                 <div className='form-top'>
-                    <h1 style={{ textAlign: 'center' }}>Enterprise register information</h1>
+                    <h1 style={{ textAlign: 'center' }}>Thông tin đăng ký Enterprise</h1>
                     <div className="register-form__control">
                         <input
                             type="text"
@@ -200,7 +200,7 @@ const RegisterEnterprise = (props) => {
                 </div>
                 <div className='form-bottom'>
                     <div className="register-form__control">
-                        <ButtonFull type="submit">Register</ButtonFull>
+                        <ButtonFull type="submit">Đăng ký</ButtonFull>
                     </div>
                 </div>
             </form>

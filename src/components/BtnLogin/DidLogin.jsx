@@ -7,7 +7,7 @@ const DidLogin = (props) => {
     return (
         <div>
             <ButtonRadius onClick={props.logOutHandler}>
-                Log out
+                Đăng xuất
             </ButtonRadius>
         </div>
     )

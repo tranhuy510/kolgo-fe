@@ -9,7 +9,7 @@ const Success = () => (
         extra={
             <Button>
                 <NavLink to="/login" >
-                    <label >Come login</label>
+                    <label >Đến đăng nhập</label>
                 </NavLink>
             </Button>
         }
