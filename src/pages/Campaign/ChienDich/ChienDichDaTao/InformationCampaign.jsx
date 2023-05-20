@@ -90,7 +90,7 @@ const InformationCampaign = (props) => {
                         <Descriptions.Item span={3}>
                             <div className={classes['moTa-list-image']}>
                                 {props.data.listImage?.map((item, index) => (
-                                    <div key={index} >
+                                    <div key={index} className={classes['wrap-image']} >
                                         <Image src={item.src} className={classes['list-image-item']} />
                                     </div>
                                 ))}
