@@ -1,4 +1,11 @@
 import { Carousel } from 'antd';
+import banner_1 from '../../assets/banner/banner_1.jpg'
+import banner_2 from '../../assets/banner/banner_2.jpg'
+import banner_3 from '../../assets/banner/banner_3.jpg'
+import banner_4 from '../../assets/banner/banner_4.jpg'
+
+
+
 const contentStyle = {
     width: '100%',
     height: '200px',
@@ -9,16 +16,16 @@ const contentStyle = {
 const ScrollAuto = () => (
     <Carousel autoplay>
         <div>
-            <img style={contentStyle} src="https://playerduo.com/api/upload-service/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__fde23230-7152-11ed-a19f-23a3b10d190e__admin_banner.jpg" alt="" />
+            <img style={contentStyle} src={banner_1} alt="" />
         </div>
         <div>
-            <img style={contentStyle} src="https://playerduo.com/api/upload-service/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__b41d4400-ef49-11eb-a5b5-55d4c2fddb9c__admin_banner.jpg" alt="" />
+            <img style={contentStyle} src={banner_2} alt="" />
         </div>
         <div>
-            <img style={contentStyle} src="https://playerduo.com/api/upload-service/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__fde23230-7152-11ed-a19f-23a3b10d190e__admin_banner.jpg" alt="" />
+            <img style={contentStyle} src={banner_3} alt="" />
         </div>
         <div>
-            <img style={contentStyle} src="https://playerduo.com/api/upload-service/images/banner/715867c6-698f-411a-b4f9-1e9093130b60__b41d4400-ef49-11eb-a5b5-55d4c2fddb9c__admin_banner.jpg" alt="" />
+            <img style={contentStyle} src={banner_4} alt="" />
         </div>
     </Carousel>
 );
