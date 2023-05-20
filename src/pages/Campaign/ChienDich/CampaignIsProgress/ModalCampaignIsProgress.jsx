@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { listChienDich, listLinhVuc } from "../dataChienDich";
-import ItemChienDich from "../ItemChienDich/ItemChienDich";
 import ItemCampaign from "../ItemChienDich/ItemCampaign";
 
 import classes from '../../Campaign.module.css'

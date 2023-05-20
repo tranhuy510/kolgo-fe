@@ -4,7 +4,8 @@ import CampaignContext from '../../../../context/campaign.context'
 import { listChienDich, listLinhVuc } from '../dataChienDich';
 import { Skeleton, Input } from 'antd';
 import classes from '../../Campaign.module.css';
-import ItemChienDich from '../ItemChienDich/ItemChienDich';
+import ItemCampaign from "../ItemChienDich/ItemCampaign";
+
 const { Search } = Input;
 
 const ModalDangThamGia = () => {
@@ -111,7 +112,7 @@ const ModalDangThamGia = () => {
                         {resultSearch && resultSearch.length > 0 &&
                             resultSearch.map((campaign, index) => (
                                 <div className={classes["listChienDich-item"]} key={index}>
-                                    <ItemChienDich data={campaign} />
+                                    <ItemCampaign data={campaign} />
                                 </div>
                             ))}
                     </div>
