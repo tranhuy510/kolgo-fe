@@ -53,6 +53,7 @@ const BookingDetails = () => {
     getBookingByBookingId(id)
       .then(res => {
         setBooking(res);
+        console.log(res);
       });
   }, [])
 
@@ -153,6 +154,12 @@ const BookingDetails = () => {
     })
   }
 
+  const capitalizeName = (name) => {
+    const regex = /(.*)\s\((.*)\)/;
+    return name?.match(regex)[1];
+  }
+  const regex = /(.*)\s\((.*)\)/;
+
   return (
     <>
       <Header />
@@ -165,7 +172,9 @@ const BookingDetails = () => {
           </Descriptions.Item>
 
           <Descriptions.Item label="Lĩnh vực hoạt động" span={3} >
-            {booking.kol?.fields?.name}
+            {booking.kol?.fieldNames?.map((field) => {
+              return `${field.match(regex)[1]}, `
+            })}
           </Descriptions.Item>
 
           <Descriptions.Item label="Email" span={3} >
@@ -177,9 +186,19 @@ const BookingDetails = () => {
           </Descriptions.Item>
         </Descriptions>
 
-        <Descriptions title="Thông tin booking" bordered>
+        <Descriptions title="Thông tin người đặt đơn" >
+          <Descriptions.Item label="Tên ENTERPRISE" span={3} >
+            {booking.user?.firstName} {booking.user?.lastName}
+          </Descriptions.Item>
+
+          <Descriptions.Item label="Email" span={3} >
+            {booking.user?.email}
+          </Descriptions.Item>
+        </Descriptions>
+
+        <Descriptions title="Thông tin đơn hàng" bordered>
           <Descriptions.Item label="Thời gian tạo" span={3} >
-            {booking?.timestamp}
+            {booking?.timestamp?.slice(6, 8)} / {booking?.timestamp?.slice(4, 6)} / {booking?.timestamp?.slice(0, 4)}
           </Descriptions.Item>
 
           <Descriptions.Item label="Giá 1 bài viết"  >
@@ -256,6 +275,7 @@ const BookingDetails = () => {
           {(booking.status === BookingStatus.CANCELED
             || booking.status === BookingStatus.REJECTED
             || booking.status === BookingStatus.PAID)
+            && booking.kol.userId !== user.id
             &&
             <Descriptions.Item label="" span={3}>
               <Button onClick={handleReBooking}>Đặt lại</Button>
