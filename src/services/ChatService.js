@@ -4,6 +4,10 @@ export function getChats() {
     return getAuth("chats");
 }
 
-export function createChat(body) {
-    return postAuth("chats", body)
+export function getChat(chatId) {
+    return getAuth(`chats/${chatId}`);
+}
+
+export function createChat(chat) {
+    return postAuth("chats", chat)
 }
