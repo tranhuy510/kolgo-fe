@@ -6,6 +6,8 @@ import classes from '../../Campaign.module.css';
 import { getFields } from '../../../../services/getApi'
 import CampaignContext from "../../../../context/campaign.context";
 import { formatDate } from "../../../../services/DateTimeUtil";
+import { createCampaign } from "../../../../services/CampaignService";
+
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -25,25 +27,6 @@ const ModalCreateCampaign = (props) => {
         enterprise: campaignCtx.profile
     })
 
-    const [nameCampaign, setNameCampaign] = useState("");
-    const [listFields, setListFields] = useState([]);
-    const [startDate, setStartDate] = useState({
-        day: null,
-        month: null,
-        year: null,
-        hours: null,
-        minute: null,
-        second: null,
-    });
-    const [endDate, setEndDate] = useState({
-        day: null,
-        month: null,
-        year: null,
-        hours: null,
-        minute: null,
-        second: null,
-    });
-
     const [fields, setFileds] = useState([]);
 
     useEffect(() => {
@@ -52,11 +35,7 @@ const ModalCreateCampaign = (props) => {
             .then(data => setFileds(data))
     }, [])
 
-    const onCreateCampaignHandler = () => {
 
-        console.log(campaign);
-
-    };
 
     const onChangeNameCampaignHandler = (e) => {
         setCampaign(prev => { return { ...prev, name: e.target.value } })
@@ -97,6 +76,11 @@ const ModalCreateCampaign = (props) => {
         })
     }
 
+    const onCreateCampaignHandler = () => {
+        console.log(campaign);
+        createCampaign(campaign).then(() => alert('ok')).catch(() => alert('not ok'))
+    };
+
     const optionFields = fields.map((c) => {
         return {
             value: c.id,
@@ -117,7 +101,7 @@ const ModalCreateCampaign = (props) => {
                 {/* tên chiến dịch */}
                 <Form.Item
                     label="Tên chiến dịch"
-                    name="nameCampaign"
+                    name="name"
                     rules={[
                         {
                             required: true,
@@ -129,14 +113,14 @@ const ModalCreateCampaign = (props) => {
                         rows={2}
                         placeholder="Nhập tên chiến dịch"
                         onChange={onChangeNameCampaignHandler}
-                        value={nameCampaign}
+                        value={campaign.name}
                     />
                 </Form.Item>
 
                 {/* Lĩnh vực */}
                 <Form.Item
                     label="Lĩnh vực"
-                    name="listFields"
+                    name="fieldIds"
                     rules={[
                         {
                             required: true,
@@ -152,7 +136,7 @@ const ModalCreateCampaign = (props) => {
                         placeholder="Chọn lĩnh Vực"
                         onChange={onChangefieldIdsHandler}
                         options={optionFields}
-                        value={listFields}
+                        value={campaign.fieldIds}
                     />
                 </Form.Item>
 
@@ -178,7 +162,7 @@ const ModalCreateCampaign = (props) => {
                 {/* người tạo */}
                 <Form.Item
                     label="Người tạo"
-                    name="author"
+                    name="enterprise"
                 >
                     {campaignCtx.user.firstName} {campaignCtx.user.lastName}
                 </Form.Item>
@@ -186,7 +170,7 @@ const ModalCreateCampaign = (props) => {
                 {/* địa chỉ */}
                 <Form.Item
                     label="Địa chỉ"
-                    name="address"
+                    name="location"
                     rules={[
                         {
                             required: true,
@@ -205,7 +189,7 @@ const ModalCreateCampaign = (props) => {
                 {/* Mô tả */}
                 <Form.Item
                     label="Mô tả chiến dịch"
-                    name="mota"
+                    name="description"
                     rules={[
                         {
                             required: false,
@@ -224,7 +208,7 @@ const ModalCreateCampaign = (props) => {
                 {/* Chi tiet */}
                 <Form.Item
                     label="Thông tin chi tiết"
-                    name="introduce"
+                    name="details"
                     rules={[
                         {
                             required: false,
