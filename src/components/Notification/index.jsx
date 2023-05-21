@@ -12,10 +12,6 @@ export default function Notification() {
   const [notiActive, setNotiActive] = useState(false);
   const [tab, setTab] = useState(true);
 
-  useEffect(() => {
-    console.log(notifications);
-  }, [notifications])
-
   const handlerActive = () => {
     setNotiActive(!notiActive);
   };

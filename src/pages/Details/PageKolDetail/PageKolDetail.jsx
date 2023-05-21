@@ -75,7 +75,6 @@ const PageKolDetail = () => {
       .then((res) => {
         setKol(res);
         checkStatus(res.bookings, user, res.kol)
-        console.log(res);
       });
   }, []);
 
@@ -104,7 +103,7 @@ const PageKolDetail = () => {
   }
 
   const navigateToChat = () => {
-    navigate(`/chat`, { state: { kol } })
+    navigate(`/chat`, { state: kol.kol })
   }
 
   const bookingHandler = () => {
