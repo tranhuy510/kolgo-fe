@@ -98,25 +98,26 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="kols/:id" element={<PageKolDetail />} />
+        <Route path="/forgot_password" element={<ForgotPassword />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/verify_account" element={<VerifyRegister />} />
+        <Route path="/campaign" element={<Campaign />} />
+        <Route path="/field/:id" element={<Fields />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
         <Route
           path="ents/:id"
           element=<ProtectedRoute Component={PageEntDetail} />
         />
-        <Route path="/login" element={<Login />} />
         <Route
           path="/admin"
           element=<ProtectedRoute Component={HomeAdmin} role={"ADMIN"} />
         />
-        <Route path="/campaign" element={<Campaign />} />
-        <Route path="/field/:id" element={<Fields />} />
         <Route
           path="/reset_password"
           element={<ProtectedRoute Component={ResetPassword} />}
         />
-        <Route path="/verify_account" element={<VerifyRegister />} />
         <Route path="/chat" element={<ProtectedRoute Component={Chat} />} />
-        <Route path="/forgot_password" element={<ForgotPassword />} />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/setting"
           element={<ProtectedRoute Component={Profile} />}
@@ -129,7 +130,6 @@ const Router = () => {
           path="/vnpay/return"
           element={<ProtectedRoute Component={PaymentResult} />}
         />
-        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
