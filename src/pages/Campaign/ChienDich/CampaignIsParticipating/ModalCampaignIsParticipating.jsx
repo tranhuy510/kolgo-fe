@@ -1,26 +1,34 @@
 import React, { useContext, useEffect, useState } from 'react'
 import CampaignContext from '../../../../context/campaign.context'
 
-import { listChienDich, listLinhVuc } from '../dataChienDich';
-import { Skeleton, Input } from 'antd';
-import classes from '../../Campaign.module.css';
 import ItemCampaign from "../ItemChienDich/ItemCampaign";
+import { listChienDich, listLinhVuc } from '../dataChienDich';
+
+import { Skeleton, Input, Pagination } from 'antd';
+import classes from '../../Campaign.module.css';
 
 const { Search } = Input;
 
-const ModalDangThamGia = () => {
+const ModalCampaignIsParticipating = () => {
     const userCtx = useContext(CampaignContext);
     const [campaigns, setCampaigns] = useState([])
     const [inputSearch, setInputSearch] = useState("");
     const [searchField, setSearchField] = useState("");
-    const [linhVuc, setLinhVuc] = useState(listLinhVuc);
+    const [fields, setFields] = useState(listLinhVuc);
+
+    const [current, setCurrent] = useState(1);
+    const [total, setTotal] = useState(10);
 
     useEffect(() => {
         if (userCtx.idRole) {
             getCampaigns()
-            console.log(userCtx.idRole);
+            // console.log(userCtx.idRole);
         }
     }, [userCtx.idRole])
+
+    const onChangePage = (page) => {
+        setCurrent(page);
+    };
 
     const getCampaigns = () => {
         listChienDich.map((item) => {
@@ -46,6 +54,13 @@ const ModalDangThamGia = () => {
             && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
     })
 
+    const changeRender = () => {
+        if (resultSearch.length > 0) {
+            return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        }
+        else return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+    }
+
     const onKeyDownHandler = (event) => {
         if (event.key === "Enter" || event.keyCode === 13) {
             setInputSearch(event.target.value);
@@ -58,12 +73,9 @@ const ModalDangThamGia = () => {
 
     const onSearchHandler = (value) => {
         setInputSearch(value);
-        console.log(resultSearch);
     }
 
     const regex = /(.*)\s\((.*)\)/;
-
-
 
     const checkStringInArrayIgnoreCase = (searchLinhVuc, inputSearch, chienDich) => {
         if (searchLinhVuc !== '' && inputSearch !== '') {
@@ -99,9 +111,13 @@ const ModalDangThamGia = () => {
                             value={searchField}
                             onChange={onChangeHandler}
                         >
-                            {linhVuc &&
-                                linhVuc.length > 0 &&
-                                linhVuc.map((item) => (
+                            <option value="" selected disabled hidden>
+                                Lĩnh vực
+                            </option>
+                            <option value="">Tất cả</option>
+                            {fields &&
+                                fields.length > 0 &&
+                                fields.map((item) => (
                                     <option key={item.id} value={item.name}>
                                         {item?.name?.match(regex)[1]}
                                     </option>
@@ -109,12 +125,19 @@ const ModalDangThamGia = () => {
                         </select>
                     </div>
                     <div className={classes["doing-modal-list-campaign"]}>
-                        {resultSearch && resultSearch.length > 0 &&
-                            resultSearch.map((campaign, index) => (
-                                <div className={classes["listChienDich-item"]} key={index}>
-                                    <ItemCampaign data={campaign} />
-                                </div>
+                        {changeRender() && changeRender().length > 0 &&
+                            changeRender().map((campaign, index) => (
+                                <ItemCampaign data={campaign} />
                             ))}
+                    </div>
+                    <div className={classes["page-pagination"]}>
+                        <Pagination
+                            current={current}
+                            onChange={onChangePage}
+                            total={total}
+                            pageSizeOptions={["1", "5", "10"]}
+                            pageSize={6}
+                        />
                     </div>
                 </div>
             )}
@@ -122,4 +145,4 @@ const ModalDangThamGia = () => {
     )
 }
 
-export default ModalDangThamGia
+export default ModalCampaignIsParticipating

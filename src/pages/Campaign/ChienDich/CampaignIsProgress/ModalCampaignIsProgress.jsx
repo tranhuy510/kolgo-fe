@@ -40,9 +40,10 @@ const ModalCampaignIsProgress = () => {
 
     const changeRender = () => {
         if (resultSearch.length > 0) {
-            return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+            console.log(resultSearch.length);
+
         }
-        else return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
     }
 
     const onKeyDownHandler = (event) => {

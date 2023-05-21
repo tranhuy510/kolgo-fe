@@ -11,7 +11,7 @@ import CampaignContext from '../../../../context/campaign.context';
 
 const { Search } = Input;
 
-const ModalChienDichDaTao = () => {
+const ModalCampaignIsCreated = () => {
     const userCtx = useContext(CampaignContext);
     const [inputSearch, setInputSearch] = useState("");
     const [searchField, setSearchFields] = useState("");
@@ -88,4 +88,4 @@ const ModalChienDichDaTao = () => {
     )
 }
 
-export default ModalChienDichDaTao
+export default ModalCampaignIsCreated

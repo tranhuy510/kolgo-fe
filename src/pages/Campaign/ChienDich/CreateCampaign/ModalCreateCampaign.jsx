@@ -9,9 +9,8 @@ import CampaignContext from "../../../../context/campaign.context";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
-const ModalTaoChienDich = (props) => {
+const ModalCreateCampaign = (props) => {
     const userCtx = useContext(CampaignContext);
-    const [openChild, setOpenChild] = useState(false);
 
     const [nameCampaign, setNameCampaign] = useState("");
     const [listFields, setListFields] = useState([]);
@@ -50,13 +49,6 @@ const ModalTaoChienDich = (props) => {
             .then(res => res.json())
             .then(data => setFileds(data))
     }, [])
-
-    const openModalChild = () => {
-        setOpenChild(true);
-    };
-    const closeModalChild = () => {
-        setOpenChild(false);
-    };
 
     const onCreateCampaignHandler = () => {
 
@@ -231,20 +223,6 @@ const ModalTaoChienDich = (props) => {
                     />
                 </Form.Item>
 
-                {/* mode: bật - cho kol/ent tham gia | tắt - ko cho tham gia */}
-                {/* <Form.Item
-                    name="remember"
-                    valuePropName="checked"
-                    checked={componentDisabled}
-                    onChange={(e) => setComponentDisabled(e.target.checked)}
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item> */}
-
                 {/* Mô tả */}
                 <Form.Item
                     label="Mô tả chiến dịch"
@@ -287,7 +265,6 @@ const ModalTaoChienDich = (props) => {
                 <Form.Item
                     label="Thêm ảnh"
                     valuePropName="fileList"
-                    // getValueFromEvent={normFile}
                     rules={[
                         {
                             required: false,
@@ -320,23 +297,8 @@ const ModalTaoChienDich = (props) => {
                     </Button>
                 </Form.Item>
             </Form>
-
-            {/* <Modal
-                width={500}
-                title="Xác Nhận Tạo"
-                open={openChild}
-                onCancel={closeModalChild}
-                footer={[
-                    <Button key="khongtao" type="primary" onClick={closeModalChild}>
-                        Không
-                    </Button>,
-                    <Button key="dongytao" type="primary" onClick={onCreateCampaignHandler}>
-                        Có
-                    </Button>,
-                ]}
-            ></Modal> */}
         </div>
     );
 };
 
-export default ModalTaoChienDich;
+export default ModalCreateCampaign;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import classes from './Campaign.module.css'
-import ModalChienDichDaTao from './ChienDich/ChienDichDaTao/ModalChienDichDaTao';
-import ModalDangThamGia from './ChienDich/Dangthamgia/ModalDangThamGia';
+import ModalCampaignIsCreated from './ChienDich/CampaignIsCreated/ModalCampaignIsCreated';
 import ModalCampaignIsProgress from './ChienDich/CampaignIsProgress/ModalCampaignIsProgress';
-import ModalTaoChienDich from './ChienDich/TaoChienDich/ModalTaoChienDich';
+import ModalTaoChienDich from './ChienDich/CreateCampaign/ModalCreateCampaign';
+import ModalCampaignIsParticipating from './ChienDich/CampaignIsParticipating/ModalCampaignIsParticipating'
 
 const SubTab = (props) => {
     const [key, setKey] = useState(props.changeContent);
@@ -14,9 +14,9 @@ const SubTab = (props) => {
 
     const components = [
         <ModalCampaignIsProgress />,
-        <ModalDangThamGia />,
+        <ModalCampaignIsParticipating />,
         <ModalTaoChienDich />,
-        <ModalChienDichDaTao />,
+        <ModalCampaignIsCreated />,
         <div>Đang có</div>,
         <div>Đang tham gia</div>,
     ]
