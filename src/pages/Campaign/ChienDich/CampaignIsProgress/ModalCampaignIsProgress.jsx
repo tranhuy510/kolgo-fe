@@ -39,7 +39,10 @@ const ModalCampaignIsProgress = () => {
     })
 
     const changeRender = () => {
-        return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        if (resultSearch.length > 0) {
+            return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        }
+        else return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
     }
 
     const onKeyDownHandler = (event) => {
@@ -75,6 +78,10 @@ const ModalCampaignIsProgress = () => {
                     value={searchField}
                     onChange={onChangeHandler}
                 >
+                    <option value="" selected disabled hidden>
+                        Lĩnh vực
+                    </option>
+                    <option value="">Tất cả</option>
                     {fileds &&
                         fileds.length > 0 &&
                         fileds.map((item) => (

@@ -518,7 +518,7 @@
 }
 
 .campaign-card-item:hover {
-  transform: scale(.9);
+  transform: scale(1);
 }
 
 .campaign-card-item:hover img {
@@ -617,62 +617,5 @@
    font-size: 24px;
    font-weight: 800;
 }
-
-/* .campaign-card-item:hover .card-item-context .context-btn span {
-  padding-bottom: 20px;
-} */
-
-/* .campaign-card-item:hover:after {
-  height: 280px;
-}
-
-.campaign-card-item:hover .card-item-context p {
-  margin-bottom: 0px;
-  opacity: 1;
-  word-wrap: break-word;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-} */
-
-/* .campaign-card-item:after {
-  width: 100%;
-  content: '';
-  left: 0px;
-  bottom: 0px;
-  height: 150px;
-  position: absolute;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 8%, rgba(0,0,0,1) 100%);
-  z-index: 20;
-  transition: all .25s ease;
-} */
-
-
-/* .campaign-card-item .card-item-context {
-  z-index: 30;
-  position: absolute;
-  bottom: 0;
-  color: #fff;
-  padding: 20px;
-  padding-bottom: 30px;
-  width: 100%;
-} */
-
-/* .campaign-card-item .card-item-context p {
-  font-size: .8rem;
-  opacity: 0;
-  margin-bottom: -170px;
-  transition: all .25s ease;
-  display: flex;
-  align-items: center ;
-  justify-content: flex-end;
-  flex-direction: column;
-  height: 60px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #fff;
-} */
 
 /* ItemCampaign */

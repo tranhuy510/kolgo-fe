@@ -108,7 +108,7 @@ const ModalDangThamGia = () => {
                                 ))}
                         </select>
                     </div>
-                    <div className={classes["dangThamGia-modal-listChienDich"]}>
+                    <div className={classes["doing-modal-list-campaign"]}>
                         {resultSearch && resultSearch.length > 0 &&
                             resultSearch.map((campaign, index) => (
                                 <div className={classes["listChienDich-item"]} key={index}>
