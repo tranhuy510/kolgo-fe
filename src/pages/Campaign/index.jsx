@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
 
+import { getKol, getKols } from "../../services/KolService";
+import { getEnt, getEnts } from "../../services/EnterpriseService";
+import { getFields } from "../../services/FieldService";
+
 import SubMenu from "./SubMenu";
 import SubTab from "./SubTab";
-import CampaignContext from "../../context/campaign.context";
 import Header from '../../components/Header/index'
-import { getEnts, getKols } from "../../services/getApi";
+
+import CampaignContext from "../../context/campaign.context";
 
 import classes from "./Campaign.module.css";
 import { Row, Col } from "antd";
 
 const Campaign = (props) => {
   const [activeTab, setActiveTab] = useState(0);
+
   const [user, setUser] = useState({})
   const [idRole, setIdRole] = useState(null)
+
   const [kols, setKols] = useState([])
   const [ents, setEnts] = useState([])
+  const [fields, setFields] = useState([])
+  const [profile, setProfile] = useState({})
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')))
+    getFields().then((res) => setFields(res))
   }, [])
 
   useEffect(() => {
@@ -25,53 +34,40 @@ const Campaign = (props) => {
 
     const originalTitle = document.title
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        document.title = 'Quay lại 凸(￣ヘ￣)'
-      }
+      if (document.visibilityState === 'hidden') { document.title = 'Quay lại' }
       else document.title = `${originalTitle}`
     })
 
-    return () => {
-      document.title = 'KOLgo';
-    };
+    return () => { document.title = 'KOLgo'; };
   }, []);
 
   useEffect(() => {
-    if (user?.role === "KOL") {
-      getKols().then(res => { return res.json() }).then(data => { setKols(data) })
-    }
-    if (user?.role === "ENTERPRISE") {
-      getEnts().then(res => { return res.json() }).then(data => { setEnts(data) })
-    }
+    if (user?.role === "KOL") { getKols().then(res => { setKols(res) }) }
+    else if (user?.role === "ENTERPRISE") { getEnts().then(res => { setEnts(res) }) }
   }, [user])
 
-  useEffect(() => {
-    getIdRole();
-  }, [kols, ents])
+  useEffect(() => { getIdRole(); }, [kols, ents])
 
   const getIdRole = () => {
     if (user.role === 'KOL') {
-      kols.map((kol) => {
-        if (kol.id === user.id) {
-          setIdRole(kol.id)
-        }
-      })
+      kols?.map((kol) => { if (kol.userId === user.id) { setIdRole(kol.id) } })
     }
-    if (user.role === 'ENTERPRISE') {
-      ents.map((ent) => {
-        if (ent.id === user.id) {
-          setIdRole(ent.id)
-        }
-      })
+    else if (user.role === 'ENTERPRISE') {
+      ents.map((ent) => { if (ent.userId === user.id) { setIdRole(ent.id) } })
     }
   }
+
+  useEffect(() => {
+    if (user?.role === "KOL") { getKol(idRole).then(res => { setProfile(res.kol) }) }
+    else if (user?.role === "ENTERPRISE") { getEnt(idRole).then(res => { setProfile(res.enterprise); console.log(res); }) }
+  }, [idRole])
 
   const onChangeTabHandler = (data) => {
     setActiveTab(data);
   };
 
   return (
-    <CampaignContext.Provider value={{ user: user, idRole: idRole }}>
+    <CampaignContext.Provider value={{ user: user, idRole: idRole, fields: fields, kols: kols, ents: ents, profile: profile }}>
       <Header />
       <div className={classes.campaign}>
         <Row className={classes['campaign-row-1']}>
