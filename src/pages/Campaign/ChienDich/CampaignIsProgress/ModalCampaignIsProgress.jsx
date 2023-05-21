@@ -1,47 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
-import { listChienDich, listLinhVuc } from "../dataChienDich";
 import ItemCampaign from "../ItemChienDich/ItemCampaign";
+import CampaignContext from "../../../../context/campaign.context";
 
 import classes from '../../Campaign.module.css'
 import { Input, Pagination } from 'antd';
+import { getCampaigns } from "../../../../services/CampaignService";
 
 const { Search } = Input;
 
 const ModalCampaignIsProgress = () => {
+    const ctx = useContext(CampaignContext)
+
     const [campaigns, setCampaigns] = useState([]);
     const [inputSearch, setInputSearch] = useState("");
     const [searchField, setSearchField] = useState("");
-    const [fileds, setFileds] = useState([]);
 
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(10);
 
+    // hàm này lấy lun chiến dịch có ent
     useEffect(() => {
-        const getPersentData = async () => {
-            const chiendichData = await listChienDich;
-            setCampaigns([...chiendichData]);
-            setTotal(chiendichData.length)
-
-            const linhvucData = await listLinhVuc;
-            setFileds([...linhvucData]);
-        };
-        getPersentData();
-    }, []);
+        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+    }, [])
 
     const onChangePage = (page) => {
         setCurrent(page);
     };
 
-    const resultSearch = campaigns.filter((cp) => {
-        return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
-            && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
+    const resultSearch = campaigns?.filter((cp) => {
+        return (inputSearch === "" ? cp : cp.name.includes(inputSearch))
+            || (cp.fieldIds?.find(item => item.name === searchField))
     })
 
     const changeRender = () => {
         if (resultSearch.length > 0) {
-            console.log(resultSearch.length);
-
+            return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
         }
         return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
     }
@@ -59,8 +53,6 @@ const ModalCampaignIsProgress = () => {
     const onSearchHandler = (value) => {
         setInputSearch(value);
     }
-
-    const regex = /(.*)\s\((.*)\)/;
 
     return (
         <div className={classes['campaign-modal-dangDienRa']}>
@@ -83,27 +75,19 @@ const ModalCampaignIsProgress = () => {
                         Lĩnh vực
                     </option>
                     <option value="">Tất cả</option>
-                    {fileds &&
-                        fileds.length > 0 &&
-                        fileds.map((item) => (
-                            <option key={item.id} value={item.name}>
-                                {item?.name?.match(regex)[1]}
+                    {ctx?.fields &&
+                        ctx?.fields.length > 0 &&
+                        ctx?.fields.map((field) => (
+                            <option key={field.id} value={field.name}>
+                                {field?.name}
                             </option>
                         ))}
                 </select>
             </div>
-            {/* <div className={classes["dangDienRa-modal-listChienDich"]}>
-                {resultSearch && resultSearch.length > 0 &&
-                    resultSearch.map((campaign, index) => (
-                        <div className={classes["listChienDich-item"]} key={index}>
-                            <ItemChienDich data={campaign} />
-                        </div>
-                    ))}
-            </div> */}
             <div className={classes["doing-modal-list-campaign"]}>
                 {changeRender() && changeRender().length > 0 &&
                     changeRender().map((campaign, index) => (
-                        <ItemCampaign data={campaign} key={campaign.id} />
+                        <ItemCampaign campaign={campaign} key={campaign.id} />
                     ))}
             </div>
             <div className={classes["page-pagination"]}>
@@ -115,7 +99,6 @@ const ModalCampaignIsProgress = () => {
                     pageSize={6}
                 />
             </div>
-
         </div>
     )
 }

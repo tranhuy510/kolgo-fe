@@ -325,7 +325,7 @@
 }
 
 .moTa-introduce {
-  white-space: pre-wrap;
+  white-space: pre-line;
 }
 
 .chiTiet-item-name {
@@ -371,6 +371,7 @@
   width: 100%;
   height: auto;
   margin-bottom: 20px;
+  margin-left: 40px;
 }
 
 .dangThamGia-modal-search .search-modal-select {

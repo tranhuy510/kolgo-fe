@@ -1,64 +1,64 @@
 import React, { useContext, useEffect, useState } from 'react'
+
 import CampaignContext from '../../../../context/campaign.context'
-
 import ItemCampaign from "../ItemChienDich/ItemCampaign";
-import { listChienDich, listLinhVuc } from '../dataChienDich';
 
+import { getKol } from '../../../../services/KolService';
+import { getEnt } from '../../../../services/EnterpriseService';
 import { Skeleton, Input, Pagination } from 'antd';
 import classes from '../../Campaign.module.css';
+import { getCampaigns } from '../../../../services/CampaignService';
+
 
 const { Search } = Input;
 
 const ModalCampaignIsParticipating = () => {
-    const userCtx = useContext(CampaignContext);
+    const ctx = useContext(CampaignContext);
+
     const [campaigns, setCampaigns] = useState([])
     const [inputSearch, setInputSearch] = useState("");
     const [searchField, setSearchField] = useState("");
-    const [fields, setFields] = useState(listLinhVuc);
 
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(10);
 
+    // hàm để lọc chiến dịch theo kol / ent
+    // useEffect(() => {
+    //     if (ctx.user.role === "KOL") {
+    //         getKol(ctx.idRole).then((res) => {
+    //             setCampaigns(res.campaigns);
+    //             setTotal(res.campaigns?.length);
+    //             console.log(res);
+    //         })
+    //     }
+    //     if (ctx.user.role === "ENTERPRISE") {
+    //         getEnt(ctx.idRole).then((res) => {
+    //             setCampaigns(res.campaigns);
+    //             setTotal(res.campaigns?.length);
+    //             console.log(res);
+    //         })
+    //     }
+    // }, [])
+
+    // hàm này lấy lun chiến dịch có ent
     useEffect(() => {
-        if (userCtx.idRole) {
-            getCampaigns()
-            // console.log(userCtx.idRole);
-        }
-    }, [userCtx.idRole])
+        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+    }, [])
 
     const onChangePage = (page) => {
         setCurrent(page);
     };
 
-    const getCampaigns = () => {
-        listChienDich.map((item) => {
-            if (userCtx.user.role === 'KOL') {
-                item.listKOL.map((kol) => {
-                    if (kol.kolId === userCtx.idRole) {
-                        setCampaigns(prevCampaigns => [...prevCampaigns, item]);
-                    }
-                })
-            }
-            if (userCtx.user.role === 'ENTERPRISE') {
-                item.listEnter.map((kol) => {
-                    if (kol.enterpriseId === userCtx.idRole) {
-                        setCampaigns(prevCampaigns => [...prevCampaigns, item]);
-                    }
-                })
-            }
-        })
-    }
-
-    const resultSearch = campaigns.filter((cp) => {
-        return (inputSearch === "" ? cp : cp.tenchiendich.includes(inputSearch))
-            && (searchField === "" ? cp : cp.linhvuc.find(item => item.name === searchField))
+    const resultSearch = campaigns?.filter((cp) => {
+        return (inputSearch === "" ? cp : cp.name.includes(inputSearch))
+            || (cp.fieldIds?.find(item => item.name === searchField))
     })
 
     const changeRender = () => {
         if (resultSearch.length > 0) {
             return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
         }
-        else return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
     }
 
     const onKeyDownHandler = (event) => {
@@ -74,20 +74,6 @@ const ModalCampaignIsParticipating = () => {
     const onSearchHandler = (value) => {
         setInputSearch(value);
     }
-
-    const regex = /(.*)\s\((.*)\)/;
-
-    const checkStringInArrayIgnoreCase = (searchLinhVuc, inputSearch, chienDich) => {
-        if (searchLinhVuc !== '' && inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase()) && chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (searchLinhVuc !== '') {
-            return chienDich.linhvuc.map((item) => item.name.toLowerCase()).includes(searchLinhVuc.toLowerCase());
-        }
-        if (inputSearch !== '') {
-            return chienDich.tenchiendich.toLowerCase().includes(inputSearch.toLowerCase());
-        }
-    };
 
     return (
         <div>
@@ -115,11 +101,11 @@ const ModalCampaignIsParticipating = () => {
                                 Lĩnh vực
                             </option>
                             <option value="">Tất cả</option>
-                            {fields &&
-                                fields.length > 0 &&
-                                fields.map((item) => (
-                                    <option key={item.id} value={item.name}>
-                                        {item?.name?.match(regex)[1]}
+                            {ctx?.fields &&
+                                ctx?.fields.length > 0 &&
+                                ctx?.fields.map((field) => (
+                                    <option key={field?.id} value={field?.id}>
+                                        {field?.name}
                                     </option>
                                 ))}
                         </select>

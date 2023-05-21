@@ -1,21 +1,26 @@
-import { getAuth, postAuth, putAuth, deleteAuth } from "./Common";
+import { getAuth, postAuth, putAuth, deleteAuth, get } from "./Common";
 
 export function createCampaign(campaign) {
-    return postAuth(`ent/campaigns`, campaign);
+  return postAuth(`ent/campaigns`, campaign);
 }
 
 export function getCampaigns() {
-    return getAuth('ent/campaigns');
+  return getAuth("ent/campaigns");
+  // return get("campaigns");
 }
 
 export function getCampaignByCampaignId(campaignId) {
-    return getAuth(`ent/campaigns/${campaignId}`);
+  return getAuth(`ent/campaigns/${campaignId}`);
 }
 
 export function updateCampaign(campaignId, campaign) {
-    return putAuth(`ent/campaigns/${campaignId}`, campaign);
+  return putAuth(`ent/campaigns/${campaignId}`, campaign);
 }
 
 export function deleteCampaign(campaignId) {
-    return deleteAuth(`ent/campaigns/${campaignId}`);
+  return deleteAuth(`ent/campaigns/${campaignId}`);
+}
+
+export function updateCampaignAddUser(campaignId) {
+  return putAuth(`kol/campaigns/${campaignId}`);
 }

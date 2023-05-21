@@ -6,7 +6,9 @@ import InformationCampaign from "./InformationCampaign";
 import CampaignContext from '../../../../context/campaign.context';
 import Modals from "../../../../components/UI/Modal/Modals";
 
-const ItemCampaign = ({ data }) => {
+import { updateCampaignAddUser } from '../../../../services/CampaignService';
+
+const ItemCampaign = ({ campaign }) => {
     const [openModal, setOpenModal] = useState(false);
     const [noti, setNoti] = useState({
         status: false,
@@ -36,7 +38,7 @@ const ItemCampaign = ({ data }) => {
     }
 
     const onJoinHandler = () => {
-        // addUserCampaign(userCtx.user, userCtx.idRole)
+        // updateCampaignAddUser(campaign.id)
         //     .then((res) => createSuccessNoti();)
     };
 
@@ -47,8 +49,8 @@ const ItemCampaign = ({ data }) => {
             }
             <img src={'http://localhost:8080/api/images/accn1.jpg'} alt="" />
             <div className={classes['card-item-context']}>
-                <h2>{data.author.name}</h2>
-                <p>{data.introduce}</p>
+                <h2>{campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}</h2>
+                <p>{campaign?.name}</p>
                 <div>
                     <Button onClick={onOpenModalHandler} className={classes['context-btn']}>Xem thêm</Button>
                 </div>
@@ -57,7 +59,7 @@ const ItemCampaign = ({ data }) => {
             <InformationCampaign
                 openModal={openModal}
                 onCloseModalhandler={onCloseModalhandler}
-                data={data}
+                campaign={campaign}
                 onJoinHandler={onJoinHandler}
             />
         </div>

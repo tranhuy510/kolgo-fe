@@ -1,16 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Modal, Input, Select, Form, DatePicker, Upload, Cascader } from "antd";
+import { Button, Input, Select, Form, DatePicker, Upload } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
-import UploadFile from "../UploadFile";
 
-import { getCities, getFields } from '../../../../services/getApi'
+import { getFields } from '../../../../services/getApi'
 import CampaignContext from "../../../../context/campaign.context";
+import { formatDate } from "../../../../services/DateTimeUtil";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const ModalCreateCampaign = (props) => {
-    const userCtx = useContext(CampaignContext);
+    const campaignCtx = useContext(CampaignContext);
+
+    const [campaign, setCampaign] = useState({
+        name: '',
+        fieldIds: [],
+        timestamp: '',
+        startTime: '',
+        finishTime: '',
+        location: '',
+        description: '',
+        details: '',
+        images: [],
+        enterprise: campaignCtx.profile
+    })
 
     const [nameCampaign, setNameCampaign] = useState("");
     const [listFields, setListFields] = useState([]);
@@ -30,21 +43,10 @@ const ModalCreateCampaign = (props) => {
         minute: null,
         second: null,
     });
-    const [author, setAuthor] = useState(userCtx.user.userId)
-    const [address, setAddress] = useState("")
-    const [mota, setMota] = useState("");
-    const [introduce, setIntroduce] = useState("");
-    const [listImages, setListImages] = useState([])
 
-    const [cities, setCities] = useState([]);
     const [fields, setFileds] = useState([]);
-    // const [componentDisabled, setComponentDisabled] = useState(true);
 
     useEffect(() => {
-        getCities()
-            .then(res => res.json())
-            .then(data => setCities(data))
-
         getFields()
             .then(res => res.json())
             .then(data => setFileds(data))
@@ -52,75 +54,50 @@ const ModalCreateCampaign = (props) => {
 
     const onCreateCampaignHandler = () => {
 
-        console.log(nameCampaign);
-        console.log(listFields);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(userCtx.user.id);
-        console.log(address);
-        console.log(mota);
-        console.log(introduce);
-        console.log(listImages);
+        console.log(campaign);
 
     };
 
     const onChangeNameCampaignHandler = (e) => {
-        setNameCampaign(e.target.value);
+        setCampaign(prev => { return { ...prev, name: e.target.value } })
     };
 
-    const onChangeFieldsHandler = (value) => {
-        setListFields(value);
+    const onChangefieldIdsHandler = (value) => {
+        setCampaign(prev => { return { ...prev, fieldIds: value } })
     };
 
     const onChangeDateHandler = (value) => {
-        setStartDate({
-            day: value[0].$D,
-            month: value[0].$M,
-            year: value[0].$y,
-            hours: 0,
-            minute: 0,
-            second: 0,
-        })
-        setEndDate({
-            day: value[1].$D,
-            month: value[1].$M,
-            year: value[1].$y,
-            hours: 23,
-            minute: 0,
-            second: 0,
-        })
+        setCampaign(prev => { return { ...prev, startTime: formatDate(new Date(value[0])) } })
+        // setStartDate(value[0])
+
+        // setEndDate(value[1])
+        setCampaign(prev => { return { ...prev, finishTime: formatDate(new Date(value[1])) } })
     }
 
-    const onChangeAddressHandler = (value) => {
-        setAddress(value)
+    const onChangeLocationHandler = (e) => {
+        setCampaign(prev => { return { ...prev, location: e.target.value } })
     }
 
-    const onChangeAuthorHandler = (value) => {
-        setAuthor(userCtx.user.userId)
+    const onChangeDescriptionHandler = (e) => {
+        setCampaign(prev => { return { ...prev, description: e.target.value } })
     }
 
-    const onChangeMotaHandler = (e) => {
-        setMota(e.target.value)
-    }
+    const onChangeDetailsHandler = (e) => {
+        setCampaign(prev => { return { ...prev, details: e.target.value } })
 
-    const onChangeIntroduceHandler = (e) => {
-        setIntroduce(e.target.value)
     }
 
     const onChangeImagesHandler = (value) => {
-        setListImages(value.fileList.map((item) => {
-            return item.name
-        }))
+        setCampaign(prev => {
+            return {
+                ...prev, images: value.fileList.map((item) => {
+                    return item.name
+                })
+            }
+        })
     }
 
     const optionFields = fields.map((c) => {
-        return {
-            value: c.id,
-            label: c.name,
-        };
-    });
-
-    const optionCities = cities.map((c) => {
         return {
             value: c.id,
             label: c.name,
@@ -173,7 +150,7 @@ const ModalCreateCampaign = (props) => {
                             width: "100%",
                         }}
                         placeholder="Chọn lĩnh Vực"
-                        onChange={onChangeFieldsHandler}
+                        onChange={onChangefieldIdsHandler}
                         options={optionFields}
                         value={listFields}
                     />
@@ -194,6 +171,7 @@ const ModalCreateCampaign = (props) => {
                             width: "100%",
                         }}
                         onChange={onChangeDateHandler}
+                        showTime
                     />
                 </Form.Item>
 
@@ -202,7 +180,7 @@ const ModalCreateCampaign = (props) => {
                     label="Người tạo"
                     name="author"
                 >
-                    {userCtx.user.firstName} {userCtx.user.lastName}
+                    {campaignCtx.user.firstName} {campaignCtx.user.lastName}
                 </Form.Item>
 
                 {/* địa chỉ */}
@@ -212,14 +190,15 @@ const ModalCreateCampaign = (props) => {
                     rules={[
                         {
                             required: true,
-                            message: 'Hãy chọn địa chỉ!',
+                            message: 'Hãy nhập địa chỉ!',
                         },
                     ]}
                 >
-                    <Cascader
-                        options={optionCities}
-                        onChange={onChangeAddressHandler}
-                        value={address}
+                    <Input
+                        rows={2}
+                        placeholder="Nhập địa chỉ"
+                        onChange={onChangeLocationHandler}
+                        value={campaign.location}
                     />
                 </Form.Item>
 
@@ -237,8 +216,8 @@ const ModalCreateCampaign = (props) => {
                     <TextArea
                         rows={4}
                         placeholder="Nhập mô tả chiến dịch"
-                        value={mota}
-                        onChange={onChangeMotaHandler}
+                        value={campaign.description}
+                        onChange={onChangeDescriptionHandler}
                     />
                 </Form.Item>
 
@@ -256,8 +235,8 @@ const ModalCreateCampaign = (props) => {
                     <TextArea
                         rows={10}
                         placeholder="Nhập chi tiết"
-                        value={introduce}
-                        onChange={onChangeIntroduceHandler}
+                        value={campaign.details}
+                        onChange={onChangeDetailsHandler}
                     />
                 </Form.Item>
 
@@ -272,7 +251,7 @@ const ModalCreateCampaign = (props) => {
                         },
                     ]}
                 >
-                    <Upload listType="picture-card" value={listImages} onChange={onChangeImagesHandler}>
+                    <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler}>
                         <div>
                             <PlusOutlined />
                             <div
