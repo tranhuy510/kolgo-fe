@@ -1,6 +1,6 @@
 import { getAuth, putAuth } from "./Common";
 
-export function getNotification() {
+export function getNotifications() {
     return getAuth("notification");
 }
 
