@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Modals from '../../../../components/UI/Modal/Modals';
 import CampaignContext from '../../../../context/campaign.context';
 import { spreadDate } from '../../../../services/DateTimeUtil';
-import { deleteCampaign } from '../../../../services/CampaignService';
+import { deleteCampaign, updateCampaignKolJoin, updateCampaignKolQuit } from '../../../../services/CampaignService';
 
 const InformationCampaign = (props) => {
     const [statusCampaign, setStatusCampaign] = useState("")
@@ -27,7 +27,7 @@ const InformationCampaign = (props) => {
             }
             if (userCtx.user?.role === 'ENTERPRISE') {
                 if (props.campaign?.enterprise.userId === userCtx.user.id) { setJoined("CREATED") }
-                else setJoined("NOTJOIN")
+                else setJoined("GUEST")
             }
         }
         else setJoined("GUEST")
@@ -53,15 +53,19 @@ const InformationCampaign = (props) => {
         setNoti({ status: true, title: 'success', content: content })
     }
 
-    const cancelJoinHandler = () => {
-        createSuccessNoti('Bạn đã hủy tham gia chiến dịch!');
+    const onQuitCampaignHandler = () => {
+        updateCampaignKolQuit(props.campaign.id)
+            .then(() => createSuccessNoti('Bạn đã hủy tham gia chiến dịch!'))
     }
 
-    const deleteCampaignHandler = () => {
-        console.log(props.campaign?.id);
-        // deleteCampaign(props.campaign?.id).then(() => {
-        //     createSuccessNoti('Bạn đã xóa chiến dịch!');
-        // })
+    const onJoinCampaignHandler = () => {
+        updateCampaignKolJoin(props.campaign.id)
+            .then(() => createSuccessNoti('Tham gia thành công!'))
+    };
+
+    const onDeleteCampaignHandler = () => {
+        deleteCampaign(props.campaign?.id)
+            .then(() => { createSuccessNoti('Bạn đã xóa chiến dịch!'); })
     }
 
     return (
@@ -94,9 +98,9 @@ const InformationCampaign = (props) => {
                             {spreadDate(props.campaign?.finishTime)}
                         </Descriptions.Item>
                         <Descriptions.Item label="Lĩnh vực" span={3}>
-                            {props.campaign?.fieldIds?.map((field) => (
-                                <div key={field.id}>
-                                    <Link to={`/fields/kol/:${field.id}`}>{field.id}</Link> ,
+                            {props.campaign?.fieldNames?.map((field, index) => (
+                                <div key={index}>
+                                    <Link to={`/field/${props.campaign?.fieldIds[index]}`}>{field}</Link> ,
                                 </div>
                             ))}
                         </Descriptions.Item>
@@ -141,9 +145,9 @@ const InformationCampaign = (props) => {
                 </div>
             </div>
             < div className={classes["bottom-infor-btn"]} >
-                {joined !== "GUEST" && joined === "JOINED" && <Button className={classes["btn-tham-gia"]} onClick={cancelJoinHandler}>Hủy tham gia</Button>}
-                {joined !== "GUEST" && joined === "NOTJOIN" && <Button className={classes["btn-tham-gia"]} onClick={props.onJoinHandler}>Tham gia</Button>}
-                {joined !== "GUEST" && joined === "CREATED" && <Button className={classes["btn-tham-gia"]} onClick={deleteCampaignHandler}>Hủy chiến dịch</Button>}
+                {joined !== "GUEST" && joined === "JOINED" && <Button className={classes["btn-tham-gia"]} onClick={onQuitCampaignHandler}>Hủy tham gia</Button>}
+                {joined !== "GUEST" && joined === "NOTJOIN" && <Button className={classes["btn-tham-gia"]} onClick={onJoinCampaignHandler}>Tham gia</Button>}
+                {joined !== "GUEST" && joined === "CREATED" && <Button className={classes["btn-tham-gia"]} onClick={onDeleteCampaignHandler}>Hủy chiến dịch</Button>}
             </ div>
         </Modal >
     )
