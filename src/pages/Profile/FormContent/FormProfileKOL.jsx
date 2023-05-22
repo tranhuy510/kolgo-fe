@@ -50,7 +50,7 @@ export default function FormProfileKOL(props) {
   useEffect(() => {
     Promise.all([getKolProfile(), getCities(), getKolFields()]).then(
       ([profile, cities, fields]) => {
-        setProfile(profile.kol);
+        setProfile(profile);
         setImages(profile.images);
         setCities(cities);
         setFields(fields);
@@ -183,7 +183,7 @@ export default function FormProfileKOL(props) {
                 className={classes.input_profile}
                 name="firstName"
                 onChange={inputChangeHandler}
-                defaultValue={profile.firstName}
+                defaultValue={profile?.firstName}
               />
             </Col>
           </Row>
@@ -195,7 +195,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Họ của bạn"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.lastName}
+                defaultValue={profile?.lastName}
                 name="lastName"
               />
             </Col>
@@ -210,7 +210,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Chọn giới tính của bạn"
                 optionFilterProp="children"
                 onChange={changeGenderHandler}
-                value={genderName ? genderName : profile.gender}
+                value={genderName ? genderName : profile?.gender}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -228,7 +228,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Số điện thoại"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.phone}
+                defaultValue={profile?.phone}
                 name="phone"
               />
             </Col>
@@ -243,7 +243,7 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeCityHandler}
-                value={cityName ? cityName : profile.cityId}
+                value={cityName ? cityName : profile?.cityId}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -261,7 +261,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Địa chỉ cụ thể"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.addressDetails}
+                defaultValue={profile?.addressDetails}
                 name="addressDetails"
               />
             </Col>
@@ -278,7 +278,7 @@ export default function FormProfileKOL(props) {
                 className={classes.select_profile}
                 optionFilterProp="children"
                 onChange={changeFieldHandler}
-                value={fieldName ? fieldName : profile.fieldIds}
+                value={fieldName ? fieldName : profile?.fieldIds}
                 filterOption={(input, option) =>
                   (option?.label ?? "")
                     .toLowerCase()
@@ -296,7 +296,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang Facebook cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.facebookUrl}
+                defaultValue={profile?.facebookUrl}
                 name="facebookUrl"
                 type="url"
               />
@@ -310,7 +310,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Link kênh Youtube cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.youtubeUrl}
+                defaultValue={profile?.youtubeUrl}
                 name="youtubeUrl"
                 type="url"
               />
@@ -324,7 +324,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang Instagram cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.instagramUrl}
+                defaultValue={profile?.instagramUrl}
                 name="instagramUrl"
                 type="url"
               />
@@ -338,7 +338,7 @@ export default function FormProfileKOL(props) {
                 placeholder="Link trang TikTok cá nhân"
                 onChange={inputChangeHandler}
                 className={classes.input_profile}
-                defaultValue={profile.tiktokUrl}
+                defaultValue={profile?.tiktokUrl}
                 name="tiktokUrl"
                 type="url"
               />
@@ -353,7 +353,7 @@ export default function FormProfileKOL(props) {
                 onChange={inputChangeHandler}
                 type="number"
                 className={classes.input_profile}
-                defaultValue={profile.postPrice}
+                defaultValue={profile?.postPrice}
                 name="postPrice"
               />
             </Col>
@@ -367,7 +367,7 @@ export default function FormProfileKOL(props) {
                 onChange={inputChangeHandler}
                 type="number"
                 className={classes.input_profile}
-                defaultValue={profile.videoPrice}
+                defaultValue={profile?.videoPrice}
                 name="videoPrice"
               />
             </Col>
