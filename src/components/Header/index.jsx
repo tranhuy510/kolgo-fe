@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Avatar } from "antd";
 import NotLogin from "../BtnNotLogin/NotLogin";
@@ -45,9 +45,9 @@ const Header = (props) => {
   return (
     <div className="header">
       <div className="header__icon">
-        <a href="/">
+        <Link to="/">
           <img className="icon-logo" src={logo} alt="" />
-        </a>
+        </Link>
       </div>
       <SearchModal />
       <div className="header__room">
