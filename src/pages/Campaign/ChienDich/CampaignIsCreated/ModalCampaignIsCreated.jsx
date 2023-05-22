@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react'
-// import ItemChienDich from "../ItemChienDich/ItemChienDich";
-// import ItemCampaign from "../ItemChienDich/ItemCampaign";
 import CampaignCreated from './CampaignCreated';
 
 import classes from '../../Campaign.module.css'
 import { Input, Pagination } from 'antd';
-import { getCampaigns } from "../../../../services/CampaignService";
+import { getEntCampaigns } from "../../../../services/CampaignService";
 
-import { listChienDich, listLinhVuc } from "../dataChienDich";
 import CampaignContext from '../../../../context/campaign.context';
 
 const { Search } = Input;
@@ -25,7 +22,7 @@ const ModalCampaignIsCreated = () => {
     const [total, setTotal] = useState(10);
 
     useEffect(() => {
-        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+        getEntCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
     }, [])
 
     const onChangePage = (page) => {

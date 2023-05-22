@@ -4,10 +4,9 @@ import CampaignContext from '../../../../context/campaign.context'
 import ItemCampaign from "../ItemChienDich/ItemCampaign";
 
 import { getKol } from '../../../../services/KolService';
-import { getEnt } from '../../../../services/EnterpriseService';
 import { Skeleton, Input, Pagination } from 'antd';
 import classes from '../../Campaign.module.css';
-import { getCampaigns } from '../../../../services/CampaignService';
+import { getEntCampaigns } from '../../../../services/CampaignService';
 
 
 const { Search } = Input;
@@ -22,27 +21,13 @@ const ModalCampaignIsParticipating = () => {
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(10);
 
-    // hàm để lọc chiến dịch theo kol / ent
-    // useEffect(() => {
-    //     if (ctx.user.role === "KOL") {
-    //         getKol(ctx.idRole).then((res) => {
-    //             setCampaigns(res.campaigns);
-    //             setTotal(res.campaigns?.length);
-    //             console.log(res);
-    //         })
-    //     }
-    //     if (ctx.user.role === "ENTERPRISE") {
-    //         getEnt(ctx.idRole).then((res) => {
-    //             setCampaigns(res.campaigns);
-    //             setTotal(res.campaigns?.length);
-    //             console.log(res);
-    //         })
-    //     }
-    // }, [])
-
-    // hàm này lấy lun chiến dịch có ent
     useEffect(() => {
-        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+        if (ctx.user.role === "ENTERPRISE") {
+            getEntCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+        }
+        if (ctx.user.role === "KOL") {
+            getKol(ctx.idRole).then((res) => { setCampaigns(res.campaigns); setTotal(res.campaigns.length); })
+        }
     }, [])
 
     const onChangePage = (page) => {
