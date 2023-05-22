@@ -1,11 +1,11 @@
-import { getAuth, postAuth, putAuth, deleteAuth, get } from "./Common";
+import { getAuth, postAuth, putAuth, deleteAuth } from "./Common";
 
 export function createCampaign(campaign) {
     return postAuth(`ent/campaigns`, campaign);
 }
 
 export function getCampaigns() {
-    return get('campaigns');
+    return getAuth('campaigns');
 }
 
 export function getEntCampaigns() {
