@@ -1,22 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Modal, Input, Select, Form, DatePicker, Upload, Cascader } from "antd";
+import { Button, Modal, Input, Select, Form, DatePicker, Upload, Cascader, Col, Row } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
 import CampaignContext from '../../../../context/campaign.context';
-import { getCities, getFields } from '../../../../services/getApi';
 import UploadFile from "../UploadFile";
+
+import { spreadDate } from '../../../../services/DateTimeUtil';
+
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 
-const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
+const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     const userCtx = useContext(CampaignContext);
-    const [openChild, setOpenChild] = useState(false);
 
-    const [nameCampaign, setNameCampaign] = useState(data.tenchiendich);
-    const [avataMain, setAvataMain] = useState(data.anh)
-    const [listFields, setListFields] = useState([]);
     const [startDate, setStartDate] = useState({
         day: null,
         month: null,
@@ -33,108 +31,68 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
         minute: null,
         second: null,
     });
-    const [author, setAuthor] = useState(userCtx.user.userId)
-    const [address, setAddress] = useState("")
-    const [mota, setMota] = useState(data.mota);
-    const [introduce, setIntroduce] = useState(data.introduce);
-    const [listImages, setListImages] = useState([])
 
-    const [cities, setCities] = useState([]);
-    const [fields, setFileds] = useState([]);
+
+    const [campaignUpdate, setCampaignUpdate] = useState({});
 
     useEffect(() => {
-        getCities()
-            .then(res => res.json())
-            .then(data => setCities(data))
+        setCampaignUpdate(campaign)
+    }, [campaign])
 
-        getFields()
-            .then(res => res.json())
-            .then(data => setFileds(data))
-    }, [])
-
-    const openModalChild = () => {
-        setOpenChild(true);
-    };
-    const closeModalChild = () => {
-        setOpenChild(false);
-    };
-
-    const onUpdateCampaignHandler = () => {
-
-        console.log(nameCampaign);
-        console.log(avataMain);
-        console.log(listFields);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(userCtx.user.id);
-        console.log(address);
-        console.log(mota);
-        console.log(introduce);
-        console.log(listImages);
-
-    };
-
-    const onChangeNameCampaignHandler = (e) => {
-        setNameCampaign(e.target.value);
-    };
-
-    const onChangeAvataMainHandler = (data) => {
-        setAvataMain(data);
+    const inputChangeHandler = (event) => {
+        setCampaignUpdate((prevState) => {
+            return {
+                ...prevState,
+                [event.target.name]: event.target.value,
+            };
+        });
     };
 
     const onChangeFieldsHandler = (value) => {
-        setListFields(value);
+        setCampaignUpdate((prev) => {
+            return { ...prev, fieldIds: value }
+        });
     };
 
-    const onChangeDateHandler = (value) => {
-        setStartDate({
-            day: value[0].$D,
-            month: value[0].$M,
-            year: value[0].$y,
-            hours: 0,
-            minute: 0,
-            second: 0,
-        })
-        setEndDate({
-            day: value[1].$D,
-            month: value[1].$M,
-            year: value[1].$y,
-            hours: 23,
-            minute: 0,
-            second: 0,
-        })
-    }
-
-    const onChangeAddressHandler = (value) => {
-        setAddress(value)
-    }
-
-    const onChangeAuthorHandler = (value) => {
-        setAuthor(userCtx.user.userId)
-    }
-
-    const onChangeMotaHandler = (e) => {
-        setMota(e.target.value)
-    }
-
-    const onChangeIntroduceHandler = (e) => {
-        setIntroduce(e.target.value)
-    }
+    const onUpdateCampaignHandler = () => {
+        console.log(campaignUpdate);
+    };
 
     const onChangeImagesHandler = (value) => {
-        setListImages(value.fileList.map((item) => {
+        console.log(value.fileList.map((item) => {
             return item.name
-        }))
+        }));
+        setCampaignUpdate((prev) => {
+            return {
+                ...prev, images: value.fileList.map((item) => {
+                    return item.name
+                })
+            }
+        }
+        )
     }
+    // const onChangeDateHandler = (value) => {
+    //     setStartDate({
+    //         day: value[0].$D,
+    //         month: value[0].$M,
+    //         year: value[0].$y,
+    //         hours: 0,
+    //         minute: 0,
+    //         second: 0,
+    //     })
+    //     setEndDate({
+    //         day: value[1].$D,
+    //         month: value[1].$M,
+    //         year: value[1].$y,
+    //         hours: 23,
+    //         minute: 0,
+    //         second: 0,
+    //     })
+    // }
 
-    const optionFields = fields.map((c) => {
-        return {
-            value: c.id,
-            label: c.name,
-        };
-    });
 
-    const optionCities = cities.map((c) => {
+
+    const optionFields = userCtx.fields.map((c) => {
         return {
             value: c.id,
             label: c.name,
@@ -149,62 +107,24 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
             onCancel={onCancelShowHandler}
             footer={[]}
         >
-            <Form
-                name="basic"
-                labelCol={{ span: 5, }}
-                wrapperCol={{ span: 19, }}
-                style={{ minWidth: 600, maxWidth: 920, }}
-                initialValues={{ remember: true, }}
-                autoComplete="off"
-            >
-                {/* tên chiến dịch */}
-                <Form.Item
-                    label="Tên chiến dịch"
-                    name="nameCampaign"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Không được để trống tên chiến dịch!',
-                        },
-                    ]}
-                >
+            {/* tên chiến dịch */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Tên:</Col>
+                <Col span={18}>
                     <Input
-                        rows={2}
-                        placeholder="Nhập tên chiến dịch"
-                        onChange={onChangeNameCampaignHandler}
-                        value={nameCampaign}
-                        defaultValue={nameCampaign}
+                        placeholder="Tên chiến dịch"
+                        className={classes['modal-update-col-input']}
+                        value={campaignUpdate.name}
+                        name="name"
+                        onChange={inputChangeHandler}
                     />
-                </Form.Item>
+                </Col>
+            </Row>
 
-                {/* Ảnh đại diện chiến dịch */}
-                <Form.Item
-                    label="Ảnh đại diện chiến dịch"
-                    name="avataMain"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy chọn ảnh đại diện cho chiến dịch!',
-                        },
-                    ]}
-                >
-                    <UploadFile
-                        onChangeAvataMainHandler={onChangeAvataMainHandler}
-                        defaultValue={avataMain}
-                    />
-                </Form.Item>
-
-                {/* Lĩnh vực */}
-                <Form.Item
-                    label="Lĩnh vực"
-                    name="listFields"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Không được để trống lĩnh vực!',
-                        },
-                    ]}
-                >
+            {/* Lĩnh vực */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Lĩnh vực:</Col>
+                <Col span={18}>
                     <Select
                         mode="tags"
                         style={{
@@ -212,124 +132,107 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
                         }}
                         placeholder="Chọn lĩnh Vực"
                         onChange={onChangeFieldsHandler}
+                        value={campaignUpdate.fieldIds}
                         options={optionFields}
-                        value={listFields}
-                        defaultValue={data.linhvuc}
                     />
-                </Form.Item>
+                </Col>
+            </Row>
 
-                {/* Thời gian */}
-                <Form.Item
-                    label="Thời gian"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy chọn thời gian!',
-                        },
-                    ]}
-                >
+            {/* Thời gian */}
+            {/* <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Thời gian:</Col>
+                <Col span={18}>
                     <RangePicker
                         style={{
                             width: "100%",
                         }}
-                        onChange={onChangeDateHandler}
+                        // onChange={onChangeDateHandler}
+                        showTime
+                    // value={[campaignUpdate?.startTime, campaignUpdate?.finishTime]}
+                    // value={campaignUpdate?.finishTime}
                     />
-                </Form.Item>
+                </Col>
+            </Row> */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Ngày tạo:</Col>
+                <Col span={18}>
+                    {spreadDate(campaignUpdate?.timestamp)}
+                </Col>
+            </Row>
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Ngày bắt đầu:</Col>
+                <Col span={18}>
+                    {spreadDate(campaignUpdate?.startTime)}
+                </Col>
+            </Row>
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Ngày kết thúc:</Col>
+                <Col span={18}>
+                    {spreadDate(campaignUpdate?.finishTime)}
+                </Col>
+            </Row>
 
-                {/* người tạo */}
-                <Form.Item
-                    label="Người tạo"
-                    name="author"
-                >
-                    {userCtx.user.firstName} {userCtx.user.lastName}
-                </Form.Item>
 
-                {/* địa chỉ */}
-                <Form.Item
-                    label="Địa chỉ"
-                    name="address"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy chọn địa chỉ!',
-                        },
-                    ]}
-                >
-                    <Cascader
-                        options={optionCities}
-                        onChange={onChangeAddressHandler}
-                        value={address}
-                        defaultValue={data.address}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Người tạo:</Col>
+                <Col span={18}>
+                    {campaignUpdate?.enterprise?.firstName} {campaignUpdate?.enterprise?.lastName}
+                </Col>
+            </Row>
+
+            {/* địa chỉ */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Địa chỉ:</Col>
+                <Col span={18}>
+                    <Input
+                        rows={2}
+                        placeholder="Nhập địa chỉ"
+                        onChange={inputChangeHandler}
+                        value={campaign.location}
+                        name="location"
                     />
-                </Form.Item>
+                </Col>
+            </Row>
 
-                {/* mode: bật - cho kol/ent tham gia | tắt - ko cho tham gia */}
-                {/* <Form.Item
-                    name="remember"
-                    valuePropName="checked"
-                    checked={componentDisabled}
-                    onChange={(e) => setComponentDisabled(e.target.checked)}
-                    wrapperCol={{
-                        offset: 8,
-                        span: 16,
-                    }}
-                >
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item> */}
+            {/* Mô tả */}
 
-                {/* Mô tả */}
-                <Form.Item
-                    label="Mô tả chiến dịch"
-                    name="mota"
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Hãy nhập mô tả!',
-                        },
-                    ]}
-                >
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Mô tả:</Col>
+                <Col span={18}>
                     <TextArea
                         rows={4}
                         placeholder="Nhập mô tả chiến dịch"
-                        value={mota}
-                        onChange={onChangeMotaHandler}
-                        defaultValue={mota}
+                        value={campaign.description}
+                        onChange={inputChangeHandler}
+                        name="description"
                     />
-                </Form.Item>
+                </Col>
+            </Row>
 
-                {/* Chi tiet */}
-                <Form.Item
-                    label="Thông tin chi tiết"
-                    name="introduce"
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Hãy nhập thông tin chi tiết!',
-                        },
-                    ]}
-                >
-                    <TextArea
-                        rows={10}
-                        placeholder="Nhập chi tiết"
-                        value={introduce}
-                        onChange={onChangeIntroduceHandler}
-                        defaultValue={introduce}
-                    />
-                </Form.Item>
 
-                {/* Thêm ảnh */}
-                <Form.Item
-                    label="Thêm ảnh"
-                    valuePropName="fileList"
-                    // getValueFromEvent={normFile}
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Please choose your image!',
-                        },
-                    ]}
-                >
-                    <Upload listType="picture-card" value={listImages} onChange={onChangeImagesHandler}>
+            {/* Chi tiet */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Chi tiết:</Col>
+                <Col span={18}>
+                    <FormatText details={campaign.details} inputChangeHandler={inputChangeHandler} />
+                </Col>
+            </Row>
+
+            {/* Thêm ảnh */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Ảnh:</Col>
+                <Col span={18}>
+                    {/* {images && <ImageSlider images={images} />}
+                    <div className={classes.albumWrapper}>
+                        <PlusOutlined /> Thêm ảnh mới
+                        <input
+                            type="file"
+                            multiple
+                            onChange={handleFileChange}
+                            accept="image/*"
+                        />
+                    </div> */}
+                    <Upload listType="picture-card" value={campaignUpdate.images} onChange={onChangeImagesHandler}>
                         <div>
                             <PlusOutlined />
                             <div
@@ -341,21 +244,30 @@ const ModalUpdateCampaign = ({ data, open, onCancelShowHandler }) => {
                             </div>
                         </div>
                     </Upload>
-                </Form.Item>
+                </Col>
+            </Row>
 
-                <Form.Item
-                    wrapperCol={{
-                        offset: 5,
-                        span: 15,
-                    }}
-                >
-                    <Button type="primary" onClick={onUpdateCampaignHandler}>
-                        Cập nhập
+            <Row style={{ margin: '20px 10px' }}>
+                <Col offset={6}></Col>
+                <Col span={18}>
+                    <Button onClick={onUpdateCampaignHandler} type="primary">
+                        Cập nhật
                     </Button>
-                </Form.Item>
-            </Form>
-        </Modal>
+                </Col>
+            </Row>
+        </Modal >
     )
 }
+
+const FormatText = (props) => {
+    const formattedText = props.details?.replace(/\\n/g, '\n')
+
+    return <TextArea
+        rows={10}
+        placeholder="Nhập chi tiết"
+        value={formattedText}
+        onChange={props.inputChangeHandler}
+        name="details">{formattedText}</TextArea>;
+};
 
 export default ModalUpdateCampaign

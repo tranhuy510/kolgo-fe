@@ -113,7 +113,7 @@ const ModalCampaignIsParticipating = () => {
                     <div className={classes["doing-modal-list-campaign"]}>
                         {changeRender() && changeRender().length > 0 &&
                             changeRender().map((campaign, index) => (
-                                <ItemCampaign data={campaign} />
+                                <ItemCampaign campaign={campaign} />
                             ))}
                     </div>
                     <div className={classes["page-pagination"]}>

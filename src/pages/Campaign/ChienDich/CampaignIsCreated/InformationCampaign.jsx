@@ -1,26 +1,43 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Button, Modal, Descriptions, Image, Badge } from "antd";
 import classes from '../../Campaign.module.css'
+
 import { format } from "date-fns";
 import { Link } from 'react-router-dom';
 import CampaignContext from '../../../../context/campaign.context';
-
+import { deleteCampaign } from '../../../../services/CampaignService';
+import { spreadDate } from '../../../../services/DateTimeUtil';
 
 const InformationCampaign = (props) => {
+    const [statusCampaign, setStatusCampaign] = useState("")
     const [joined, setJoined] = useState(false)
     const userCtx = useContext(CampaignContext);
+    const [noti, setNoti] = useState({
+        status: false,
+        title: '',
+        content: '',
+    });
 
-
-    const regex = /(.*)\s\((.*)\)/;
+    // useEffect(() => {
+    //     if (userCtx.user?.role === 'KOL') {
+    //         setJoined(props.campaign?.listKOL?.find(item => item.kolId === userCtx.idRole))
+    //     }
+    //     if (userCtx.user?.role === 'ENTERPRISE') {
+    //         setJoined(props.campaign?.listEnter?.find(item => item.kolId === userCtx.enterpriseId))
+    //     }
+    // }, [userCtx])
 
     useEffect(() => {
-        if (userCtx.user?.role === 'KOL') {
-            setJoined(props.data.listKOL.find(item => item.kolId === userCtx.idRole))
+        if (props.campaign?.status === "UPCOMING") {
+            setStatusCampaign({ status: "processing", name: 'Sắp diễn ra' })
         }
-        if (userCtx.user?.role === 'ENTERPRISE') {
-            setJoined(props.data.listEnter.find(item => item.kolId === userCtx.enterpriseId))
+        else if (props.campaign?.status === "IN_PROGRESS") {
+            setStatusCampaign({ status: "success", name: 'Đang diễn ra' })
         }
-    }, [userCtx])
+        else if (props.campaign?.status === "COMPLETED") {
+            setStatusCampaign({ status: "default", name: 'Đã kết thúc' })
+        }
+    }, [props.campaign?.status])
 
 
     return (
@@ -29,55 +46,49 @@ const InformationCampaign = (props) => {
             title=""
             open={props.open.status}
             onCancel={props.onCancelShowHandler}
-            footer={[
-
-            ]}
+            footer={[]}
         >
             <div className={classes['modal-chienDich-thongTin']}>
                 <div className={classes['chienDich-thongTin-chiTiet']}>
-                    {/* <span className={classes["chienDich-item-title"]}>CHI TIẾT CHIẾN DỊCH</span> */}
                     <Descriptions title="CHI TIẾT CHIẾN DỊCH">
                         <Descriptions.Item label="Tên chiến dịch" span={3} className={classes['chiTiet-item-name']}>
-                            {props.data.tenchiendich}
+                            {props.campaign?.name}
                         </Descriptions.Item>
                         <Descriptions.Item label="Trạng thái" span={3}>
-                            <Badge status={props.data.trangthai?.status} text={props.data.trangthai?.name} />
+                            <Badge status={statusCampaign.status} text={statusCampaign.name} />
                         </Descriptions.Item>
                         <Descriptions.Item label="Người tổ chức" span={3}>
-                            {props.data.author.name}
+                            {props.campaign?.enterprise?.firstName} {props.campaign?.enterprise?.lastName}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Thời gian" span={3}>
-                            {`${format(
-                                new Date(props.data.batdau),
-                                "dd/MM/yyyy"
-                            )} - ${format(
-                                new Date(props.data.ketthuc),
-                                "dd/MM/yyyy"
-                            )}`}
+                        <Descriptions.Item label="Thời gian bắt đầu" span={3}>
+                            {spreadDate(props.campaign?.startTime)}
+                        </Descriptions.Item>
+                        <Descriptions.Item label="Thời gian kết thúc" span={3}>
+                            {spreadDate(props.campaign?.finishTime)}
                         </Descriptions.Item>
                         <Descriptions.Item label="Lĩnh vực" span={3}>
-                            {props.data.linhvuc.map((item) => (
-                                <div key={item.id}>
-                                    <Link to={`/fields/kol/:${item.id}`}>{item.name.match(regex)[1]}</Link> ,
+                            {props.campaign?.fieldIds?.map((field) => (
+                                <div key={field.id}>
+                                    <Link to={`/fields/kol/:${field.id}`}>{field.id}</Link> ,
                                 </div>
                             ))}
                         </Descriptions.Item>
                         <Descriptions.Item label="KOL tham gia" span={3}>
-                            {props.data.listKOL.map((item, index) => (
+                            {props.campaign?.kols.map((kol, index) => (
                                 <div key={index}>
-                                    <Link key={item.kolId} to={`/detail/kol/:${item.kolId}`} > {item.name}</Link> ,
+                                    <Link key={kol.id} to={`/detail/kol/:${kol.id}`} > {kol.firstName} {kol.lastName}</Link> ,
                                 </div>
                             ))}
                         </Descriptions.Item>
-                        <Descriptions.Item label="Doanh nghiệp tham gia" span={3}>
-                            {props.data.listEnter.map((item, index) => (
+                        {/* <Descriptions.Item label="Doanh nghiệp tham gia" span={3}>
+                            {props.campaign?.listEnter.map((item, index) => (
                                 <div key={index}>
                                     <Link to={`/detail/enterprise/:${item.enterpriseId}`}>{item.name}</Link> ,
                                 </div>
                             ))}
-                        </Descriptions.Item>
+                        </Descriptions.Item> */}
                         <Descriptions.Item label="Địa chỉ" span={3}>
-                            {props.data.address}
+                            {props.campaign?.location}
                         </Descriptions.Item>
                     </Descriptions>
                 </div>
@@ -85,19 +96,20 @@ const InformationCampaign = (props) => {
                     {/* <span className={classes["chienDich-item-title"]}>MÔ TẢ CHIẾN DỊCH</span> */}
                     <Descriptions title="MÔ TẢ CHIẾN DỊCH">
                         <Descriptions.Item className={classes['moTa-description']} span={3}>
-                            {props.data?.mota}
+                            {props.campaign?.description}
                         </Descriptions.Item>
                         <Descriptions.Item span={3}>
                             <div className={classes['moTa-list-image']}>
-                                {props.data.listImage?.map((item, index) => (
+                                {props.campaign?.images?.map((image, index) => (
                                     <div key={index} className={classes['wrap-image']} >
-                                        <Image src={item.src} className={classes['list-image-item']} />
+                                        <Image src={`http://localhost:8080/api/images/${image}`} className={classes['list-image-item']} />
                                     </div>
                                 ))}
                             </div>
                         </Descriptions.Item>
+                        <Descriptions.Item label="Chi tiết" span={3}></Descriptions.Item>
                         <Descriptions.Item className={classes['moTa-introduce']} span={3}>
-                            {props.data?.introduce}
+                            <FormatText details={props.campaign?.details} />
                         </Descriptions.Item>
                     </Descriptions>
                 </div>
@@ -105,5 +117,18 @@ const InformationCampaign = (props) => {
         </Modal >
     )
 }
+
+const FormatText = (props) => {
+    const formattedText = props.details?.replace(/\\n/g, '\n').split('\n').map((line, index) => {
+        return (
+            <React.Fragment key={index}>
+
+                {line}
+                <br /><br />
+            </React.Fragment>
+        );
+    });
+    return <div>{formattedText}</div>;
+};
 
 export default InformationCampaign

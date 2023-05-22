@@ -128,7 +128,7 @@ const InformationCampaign = (props) => {
                             <div className={classes['moTa-list-image']}>
                                 {props.campaign?.images?.map((image, index) => (
                                     <div key={index} className={classes['wrap-image']}>
-                                        <Image src={image.src} className={classes['list-image-item']} />
+                                        <Image src={`http://localhost:8080/api/images/${image}`} className={classes['list-image-item']} />
                                     </div>
                                 ))}
                             </div>
