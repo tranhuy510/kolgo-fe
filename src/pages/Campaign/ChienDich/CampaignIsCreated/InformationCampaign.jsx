@@ -1,31 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Button, Modal, Descriptions, Image, Badge } from "antd";
+import { Modal, Descriptions, Image, Badge } from "antd";
 import classes from '../../Campaign.module.css'
 
-import { format } from "date-fns";
 import { Link } from 'react-router-dom';
 import CampaignContext from '../../../../context/campaign.context';
-import { deleteCampaign } from '../../../../services/CampaignService';
 import { spreadDate } from '../../../../services/DateTimeUtil';
 
 const InformationCampaign = (props) => {
     const [statusCampaign, setStatusCampaign] = useState("")
-    const [joined, setJoined] = useState(false)
     const userCtx = useContext(CampaignContext);
-    const [noti, setNoti] = useState({
-        status: false,
-        title: '',
-        content: '',
-    });
-
-    // useEffect(() => {
-    //     if (userCtx.user?.role === 'KOL') {
-    //         setJoined(props.campaign?.listKOL?.find(item => item.kolId === userCtx.idRole))
-    //     }
-    //     if (userCtx.user?.role === 'ENTERPRISE') {
-    //         setJoined(props.campaign?.listEnter?.find(item => item.kolId === userCtx.enterpriseId))
-    //     }
-    // }, [userCtx])
 
     useEffect(() => {
         if (props.campaign?.status === "UPCOMING") {
@@ -67,9 +50,9 @@ const InformationCampaign = (props) => {
                             {spreadDate(props.campaign?.finishTime)}
                         </Descriptions.Item>
                         <Descriptions.Item label="Lĩnh vực" span={3}>
-                            {props.campaign?.fieldIds?.map((field) => (
-                                <div key={field.id}>
-                                    <Link to={`/fields/kol/:${field.id}`}>{field.id}</Link> ,
+                            {props.campaign?.fieldNames?.map((field, index) => (
+                                <div key={index}>
+                                    <Link to={`/field/${props.campaign?.fieldIds[index]}`}>{field}</Link> ,
                                 </div>
                             ))}
                         </Descriptions.Item>
@@ -93,7 +76,6 @@ const InformationCampaign = (props) => {
                     </Descriptions>
                 </div>
                 <div className={classes['chienDich-thongTin-moTa']}>
-                    {/* <span className={classes["chienDich-item-title"]}>MÔ TẢ CHIẾN DỊCH</span> */}
                     <Descriptions title="MÔ TẢ CHIẾN DỊCH">
                         <Descriptions.Item className={classes['moTa-description']} span={3}>
                             {props.campaign?.description}
