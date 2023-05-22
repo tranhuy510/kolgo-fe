@@ -5,7 +5,7 @@ import CampaignContext from "../../../../context/campaign.context";
 
 import classes from '../../Campaign.module.css'
 import { Input, Pagination } from 'antd';
-import { getCampaigns } from "../../../../services/CampaignService";
+import { getCampaigns, getEntCampaigns } from "../../../../services/CampaignService";
 
 const { Search } = Input;
 
@@ -21,23 +21,26 @@ const ModalCampaignIsProgress = () => {
 
     // hàm này lấy lun chiến dịch có ent
     useEffect(() => {
-        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+        getCampaigns().then((res) => {
+            if (res) { setCampaigns(res); setTotal(res.length); }
+            else setCampaigns([])
+        }).catch(() => setCampaigns([]))
     }, [])
 
     const onChangePage = (page) => {
         setCurrent(page);
     };
 
-    const resultSearch = campaigns?.filter((cp) => {
+    const resultSearch = campaigns.length > 0 ? campaigns?.map((cp) => {
         return (inputSearch === "" ? cp : cp.name.includes(inputSearch))
             || (cp.fieldIds?.find(item => item.name === searchField))
-    })
+    }) : []
 
     const changeRender = () => {
         if (resultSearch.length > 0) {
             return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
         }
-        return campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        return campaigns.length > 0 ? campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6)) : []
     }
 
     const onKeyDownHandler = (event) => {
