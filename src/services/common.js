@@ -1,6 +1,7 @@
 const apiUrl = "http://localhost:8080/api";
 
-const getAccessToken = () => `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
+const getAccessToken = () =>
+  `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`;
 
 async function httpRequestJson(method, uri, auth, body) {
   let options = {
@@ -51,5 +52,9 @@ export function putAuth(uri, body) {
 }
 
 export function putFormDataAuth(uri, formData) {
-  return httpRequestFormData("PUT", uri, true, formData)
+  return httpRequestFormData("PUT", uri, true, formData);
+}
+
+export function deleteAuth(uri) {
+  return httpRequestJson("DELETE", uri, true);
 }

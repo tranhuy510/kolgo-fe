@@ -1,0 +1,63 @@
+.admin-user-container {
+  margin: 0 20px;
+  height: 100%;
+}
+
+.table {
+  height: calc(100% - 52px); 
+  overflow-y: scroll;
+}
+
+.table::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.table::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+}
+
+.table::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background: rgba(0,0,0,0.2);
+}
+
+.table::-webkit-scrollbar-thumb:hover{
+  background: rgba(0,0,0,0.4);
+}
+
+.table::-webkit-scrollbar-thumb:active{
+  background: rgba(0,0,0,.9);
+}
+  
+  .modal-search {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .modal-search-input {
+    width: 50%;
+    border: 1px solid #ccc;
+  }
+  
+  .admin-modal-delete {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  
+  .modal-delete-btn {
+    margin: 5px 10px;
+  }
+
+  .modal-update-col-input {
+    width: 100%;
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  

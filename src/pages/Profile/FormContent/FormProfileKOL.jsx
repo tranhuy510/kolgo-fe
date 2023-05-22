@@ -158,7 +158,6 @@ export default function FormProfileKOL(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     if (!validateFormData(profile)) return;
-
     updateKolProfile(profile).then(
       createSuccessMessage("Cập nhật thành công!")
     );
@@ -402,7 +401,7 @@ export default function FormProfileKOL(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/${user.avatar}`}
+            src={`http://localhost:8080/api/images/images/${user.avatar}`}
           >
             {user.avatar ? (
               ""

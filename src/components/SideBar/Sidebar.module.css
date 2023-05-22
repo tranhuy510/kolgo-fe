@@ -1,0 +1,81 @@
+
+
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    box-sizing: border-box;
+    position: fixed;
+    margin-top: 67px;
+    overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+  
+.sidebar::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.1);
+}
+  
+.sidebar::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+}
+  
+.sidebar::-webkit-scrollbar-thumb:hover{
+    background: rgba(0,0,0,0.4);
+}
+  
+.sidebar::-webkit-scrollbar-thumb:active{
+    background: rgba(0,0,0,.9);
+}
+
+.item-sidebar {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.box-item {
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+.box-item a {
+    text-decoration: none;
+}
+
+.box-item::before {
+    left: 100%;
+    background-color: rgb(240, 86, 74, 0.8);
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transition: left 0.5s;
+}
+
+.box-item:hover::before {
+    left: 0;
+}
+
+.item-p {
+    font-size: 18px;
+    margin: 0 0 0 16px;
+    line-height: 40px;
+    margin-right: 5px;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    color: #000;
+    cursor: pointer;
+}
+
+.box-item:hover .item-p {
+    color: #fff;
+}
+

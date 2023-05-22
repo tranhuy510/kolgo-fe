@@ -1,0 +1,91 @@
+/* .combo-container {
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+}
+.combo-container .title {
+  font-size: 25px;
+  font-weight: 600;
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.combo-container input {
+  width: 300px;
+  height: 40px;
+  outline: none;
+  border-radius: 20px;
+  padding-left: 15px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+:where(.css-dev-only-do-not-override-1vtf12y).ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:first-child {
+  border-start-start-radius: 20px;
+}
+:where(.css-dev-only-do-not-override-1vtf12y).ant-table-wrapper
+  .ant-table-container
+  table
+  > thead
+  > tr:first-child
+  > *:last-child {
+  border-start-end-radius: 20px;
+}
+th.ant-table-cell {
+  border: 1px solid black;
+  background-color: #adfffa !important;
+  text-align: center !important;
+  font-size: 20px;
+}
+th.ant-table-cell::before {
+  display: none;
+}
+td.ant-table-cell {
+  margin-top: 5px !important;
+  border: 1px solid black;
+  border-bottom: 1px solid black !important;
+  background-color: #d8d8d895;
+  padding: 0 !important;
+}
+.combo-container .name-title-table {
+  width: 500px;
+  font-size: 18px;
+  padding-left: 30px;
+}
+.combo-container .btn-action-group {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  gap: 20px;
+}
+.combo-container .btn-action-group .btn-view {
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  background-color: rgb(240, 86, 74);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+.combo-container .information-combo {
+  padding: 10px;
+  border-radius: 20px;
+}
+.information-combo .child-input {
+  display: flex;
+  margin-bottom: 20px;
+}
+.information-combo .child-input label {
+  width: 150px;
+}
+.information-combo .child-input .ant-input {
+  width: 80%;
+} */

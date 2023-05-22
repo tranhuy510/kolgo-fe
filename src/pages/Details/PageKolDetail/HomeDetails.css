@@ -235,7 +235,7 @@ div[aria-selected^="true"] button {
 .rate-item__content .content-is-rated {
   width: 100%;
   word-wrap: break-word;
-  padding: 20px 0;
+  padding: 10px 0 20px 0 ;
   font-size: 20px;
 }
 
@@ -292,6 +292,13 @@ div[aria-selected^="true"] button {
   padding-top: 20px;
   border-top: 1px solid #ccc;
   margin: 20px;
+}
+
+.modal-fields-list {
+  font-size: 18px;
+  line-height: 36px;
+  font-weight: 400;
+  display: flex;
 }
 
 

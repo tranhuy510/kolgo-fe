@@ -1,8 +1,12 @@
 import { Avatar } from "antd";
 
 import classes from "./Notification.module.css";
+import { updateNotificationStatus } from "../../services/NotificationService";
+import { useNavigate } from "react-router-dom";
 
 export default function NotiItem({ noti }) {
+  const navigate = useNavigate();
+
   // const startDate = new Date(notification.timestamp);
 
   // const now = new Date();
@@ -18,8 +22,14 @@ export default function NotiItem({ noti }) {
 
   const displayDays = daysText();
 
+  const handleClick = () => {
+    updateNotificationStatus(noti.id, "READ").then(res => console.log(res));
+    if (noti && noti.type === 'BOOKING');
+      navigate(`/bookings/${noti.bookingId}`)
+  }
+
   return (
-    <div className={classes["item-wrap"]}>
+    <div className={classes["item-wrap"]} onClick={handleClick}>
       <Avatar
         size={60}
         src={
@@ -34,12 +44,6 @@ export default function NotiItem({ noti }) {
         className={`${classes["item-content"]} ${noti.status === 'READ' && classes["read"]}`}
       >
         <p>{noti?.content}</p>
-        {/* <p>
-          <b>{notification.user?.name}</b>{" "}
-          {notification.action === "book" && "đã gửi lời mời hợp tác đến bạn"}
-          {notification.action === "campain" && "đã tạo chiến dịch mới"}
-        </p> */}
-
         <p>{noti?.timestamp}</p>
       </div>
     </div>

@@ -8,11 +8,11 @@ import YoutubeIcon from "../../../../assets/icon/youtube.png";
 
 import classes from './ContactSocials.module.css'
 
-const ContactSocials = ({ urls }) => {
+const ContactSocials = (props) => {
     return (
         <div className={classes.socials}>
             <div className={classes['socials-item']}>
-                <Link to={urls[0]} className={classes.icon}>
+                <Link to={props.facebookUrl} className={classes.icon}>
                     <img
                         src={FacebookIcon}
                         alt="icon-facebook"
@@ -23,7 +23,7 @@ const ContactSocials = ({ urls }) => {
                 </div>
             </div>
             <div className={classes['socials-item']}>
-                <Link to={urls[1]} className={classes.icon}>
+                <Link to={props.instagramUrl} className={classes.icon}>
                     <img
                         src={IntagramIcon}
                         alt="icon-intagram"
@@ -34,7 +34,7 @@ const ContactSocials = ({ urls }) => {
                 </div>
             </div>
             <div className={classes['socials-item']}>
-                <Link to={urls[2]} className={classes.icon}>
+                <Link to={props.tiktokUrl} className={classes.icon}>
                     <img
                         src={TiktokIcon}
                         alt="icon-tiktok"
@@ -45,7 +45,7 @@ const ContactSocials = ({ urls }) => {
                 </div>
             </div>
             <div className={classes['socials-item']}>
-                <Link to={urls[3]} className={classes.icon}>
+                <Link to={props.youtubeUrl} className={classes.icon}>
                     <img
                         src={YoutubeIcon}
                         alt="icon-youtube"

@@ -9,12 +9,11 @@ import NameMain from "./NameMain/NameMain";
 import IntroduceKOL from "./IntroduceKOL/IntroduceKOL";
 import Activate from "./Activate/Activate";
 import Compare from "./Compare/Compare";
-import Rate from "./Rate/Rate";
+import Feedback from "./Feedback/Feedback";
 import BookingCreate from "../../Booking/BookingCreate";
 
 import "./HomeDetails.css";
-import { Col, Row } from "antd";
-import { Tabs } from "antd";
+import { Col, Row, Tabs } from "antd";
 import ButtonFull from "../../../components/UI/Button/ButtonFull";
 import { getKol } from "../../../services/KolService";
 
@@ -27,30 +26,35 @@ const danhgia = [
     name: "Công ty TNHH 1 thành viên Thắng Trần",
     content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
     date: new Date(2022, 5, 12),
+    rate: 3,
   },
   {
     enterpriseId: 2,
     name: "Công ty TNHH 1 thành viên Thắng Trần",
     content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
     date: new Date(2022, 5, 12),
+    rate: 3,
   },
   {
     enterpriseId: 3,
     name: "Công ty TNHH 1 thành viên Thắng Trần",
     content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
     date: new Date(2022, 5, 12),
+    rate: 3,
   },
   {
     enterpriseId: 4,
     name: "Công ty TNHH 1 thành viên Thắng Trần",
     content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
     date: new Date(2022, 5, 12),
+    rate: 3,
   },
   {
     enterpriseId: 5,
     name: "Công ty TNHH 1 thành viên Thắng Trần",
     content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
     date: new Date(2022, 5, 12),
+    rate: 3,
   },
 ];
 
@@ -58,14 +62,9 @@ const PageKolDetail = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const { id } = useParams();
   const [kol, setKol] = useState();
-  const urls = [
-    kol?.facebookUrl,
-    kol?.instagramUrl,
-    kol?.tiktokUrl,
-    kol?.youtubeUrl,
-  ];
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState("");
 
   const onCancelOpenHandler = () => {
     setOpen(false);
@@ -73,26 +72,59 @@ const PageKolDetail = () => {
 
   useEffect(() => {
     getKol(id).then((res) => {
-      console.log(res);
-      setKol(res.kol);
+      setKol(res);
+      checkStatus(res.bookings, user, res.kol);
     });
   }, []);
 
+  useEffect(() => {
+    document.title = `KOLgo | ${kol?.kol?.firstName} ${kol?.kol?.lastName}`;
+
+    return () => {
+      document.title = "KOLgo";
+    };
+  }, [kol?.kol?.id]);
+
+  const checkStatus = (bookings, user, kol) => {
+    if (!user) {
+      setStatus("GUEST");
+    } else if (kol.userId === user.id) {
+      setStatus("ME");
+    } else if (
+      bookings.findIndex(
+        (booking) => booking.user.id === user.id && booking.status === "PENDING"
+      ) !== -1
+    ) {
+      setStatus("PENDING");
+    } else if (
+      bookings.findIndex(
+        (booking) =>
+          booking.user.id === user.id && booking.status === "ACCEPTED"
+      ) !== -1
+    ) {
+      setStatus("ACCEPTED");
+    } else setStatus("BOOK");
+  };
+
   const navigateToChat = () => {
-    if (!user) navigate("../login");
-    navigate(`/chat`, { state: { kol } });
+    navigate(`/chat`, { state: kol.kol });
   };
 
   const bookingHandler = () => {
-    if (!user) {
-      navigate("../login");
-    }
     setOpen(true);
   };
 
   const onChange = (key) => {
-    console.log(user);
     console.log(key);
+  };
+
+  const onRedirect = () => {
+    const booking = kol.bookings.find(
+      (booking) => booking.status === status && booking.user.id === user.id
+    );
+    if (booking) {
+      navigate(`/bookings/${booking.id}`);
+    }
   };
 
   const items = [
@@ -112,7 +144,7 @@ const PageKolDetail = () => {
           So sánh
         </button>
       ),
-      children: <Compare infoKol={kol} />,
+      children: <Compare infoKol={kol?.kol} />,
     },
   ];
 
@@ -121,7 +153,7 @@ const PageKolDetail = () => {
       <main className="main-details">
         {kol && (
           <BookingCreate
-            kol={kol}
+            kol={kol.kol}
             onCancelOpenHandler={onCancelOpenHandler}
             open={open}
           />
@@ -132,28 +164,38 @@ const PageKolDetail = () => {
               span={6}
               style={{ paddingRight: "10px", boxSizing: "border-box" }}
             >
-              <ImageDescription images={kol?.images} />
-              <ContactSocials urls={urls} />
+              <ImageDescription
+                images={kol?.kol?.images}
+                avatar={kol?.kol?.avatar}
+              />
+              <ContactSocials
+                facebookUrl={kol?.kol?.facebookUrl}
+                instagramUrl={kol?.kol?.instagramUrl}
+                tiktokUrl={kol?.kol?.tiktokUrl}
+                youtubeUrl={kol?.kol?.youtubeUrl}
+              />
             </Col>
             <Col span={12} className="col-12-middle">
               <Row style={{ padding: "20px" }}>
                 <NameMain
-                  firstName={kol?.firstName}
-                  lastName={kol?.lastName}
-                  gender={kol?.gender}
-                  city={kol?.city?.name}
+                  firstName={kol?.kol?.firstName}
+                  lastName={kol?.kol?.lastName}
                 />
               </Row>
               <Row className="middle-row">
                 <InformationKOL
-                  email={kol?.email}
-                  phoneNumber={kol?.phone}
-                  gender={kol?.gender}
-                  city={kol?.city?.name}
+                  email={kol?.kol?.email}
+                  phoneNumber={kol?.kol?.phone}
+                  gender={kol?.kol?.gender}
+                  city={kol?.kol?.cityName}
+                  addressDetails={kol?.kol?.addressDetails}
                 />
               </Row>
               <Row className="middle-row">
-                <ListFields fields={kol?.fields} />
+                <ListFields
+                  fieldNames={kol?.kol?.fieldNames}
+                  fieldIds={kol?.kol?.fieldIds}
+                />
               </Row>
               <Row className="middle-row">
                 <IntroduceKOL description={description} />
@@ -161,14 +203,34 @@ const PageKolDetail = () => {
             </Col>
             <Col span={6}>
               <div className="col-6-right">
-                <div className="price-booking">{kol?.postPrice} / 1 post</div>
-                <div className="price-booking">{kol?.videoPrice} / 1 video</div>
-                <ButtonFull onClick={bookingHandler} className="btn-function">
-                  BOOK
-                </ButtonFull>
-                <ButtonFull onClick={navigateToChat} className="btn-function">
-                  NHẮN TIN
-                </ButtonFull>
+                <div className="price-booking">
+                  {kol?.kol?.postPrice} / 1 post
+                </div>
+                <div className="price-booking">
+                  {kol?.kol?.videoPrice} / 1 video
+                </div>
+                {status === "GUEST" && <></>}
+                {status === "ME" && <></>}
+                {status === "BOOK" && (
+                  <ButtonFull onClick={bookingHandler} className="btn-function">
+                    Đặt
+                  </ButtonFull>
+                )}
+                {status === "PENDING" && (
+                  <ButtonFull onClick={onRedirect} className="btn-function">
+                    Đang chờ
+                  </ButtonFull>
+                )}
+                {status === "ACCEPTED" && (
+                  <ButtonFull onClick={onRedirect} className="btn-function">
+                    Cần thanh toán
+                  </ButtonFull>
+                )}
+                {status !== "ME" && status !== "GUEST" && (
+                  <ButtonFull onClick={navigateToChat} className="btn-function">
+                    NHẮN TIN
+                  </ButtonFull>
+                )}
               </div>
             </Col>
           </Row>
@@ -182,7 +244,7 @@ const PageKolDetail = () => {
           />
         </div>
         <div className="bottom-details">
-          <Rate danhgia={danhgia} />
+          <Feedback danhgia={danhgia} />
         </div>
       </main>
     </>

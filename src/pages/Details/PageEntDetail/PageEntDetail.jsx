@@ -12,7 +12,7 @@ import { Col, Row } from 'antd';
 
 const PageEntDetail = () => {
     const [infoEnt, setInfoEnt] = useState()
-    const [fields, setFields] = useState('')
+    // const [fields, setFields] = useState('')
     const [show, setShow] = useState(0)
     const navigate = useNavigate();
 
@@ -27,24 +27,32 @@ const PageEntDetail = () => {
     }, [id])
 
     useEffect(() => {
-        const identifier = setTimeout(() => {
-            getFields()
-                .then(res => {
-                    if (!res.ok) {
-                        return Promise.reject(res)
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    setFields(data.find((item) => {
-                        return item.id === infoEnt?.enterpriseFieldId
-                    }))
-                })
-        }, 500)
+        document.title = `KOLgo | ${infoEnt?.firstName} ${infoEnt?.lastName}`
+
         return () => {
-            clearTimeout(identifier)
-        }
-    }, [infoEnt?.enterpriseFieldId])
+            document.title = 'KOLgo';
+        };
+    }, [infoEnt?.id])
+
+    // useEffect(() => {
+    //     const identifier = setTimeout(() => {
+    //         getFields()
+    //             .then(res => {
+    //                 if (!res.ok) {
+    //                     return Promise.reject(res)
+    //                 }
+    //                 return res.json();
+    //             })
+    //             .then(data => {
+    //                 setFields(data.find((item) => {
+    //                     return item.id === infoEnt?.fieldIds
+    //                 }))
+    //             })
+    //     }, 500)
+    //     return () => {
+    //         clearTimeout(identifier)
+    //     }
+    // }, [infoEnt?.fieldIds])
 
     const onClickShowHandler = (index) => {
         setShow(index)

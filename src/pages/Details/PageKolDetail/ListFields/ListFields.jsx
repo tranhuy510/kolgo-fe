@@ -17,22 +17,23 @@ const DivWrap = styled.div`
     }
 `
 
-const ListFields = ({ fields }) => {
+const ListFields = ({ fieldNames, fieldIds }) => {
 
     const capitalizeName = (name) => {
         const regex = /(.*)\s\((.*)\)/;
-        return name.match(regex)[1];
+        return name?.match(regex)[1];
     }
 
     return (
-        <div style={{ fontSize: '18px', lineHeight: '36px', fontWeight: '400' }}>
-            {fields?.length > 0 && fields?.map(field => (
-                <Link to={`/kols?fieldIds=${field?.id}`}>
+        <div className='modal-fields-list'>
+            {fieldIds?.map((field, index) => {
+                <Link to={`/kols?fieldIds=${field}`}>
                     <DivWrap>
-                        {capitalizeName(field?.name)}
+                        {capitalizeName(fieldNames[index])}
                     </DivWrap>
                 </Link>
-            ))}
+            })}
+
         </div>
     )
 }

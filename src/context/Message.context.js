@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { getNotification } from "../services/NotificationService"
+import { getNotifications } from "../services/NotificationService"
+import { getChat, getChats } from "../services/ChatService";
 
 let stompClient = null;
 const websocketUrl = 'http://localhost:8080/api/ws';
@@ -11,17 +12,17 @@ export const MessageContext = createContext();
 export const MessageProvider = ({ children }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
-    // const [stompClient, setStompClient] = useState(null)
-    const [chatMessages, setChatMessages] = useState([]);
-    const [notifications, setNotification] = useState([]);
-    // const [stompClient, setStompClient] = useState(null);
+    const [publicChats, setPublicChats] = useState([])
+    const [privateChats, setPrivateChats] = useState([])
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
         Promise.all([
-            getNotification(),
+            getNotifications(),
         ]).then(([notificationList]) => {
-            console.log(notificationList)
-            setNotification(notificationList);
+            console.log('NOTIFICATION LIST', notificationList)
+            if (notificationList && notificationList.length > 0)
+                setNotifications(notificationList);
         })
     }, [])
 
@@ -54,37 +55,66 @@ export const MessageProvider = ({ children }) => {
         console.log("Connected to STOMP server");
         stompClient.subscribe("public/messages", onPublicMessageReceived);
         stompClient.subscribe(`user/${user.id}/messages`, onPrivateMessageReceived);
+        stompClient.subscribe("public/notifications", onPublicNotificationReceived);
+        stompClient.subscribe(`user/${user.id}/notifications`, onPrivateNotificationReceived)
     }
 
     const onPublicMessageReceived = (payload) => {
+        const chatMessage = JSON.parse(payload.body);
+        console.log(chatMessage)
+        setPublicChats(prev => [...prev, chatMessage]);
+    }
+
+    const onPublicNotificationReceived = (payload) => {
         const msg = JSON.parse(payload.body);
+        console.log(msg)
     }
 
     const onPrivateMessageReceived = (payload) => {
-        const msg = JSON.parse(payload.body);
-        console.log(msg)
-        if (msg.type === 'NOTIFICATION') {
-            setNotification(prev => [...prev, msg.notification])
+        const chatMessage = JSON.parse(payload.body);
+        // console.log(chatMessage)
+        let chat = privateChats.find(chat => chat.id === chatMessage.chatId);
+        if (chat) {
+            chat.chatMessages.push(chatMessage);
+            setPrivateChats(prev => [...prev, chat]);
+        } else {
+            getChat(chatMessage.chatId)
+                .then(res => {
+                    console.log(res)
+                    console.log(privateChats)
+                    setPrivateChats(prev => [...prev, chat])
+                });
         }
+    }
 
-        if (msg.messageType === 'CHAT_MESSAGE')
-            setChatMessages(prev => [...prev, msg.chatMessage]);
+    const onPrivateNotificationReceived = (payload) => {
+        const notification = JSON.parse(payload.body);
+        console.log(notification)
+        setNotifications(prev => [...prev, notification])
     }
 
     const sendPublicMessage = (msg) => {
-        stompClient.send(`app/public`, {}, JSON.stringify(msg));
+        stompClient.send(`app/chats/public`, {}, JSON.stringify(msg));
     }
 
     const sendPrivateMessage = (msg) => {
-        stompClient.send(`app/private`, {}, JSON.stringify(msg))
+        stompClient.send(`app/chats/private`, {}, JSON.stringify(msg))
+    }
+
+    const sendPrivateNotification = (notification) => {
+        stompClient.send(`app/notifications/private`, {}, JSON.stringify(notification));
     }
 
     return (
         <MessageContext.Provider value={{
-            chatMessages,
+            publicChats,
+            setPublicChats,
+            privateChats,
+            setPrivateChats,
             notifications,
             sendPublicMessage,
-            sendPrivateMessage
+            sendPrivateMessage,
+            sendPrivateNotification
         }}>
             {children}
         </MessageContext.Provider>

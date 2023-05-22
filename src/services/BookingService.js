@@ -4,8 +4,8 @@ export function createBooking(kolId, booking) {
     return postAuth(`kols/${kolId}/bookings`, booking);
 }
 
-export function getBooking(id) {
-    return getAuth(`bookings/${id}`);
+export function getBookingByBookingId(bookingId) {
+    return getAuth(`user/bookings/${bookingId}`);
 }
 
 export function updateBookingStatus(id, status) {

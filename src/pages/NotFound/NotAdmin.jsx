@@ -6,10 +6,10 @@ const NotAdmin = () => {
     return (
         <Result
             status="warning"
-            title="You are not ADMIN."
+            title="Bạn không phải là ADMIN."
             extra={
                 <Button type="primary" key="console" onClick={() => navigate(-1)}>
-                    Go Back
+                    Trở lại
                 </Button>
             }
         />
