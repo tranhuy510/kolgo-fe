@@ -47,7 +47,7 @@ const ItemCampaign = ({ campaign }) => {
             {noti.status &&
                 <Modals status={noti.status} title={noti.title} content={noti.content} changeNotification={changeNotificationHandler} />
             }
-            <img src={'http://localhost:8080/api/images/accn1.jpg'} alt="" />
+            <img src={`http://localhost:8080/api/images/${campaign.images[0]}`} alt="" />
             <div className={classes['card-item-context']}>
                 <h2>{campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}</h2>
                 <p>{campaign?.name}</p>

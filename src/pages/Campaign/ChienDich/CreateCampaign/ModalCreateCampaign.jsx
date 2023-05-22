@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Input, Select, Form, DatePicker, Upload } from "antd";
+import { Button, Input, Select, Form, DatePicker, Upload, message } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
 
@@ -13,6 +13,7 @@ const { TextArea } = Input;
 
 const ModalCreateCampaign = (props) => {
     const campaignCtx = useContext(CampaignContext);
+    const [messageApi, contextHolder] = message.useMessage();
 
     const [campaign, setCampaign] = useState({
         name: '',
@@ -34,8 +35,6 @@ const ModalCreateCampaign = (props) => {
             .then(res => res.json())
             .then(data => setFileds(data))
     }, [])
-
-
 
     const onChangeNameCampaignHandler = (e) => {
         setCampaign(prev => { return { ...prev, name: e.target.value } })
@@ -63,8 +62,33 @@ const ModalCreateCampaign = (props) => {
 
     const onChangeDetailsHandler = (e) => {
         setCampaign(prev => { return { ...prev, details: e.target.value } })
-
     }
+
+    const validateFormData = (campaign) => {
+        let res = true;
+        let errMsg = "";
+        if (!campaign.name) {
+            errMsg = "Vui lòng nhập tên chiến dịch!";
+        } else if (!campaign.startTime) {
+            errMsg = "Vui lòng chọn thời gian bắt đầu!";
+        } else if (!campaign.finishTime) {
+            errMsg = "Vui lòng chọn thời gian kết thúc!";
+        } else if (!campaign.location) {
+            errMsg = "Vui lòng nhập địa chỉ!";
+        } else if (!campaign.description) {
+            errMsg = "Vui lòng nhập mô tả!";
+        } else if (!campaign.images) {
+            errMsg = "Vui lòng chọn ảnh!";
+        }
+        if (errMsg) {
+            messageApi.open({
+                type: 'warning',
+                content: errMsg,
+            });
+            res = false;
+        }
+        return res;
+    };
 
     const onChangeImagesHandler = (value) => {
         setCampaign(prev => {
@@ -76,9 +100,23 @@ const ModalCreateCampaign = (props) => {
         })
     }
 
-    const onCreateCampaignHandler = () => {
-        console.log(campaign);
-        createCampaign(campaign).then(() => alert('ok')).catch(() => alert('not ok'))
+    const onCreateCampaignHandler = (event) => {
+        event.preventDefault();
+        campaign.timestamp = formatDate(new Date())
+        // console.log(campaign);
+
+        if (!validateFormData(campaign)) return;
+        else createCampaign(campaign).then(() => {
+            messageApi.open({
+                type: 'success',
+                content: 'Tạo thành công',
+            });
+        }).catch(() => {
+            messageApi.open({
+                type: 'warning',
+                content: 'Tạo thất bại',
+            });
+        })
     };
 
     const optionFields = fields.map((c) => {
@@ -90,6 +128,7 @@ const ModalCreateCampaign = (props) => {
 
     return (
         <div className={classes['campaign-modal-create-campaign']}>
+            {contextHolder}
             <Form
                 name="basic"
                 labelCol={{ span: 5, }}
@@ -123,7 +162,7 @@ const ModalCreateCampaign = (props) => {
                     name="fieldIds"
                     rules={[
                         {
-                            required: true,
+                            required: false,
                             message: 'Không được để trống lĩnh vực!',
                         },
                     ]}
@@ -192,7 +231,7 @@ const ModalCreateCampaign = (props) => {
                     name="description"
                     rules={[
                         {
-                            required: false,
+                            required: true,
                             message: 'Hãy nhập mô tả!',
                         },
                     ]}

@@ -26,7 +26,7 @@ const CampaignCreated = ({ campaign }) => {
                 <div className={classes["item-left"]} >
                     {campaign?.enterprise.avatar && <img
                         className={classes["image"]}
-                        src={`http://localhost:8080/api/images/${campaign.enterprise.avatar}`}
+                        src={`http://localhost:8080/api/images/${campaign.images[0]}`}
                         onClick={() => { setShow({ id: 1, status: true }) }}
                         alt={campaign?.enterprise.avatar}
                     />}

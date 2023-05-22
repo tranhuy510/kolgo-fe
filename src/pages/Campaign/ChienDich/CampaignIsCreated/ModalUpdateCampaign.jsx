@@ -6,10 +6,11 @@ import CampaignContext from '../../../../context/campaign.context';
 import UploadFile from "../UploadFile";
 
 import { spreadDate } from '../../../../services/DateTimeUtil';
-
+import ImageSlider from '../../../../components/UI/ImageSlider/ImageSlider'
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
+
 
 
 const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
@@ -218,20 +219,19 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                 </Col>
             </Row>
 
+            {/* Ảnh */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Ảnh:</Col>
+                <Col span={18}>
+
+                </Col>
+            </Row>
+
             {/* Thêm ảnh */}
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Ảnh:</Col>
                 <Col span={18}>
-                    {/* {images && <ImageSlider images={images} />}
-                    <div className={classes.albumWrapper}>
-                        <PlusOutlined /> Thêm ảnh mới
-                        <input
-                            type="file"
-                            multiple
-                            onChange={handleFileChange}
-                            accept="image/*"
-                        />
-                    </div> */}
+                    {campaignUpdate.images && <ImageSlider images={campaignUpdate.images} />}
                     <Upload listType="picture-card" value={campaignUpdate.images} onChange={onChangeImagesHandler}>
                         <div>
                             <PlusOutlined />
