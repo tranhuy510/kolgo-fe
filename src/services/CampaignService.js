@@ -24,6 +24,10 @@ export function deleteCampaign(campaignId) {
   return deleteAuth(`ent/campaigns/${campaignId}`);
 }
 
-export function updateCampaignAddUser(campaignId) {
-  return putAuth(`kol/campaigns/${campaignId}`);
+export function updateCampaignKolJoin(campaignId) {
+  return putAuth(`kol/campaigns/${campaignId}/join`);
+}
+
+export function updateCampaignKolQuit(campaignId) {
+  return putAuth(`kol/campaigns/${campaignId}/quit`);
 }
