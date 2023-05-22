@@ -5,8 +5,11 @@ export function createCampaign(campaign) {
 }
 
 export function getCampaigns() {
+  return get("campaigns");
+}
+
+export function getEntCampaigns() {
   return getAuth("ent/campaigns");
-  // return get("campaigns");
 }
 
 export function getCampaignByCampaignId(campaignId) {

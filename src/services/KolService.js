@@ -31,5 +31,9 @@ export function updateKolImages(images) {
 }
 
 export function joinCampaign(campaignId) {
-  return putAuth(`kol/campaigns/${campaignId}`)
+  return putAuth(`kol/campaigns/${campaignId}/join`)
+}
+
+export function quitCampaign(campaignId) {
+  return putAuth(`kol/campaigns/${campaignId}/quit`)
 }
