@@ -6,8 +6,6 @@ import InformationCampaign from "./InformationCampaign";
 import CampaignContext from '../../../../context/campaign.context';
 import Modals from "../../../../components/UI/Modal/Modals";
 
-import { updateCampaignAddUser } from '../../../../services/CampaignService';
-
 const ItemCampaign = ({ campaign }) => {
     const [openModal, setOpenModal] = useState(false);
     const [noti, setNoti] = useState({
@@ -37,11 +35,6 @@ const ItemCampaign = ({ campaign }) => {
         setNoti({ status: true, title: 'error', content: 'Hãy đăng nhập' })
     }
 
-    const onJoinHandler = () => {
-        // updateCampaignAddUser(campaign.id)
-        //     .then((res) => createSuccessNoti();)
-    };
-
     return (
         <div className={classes['campaign-card-item']}>
             {noti.status &&
@@ -60,7 +53,6 @@ const ItemCampaign = ({ campaign }) => {
                 openModal={openModal}
                 onCloseModalhandler={onCloseModalhandler}
                 campaign={campaign}
-                onJoinHandler={onJoinHandler}
             />
         </div>
     )
