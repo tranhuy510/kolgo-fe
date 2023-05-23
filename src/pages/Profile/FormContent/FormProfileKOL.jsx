@@ -124,7 +124,7 @@ export default function FormProfileKOL(props) {
 
   const handleFileChange = (event) => {
     updateKolImages(event.target.files).then((res) => {
-      setImages((prev) => [...prev, ...res.images]);
+      setImages(res);
     });
   };
 
