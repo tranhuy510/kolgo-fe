@@ -10,7 +10,7 @@ const Home = (props) => {
     const originalTitle = document.title
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        document.title = 'Quay lại 凸(￣ヘ￣)'
+        document.title = 'Quay lại'
       }
       else document.title = `${originalTitle}`
     })

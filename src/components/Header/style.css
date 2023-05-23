@@ -86,10 +86,11 @@
   left: -20px;
   width: 85px;
   line-height: 30px;
-  background-color: #000;
-  color: #fff;
+  background-color: #fff;
+  color: #000;
   border-radius: 5px;
   text-align: center;
+  border: 1px solid #ccc;
 }
 
 .icon-room-guest a:hover .icon-label {

@@ -17,7 +17,7 @@ const MenuGuest = ({ icons }) => {
           end
         >
           <img src={icons[0]} alt="" />
-          <label className="icon-label">Home</label>
+          <label className="icon-label">Trang chủ</label>
         </NavLink>
       </li>
       <li className="icon-room-guest">
@@ -26,7 +26,7 @@ const MenuGuest = ({ icons }) => {
           className={({ isActive }) => (isActive ? "active" : undefined)}
         >
           <img src={icons[1]} alt="" />
-          <label className="icon-label">Campaign</label>
+          <label className="icon-label">Chiến dịch</label>
         </NavLink>
       </li>
       {user && (
@@ -36,7 +36,7 @@ const MenuGuest = ({ icons }) => {
             className={({ isActive }) => (isActive ? "active" : undefined)}
           >
             <img src={icons[2]} alt="" />
-            <label className="icon-label">Chat</label>
+            <label className="icon-label">Nhắn tin</label>
           </NavLink>
         </li>
       )}
