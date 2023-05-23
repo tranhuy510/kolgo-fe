@@ -76,7 +76,7 @@ const BookingDetails = () => {
     if (validateUser()) {
       updateBookingStatus(booking.id, BookingStatus.CANCELED).then((res) => {
         noti.timestamp = formatDate(new Date());
-        noti.content = `${user.firstName} đã hủy yêu cầu booking`;
+        noti.content = `${user.firstName} đã hủy yêu cầu hợp tác`;
         noti.userId = res.kol.id;
         sendPrivateNotification(noti);
         setBooking(res);
@@ -84,7 +84,7 @@ const BookingDetails = () => {
     } else {
       updateBookingStatus(booking.id, BookingStatus.REJECTED).then((res) => {
         noti.timestamp = formatDate(new Date());
-        noti.content = `${res.kol.firstName} đã từ chối yêu cầu booking`;
+        noti.content = `${res.kol.firstName} đã từ chối yêu cầu hợp tác`;
         noti.userId = res.user.id;
         sendPrivateNotification(noti);
         setBooking(res);
@@ -95,7 +95,7 @@ const BookingDetails = () => {
   const handleAccept = () => {
     updateBookingStatus(booking.id, BookingStatus.ACCEPTED).then((res) => {
       noti.timestamp = formatDate(new Date());
-      noti.content = `${res.kol.firstName} đã chấp nhận yêu cầu booking`;
+      noti.content = `${res.kol.firstName} đã chấp nhận yêu cầu hợp tác`;
       noti.userId = res.user.id;
       sendPrivateNotification(noti);
       setBooking(res);

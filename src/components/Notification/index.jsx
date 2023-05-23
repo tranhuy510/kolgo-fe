@@ -6,6 +6,7 @@ import { useState } from "react";
 import NotiItem from "./NotiItem";
 import { useContext } from "react";
 import { MessageContext } from "../../context/Message.context";
+import { convertStringToDateTime } from "../../services/DateTimeUtil";
 
 export default function Notification() {
   const { notifications } = useContext(MessageContext);
@@ -20,6 +21,12 @@ export default function Notification() {
   };
 
   const unreadNoti = notifications.filter((noti) => noti.status === "UNREAD");
+  const sortedNotifications = (array) =>
+    array.sort(
+      (a, b) =>
+        convertStringToDateTime(b.timestamp).getTime() -
+        convertStringToDateTime(a.timestamp).getTime()
+    );
   return (
     <>
       <div
@@ -29,7 +36,9 @@ export default function Notification() {
         onClick={handlerActive}
       >
         <BellOutlined className={classes["icon-noti"]} />
-        {!notiActive && <span className={classes["noti-badge"]}></span>}
+        {!notiActive && unreadNoti.length > 0 && (
+          <span className={classes["noti-badge"]}></span>
+        )}
       </div>
       {notiActive && (
         <div className={classes["noti-list"]}>
@@ -58,13 +67,15 @@ export default function Notification() {
           <ul>
             {notifications?.length > 0 &&
               tab &&
-              notifications.map((noti) => (
+              sortedNotifications(notifications).map((noti) => (
                 <NotiItem noti={noti} key={noti?.id} />
               ))}
             {notifications?.length > 0 &&
               !tab &&
               unreadNoti.length > 0 &&
-              unreadNoti.map((noti) => <NotiItem noti={noti} key={noti?.id} />)}
+              sortedNotifications(unreadNoti).map((noti) => (
+                <NotiItem noti={noti} key={noti?.id} />
+              ))}
             {notifications?.length > 0 && !tab && unreadNoti.length === 0 && (
               <p className={classes["noti-mgs"]}>Không có thông báo</p>
             )}

@@ -29,7 +29,7 @@ export function formatDate(date) {
   return "" + year + month + day + hours + minutes + seconds;
 }
 
-const convertStringToDateTime = (string) => {
+export const convertStringToDateTime = (string) => {
   // Trích xuất thành phần ngày, tháng, năm, giờ, phút và giây từ chuỗi
   const year = string.slice(0, 4);
   const month = string.slice(4, 6);
