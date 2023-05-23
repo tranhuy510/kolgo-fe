@@ -43,7 +43,6 @@ export default function FormProfileEnterprise(props) {
   useEffect(() => {
     Promise.all([getEntProfile(), getCities(), getEntFields()]).then(
       ([profile, cities, fields]) => {
-        console.log(profile);
         setProfile(profile);
         setCities(cities);
         setFields(fields);
@@ -124,6 +123,8 @@ export default function FormProfileEnterprise(props) {
       errMsg = "Vui lòng chọn lĩnh vực hoạt động!";
     } else if (!formData.addressDetails) {
       errMsg = "Vui lòng nhập địa chỉ cụ thể!";
+    } else if (!formData.introduction) {
+      errMsg = "Vui lòng nhập giới thiệu về công ty!";
     }
     if (errMsg) {
       createErrorMessage(errMsg);
@@ -267,6 +268,19 @@ export default function FormProfileEnterprise(props) {
                 className={classes.input_profile}
                 defaultValue={profile.addressDetails}
                 name="addressDetails"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={7}>Mô tả:</Col>
+            <Col span={17}>
+              <textarea
+                placeholder="Giới thiệu về công ty"
+                onChange={inputChangeHandler}
+                className={classes.input_profile}
+                defaultValue={profile?.introduction}
+                name="introduction"
               />
             </Col>
           </Row>

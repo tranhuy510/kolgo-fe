@@ -147,6 +147,8 @@ export default function FormProfileKOL(props) {
       errMsg = "Vui lòng nhập giá của 1 bài đăng!";
     } else if (!formData.videoPrice) {
       errMsg = "Vui lòng nhập giá của 1 video!";
+    } else if (!formData.introduction) {
+      errMsg = "Vui lòng nhập giới thiệu bản thân!";
     }
     if (errMsg) {
       createErrorMessage(errMsg);
@@ -368,6 +370,19 @@ export default function FormProfileKOL(props) {
                 className={classes.input_profile}
                 defaultValue={profile?.videoPrice}
                 name="videoPrice"
+              />
+            </Col>
+          </Row>
+
+          <Row className={classes.form_control}>
+            <Col span={6}>Mô tả:</Col>
+            <Col span={18}>
+              <textarea
+                placeholder="Giới thiệu về bản thân"
+                onChange={inputChangeHandler}
+                className={classes.input_profile}
+                defaultValue={profile?.introduction}
+                name="introduction"
               />
             </Col>
           </Row>
