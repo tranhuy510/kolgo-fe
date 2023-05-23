@@ -6,8 +6,8 @@ import classes from '../../Campaign.module.css';
 import { getFields } from '../../../../services/getApi'
 import CampaignContext from "../../../../context/campaign.context";
 import { formatDate } from "../../../../services/DateTimeUtil";
-import { createCampaign } from "../../../../services/CampaignService";
-import { updateKolImages } from "../../../../services/KolService";
+import { createCampaign, updateCampaignAddImages } from "../../../../services/CampaignService";
+// import { createCampaign } from "../../../../services/KolService";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -18,16 +18,17 @@ const ModalCreateCampaign = (props) => {
 
     const [campaign, setCampaign] = useState({
         name: '',
-        fieldIds: [],
         timestamp: '',
         startTime: '',
         finishTime: '',
         location: '',
         description: '',
         details: '',
-        images: [],
         enterprise: campaignCtx.profile
     })
+    const [images, setImages] = useState([])
+    const [fieldIds, setFieldIds] = useState([])
+
 
     const [fields, setFileds] = useState([]);
 
@@ -42,7 +43,7 @@ const ModalCreateCampaign = (props) => {
     };
 
     const onChangefieldIdsHandler = (value) => {
-        setCampaign(prev => { return { ...prev, fieldIds: value } })
+        setFieldIds(value)
     };
 
     const onChangeDateHandler = (value) => {
@@ -78,7 +79,7 @@ const ModalCreateCampaign = (props) => {
             errMsg = "Vui lòng nhập địa chỉ!";
         } else if (!campaign.description) {
             errMsg = "Vui lòng nhập mô tả!";
-        } else if (!campaign.images) {
+        } else if (!images) {
             errMsg = "Vui lòng chọn ảnh!";
         }
         if (errMsg) {
@@ -93,37 +94,49 @@ const ModalCreateCampaign = (props) => {
 
     // đang sửa đăng ảnh
     const onChangeImagesHandler = (value) => {
-        // updateKolImages(value.file)
-        //     .then(res => console.log(res))
-        // console.log(value.file);
-        // setCampaign(prev => {
-        //     return {
-        //         ...prev, images: value.fileList.map((item) => {
-        //             return item.name
+        // console.log(value.file.originFileObj);
+        // updateCampaignAddImages(campaign.id, value.fileList.map((file) => file.originFileObj))
+        //     .then(res => {
+        //         console.log(res);
+        //         setCampaign(prev => {
+        //             return {
+        //                 ...prev, images: value.fileList.map((item) => {
+        //                     return item.name
+        //                 })
+        //             }
         //         })
-        //     }
-        // })
+        //     })
+        setImages(prev => {
+            return [...prev, value.file.originFileObj]
+        })
     }
 
-    // hàm bên formKOLProfile
     const handleFileChange = (event) => {
+        // updateKolImages(event.target.files).then((res) => {
+        //   setImages(res);
+        // });
         console.log(event.target.files);
-        updateKolImages(event.target.files).then((res) => {
-            console.log(res);;
-        });
+
+        setImages(prev => {
+            return [...prev, event.target.files]
+        })
     };
 
     const onCreateCampaignHandler = (event) => {
         event.preventDefault();
         campaign.timestamp = formatDate(new Date())
-        // console.log(campaign);
+        console.log(campaign);
+        console.log(images);
+        console.log(fieldIds);
+
 
         if (!validateFormData(campaign)) return;
-        else createCampaign(campaign).then(() => {
-            messageApi.open({
-                type: 'success',
-                content: 'Tạo thành công',
-            });
+        else createCampaign(campaign, images, fieldIds).then((res) => {
+            console.log(res);
+            // messageApi.open({
+            //     type: 'success',
+            //     content: 'Tạo thành công',
+            // });
         }).catch(() => {
             messageApi.open({
                 type: 'warning',
@@ -287,16 +300,15 @@ const ModalCreateCampaign = (props) => {
                         },
                     ]}
                 >
-                    {/* bên formKOLProfile */}
-                    {/* <input
+                    <input
                         type="file"
                         multiple
                         onChange={handleFileChange}
                         accept="image/*"
-                    /> */}
+                    />
 
                     {/* Gốc */}
-                    <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
+                    {/* <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
                         <div>
                             <PlusOutlined />
                             <div
@@ -307,7 +319,7 @@ const ModalCreateCampaign = (props) => {
                                 Thêm ảnh
                             </div>
                         </div>
-                    </Upload>
+                    </Upload> */}
                 </Form.Item>
 
                 <Form.Item

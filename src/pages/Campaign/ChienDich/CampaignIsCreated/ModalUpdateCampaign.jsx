@@ -10,7 +10,7 @@ import { updateCampaign } from "../../../../services/CampaignService";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'YYYY/MM/DD/HH/MM/SS';
 
 const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     const userCtx = useContext(CampaignContext);
@@ -137,7 +137,9 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                         }}
                         // onChange={onChangeDateHandler}
                         showTime
-                        value={[spreadDate(campaignUpdate?.startTime), spreadDate(campaignUpdate?.finishTime)]}
+                        // value={[spreadDate(campaignUpdate?.startTime), spreadDate(campaignUpdate?.finishTime)]}
+                        value={[campaignUpdate?.startTime, campaignUpdate?.finishTime]}
+                        format={dateFormat}
                     />
                 </Col>
             </Row>

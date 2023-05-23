@@ -58,3 +58,7 @@ export function putFormDataAuth(uri, formData) {
 export function deleteAuth(uri) {
   return httpRequestJson("DELETE", uri, true);
 }
+
+export function postFormDataAuth(uri, formData) {
+  return httpRequestFormData("POST", uri, true, formData)
+}

@@ -1,8 +1,15 @@
-import { getAuth, postAuth, putAuth, deleteAuth, get } from "./Common";
+import {
+  getAuth,
+  postAuth,
+  putAuth,
+  deleteAuth,
+  get,
+  postFormDataAuth,
+} from "./Common";
 
-export function createCampaign(campaign) {
-  return postAuth(`ent/campaigns`, campaign);
-}
+// export function createCampaign(campaign) {
+//   return postFormAuth(`ent/campaigns`, campaign);
+// }
 
 export function getCampaigns() {
   return get("campaigns");
@@ -30,4 +37,21 @@ export function updateCampaignKolJoin(campaignId) {
 
 export function updateCampaignKolQuit(campaignId) {
   return putAuth(`kol/campaigns/${campaignId}/quit`);
+}
+
+export function createCampaign(data, images, fieldIds) {
+  const formData = new FormData();
+  Object.keys(data).map((key) => formData.append(key, data[key]));
+
+  for (let i = 0; i < images.length; i++) {
+    formData.append("images", images[i]);
+  }
+
+  for (let i = 0; i < fieldIds.length; i++) {
+    formData.append("fieldIds", fieldIds[i]);
+  }
+
+  console.log(...formData);
+
+  return postFormDataAuth(`ent/campaigns`, formData);
 }
