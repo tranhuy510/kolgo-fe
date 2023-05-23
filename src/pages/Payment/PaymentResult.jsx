@@ -7,7 +7,7 @@ import { Col, Row } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { useContext } from "react";
 import { MessageContext } from "../../context/Message.context.js";
-import { getBookingByBookingId } from "../../services/BookingService.js";
+import { getBookingByBookingId, updateBookingStatus } from "../../services/BookingService.js";
 import { formatDate } from "../../services/DateTimeUtil.js";
 
 function PaymentResult() {
@@ -36,6 +36,7 @@ function PaymentResult() {
     getBookingByBookingId(paymentResult.txnRef)
       .then(res => {
         if (paymentResult.status === 'SUCCESS')
+          updateBookingStatus(paymentResult.txnRef, 'PAID')
           sendPrivateNotification({
             type: 'BOOKING',
             bookingId: paymentResult.txnRef,
