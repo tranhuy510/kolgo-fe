@@ -70,62 +70,68 @@ const PageKolDetail = () => {
   const [kol, setKol] = useState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
 
   const onCancelOpenHandler = () => {
     setOpen(false);
   };
 
   useEffect(() => {
-    getKol(id)
-      .then((res) => {
-        setKol(res);
-        checkStatus(res.bookings, user, res.kol)
-      });
+    getKol(id).then((res) => {
+      setKol(res);
+      checkStatus(res.bookings, user, res.kol);
+    });
   }, []);
 
   useEffect(() => {
-    document.title = `KOLgo | ${kol?.kol?.firstName} ${kol?.kol?.lastName}`
+    document.title = `KOLgo | ${kol?.kol?.firstName} ${kol?.kol?.lastName}`;
 
     return () => {
-      document.title = 'KOLgo';
+      document.title = "KOLgo";
     };
-  }, [kol?.kol?.id])
+  }, [kol?.kol?.id]);
 
   const checkStatus = (bookings, user, kol) => {
     if (!user) {
-      setStatus("GUEST")
-    }
-    else if (kol.userId === user.id) {
-      setStatus("ME")
-    }
-    else if (bookings.findIndex(booking => booking.user.id === user.id && (booking.status === "PENDING")) !== -1) {
-      setStatus("PENDING")
-    }
-    else if (bookings.findIndex(booking => booking.user.id === user.id && (booking.status === "ACCEPTED")) !== -1) {
-      setStatus("ACCEPTED")
-    }
-    else setStatus("BOOK")
-  }
+      setStatus("GUEST");
+    } else if (kol.userId === user.id) {
+      setStatus("ME");
+    } else if (
+      bookings.findIndex(
+        (booking) => booking.user.id === user.id && booking.status === "PENDING"
+      ) !== -1
+    ) {
+      setStatus("PENDING");
+    } else if (
+      bookings.findIndex(
+        (booking) =>
+          booking.user.id === user.id && booking.status === "ACCEPTED"
+      ) !== -1
+    ) {
+      setStatus("ACCEPTED");
+    } else setStatus("BOOK");
+  };
 
   const navigateToChat = () => {
-    navigate(`/chat`, { state: kol.kol })
-  }
+    navigate(`/chat`, { state: kol.kol });
+  };
 
   const bookingHandler = () => {
     setOpen(true);
-  }
+  };
 
   const onChange = (key) => {
     console.log(key);
   };
 
   const onRedirect = () => {
-    const booking = kol.bookings.find(booking => booking.status === status && booking.user.id === user.id)
+    const booking = kol.bookings.find(
+      (booking) => booking.status === status && booking.user.id === user.id
+    );
     if (booking) {
       navigate(`/bookings/${booking.id}`);
     }
-  }
+  };
 
   const items = [
     {
@@ -152,14 +158,23 @@ const PageKolDetail = () => {
     <>
       <Header />
       <main className="main-details">
-        {kol && <BookingCreate kol={kol.kol} onCancelOpenHandler={onCancelOpenHandler} open={open} />}
+        {kol && (
+          <BookingCreate
+            kol={kol.kol}
+            onCancelOpenHandler={onCancelOpenHandler}
+            open={open}
+          />
+        )}
         <div className="container">
           <Row className="detail-description">
             <Col
               span={6}
               style={{ paddingRight: "10px", boxSizing: "border-box" }}
             >
-              <ImageDescription images={kol?.kol?.images} avatar={kol?.kol?.avatar} />
+              <ImageDescription
+                images={kol?.kol?.images}
+                avatar={kol?.kol?.avatar}
+              />
               <ContactSocials
                 facebookUrl={kol?.kol?.facebookUrl}
                 instagramUrl={kol?.kol?.instagramUrl}
@@ -183,7 +198,7 @@ const PageKolDetail = () => {
                   addressDetails={kol?.kol?.addressDetails}
                 />
               </Row>
-              <Row className="middle-row" >
+              <Row className="middle-row">
                 <ListFields
                   fieldNames={kol?.kol?.fieldNames}
                   fieldIds={kol?.kol?.fieldIds}
@@ -195,25 +210,34 @@ const PageKolDetail = () => {
             </Col>
             <Col span={6}>
               <div className="col-6-right">
-                <div className="price-booking">{kol?.kol?.postPrice} / 1 post</div>
-                <div className="price-booking">{kol?.kol?.videoPrice} / 1 video</div>
+                <div className="price-booking">
+                  {kol?.kol?.postPrice} / 1 post
+                </div>
+                <div className="price-booking">
+                  {kol?.kol?.videoPrice} / 1 video
+                </div>
                 {status === "GUEST" && <></>}
                 {status === "ME" && <></>}
-                {status === "BOOK" &&
+                {status === "BOOK" && (
                   <ButtonFull onClick={bookingHandler} className="btn-function">
                     Đặt
-                  </ButtonFull>}
-                {status === "PENDING" &&
+                  </ButtonFull>
+                )}
+                {status === "PENDING" && (
                   <ButtonFull onClick={onRedirect} className="btn-function">
                     Đang chờ
-                  </ButtonFull>}
-                {status === "ACCEPTED" &&
+                  </ButtonFull>
+                )}
+                {status === "ACCEPTED" && (
                   <ButtonFull onClick={onRedirect} className="btn-function">
                     Cần thanh toán
-                  </ButtonFull>}
-                {status !== "ME" && status !== "GUEST" && <ButtonFull onClick={navigateToChat} className="btn-function">
-                  NHẮN TIN
-                </ButtonFull>}
+                  </ButtonFull>
+                )}
+                {status !== "ME" && status !== "GUEST" && (
+                  <ButtonFull onClick={navigateToChat} className="btn-function">
+                    NHẮN TIN
+                  </ButtonFull>
+                )}
               </div>
             </Col>
           </Row>

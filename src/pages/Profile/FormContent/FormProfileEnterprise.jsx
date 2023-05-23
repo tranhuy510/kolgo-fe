@@ -284,7 +284,7 @@ export default function FormProfileEnterprise(props) {
           <h3>Ảnh đại diện</h3>
           <Avatar
             size={200}
-            src={`http://localhost:8080/api/images/images/${user?.avatar}`}
+            src={`http://localhost:8080/api/images/${user?.avatar}`}
           >
             {user?.avatar ? (
               ""

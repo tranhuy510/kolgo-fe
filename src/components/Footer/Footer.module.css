@@ -1,0 +1,59 @@
+.footer {
+  padding: 30px 100px 30px 150px;
+  background-color: rgb(39, 39, 39);
+  position: relative;
+}
+
+.logo-wrap {
+  display: flex;
+  position: relative;
+  background-color: white;
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+}
+
+.logo {
+  width: 100%;
+}
+
+.logo-text {
+  position: absolute;
+  margin: 0;
+  bottom: 0;
+  left: 100%;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.address {
+  color: white;
+  font-size: 14px;
+}
+
+.header {
+  color: white;
+  margin: 0;
+  font-size: 18px;
+}
+
+.content {
+  color: white;
+  margin-top: 10px;
+  line-height: 25px;
+}
+
+.footer-info {
+  margin-top: 20px;
+  color: white;
+}
+
+.footer-info img {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.footer-info p {
+  margin: 10px 0;
+}
