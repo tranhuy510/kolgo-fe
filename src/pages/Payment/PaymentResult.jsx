@@ -7,7 +7,10 @@ import { Col, Row } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { useContext } from "react";
 import { MessageContext } from "../../context/Message.context.js";
-import { getBookingByBookingId } from "../../services/BookingService.js";
+import {
+  getBookingByBookingId,
+  updateBookingStatus,
+} from "../../services/BookingService.js";
 import { formatDate } from "../../services/DateTimeUtil.js";
 import { formatCurrency } from "../../services/CurrencyUtil.js";
 
@@ -38,7 +41,8 @@ function PaymentResult() {
     createPayment(paymentResult.txnRef, paymentResult);
     getBookingByBookingId(paymentResult.txnRef).then((res) => {
       setKol(res.kol);
-      if (paymentResult.status === "SUCCESS")
+      if (paymentResult.status === "SUCCESS") {
+        updateBookingStatus(paymentResult.txnRef, "PAID");
         sendPrivateNotification({
           type: "BOOKING",
           bookingId: paymentResult.txnRef,
@@ -46,6 +50,7 @@ function PaymentResult() {
           timestamp: formatDate(new Date()),
           userId: res.kol.userId,
         });
+      }
     });
   }, []);
   return (
