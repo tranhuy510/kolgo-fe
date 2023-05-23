@@ -61,7 +61,7 @@ const ModalSearch = () => {
 
     const resultKolFlter = kols.filter((kol) => {
         return (searchName === "" ? null : kol.firstName.includes(searchName) || kol.lastName.includes(searchName))
-            && (searchField === "" ? kol : kol.fields.find(field => field?.name === searchField))
+            && (searchField === "" ? kol : kol.fields?.find(field => field?.name === searchField))
             && (searchCity === "" ? kol : kol.city?.name === searchCity)
     })
 
