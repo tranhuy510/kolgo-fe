@@ -7,6 +7,7 @@ import { getFields } from '../../../../services/getApi'
 import CampaignContext from "../../../../context/campaign.context";
 import { formatDate } from "../../../../services/DateTimeUtil";
 import { createCampaign } from "../../../../services/CampaignService";
+import { updateKolImages } from "../../../../services/KolService";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -90,15 +91,27 @@ const ModalCreateCampaign = (props) => {
         return res;
     };
 
+    // đang sửa đăng ảnh
     const onChangeImagesHandler = (value) => {
-        setCampaign(prev => {
-            return {
-                ...prev, images: value.fileList.map((item) => {
-                    return item.name
-                })
-            }
-        })
+        // updateKolImages(value.file)
+        //     .then(res => console.log(res))
+        // console.log(value.file);
+        // setCampaign(prev => {
+        //     return {
+        //         ...prev, images: value.fileList.map((item) => {
+        //             return item.name
+        //         })
+        //     }
+        // })
     }
+
+    // hàm bên formKOLProfile
+    const handleFileChange = (event) => {
+        console.log(event.target.files);
+        updateKolImages(event.target.files).then((res) => {
+            console.log(res);;
+        });
+    };
 
     const onCreateCampaignHandler = (event) => {
         event.preventDefault();
@@ -274,7 +287,16 @@ const ModalCreateCampaign = (props) => {
                         },
                     ]}
                 >
-                    <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler}>
+                    {/* bên formKOLProfile */}
+                    {/* <input
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
+                        accept="image/*"
+                    /> */}
+
+                    {/* Gốc */}
+                    <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
                         <div>
                             <PlusOutlined />
                             <div

@@ -21,10 +21,11 @@ const ModalCampaignIsProgress = () => {
 
     // hàm này lấy lun chiến dịch có ent
     useEffect(() => {
-        getCampaigns().then((res) => {
-            if (res) { setCampaigns(res); setTotal(res.length); }
-            else setCampaigns([])
-        }).catch(() => setCampaigns([]))
+        getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
+        // getCampaigns().then((res) => {
+        //     if (res) { setCampaigns(res); setTotal(res.length); }
+        //     else setCampaigns([])
+        // }).catch(() => setCampaigns([]))
     }, [])
 
     const onChangePage = (page) => {

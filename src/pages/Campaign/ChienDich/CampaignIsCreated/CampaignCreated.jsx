@@ -40,7 +40,7 @@ const CampaignCreated = ({ campaign }) => {
                         className={classes["image"]}
                         src={`http://localhost:8080/api/images/${campaign.images[0]}`}
                         onClick={() => { setShow({ id: 1, status: true }) }}
-                        alt={campaign?.enterprise.avatar}
+                        alt={campaign?.images[0]}
                     />}
                     {!campaign?.enterprise.avatar && <Avatar shape="square" size={150}>
                         {campaign?.enterprise?.firstName ? `${campaign?.enterprise?.firstName}` : ''}

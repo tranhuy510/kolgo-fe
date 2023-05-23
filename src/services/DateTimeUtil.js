@@ -37,18 +37,20 @@ export function spreadDate(date) {
   let minute = date?.slice(10, 12);
   let second = date?.slice(12);
 
-  return (
-    "" +
-    year +
-    "/" +
-    month +
-    "/" +
-    day +
-    " - " +
-    hour +
-    "/" +
-    minute +
-    "/" +
-    second
-  );
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
+  // return (
+  //   "" +
+  //   year +
+  //   "/" +
+  //   month +
+  //   "/" +
+  //   day +
+  //   " - " +
+  //   hour +
+  //   "/" +
+  //   minute +
+  //   "/" +
+  //   second
+  // );
 }

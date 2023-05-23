@@ -3,15 +3,14 @@ import { Button, Modal, Input, Select, Form, DatePicker, Upload, Cascader, Col, 
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
 import CampaignContext from '../../../../context/campaign.context';
-import UploadFile from "../UploadFile";
 
-import { spreadDate } from '../../../../services/DateTimeUtil';
+import { spreadDate, formatDate } from '../../../../services/DateTimeUtil';
 import ImageSlider from '../../../../components/UI/ImageSlider/ImageSlider'
+import { updateCampaign } from "../../../../services/CampaignService";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-
-
+const dateFormat = 'YYYY/MM/DD';
 
 const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     const userCtx = useContext(CampaignContext);
@@ -32,7 +31,6 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
         minute: null,
         second: null,
     });
-
 
     const [campaignUpdate, setCampaignUpdate] = useState({});
 
@@ -55,10 +53,6 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
         });
     };
 
-    const onUpdateCampaignHandler = () => {
-        console.log(campaignUpdate);
-    };
-
     const onChangeImagesHandler = (value) => {
         console.log(value.fileList.map((item) => {
             return item.name
@@ -72,26 +66,14 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
         }
         )
     }
-    // const onChangeDateHandler = (value) => {
-    //     setStartDate({
-    //         day: value[0].$D,
-    //         month: value[0].$M,
-    //         year: value[0].$y,
-    //         hours: 0,
-    //         minute: 0,
-    //         second: 0,
-    //     })
-    //     setEndDate({
-    //         day: value[1].$D,
-    //         month: value[1].$M,
-    //         year: value[1].$y,
-    //         hours: 23,
-    //         minute: 0,
-    //         second: 0,
-    //     })
-    // }
 
+    const onChangeDateHandler = (value) => {
+        setCampaignUpdate(prev => { return { ...prev, startTime: formatDate(new Date(value[0])) } })
+        // setStartDate(value[0])
 
+        // setEndDate(value[1])
+        setCampaignUpdate(prev => { return { ...prev, finishTime: formatDate(new Date(value[1])) } })
+    }
 
     const optionFields = userCtx.fields.map((c) => {
         return {
@@ -99,6 +81,12 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             label: c.name,
         };
     });
+
+    const onUpdateCampaignHandler = () => {
+        console.log(campaignUpdate);
+        updateCampaign(campaignUpdate.id, campaignUpdate)
+            .then(res => { console.log(res); })
+    };
 
     return (
         <Modal
@@ -140,7 +128,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             </Row>
 
             {/* Thời gian */}
-            {/* <Row style={{ margin: '20px 10px' }}>
+            <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Thời gian:</Col>
                 <Col span={18}>
                     <RangePicker
@@ -149,11 +137,11 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                         }}
                         // onChange={onChangeDateHandler}
                         showTime
-                    // value={[campaignUpdate?.startTime, campaignUpdate?.finishTime]}
-                    // value={campaignUpdate?.finishTime}
+                        value={[spreadDate(campaignUpdate?.startTime), spreadDate(campaignUpdate?.finishTime)]}
                     />
                 </Col>
-            </Row> */}
+            </Row>
+
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Ngày tạo:</Col>
                 <Col span={18}>
