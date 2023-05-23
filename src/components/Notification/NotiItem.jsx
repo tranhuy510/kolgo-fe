@@ -22,7 +22,6 @@ export default function NotiItem({ noti }) {
     if (noti && noti.type === "BOOKING");
     navigate(`/bookings/${noti.bookingId}`);
   };
-  console.log(noti);
 
   return (
     <div className={classes["item-wrap"]} onClick={handleClick}>
