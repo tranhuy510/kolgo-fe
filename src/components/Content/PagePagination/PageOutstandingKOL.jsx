@@ -73,11 +73,7 @@ const PageOutstandingKOL = (props) => {
                   <Link to={`/kols/${kol.id}`} className={classes['kol-link']}>Xem thêm</Link>
                 </div>
               </div>
-
             </div>
-
-
-
           </div>
         );
       })}
