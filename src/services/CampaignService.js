@@ -41,11 +41,11 @@ export function updateCampaignKolQuit(campaignId) {
 
 export function createCampaign(data, images, fieldIds) {
   const formData = new FormData();
-  Object.keys(data).map((key) => formData.append(key, data[key]));
 
   for (let i = 0; i < images.length; i++) {
     formData.append("images", images[i]);
   }
+  Object.keys(data).map((key) => formData.append(key, data[key]));
 
   for (let i = 0; i < fieldIds.length; i++) {
     formData.append("fieldIds", fieldIds[i]);

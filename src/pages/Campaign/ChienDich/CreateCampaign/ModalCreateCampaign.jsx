@@ -1,314 +1,327 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button, Input, Select, Form, DatePicker, Upload, message } from "antd";
-import { PlusOutlined } from '@ant-design/icons';
-import classes from '../../Campaign.module.css';
+import { PlusOutlined } from "@ant-design/icons";
+import classes from "../../Campaign.module.css";
 
-import { getFields } from '../../../../services/getApi'
+import { getFields } from "../../../../services/getApi";
 import CampaignContext from "../../../../context/campaign.context";
 import { formatDate } from "../../../../services/DateTimeUtil";
-import { createCampaign, updateCampaignAddImages } from "../../../../services/CampaignService";
-
+import {
+  createCampaign,
+  updateCampaignAddImages,
+} from "../../../../services/CampaignService";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const ModalCreateCampaign = (props) => {
-    const campaignCtx = useContext(CampaignContext);
-    const [messageApi, contextHolder] = message.useMessage();
+  const campaignCtx = useContext(CampaignContext);
+  const [messageApi, contextHolder] = message.useMessage();
 
-    const [campaign, setCampaign] = useState({
-        name: '',
-        timestamp: '',
-        startTime: '',
-        finishTime: '',
-        location: '',
-        description: '',
-        details: '',
-        enterprise: campaignCtx.profile
-    })
-    const [images, setImages] = useState([])
-    const [fieldIds, setFieldIds] = useState([])
+  const [campaign, setCampaign] = useState({
+    name: "",
+    timestamp: "",
+    startTime: "",
+    finishTime: "",
+    location: "",
+    description: "",
+    details: "",
+    enterprise: campaignCtx.profile,
+  });
+  const [images, setImages] = useState([]);
+  const [fieldIds, setFieldIds] = useState([]);
 
+  const [fields, setFileds] = useState([]);
 
-    const [fields, setFileds] = useState([]);
+  useEffect(() => {
+    getFields()
+      .then((res) => res.json())
+      .then((data) => setFileds(data));
+  }, []);
 
-    useEffect(() => {
-        getFields()
-            .then(res => res.json())
-            .then(data => setFileds(data))
-    }, [])
-
-    const onChangeNameCampaignHandler = (e) => {
-        setCampaign(prev => { return { ...prev, name: e.target.value } })
-    };
-
-    const onChangefieldIdsHandler = (value) => {
-        setFieldIds(value)
-    };
-
-    const onChangeDateHandler = (value) => {
-        setCampaign(prev => { return { ...prev, startTime: formatDate(new Date(value[0])) } })
-        // setStartDate(value[0])
-
-        // setEndDate(value[1])
-        setCampaign(prev => { return { ...prev, finishTime: formatDate(new Date(value[1])) } })
-    }
-
-    const onChangeLocationHandler = (e) => {
-        setCampaign(prev => { return { ...prev, location: e.target.value } })
-    }
-
-    const onChangeDescriptionHandler = (e) => {
-        setCampaign(prev => { return { ...prev, description: e.target.value } })
-    }
-
-    const onChangeDetailsHandler = (e) => {
-        setCampaign(prev => { return { ...prev, details: e.target.value } })
-    }
-
-    const validateFormData = (campaign) => {
-        let res = true;
-        let errMsg = "";
-        if (!campaign.name) {
-            errMsg = "Vui lòng nhập tên chiến dịch!";
-        } else if (!campaign.startTime) {
-            errMsg = "Vui lòng chọn thời gian bắt đầu!";
-        } else if (!campaign.finishTime) {
-            errMsg = "Vui lòng chọn thời gian kết thúc!";
-        } else if (!campaign.location) {
-            errMsg = "Vui lòng nhập địa chỉ!";
-        } else if (!campaign.description) {
-            errMsg = "Vui lòng nhập mô tả!";
-        } else if (!images) {
-            errMsg = "Vui lòng chọn ảnh!";
-        }
-        if (errMsg) {
-            messageApi.open({
-                type: 'warning',
-                content: errMsg,
-            });
-            res = false;
-        }
-        return res;
-    };
-
-    // đang sửa đăng ảnh
-    const onChangeImagesHandler = (value) => {
-        // console.log(value.file.originFileObj);
-        // updateCampaignAddImages(campaign.id, value.fileList.map((file) => file.originFileObj))
-        //     .then(res => {
-        //         console.log(res);
-        //         setCampaign(prev => {
-        //             return {
-        //                 ...prev, images: value.fileList.map((item) => {
-        //                     return item.name
-        //                 })
-        //             }
-        //         })
-        //     })
-        setImages(prev => {
-            return [...prev, value.file.originFileObj]
-        })
-    }
-
-    const handleFileChange = (event) => {
-        // updateKolImages(event.target.files).then((res) => {
-        //   setImages(res);
-        // });
-        // console.log(event.target.files);
-
-        setImages(prev => {
-            return [...prev, { ...event.target.files }]
-        })
-    };
-
-    const onCreateCampaignHandler = (event) => {
-        event.preventDefault();
-        campaign.timestamp = formatDate(new Date())
-        // console.log(campaign);
-        // console.log(fieldIds);
-        // console.log(images[0])
-        // console.log(typeof images[0]);
-
-        if (!validateFormData(campaign)) return;
-        else createCampaign(campaign, images, fieldIds).then((res) => {
-            console.log(res);
-            // messageApi.open({
-            //     type: 'success',
-            //     content: 'Tạo thành công',
-            // });
-        }).catch(() => {
-            messageApi.open({
-                type: 'warning',
-                content: 'Tạo thất bại',
-            });
-        })
-    };
-
-    const optionFields = fields.map((c) => {
-        return {
-            value: c.id,
-            label: c.name,
-        };
+  const onChangeNameCampaignHandler = (e) => {
+    setCampaign((prev) => {
+      return { ...prev, name: e.target.value };
     });
+  };
 
-    return (
-        <div className={classes['campaign-modal-create-campaign']}>
-            {contextHolder}
-            <Form
-                name="basic"
-                labelCol={{ span: 5, }}
-                wrapperCol={{ span: 19, }}
-                style={{ minWidth: 600, maxWidth: 920, }}
-                initialValues={{ remember: true, }}
-                autoComplete="off"
-            >
-                {/* tên chiến dịch */}
-                <Form.Item
-                    label="Tên chiến dịch"
-                    name="name"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Không được để trống tên chiến dịch!',
-                        },
-                    ]}
-                >
-                    <Input
-                        rows={2}
-                        placeholder="Nhập tên chiến dịch"
-                        onChange={onChangeNameCampaignHandler}
-                        value={campaign.name}
-                    />
-                </Form.Item>
+  const onChangefieldIdsHandler = (value) => {
+    setFieldIds(value);
+  };
 
-                {/* Lĩnh vực */}
-                <Form.Item
-                    label="Lĩnh vực"
-                    name="fieldIds"
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Không được để trống lĩnh vực!',
-                        },
-                    ]}
-                >
-                    <Select
-                        mode="tags"
-                        style={{
-                            width: "100%",
-                        }}
-                        placeholder="Chọn lĩnh Vực"
-                        onChange={onChangefieldIdsHandler}
-                        options={optionFields}
-                        value={campaign.fieldIds}
-                    />
-                </Form.Item>
+  const onChangeDateHandler = (value) => {
+    setCampaign((prev) => {
+      return { ...prev, startTime: formatDate(new Date(value[0])) };
+    });
+    // setStartDate(value[0])
 
-                {/* Thời gian */}
-                <Form.Item
-                    label="Thời gian"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy chọn thời gian!',
-                        },
-                    ]}
-                >
-                    <RangePicker
-                        style={{
-                            width: "100%",
-                        }}
-                        onChange={onChangeDateHandler}
-                        showTime
-                    />
-                </Form.Item>
+    // setEndDate(value[1])
+    setCampaign((prev) => {
+      return { ...prev, finishTime: formatDate(new Date(value[1])) };
+    });
+  };
 
-                {/* người tạo */}
-                <Form.Item
-                    label="Người tạo"
-                    name="enterprise"
-                >
-                    {campaignCtx.user.firstName} {campaignCtx.user.lastName}
-                </Form.Item>
+  const onChangeLocationHandler = (e) => {
+    setCampaign((prev) => {
+      return { ...prev, location: e.target.value };
+    });
+  };
 
-                {/* địa chỉ */}
-                <Form.Item
-                    label="Địa chỉ"
-                    name="location"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy nhập địa chỉ!',
-                        },
-                    ]}
-                >
-                    <Input
-                        rows={2}
-                        placeholder="Nhập địa chỉ"
-                        onChange={onChangeLocationHandler}
-                        value={campaign.location}
-                    />
-                </Form.Item>
+  const onChangeDescriptionHandler = (e) => {
+    setCampaign((prev) => {
+      return { ...prev, description: e.target.value };
+    });
+  };
 
-                {/* Mô tả */}
-                <Form.Item
-                    label="Mô tả chiến dịch"
-                    name="description"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Hãy nhập mô tả!',
-                        },
-                    ]}
-                >
-                    <TextArea
-                        rows={4}
-                        placeholder="Nhập mô tả chiến dịch"
-                        value={campaign.description}
-                        onChange={onChangeDescriptionHandler}
-                    />
-                </Form.Item>
+  const onChangeDetailsHandler = (e) => {
+    setCampaign((prev) => {
+      return { ...prev, details: e.target.value };
+    });
+  };
 
-                {/* Chi tiet */}
-                <Form.Item
-                    label="Thông tin chi tiết"
-                    name="details"
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Hãy nhập thông tin chi tiết!',
-                        },
-                    ]}
-                >
-                    <TextArea
-                        rows={10}
-                        placeholder="Nhập chi tiết"
-                        value={campaign.details}
-                        onChange={onChangeDetailsHandler}
-                    />
-                </Form.Item>
+  const validateFormData = (campaign) => {
+    let res = true;
+    let errMsg = "";
+    if (!campaign.name) {
+      errMsg = "Vui lòng nhập tên chiến dịch!";
+    } else if (!campaign.startTime) {
+      errMsg = "Vui lòng chọn thời gian bắt đầu!";
+    } else if (!campaign.finishTime) {
+      errMsg = "Vui lòng chọn thời gian kết thúc!";
+    } else if (!campaign.location) {
+      errMsg = "Vui lòng nhập địa chỉ!";
+    } else if (!campaign.description) {
+      errMsg = "Vui lòng nhập mô tả!";
+    } else if (!images) {
+      errMsg = "Vui lòng chọn ảnh!";
+    }
+    if (errMsg) {
+      messageApi.open({
+        type: "warning",
+        content: errMsg,
+      });
+      res = false;
+    }
+    return res;
+  };
 
-                {/* Thêm ảnh */}
-                <Form.Item
-                    label="Thêm ảnh"
-                    valuePropName="fileList"
-                    rules={[
-                        {
-                            required: false,
-                            message: 'Please choose your image!',
-                        },
-                    ]}
-                >
-                    <input
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                        accept="image/*"
-                    />
+  // đang sửa đăng ảnh
+  const onChangeImagesHandler = (value) => {
+    // console.log(value.file.originFileObj);
+    // updateCampaignAddImages(campaign.id, value.fileList.map((file) => file.originFileObj))
+    //     .then(res => {
+    //         console.log(res);
+    //         setCampaign(prev => {
+    //             return {
+    //                 ...prev, images: value.fileList.map((item) => {
+    //                     return item.name
+    //                 })
+    //             }
+    //         })
+    //     })
+    setImages((prev) => {
+      return [...prev, value.file.originFileObj];
+    });
+  };
 
-                    {/* Gốc */}
-                    {/* <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
+  const handleFileChange = (event) => {
+    // updateKolImages(event.target.files).then((res) => {
+    //   setImages(res);
+    // });
+    // console.log(event.target.files);
+
+    setImages((prev) => {
+      return [...prev, ...event.target.files];
+    });
+  };
+
+  const onCreateCampaignHandler = (event) => {
+    event.preventDefault();
+    campaign.timestamp = formatDate(new Date());
+    // console.log(campaign);
+    // console.log(fieldIds);
+    // console.log(images[0])
+    // console.log(typeof images[0]);
+
+    if (!validateFormData(campaign)) return;
+    console.log(images);
+    createCampaign(campaign, images, fieldIds)
+      .then((res) => {
+        console.log(res);
+        // messageApi.open({
+        //     type: 'success',
+        //     content: 'Tạo thành công',
+        // });
+      })
+      .catch(() => {
+        messageApi.open({
+          type: "warning",
+          content: "Tạo thất bại",
+        });
+      });
+  };
+
+  const optionFields = fields.map((c) => {
+    return {
+      value: c.id,
+      label: c.name,
+    };
+  });
+
+  return (
+    <div className={classes["campaign-modal-create-campaign"]}>
+      {contextHolder}
+      <Form
+        name="basic"
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 19 }}
+        style={{ minWidth: 600, maxWidth: 920 }}
+        initialValues={{ remember: true }}
+        autoComplete="off"
+      >
+        {/* tên chiến dịch */}
+        <Form.Item
+          label="Tên chiến dịch"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Không được để trống tên chiến dịch!",
+            },
+          ]}
+        >
+          <Input
+            rows={2}
+            placeholder="Nhập tên chiến dịch"
+            onChange={onChangeNameCampaignHandler}
+            value={campaign.name}
+          />
+        </Form.Item>
+
+        {/* Lĩnh vực */}
+        <Form.Item
+          label="Lĩnh vực"
+          name="fieldIds"
+          rules={[
+            {
+              required: false,
+              message: "Không được để trống lĩnh vực!",
+            },
+          ]}
+        >
+          <Select
+            mode="tags"
+            style={{
+              width: "100%",
+            }}
+            placeholder="Chọn lĩnh Vực"
+            onChange={onChangefieldIdsHandler}
+            options={optionFields}
+            value={campaign.fieldIds}
+          />
+        </Form.Item>
+
+        {/* Thời gian */}
+        <Form.Item
+          label="Thời gian"
+          rules={[
+            {
+              required: true,
+              message: "Hãy chọn thời gian!",
+            },
+          ]}
+        >
+          <RangePicker
+            style={{
+              width: "100%",
+            }}
+            onChange={onChangeDateHandler}
+            showTime
+          />
+        </Form.Item>
+
+        {/* người tạo */}
+        <Form.Item label="Người tạo" name="enterprise">
+          {campaignCtx.user.firstName} {campaignCtx.user.lastName}
+        </Form.Item>
+
+        {/* địa chỉ */}
+        <Form.Item
+          label="Địa chỉ"
+          name="location"
+          rules={[
+            {
+              required: true,
+              message: "Hãy nhập địa chỉ!",
+            },
+          ]}
+        >
+          <Input
+            rows={2}
+            placeholder="Nhập địa chỉ"
+            onChange={onChangeLocationHandler}
+            value={campaign.location}
+          />
+        </Form.Item>
+
+        {/* Mô tả */}
+        <Form.Item
+          label="Mô tả chiến dịch"
+          name="description"
+          rules={[
+            {
+              required: true,
+              message: "Hãy nhập mô tả!",
+            },
+          ]}
+        >
+          <TextArea
+            rows={4}
+            placeholder="Nhập mô tả chiến dịch"
+            value={campaign.description}
+            onChange={onChangeDescriptionHandler}
+          />
+        </Form.Item>
+
+        {/* Chi tiet */}
+        <Form.Item
+          label="Thông tin chi tiết"
+          name="details"
+          rules={[
+            {
+              required: false,
+              message: "Hãy nhập thông tin chi tiết!",
+            },
+          ]}
+        >
+          <TextArea
+            rows={10}
+            placeholder="Nhập chi tiết"
+            value={campaign.details}
+            onChange={onChangeDetailsHandler}
+          />
+        </Form.Item>
+
+        {/* Thêm ảnh */}
+        <Form.Item
+          label="Thêm ảnh"
+          valuePropName="fileList"
+          rules={[
+            {
+              required: false,
+              message: "Please choose your image!",
+            },
+          ]}
+        >
+          <input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+
+          {/* Gốc */}
+          {/* <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
                         <div>
                             <PlusOutlined />
                             <div
@@ -320,21 +333,21 @@ const ModalCreateCampaign = (props) => {
                             </div>
                         </div>
                     </Upload> */}
-                </Form.Item>
+        </Form.Item>
 
-                <Form.Item
-                    wrapperCol={{
-                        offset: 5,
-                        span: 15,
-                    }}
-                >
-                    <Button type="primary" onClick={onCreateCampaignHandler}>
-                        Tạo
-                    </Button>
-                </Form.Item>
-            </Form>
-        </div>
-    );
+        <Form.Item
+          wrapperCol={{
+            offset: 5,
+            span: 15,
+          }}
+        >
+          <Button type="primary" onClick={onCreateCampaignHandler}>
+            Tạo
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
 };
 
 export default ModalCreateCampaign;
