@@ -26,7 +26,7 @@ export const getEntProfile = async () => {
 
 export const getPaymentHistory = async () => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-  return await fetch(`http://localhost:8080/api/settings/payment-history`, {
+  return await fetch(`http://localhost:8080/api/user/payments`, {
     method: "GET", // or GET
     headers: {
       Authorization: "Bearer " + accessToken,
@@ -37,7 +37,7 @@ export const getPaymentHistory = async () => {
 
 export const getBookingHistory = async () => {
   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-  return await fetch(`http://localhost:8080/api/settings/booking-history`, {
+  return await fetch(`http://localhost:8080/api/user/bookings`, {
     method: "GET", // or GET
     headers: {
       Authorization: "Bearer " + accessToken,

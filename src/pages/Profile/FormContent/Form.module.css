@@ -34,8 +34,8 @@ h1 {
 
 .input_profile:focus,
 .select_profile:focus {
-  border: 1px solid var(--color-primary-1);
-  box-shadow: 0 0 3px var(--color-primary-1);
+  border: 1px solid rgb(0, 170, 255);
+  box-shadow: 0 0 2px rgb(0, 170, 255);
 }
 
 .form .btnSubmit {
