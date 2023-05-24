@@ -38,7 +38,6 @@ const itemEnt = [
 ];
 const MenuProfile = (props) => {
   const onClick = (e) => {
-    console.log("click ", e);
     props.onChangeContentHandler(e.key);
   };
 

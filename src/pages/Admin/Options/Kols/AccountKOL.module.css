@@ -4,7 +4,7 @@
 }
 
 .table {
-  height: calc(100% - 52px); 
+  height: calc(100% - 52px);
   overflow-y: scroll;
 }
 
@@ -15,49 +15,58 @@
 
 .table::-webkit-scrollbar-track {
   border-radius: 10px;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
 }
 
-.table::-webkit-scrollbar-thumb{
+.table::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
-.table::-webkit-scrollbar-thumb:hover{
-  background: rgba(0,0,0,0.4);
+.table::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
 }
 
-.table::-webkit-scrollbar-thumb:active{
-  background: rgba(0,0,0,.9);
+.table::-webkit-scrollbar-thumb:active {
+  background: rgba(0, 0, 0, 0.9);
 }
-  
-  .modal-search {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .modal-search-input {
-    width: 50%;
-    border: 1px solid #ccc;
-  }
-  
-  .admin-modal-delete {
-    display: flex;
-    flex-direction: row-reverse;
-  }
-  
-  .modal-delete-btn {
-    margin: 5px 10px;
-  }
 
-  .modal-update-col-input {
-    width: 100%;
-    height: 30px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0 10px;
-    box-sizing: border-box;
-    outline: none;
-  }
-  
+.modal-search {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-search-input {
+  width: 50%;
+  border: 1px solid #ccc;
+}
+
+.admin-modal-delete {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.modal-delete-btn {
+  margin: 5px 10px;
+}
+
+.modal-update-col-input {
+  width: 100%;
+  padding: 5px 11px;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.modal-update-col-input:focus {
+  border: 1px solid rgb(0, 170, 255);
+  box-shadow: 0 0 3px rgb(0, 170, 255);
+}

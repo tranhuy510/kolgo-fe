@@ -1,8 +1,7 @@
 import { Table } from "antd";
-
-import classes from "./Form.module.css";
 import { useEffect, useState } from "react";
 import { getPaymentHistory } from "../../../services/getApiProfile";
+import { displayDateTime } from "../../../services/DateTimeUtil";
 
 const columns = [
   {
@@ -31,39 +30,17 @@ const columns = [
   },
   {
     title: "Thời gian",
-    key: "time",
-    dataIndex: "time",
+    key: "timestamp",
+    dataIndex: "timestamp",
     align: "center",
-  },
-];
-const data = [
-  {
-    id: "1",
-    sender: "Công ty TNHH Một thành viên Huy Trần",
-    receiver: "Sang Kol",
-    content: 32,
-    time: "10/2/2023",
-  },
-  {
-    id: "2",
-    sender: "Công ty TNHH Một thành viên Huy Trần",
-    receiver: "Hiếu Kol",
-    content: "Tiền book quảng cáo",
-    time: "10/3/2023",
-  },
-  {
-    id: "3",
-    sender: "Công ty TNHH Một thành viên Huy Trần",
-    receiver: "Thắng Kol",
-    content: "Tiền book chiến dịch",
-    time: "15/4/2023",
+    render: (text, data) => <div>{displayDateTime(data.timestamp)}</div>,
   },
 ];
 
 export default function FormActivity(props) {
   const [payment, setPayment] = useState();
 
-  const setDefaultHistory = () => {
+  useEffect(() => {
     getPaymentHistory()
       .then((res) => {
         if (!res.ok) {
@@ -75,16 +52,12 @@ export default function FormActivity(props) {
         console.log(data);
         setPayment(data);
       });
-  };
-
-  useEffect(() => {
-    setDefaultHistory();
   }, []);
 
   return (
     <>
-      <h1>Lịch sử giao dịch</h1>
-      <Table columns={columns} dataSource={data} />;
+      <h1 style={{ marginLeft: 30 }}>Lịch sử giao dịch</h1>
+      <Table columns={columns} dataSource={payment} />;
     </>
   );
 }
