@@ -49,7 +49,7 @@ const PageEntDetail = () => {
                     <Col span={16} className={classes["row-2-col-1"]}>
                         {show == 0 && (<Introduce infoEnt={infoEnt} />)}
                         {show == 1 && (<Activity />)}
-                        {show == 2 && (<Campaign />)}
+                        {show == 2 && (<Campaign campaigns={campaigns} />)}
                     </Col>
                 </Row>
             </div>
