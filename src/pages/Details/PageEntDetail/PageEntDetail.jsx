@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { getFields } from "../../../services/getApi";
-import { getEnts, getEntProfile } from '../../../services/EnterpriseService'
+import { getEnts, getEnt } from '../../../services/EnterpriseService'
 import classes from './PageEntDetail.module.css'
 import InformationHeader from "./InformationHeader/InformationHeader";
 import Introduce from "./Introduce/Introduce";
@@ -13,18 +13,15 @@ import { Col, Row } from 'antd';
 
 const PageEntDetail = () => {
     const [infoEnt, setInfoEnt] = useState()
-    // const [fields, setFields] = useState('')
+    const [campaigns, setCampaigns] = useState()
     const [show, setShow] = useState(0)
     const navigate = useNavigate();
 
     let { id } = useParams()
+    console.log(id);
 
     useEffect(() => {
-        getEnts()
-            .then(res => {
-                setInfoEnt(res.find(ent => ent.id == id))
-                console.log(res.find(ent => ent.id == id));
-            })
+        getEnt(id).then(res => { setInfoEnt(res.enterprise); setCampaigns(res.campaigns); })
     }, [id])
 
     useEffect(() => {
