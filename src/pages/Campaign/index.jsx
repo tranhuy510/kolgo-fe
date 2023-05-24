@@ -59,7 +59,7 @@ const Campaign = (props) => {
 
   useEffect(() => {
     if (user?.role === "KOL") { getKol(idRole).then(res => { setProfile(res.kol) }) }
-    else if (user?.role === "ENTERPRISE") { getEnt(idRole).then(res => { setProfile(res.enterprise); console.log(res); }) }
+    else if (user?.role === "ENTERPRISE") { getEnt(idRole).then(res => { setProfile(res.enterprise); }) }
   }, [idRole])
 
   const onChangeTabHandler = (data) => {

@@ -105,25 +105,27 @@ const ModalCreateCampaign = (props) => {
     return res;
   };
 
-  // đang sửa đăng ảnh
-  const onChangeImagesHandler = (value) => {
-    setImages((prev) => {
-      return [...prev, value.file.originFileObj];
-    });
-  };
-
+  // input
   const handleFileChange = (event) => {
     setImages((prev) => {
       return [...prev, ...event.target.files];
     });
   };
 
+  // input
+  const onDeleteLastImageHandler = () => {
+    setImages((prev) => {
+      const updatedImages = [...prev];
+      updatedImages.pop();
+      return updatedImages;
+    });
+  }
+
   const onCreateCampaignHandler = (event) => {
     event.preventDefault();
     campaign.timestamp = formatDate(new Date());
 
     if (!validateFormData(campaign)) return;
-
     createCampaign(campaign, images, fieldIds)
       .then((res) => {
         messageApi.open({
@@ -291,26 +293,29 @@ const ModalCreateCampaign = (props) => {
             },
           ]}
         >
-          {/* <input
+          <input
+            className={classes['input-image']}
             type="file"
             multiple
             onChange={handleFileChange}
             accept="image/*"
-          /> */}
+          />
+        </Form.Item>
 
-          {/* Gốc */}
-          <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler}>
-            <div>
-              <PlusOutlined />
-              <div
-                style={{
-                  marginTop: 8,
-                }}
-              >
-                Thêm ảnh
-              </div>
-            </div>
-          </Upload>
+        <Form.Item
+          wrapperCol={{
+            offset: 5,
+            span: 10,
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {
+              images?.map((image, index) => {
+                return <div>{image.name}</div>
+              })
+            }
+            <Button onClick={onDeleteLastImageHandler}>Xóa ảnh</Button>
+          </div>
         </Form.Item>
 
         <Form.Item
