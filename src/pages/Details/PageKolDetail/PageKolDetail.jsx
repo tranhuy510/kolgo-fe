@@ -22,7 +22,7 @@ import { AuthContext } from "../../../context/auth.context";
 
 
 const description =
-  "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người <br/> \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
+  "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
 
 const danhgia = [
   {
@@ -64,8 +64,7 @@ const danhgia = [
 
 const PageKolDetail = () => {
   const { user, setUser } = useContext(AuthContext)
-  console.log(user);
-  // const user = JSON.parse(localStorage.getItem("user"));
+
   const { id } = useParams();
   const [kol, setKol] = useState();
   const navigate = useNavigate();
@@ -80,6 +79,7 @@ const PageKolDetail = () => {
     getKol(id).then((res) => {
       setKol(res);
       checkStatus(res.bookings, user, res.kol);
+      console.log(res);
     });
   }, []);
 
@@ -141,7 +141,7 @@ const PageKolDetail = () => {
           Hoạt động
         </button>
       ),
-      children: <Activate />,
+      children: <Activate bookings={kol?.bookings} />,
     },
     {
       key: "2",
@@ -187,6 +187,8 @@ const PageKolDetail = () => {
                 <NameMain
                   firstName={kol?.kol?.firstName}
                   lastName={kol?.kol?.lastName}
+                  sumBook={kol?.bookings.length}
+                  sumCampaigns={kol?.campaigns.length}
                 />
               </Row>
               <Row className="middle-row">
@@ -251,7 +253,7 @@ const PageKolDetail = () => {
           />
         </div>
         <div className="bottom-details">
-          <Feedback danhgia={danhgia} />
+          <Feedback bookings={kol?.bookings} danhgia={danhgia} />
         </div>
       </main>
     </>
