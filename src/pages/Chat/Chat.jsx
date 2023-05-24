@@ -6,6 +6,8 @@ import { useLocation } from "react-router";
 import { formatDate } from "../../services/DateTimeUtil";
 import { MessageContext } from "../../context/Message.context";
 
+import Header from '../../components/Header/index'
+
 const Chat = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const { state } = useLocation();
@@ -102,6 +104,7 @@ const Chat = (props) => {
 
   return (
     <>
+      <Header />
       {/* Flex Container */}
       <div className={classes.messenger}>
         {/* Conversation List */}

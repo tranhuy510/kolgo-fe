@@ -29,6 +29,31 @@ export function formatDate(date) {
   return "" + year + month + day + hours + minutes + seconds;
 }
 
+export function spreadDate(date) {
+  let year = date?.slice(0, 4);
+  let month = date?.slice(4, 6);
+  let day = date?.slice(6, 8);
+  let hour = date?.slice(8, 10);
+  let minute = date?.slice(10, 12);
+  let second = date?.slice(12);
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+
+  // return (
+  //   "" +
+  //   year +
+  //   "/" +
+  //   month +
+  //   "/" +
+  //   day +
+  //   " - " +
+  //   hour +
+  //   "/" +
+  //   minute +
+  //   "/" +
+  //   second
+  // );
+}
 export const convertStringToDateTime = (string) => {
   // Trích xuất thành phần ngày, tháng, năm, giờ, phút và giây từ chuỗi
   const year = string.slice(0, 4);

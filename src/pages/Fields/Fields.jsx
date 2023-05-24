@@ -8,6 +8,8 @@ import { Pagination } from 'antd';
 import './Fields.css'
 import { getKols, getKolsByFieldIds } from '../../services/KolService';
 
+
+
 const Fields = () => {
 
     let { id } = useParams()
@@ -19,7 +21,7 @@ const Fields = () => {
     useEffect(() => {
         getKolsByFieldIds(id)
             .then(res => {
-                setTotalKol(res.length);
+                setListOfKol(res);
                 setTotalKol(res.length);
                 console.log(res);
             })

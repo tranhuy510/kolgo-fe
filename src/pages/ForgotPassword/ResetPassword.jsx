@@ -127,7 +127,7 @@ const ResetPassword = () => {
                     </Link>
                 </div>
                 <div className="register-form__control" >
-                    <h1 style={{ margin: '0 auto' }}>Change password</h1>
+                    <h1 style={{ margin: '0 auto' }}>Thay đổi mật khẩu</h1>
                 </div>
                 <form onSubmit={confirmHandler} className="login-form">
                     <div className="register-form__control">
@@ -149,7 +149,7 @@ const ResetPassword = () => {
                         />
                     </div>
                     <div className="register-form__control">
-                        <ButtonFull type="submit">Confirm</ButtonFull>
+                        <ButtonFull type="submit">Xác nhận</ButtonFull>
                     </div>
                 </form>
             </div >

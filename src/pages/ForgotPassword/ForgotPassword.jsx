@@ -82,7 +82,7 @@ const ForgotPassword = () => {
                     </Link>
                 </div>
                 <div className="register-form__control" >
-                    <h1 style={{ margin: '0 auto' }}>Forgot password</h1>
+                    <h1 style={{ margin: '0 auto' }}>Quên mật khẩu</h1>
                 </div>
                 <form onSubmit={forgotPasswordHandler} className="login-form">
                     <div className="login-form__control">
@@ -95,7 +95,7 @@ const ForgotPassword = () => {
                         ></input>
                     </div>
                     <div className="login-form__control">
-                        <ButtonFull type="submit">Confirm</ButtonFull>
+                        <ButtonFull type="submit">Xác nhận</ButtonFull>
                     </div>
                 </form>
             </div>

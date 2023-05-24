@@ -56,7 +56,7 @@ const Register = () => {
           </div>
           <div className="come-login">
             <button className="btn-come-login" onClick={comeLoginHandler}>
-              Login
+              Đăng nhập
             </button>
           </div>
         </div>

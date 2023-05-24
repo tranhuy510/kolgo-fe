@@ -1,41 +1,30 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import styled from "styled-components";
-import { Link, useSearchParams } from "react-router-dom";
-import { getKolsByFieldIds } from '../../../services/KolService';
+import { Link } from "react-router-dom";
+import classes from '../../../components/Content/content.module.css'
 
 const IMG = styled.img`
-    width: 100%;
-    height: 220px;
-    box-sizing: border-box;
-    border-radius: 20px 20px 0 0;
-`
+  width: 100%;
+  height: 220px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: none;
+`;
 
 const Name = styled.p`
-    margin: 0;
-    padding-left: 10px;
-    font-weight: 500;
-    line-height: 40px;
-`
-
-const linkStyle = {
-    width: '180px',
-    height: '270px',
-    margin: '5px 0',
-    boxSizing: 'border-box',
-    borderRadius: '20px',
-    border: '1px solid #ccc',
-    textDecoration: 'none',
-    color: '#000',
-    cursor: 'pointer',
-}
-
+  margin: 0;
+  padding-right: 10px;
+  font-weight: 500;
+  line-height: 30px;
+  box-sizing: border-box;
+`;
 
 const DivWrap = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    box-sizing: border-box;
-`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  box-sizing: border-box;
+`;
 
 const PageField = (props) => {
 
@@ -55,20 +44,44 @@ const PageField = (props) => {
     }
 
     return (
-        <DivWrap key={'fieldPage'} className='page-field'>
+        // <DivWrap key={'fieldPage'} className='page-field'>
+        //     {changeRender()?.map((kol) => {
+        //         const firstName = arrUpperCase(kol?.firstName)
+        //         return (
+        //             <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+        //                 <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
+        //                 <div style={{ display: 'flex' }}>
+        //                     <Name>{firstName}</Name>
+        //                     <Name>{kol?.lastName}</Name>
+        //                 </div>
+        //             </Link>
+        //         )
+        //     })}
+        // </DivWrap >
+        <DivWrap key={"outstandingKol"}>
             {changeRender()?.map((kol) => {
-                const firstName = arrUpperCase(kol?.firstName)
+                const firstName = arrUpperCase(kol.firstName);
                 return (
-                    <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
+                    <div key={kol?.id} className={classes["item-kol-detail"]}>
                         <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
-                        <div style={{ display: 'flex' }}>
-                            <Name>{firstName}</Name>
-                            <Name>{kol?.lastName}</Name>
+                        <div className={classes['kol-detail']}>
+                            <div className={classes['kol-name']}>
+                                <Name>{firstName}</Name>
+                                <Name>{kol.lastName}</Name>
+                            </div>
+                            <div className={classes['kol-info']} >
+                                <Name>{firstName} {kol.lastName}</Name>
+                                <p>{kol.postPrice} / Bài viết</p>
+                                <p>{kol.videoPrice} / Video</p>
+                                <div className={classes['wrap-kol-link']}>
+                                    <Link to={`/kols/${kol.id}`} className={classes['kol-link']}>Xem thêm</Link>
+                                </div>
+                            </div>
                         </div>
-                    </Link>
-                )
+                    </div>
+                );
             })}
-        </DivWrap >
+        </DivWrap>
     )
 }
 

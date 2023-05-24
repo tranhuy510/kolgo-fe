@@ -11,7 +11,6 @@ const ImageDescription = ({ images, avatar }) => {
         setImageShow(avatar)
     }, [avatar])
 
-    console.log(imageShow);
 
     const onChangeImageHandler = (img) => {
         setImageShow(img)

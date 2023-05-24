@@ -58,6 +58,26 @@
   cursor: pointer;
 }
 
+.btn-renew {
+    background-color: #F0564A;
+    color: #fff;
+    border: 1px solid #F0564A;
+}
+
+.btn-search:hover {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #F0564A;
+    box-shadow: 0 0 6px #F0564A;
+}
+
+.btn-renew:hover {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #F0564A;
+    box-shadow: 0 0 6px #F0564A;
+}
+
 .item-kol-detail {
   width: 180px;
   margin: 5px 0;

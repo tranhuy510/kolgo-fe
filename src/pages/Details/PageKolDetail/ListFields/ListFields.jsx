@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-const DivWrap = styled.div`
+const DivWrap = styled.p`
     text-align: center;
     padding: 5px 10px;
     color: #fff;
     background-color: #F0564A;
     border: 1px solid #F0564A;
     border-radius: 10px;
+    margin : 0 10px;
 
     &:hover {
         color: #000;
@@ -19,18 +20,11 @@ const DivWrap = styled.div`
 
 const ListFields = ({ fieldNames, fieldIds }) => {
 
-    const capitalizeName = (name) => {
-        const regex = /(.*)\s\((.*)\)/;
-        return name?.match(regex)[1];
-    }
-
     return (
         <div className='modal-fields-list'>
             {fieldIds?.map((field, index) => {
-                <Link to={`/kols?fieldIds=${field}`}>
-                    <DivWrap>
-                        {capitalizeName(fieldNames[index])}
-                    </DivWrap>
+                return <Link to={`/field/${field}`}>
+                    <DivWrap>{fieldNames[index]}</DivWrap>
                 </Link>
             })}
 

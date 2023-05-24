@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../services/AuthService";
 
 import { Input } from "antd";
 import { EyeTwoTone, EyeInvisibleOutlined } from "@ant-design/icons";
 
-// import axios from "axios";
 import logo from "../../assets/logo/logo_KOLgo-removebg.svg";
 import ButtonFull from "../../components/UI/Button/ButtonFull";
 import Message from "../../components/UI/Message/Message";
+import { AuthContext } from "../../context/auth.context";
 
-// import { users } from '../../json/db'
 import "./style.css";
 
+
 const Login = (props) => {
+  const { user, setUser } = useContext(AuthContext)
   const navigate = useNavigate();
   const [userInput, setUserInput] = useState({
     email: "",
@@ -109,6 +110,8 @@ const Login = (props) => {
       avatar: response.user.avatar,
       role: response.user.role,
     };
+
+    setUser(user)
 
     localStorage.setItem("user", JSON.stringify({ ...user }))
     window.dispatchEvent(new Event('storage'))

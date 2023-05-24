@@ -36,48 +36,46 @@ const HomeAdmin = () => {
 
   return (
     <>
-      {user?.role !== "ADMIN"
-        ? <NotAdmin />
-        : <Layout>
-          <Sider className={classes['admin-menu']} >
-            <Menu
-              theme="dark"
-              selectedKeys={[selectedMenuItem]}
-              onClick={handleMenuClick}
-              mode="inline"
-            >
-              <Menu.SubMenu className="submenu" key="sub1" title="Tài Khoản">
-                <Menu.Item key="1">Enterprises</Menu.Item>
-                <Menu.Item key="2">KOL</Menu.Item>
-              </Menu.SubMenu>
-              <Menu.SubMenu className="submenu" key="sub2" title="Combo">
-                <Menu.Item key="3">Danh Sách Combo</Menu.Item>
-                <Menu.Item key="4">Tạo Combo</Menu.Item>
-              </Menu.SubMenu>
-              <Menu.Item key="5">Chiến Dịch</Menu.Item>
-              <Menu.Item key="6">Booking</Menu.Item>
-              <Menu.Item key="7">Nổi Bật</Menu.Item>
-              <Menu.Item key="8">Lĩnh vực</Menu.Item>
-            </Menu>
-            <Button
-              onClick={logoutHandler}
-              className={classes['btn-logout']}
-            >Đăng xuất</Button>
-          </Sider>
-          <Layout className={classes['admin-menu']}>
-            <Layout.Content className={classes["site-layout-content"]}>
-              {selectedMenuItem === "1" && <AccountEnterprises />}
-              {selectedMenuItem === "2" && <AccountKOL />}
-              {selectedMenuItem === "3" && <ListCombo />}
-              {selectedMenuItem === "4" && <CreateCombo />}
-              {selectedMenuItem === "5" && <ChienDich />}
-              {selectedMenuItem === "6" && <Booking />}
-              {selectedMenuItem === "7" && <OutStanding />}
-              {selectedMenuItem === "8" && <Fields />}
-            </Layout.Content>
-          </Layout>
+      <Layout>
+        <Sider className={classes['admin-menu']} >
+          <Menu
+            theme="dark"
+            selectedKeys={[selectedMenuItem]}
+            onClick={handleMenuClick}
+            mode="inline"
+          >
+            <Menu.SubMenu className="submenu" key="sub1" title="Tài Khoản">
+              <Menu.Item key="1">Enterprises</Menu.Item>
+              <Menu.Item key="2">KOL</Menu.Item>
+            </Menu.SubMenu>
+            <Menu.SubMenu className="submenu" key="sub2" title="Combo">
+              <Menu.Item key="3">Danh Sách Combo</Menu.Item>
+              <Menu.Item key="4">Tạo Combo</Menu.Item>
+            </Menu.SubMenu>
+            <Menu.Item key="5">Chiến Dịch</Menu.Item>
+            <Menu.Item key="6">Booking</Menu.Item>
+            <Menu.Item key="7">Nổi Bật</Menu.Item>
+            <Menu.Item key="8">Lĩnh vực</Menu.Item>
+          </Menu>
+          <Button
+            onClick={logoutHandler}
+            className={classes['btn-logout']}
+          >Đăng xuất</Button>
+        </Sider>
+        <Layout className={classes['admin-menu']}>
+          <Layout.Content className={classes["site-layout-content"]}>
+            {selectedMenuItem === "1" && <AccountEnterprises />}
+            {selectedMenuItem === "2" && <AccountKOL />}
+            {selectedMenuItem === "3" && <ListCombo />}
+            {selectedMenuItem === "4" && <CreateCombo />}
+            {selectedMenuItem === "5" && <ChienDich />}
+            {selectedMenuItem === "6" && <Booking />}
+            {selectedMenuItem === "7" && <OutStanding />}
+            {selectedMenuItem === "8" && <Fields />}
+          </Layout.Content>
         </Layout>
-      }
+      </Layout>
+
     </>
   );
 };
