@@ -107,29 +107,12 @@ const ModalCreateCampaign = (props) => {
 
   // đang sửa đăng ảnh
   const onChangeImagesHandler = (value) => {
-    // console.log(value.file.originFileObj);
-    // updateCampaignAddImages(campaign.id, value.fileList.map((file) => file.originFileObj))
-    //     .then(res => {
-    //         console.log(res);
-    //         setCampaign(prev => {
-    //             return {
-    //                 ...prev, images: value.fileList.map((item) => {
-    //                     return item.name
-    //                 })
-    //             }
-    //         })
-    //     })
     setImages((prev) => {
       return [...prev, value.file.originFileObj];
     });
   };
 
   const handleFileChange = (event) => {
-    // updateKolImages(event.target.files).then((res) => {
-    //   setImages(res);
-    // });
-    // console.log(event.target.files);
-
     setImages((prev) => {
       return [...prev, ...event.target.files];
     });
@@ -138,20 +121,15 @@ const ModalCreateCampaign = (props) => {
   const onCreateCampaignHandler = (event) => {
     event.preventDefault();
     campaign.timestamp = formatDate(new Date());
-    // console.log(campaign);
-    // console.log(fieldIds);
-    // console.log(images[0])
-    // console.log(typeof images[0]);
 
     if (!validateFormData(campaign)) return;
-    console.log(images);
+
     createCampaign(campaign, images, fieldIds)
       .then((res) => {
-        console.log(res);
-        // messageApi.open({
-        //     type: 'success',
-        //     content: 'Tạo thành công',
-        // });
+        messageApi.open({
+          type: 'success',
+          content: 'Tạo thành công',
+        });
       })
       .catch(() => {
         messageApi.open({
@@ -313,26 +291,26 @@ const ModalCreateCampaign = (props) => {
             },
           ]}
         >
-          <input
+          {/* <input
             type="file"
             multiple
             onChange={handleFileChange}
             accept="image/*"
-          />
+          /> */}
 
           {/* Gốc */}
-          {/* <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler} accept="image/*">
-                        <div>
-                            <PlusOutlined />
-                            <div
-                                style={{
-                                    marginTop: 8,
-                                }}
-                            >
-                                Thêm ảnh
-                            </div>
-                        </div>
-                    </Upload> */}
+          <Upload listType="picture-card" value={campaign.images} onChange={onChangeImagesHandler}>
+            <div>
+              <PlusOutlined />
+              <div
+                style={{
+                  marginTop: 8,
+                }}
+              >
+                Thêm ảnh
+              </div>
+            </div>
+          </Upload>
         </Form.Item>
 
         <Form.Item

@@ -1,41 +1,34 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Modal, Input, Select, Form, DatePicker, Upload, Cascader, Col, Row } from "antd";
+import { Button, Modal, Input, Select, Form, DatePicker, Upload, message, Col, Row } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
 import CampaignContext from '../../../../context/campaign.context';
 
-import { spreadDate, formatDate } from '../../../../services/DateTimeUtil';
+import { spreadDate, formatDate, convertStringToDateTime } from '../../../../services/DateTimeUtil';
 import ImageSlider from '../../../../components/UI/ImageSlider/ImageSlider'
 import { updateCampaign } from "../../../../services/CampaignService";
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-const dateFormat = 'YYYY/MM/DD/HH/MM/SS';
+const dateFormat = 'YYYYMMDDHHmmss';
+
 
 const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     const userCtx = useContext(CampaignContext);
-
-    const [startDate, setStartDate] = useState({
-        day: null,
-        month: null,
-        year: null,
-        hours: null,
-        minute: null,
-        second: null,
-    });
-    const [endDate, setEndDate] = useState({
-        day: null,
-        month: null,
-        year: null,
-        hours: null,
-        minute: null,
-        second: null,
-    });
+    const [messageApi, contextHolder] = message.useMessage();
 
     const [campaignUpdate, setCampaignUpdate] = useState({});
+    const [images, setImages] = useState([]);
+    const [fieldIds, setFieldIds] = useState([]);
+    const [dateCampaign, setDateCampaign] = useState();
 
     useEffect(() => {
         setCampaignUpdate(campaign)
+        setDateCampaign({
+            start: dayjs(campaign?.startTime, dateFormat),
+            finish: dayjs(campaign?.finishTime, dateFormat),
+        })
     }, [campaign])
 
     const inputChangeHandler = (event) => {
@@ -47,24 +40,14 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
         });
     };
 
-    const onChangeFieldsHandler = (value) => {
-        setCampaignUpdate((prev) => {
-            return { ...prev, fieldIds: value }
-        });
+    const onChangefieldIdsHandler = (value) => {
+        setFieldIds(value);
     };
 
     const onChangeImagesHandler = (value) => {
-        console.log(value.fileList.map((item) => {
-            return item.name
-        }));
-        setCampaignUpdate((prev) => {
-            return {
-                ...prev, images: value.fileList.map((item) => {
-                    return item.name
-                })
-            }
-        }
-        )
+        setImages((prev) => {
+            return [...prev, value.file.originFileObj];
+        });
     }
 
     const onChangeDateHandler = (value) => {
@@ -83,9 +66,17 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     });
 
     const onUpdateCampaignHandler = () => {
-        console.log(campaignUpdate);
+
         updateCampaign(campaignUpdate.id, campaignUpdate)
-            .then(res => { console.log(res); })
+            .then(res => {
+                messageApi.open({
+                    type: 'success',
+                    content: 'Tạo thành công',
+                });
+            })
+
+        // updateCampaign(campaignUpdate.id, campaignUpdate, images, fieldIds)
+        //     .then(res => { console.log(res); })
     };
 
     return (
@@ -96,6 +87,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             onCancel={onCancelShowHandler}
             footer={[]}
         >
+            {contextHolder}
             {/* tên chiến dịch */}
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Tên:</Col>
@@ -120,26 +112,9 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                             width: "100%",
                         }}
                         placeholder="Chọn lĩnh Vực"
-                        onChange={onChangeFieldsHandler}
+                        onChange={onChangefieldIdsHandler}
                         value={campaignUpdate.fieldIds}
                         options={optionFields}
-                    />
-                </Col>
-            </Row>
-
-            {/* Thời gian */}
-            <Row style={{ margin: '20px 10px' }}>
-                <Col span={6}>Thời gian:</Col>
-                <Col span={18}>
-                    <RangePicker
-                        style={{
-                            width: "100%",
-                        }}
-                        // onChange={onChangeDateHandler}
-                        showTime
-                        // value={[spreadDate(campaignUpdate?.startTime), spreadDate(campaignUpdate?.finishTime)]}
-                        value={[campaignUpdate?.startTime, campaignUpdate?.finishTime]}
-                        format={dateFormat}
                     />
                 </Col>
             </Row>
@@ -150,6 +125,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                     {spreadDate(campaignUpdate?.timestamp)}
                 </Col>
             </Row>
+
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Ngày bắt đầu:</Col>
                 <Col span={18}>
@@ -163,6 +139,21 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                 </Col>
             </Row>
 
+            {/* Thời gian */}
+            <Row style={{ margin: '20px 10px' }}>
+                <Col span={6}>Thay đổi thời gian:</Col>
+                <Col span={18}>
+                    <RangePicker
+                        style={{
+                            width: "100%",
+                        }}
+                        onChange={onChangeDateHandler}
+                        showTime
+                        value={[dateCampaign?.start, dateCampaign?.finish]}
+                        format={dateFormat}
+                    />
+                </Col>
+            </Row>
 
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Người tạo:</Col>
@@ -213,15 +204,14 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Ảnh:</Col>
                 <Col span={18}>
-
+                    {campaignUpdate.images && <ImageSlider images={campaignUpdate.images} />}
                 </Col>
             </Row>
 
             {/* Thêm ảnh */}
             <Row style={{ margin: '20px 10px' }}>
-                <Col span={6}>Ảnh:</Col>
+                <Col span={6}>Thêm ảnh:</Col>
                 <Col span={18}>
-                    {campaignUpdate.images && <ImageSlider images={campaignUpdate.images} />}
                     <Upload listType="picture-card" value={campaignUpdate.images} onChange={onChangeImagesHandler}>
                         <div>
                             <PlusOutlined />

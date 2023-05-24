@@ -19,3 +19,7 @@ npm install dotenv --save
 # react-datepicker
 
 npm install react-datepicker
+
+# dayjs
+
+npm install dayjs

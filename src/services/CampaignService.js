@@ -23,10 +23,6 @@ export function getCampaignByCampaignId(campaignId) {
   return getAuth(`ent/campaigns/${campaignId}`);
 }
 
-export function updateCampaign(campaignId, campaign) {
-  return putAuth(`ent/campaigns/${campaignId}`, campaign);
-}
-
 export function deleteCampaign(campaignId) {
   return deleteAuth(`ent/campaigns/${campaignId}`);
 }
@@ -53,3 +49,22 @@ export function createCampaign(data, images, fieldIds) {
 
   return postFormDataAuth(`ent/campaigns`, formData);
 }
+
+export function updateCampaign(campaignId, campaign) {
+  return putAuth(`ent/campaigns/${campaignId}`, campaign);
+}
+
+// export function updateCampaign(campaignId, campaign, images, fieldIds) {
+//   const formData = new FormData();
+
+//   for (let i = 0; i < images.length; i++) {
+//     formData.append("images", images[i]);
+//   }
+//   Object.keys(campaign).map((key) => formData.append(key, campaign[key]));
+
+//   for (let i = 0; i < fieldIds.length; i++) {
+//     formData.append("fieldIds", fieldIds[i]);
+//   }
+
+//   return putAuth(`ent/campaigns/${campaignId}`, formData);
+// }
