@@ -38,21 +38,6 @@ export function spreadDate(date) {
   let second = date?.slice(12);
 
   return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
-
-  // return (
-  //   "" +
-  //   year +
-  //   "/" +
-  //   month +
-  //   "/" +
-  //   day +
-  //   " - " +
-  //   hour +
-  //   "/" +
-  //   minute +
-  //   "/" +
-  //   second
-  // );
 }
 export const convertStringToDateTime = (string) => {
   // Trích xuất thành phần ngày, tháng, năm, giờ, phút và giây từ chuỗi
