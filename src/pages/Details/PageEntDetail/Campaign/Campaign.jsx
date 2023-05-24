@@ -1,34 +1,40 @@
-import React from 'react'
-import CampaignDate from './CampaignDate'
+import React, { useState } from 'react'
 
 import classes from '../PageEntDetail.module.css'
+import { EnvironmentFilled } from '@ant-design/icons'
+import InformationCampaign from './InformationCampaign'
 
-const datas = [
-    { id: 1, name: 'da cap number 1', content: "ko ma nao chiu thua ma nao", enterprises: ['cty ABC', 'cty XYZ'], kols: ['abc', 'xyz'], date: new Date(2022, 5, 12) },
-    { id: 2, name: 'da cap number 1', content: "ko ma nao chiu thua ma nao", enterprises: ['cty ABC', 'cty XYZ'], kols: ['abc', 'xyz'], date: new Date(2022, 5, 12) },
-    { id: 3, name: 'da cap number 1', content: "ko ma nao chiu thua ma nao", enterprises: ['cty ABC', 'cty XYZ'], kols: ['abc', 'xyz'], date: new Date(2022, 5, 12) },
-]
+const Campaign = ({ campaigns }) => {
+    const [show, setShow] = useState(false)
+    const [data, setData] = useState({})
 
-const Campaign = () => {
+    const onCloseModalhandler = () => {
+        setShow(false);
+    };
+
     return (
         <div className={classes['enterprise-detail-container']}>
             <div className={classes['enterprise-detail-campaign']}>
-                {datas.map((data) => {
+                {campaigns.map((campaign) => {
                     return (
-                        <div className={classes['campaign-wrap-item']}>
-                            <div key={data.id} className={classes['campaign-item']}>
-                                <div className={classes['campaign-item-header']}>
-                                    <h2>{data.name}</h2>
-                                    <CampaignDate date={data.date} />
-                                </div>
-
-                                <div>{data.content}</div>
+                        <div className={classes["created-item"]}>
+                            <div className={classes["item-right"]}>
+                                <div className={classes["item-right-top"]} onClick={() => { setShow(true); setData(campaign) }}>{campaign?.name}</div>
+                                <div className={classes["item-right-middle"]}><EnvironmentFilled /> {campaign?.location}</div>
+                            </div>
+                            <div className={classes["item-left"]} >
+                                {campaign?.enterprise.avatar && <img
+                                    className={classes["image"]}
+                                    src={`http://localhost:8080/api/images/${campaign.images[0]}`}
+                                    onClick={() => { setShow(true); setData(campaign) }}
+                                    alt={campaign?.images[0]}
+                                />}
                             </div>
                         </div>
-
                     )
                 })}
             </div>
+            <InformationCampaign campaign={data} openModal={show} onCloseModalhandler={onCloseModalhandler} />
         </div>
     )
 }
