@@ -54,3 +54,41 @@ export function spreadDate(date) {
   //   second
   // );
 }
+export const convertStringToDateTime = (string) => {
+  // Trích xuất thành phần ngày, tháng, năm, giờ, phút và giây từ chuỗi
+  const year = string.slice(0, 4);
+  const month = string.slice(4, 6);
+  const day = string.slice(6, 8);
+  const hour = string.slice(8, 10);
+  const minute = string.slice(10, 12);
+  const second = string.slice(12, 14);
+
+  // Tạo đối tượng DateTime từ các thành phần trích xuất
+  return new Date(year, month - 1, day, hour, minute, second);
+};
+
+export function displayDateTime(date) {
+  const dateTime = convertStringToDateTime(date);
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  return new Intl.DateTimeFormat("vi-Vn", options).format(dateTime);
+}
+
+export const calculateDaysAgo = (targetDate) => {
+  const currentDate = new Date(); // Ngày hiện tại
+
+  // Chuyển đổi thành số milliseconds
+  const targetTime = convertStringToDateTime(targetDate).getTime();
+  const currentTime = currentDate.getTime();
+
+  // Tính toán số ngày chênh lệch
+  const timeDiff = currentTime - targetTime;
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)); // Chia cho số milliseconds trong 1 ngày
+
+  return daysDiff;
+};
