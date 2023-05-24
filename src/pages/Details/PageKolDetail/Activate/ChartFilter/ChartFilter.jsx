@@ -11,7 +11,7 @@ const ChartFilter = (props) => {
         <div className="activate-filter">
             <div className="activate-filter__control">
                 <label>Tìm theo năm</label>
-                <select value={props.selected} onChange={dropdownChangeHandler}>
+                <select value={props.year} onChange={dropdownChangeHandler}>
                     <option value="2023">2023</option>
                     <option value="2022">2022</option>
                     <option value="2021">2021</option>

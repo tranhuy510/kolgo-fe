@@ -5,9 +5,9 @@ import ActivateChart from "./ActivateChart/ActivateChart";
 import ChartFilter from "./ChartFilter/ChartFilter";
 import { Col, Row } from "antd";
 
-const Activate = () => {
-  const [selected, setSelected] = useState('2023');
-  const [bookings, setBookings] = useState([])
+const Activate = ({ bookings }) => {
+  const [year, setYear] = useState('2023');
+  // const [bookings, setBookings] = useState([])
   const [listBooks, setListBooks] = useState([])
 
   useEffect(() => {
@@ -19,19 +19,19 @@ const Activate = () => {
 
   // them 1 ham tong cac booking theo tung thang -> bookings 
 
-  const onChangeFilter = (data) => {
-    setSelected(data)
+  const onChangeFilter = (year) => {
+    setYear(year)
   }
 
-  const filteredBookings = bookings.filter((book) => {
-    return book.date.getFullYear().toString() === selected;
+  const filteredBookings = bookings?.filter((booking) => {
+    return booking.timestamp.slice(0, 4) === year;
   });
 
   return (
     <>
       <div className="form-hoat-dong">
         <Row>
-          <ChartFilter selected={selected} onChangeFilter={onChangeFilter} />
+          <ChartFilter year={year} onChangeFilter={onChangeFilter} />
         </Row>
         <Row>
           <Col span={3}
@@ -41,7 +41,7 @@ const Activate = () => {
               flexDirection: 'column',
               justifyContent: 'space-between'
             }}>
-            <div style={{ fontSize: '18px', textAlign: 'center' }}>Lượng book</div>
+            <div style={{ fontSize: '18px', textAlign: 'center' }}>Giao dịch</div>
             <div style={{ fontSize: '18px', textAlign: 'center' }}>Tháng</div>
           </Col>
           <Col span={21}>
