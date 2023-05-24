@@ -1,11 +1,11 @@
 import {
   BrowserRouter,
-  createBrowserRouter,
+  // createBrowserRouter,
   Route,
   Routes,
 } from "react-router-dom";
 
-import RootLayout from "../pages/Root";
+// import RootLayout from "../pages/Root";
 import Home from "../pages/Home";
 import Campaign from "../pages/Campaign";
 import Login from "../pages/Login";

@@ -2,8 +2,8 @@ import React, { useState, useEffect, createContext } from "react";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ userData, children }) => {
-  let [user, setUser] = useState(userData);
+export const AuthProvider = ({ children }) => {
+  let [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -13,7 +13,7 @@ export const AuthProvider = ({ userData, children }) => {
     };
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
