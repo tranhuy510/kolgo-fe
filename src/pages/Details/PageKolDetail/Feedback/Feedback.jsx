@@ -3,6 +3,7 @@ import RateDate from './RateDate';
 import { Link } from 'react-router-dom';
 
 import { Avatar, Rate } from "antd";
+import { spreadDate } from '../../../../services/DateTimeUtil';
 
 const Feedback = (props) => {
 
@@ -19,30 +20,31 @@ const Feedback = (props) => {
         <div className="form-danh-gia">
             <div className="title-danh-gia">Đánh giá:</div>
             <div className="rate">
-                {props.danhgia &&
-                    props.danhgia.length > 0 &&
-                    props.danhgia.map((item) => {
+                {props.bookings?.map((booking) => {
+                    if (booking.feedback !== null) {
                         const color = getRandomColorHex()
                         return (
-                            <div key={item.enterpriseId} className="rate-item">
+                            <div key={booking.user.id} className="rate-item">
                                 <div className="rate-item__avatar" style={{ border: `4px solid ${color}` }}>
-                                    <Avatar size={64} src={item.avatar} >{item.avatar ? "" : item.name.charAt(0)?.toUpperCase()}</Avatar>
+                                    <Avatar size={64} src={`http://localhost:8080/api/images/${booking.user.avatar}`} >{booking.user.avatar ? "" : booking.user.name.charAt(0)?.toUpperCase()}</Avatar>
                                 </div>
                                 <div className="rate-item__content">
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <div className="busines" style={{ color: color }}>
-                                            <Link to={`/ents/${item.enterpriseId}`} style={{ color: color }}>{item.name}</Link>
+                                            <Link to={`/ents/${booking.user.id}`} style={{ color: color }}>{booking.user.firstName} {booking.user.lastName}</Link>
                                         </div>
-                                        <RateDate date={item.date} />
+                                        <div style={{ color: color }}>{spreadDate(booking.timestamp)}</div>
                                     </div>
-                                    <Rate disabled value={item.rate} />
+
+                                    <Rate disabled value={booking.feedback?.rate} />
                                     <div className="content-is-rated">
-                                        {item.content}
+                                        {booking.feedback?.description}
                                     </div>
                                 </div>
                             </div>
                         )
-                    })}
+                    }
+                })}
             </div>
         </div >
     )
