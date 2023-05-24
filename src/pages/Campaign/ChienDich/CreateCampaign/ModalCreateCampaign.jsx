@@ -7,7 +7,7 @@ import { getFields } from '../../../../services/getApi'
 import CampaignContext from "../../../../context/campaign.context";
 import { formatDate } from "../../../../services/DateTimeUtil";
 import { createCampaign, updateCampaignAddImages } from "../../../../services/CampaignService";
-// import { createCampaign } from "../../../../services/KolService";
+
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -115,20 +115,20 @@ const ModalCreateCampaign = (props) => {
         // updateKolImages(event.target.files).then((res) => {
         //   setImages(res);
         // });
-        console.log(event.target.files);
+        // console.log(event.target.files);
 
         setImages(prev => {
-            return [...prev, event.target.files]
+            return [...prev, { ...event.target.files }]
         })
     };
 
     const onCreateCampaignHandler = (event) => {
         event.preventDefault();
         campaign.timestamp = formatDate(new Date())
-        console.log(campaign);
-        console.log(images);
-        console.log(fieldIds);
-
+        // console.log(campaign);
+        // console.log(fieldIds);
+        // console.log(images[0])
+        // console.log(typeof images[0]);
 
         if (!validateFormData(campaign)) return;
         else createCampaign(campaign, images, fieldIds).then((res) => {

@@ -51,7 +51,5 @@ export function createCampaign(data, images, fieldIds) {
     formData.append("fieldIds", fieldIds[i]);
   }
 
-  console.log(...formData);
-
   return postFormDataAuth(`ent/campaigns`, formData);
 }
