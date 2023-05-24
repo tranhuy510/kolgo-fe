@@ -4,7 +4,7 @@ import { HeartOutlined } from '@ant-design/icons/lib/icons'
 import classes from './NameMain.module.css'
 import Modals from "../../../../components/UI/Modal/Modals";
 
-const NameMain = ({ firstName, lastName, sumBook, sumLike }) => {
+const NameMain = ({ firstName, lastName, sumBook, sumCampaigns }) => {
     const [noti, setNoti] = useState({
         status: false,
         title: '',
@@ -44,11 +44,11 @@ const NameMain = ({ firstName, lastName, sumBook, sumLike }) => {
             <div className={classes['name-main__bottom']} >
                 <div className={classes['bottom-item']} >
                     <span className={classes['bottom-item__title']}>SỐ LƯỢT BOOK</span>
-                    <span className={classes['bottom-item__content']}>120</span>
+                    <span className={classes['bottom-item__content']}>{sumBook}</span>
                 </div>
                 <div className={classes['bottom-item']}>
-                    <span className={classes['bottom-item__title']}>SỐ NGƯỜI YÊU THÍCH</span>
-                    <span className={classes['bottom-item__content']}>320</span>
+                    <span className={classes['bottom-item__title']}>CHIẾN DỊCH THAM GIA</span>
+                    <span className={classes['bottom-item__content']}>{sumCampaigns}</span>
                 </div>
             </div>
         </div>
