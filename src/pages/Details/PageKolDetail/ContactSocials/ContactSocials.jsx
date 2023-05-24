@@ -19,7 +19,7 @@ const ContactSocials = (props) => {
                     />
                 </Link>
                 <div className={classes['socials-item_follow']}>
-                    100000 - follow
+                    - lượt theo dõi
                 </div>
             </div>
             <div className={classes['socials-item']}>
@@ -30,7 +30,7 @@ const ContactSocials = (props) => {
                     />
                 </Link>
                 <div className={classes['socials-item_follow']}>
-                    100000 - follow
+                    - lượt theo dõi
                 </div>
             </div>
             <div className={classes['socials-item']}>
@@ -41,7 +41,7 @@ const ContactSocials = (props) => {
                     />
                 </Link>
                 <div className={classes['socials-item_follow']}>
-                    100000 - follow
+                    - lượt theo dõi
                 </div>
             </div>
             <div className={classes['socials-item']}>
@@ -52,7 +52,7 @@ const ContactSocials = (props) => {
                     />
                 </Link>
                 <div className={classes['socials-item_follow']}>
-                    100000 - follow
+                    - lượt theo dõi
                 </div>
             </div>
         </div>
