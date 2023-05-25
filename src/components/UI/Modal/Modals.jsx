@@ -9,7 +9,7 @@ const Modals = ({ status, title, email, message, content, changeNotification }) 
             content: (
                 <div>
                     <p>{content}</p>
-                    {message && email && <p>Please go to {email} {message}</p>}
+                    {email && <p>Hãy đi đến {email} {message}</p>}
                 </div>
             ),
         });

@@ -6,7 +6,7 @@ import ModalUpdateCampaign from './ModalUpdateCampaign'
 import { EnvironmentFilled } from '@ant-design/icons';
 import { deleteCampaign } from '../../../../services/CampaignService'
 
-const CampaignCreated = ({ campaign }) => {
+const CampaignCreated = ({ campaign, setCampaignDelete }) => {
     const [show, setShow] = useState({
         id: 0,
         status: false,
@@ -22,7 +22,9 @@ const CampaignCreated = ({ campaign }) => {
     };
 
     const onDeleteCampaignHandler = () => {
+
         deleteCampaign(campaign.id).then(res => {
+            setCampaignDelete(campaign.id)
             setOpenDeleteModal(false)
             messageApi.open({
                 type: 'success',

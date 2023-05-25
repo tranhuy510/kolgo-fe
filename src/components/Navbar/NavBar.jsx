@@ -32,10 +32,10 @@ const NavBar = (props) => {
     {
       label: (
         (user && user.role === "KOL") ?
-          <Link style={{ fontSize: "20px" }} to={`../kols/${kol.id}`}>
+          <Link style={{ fontSize: "20px" }} to={`../kols/${kol?.id}`}>
             <PlusCircleOutlined /> Trang của tôi
           </Link> :
-          <Link style={{ fontSize: "20px" }} to={`../ents/${ent.id}`}>
+          <Link style={{ fontSize: "20px" }} to={`../ents/${ent?.id}`}>
             <PlusCircleOutlined /> Trang của tôi
           </Link>
       ),

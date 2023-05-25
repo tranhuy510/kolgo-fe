@@ -9,7 +9,7 @@ import { getCampaigns, getEntCampaigns } from "../../../../services/CampaignServ
 
 const { Search } = Input;
 
-const ModalCampaignIsProgress = () => {
+const ModalCampaignIsProgress = (props) => {
     const ctx = useContext(CampaignContext)
 
     const [campaigns, setCampaigns] = useState([]);
@@ -19,14 +19,10 @@ const ModalCampaignIsProgress = () => {
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(10);
 
-    // hàm này lấy lun chiến dịch có ent
+    // hàm lấy tất cả chiến dịch đang có
     useEffect(() => {
         getCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
-        // getCampaigns().then((res) => {
-        //     if (res) { setCampaigns(res); setTotal(res.length); }
-        //     else setCampaigns([])
-        // }).catch(() => setCampaigns([]))
-    }, [])
+    }, [props.isCampaignAdded])
 
     const onChangePage = (page) => {
         setCurrent(page);

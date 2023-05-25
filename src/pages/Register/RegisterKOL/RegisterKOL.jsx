@@ -77,28 +77,28 @@ const RegisterEnterprise = (props) => {
     let res = true;
     let errMsg = '';
     if (!userInput.firstName) {
-      errMsg = 'Please enter your first name';
+      errMsg = 'Hãy nhập tên';
     }
     else if (!userInput.lastName) {
-      errMsg = 'Please enter your last name';
+      errMsg = 'Hãy nhập họ';
     }
     else if (!userInput.email) {
-      errMsg = 'Please enter your email';
+      errMsg = 'Hãy nhập email';
     }
     else if (userInput.email.indexOf('@') < 0) {
-      errMsg = 'Wrong email format must have @';
+      errMsg = 'Cấu trúc mail sai phải có @';
     }
     else if (!userInput.password) {
-      errMsg = 'Please enter your password';
+      errMsg = 'Hãy nhập mật khẩu';
     }
     else if (userInput.password.length > 32 || userInput.password.length < 6) {
-      errMsg = 'Password size must be between 6 and 36';
+      errMsg = 'Độ dài mật khẩu từ 6 đến 36 ký tự';
     }
     else if (!userInput.confirmPassword) {
-      errMsg = 'Please confirm your password';
+      errMsg = 'Hãy nhập mật khẩu để xác nhận';
     }
     else if (userInput.password !== userInput.confirmPassword) {
-      errMsg = 'Password does not match';
+      errMsg = 'Nhập đúng mật khẩu';
     }
     if (errMsg) {
       createErrorMessage(errMsg)
@@ -149,7 +149,7 @@ const RegisterEnterprise = (props) => {
       </div>
       <form onSubmit={handleRegister} className="register-form">
         <div className='form-top'>
-          <h1 style={{ textAlign: 'center' }}>thông tin đăng ký KOL</h1>
+          <h1 style={{ textAlign: 'center' }}>Thông tin đăng ký KOL</h1>
           <div className="register-form__control">
             <input
               type="text"
