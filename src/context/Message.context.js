@@ -12,28 +12,20 @@ export const MessageContext = createContext();
 
 export const MessageProvider = ({ children }) => {
   const { user, setUser } = useContext(AuthContext);
-
   const [publicChats, setPublicChats] = useState([]);
   const [privateChats, setPrivateChats] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    Promise.all([getNotifications()]).then(([notificationList]) => {
-      console.log("NOTIFICATION LIST", notificationList);
-      if (notificationList && notificationList.length > 0)
-        setNotifications(notificationList);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (user) connect();
+    if (user) {
+      connect();
+      Promise.all([getNotifications()]).then(([notificationList]) => {
+        if (notificationList && notificationList.length > 0)
+          setNotifications(notificationList);
+      });
+    }
     else disconnect();
-    // const handleStorageChange = () => {
-    //   setUser({ ...JSON.parse(localStorage.getItem("user")) });
-    // };
-    // window.addEventListener("storage", handleStorageChange);
-    // return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
+  }, [user]);
 
   const connect = () => {
     if (!stompClient) {
@@ -113,6 +105,7 @@ export const MessageProvider = ({ children }) => {
   return (
     <MessageContext.Provider
       value={{
+        connect,
         publicChats,
         setPublicChats,
         privateChats,

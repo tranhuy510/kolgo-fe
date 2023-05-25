@@ -8,8 +8,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const handleStorageChange = () => {
       setUser({ ...JSON.parse(localStorage.getItem("user")) });
-      console.log("rerender");
-      console.log(JSON.parse(localStorage.getItem("user")));
     };
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);

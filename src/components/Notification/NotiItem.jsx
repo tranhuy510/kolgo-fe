@@ -20,7 +20,7 @@ export default function NotiItem({ noti }) {
   const handleClick = () => {
     updateNotificationStatus(noti.id, "READ").then((res) => console.log(res));
     if (noti && noti.type === "BOOKING");
-    navigate(`/bookings/${noti.bookingId}`);
+    window.location.replace(`/bookings/${noti.bookingId}`)
   };
 
   return (

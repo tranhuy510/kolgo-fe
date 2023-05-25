@@ -15,47 +15,58 @@ import { formatDate } from "../../services/DateTimeUtil.js";
 import { formatCurrency } from "../../services/CurrencyUtil.js";
 import Footer from "../../components/Footer/Footer.jsx";
 import Header from "../../components/Header/index.jsx";
+import { AuthContext } from "../../context/auth.context.js";
 
+let count = 0;
 function PaymentResult() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const { sendPrivateNotification } = useContext(MessageContext);
+  const { user } = useContext(AuthContext);
+  const { sendPrivateNotification, connect } = useContext(MessageContext);
   const [params, setParams] = useSearchParams();
   const [payment, setPayment] = useState({});
   const [kol, setKol] = useState({});
+
   useEffect(() => {
     const paymentResult = {
       method: "VNPAY",
       amount: params.get("vnp_Amount"),
       bankCode: params.get("vnp_BankCode"),
       bankTxnNo: params.get("vnp_BankTranNo"),
-      // vnp_CardType: params.get("vnp_CardType"),
       description: params.get("vnp_OrderInfo"),
       timestamp: params.get("vnp_PayDate"),
-      // responseCode: params.get("vnp_ResponseCode"),
-      // vnp_TmnCode: params.get("vnp_TmnCode"),
       txnNo: params.get("vnp_TransactionNo"),
-      status:
-        params.get("vnp_TransactionStatus") === "00" ? "SUCCESS" : "FAILED",
+      status: params.get("vnp_TransactionStatus") === "00" ? "SUCCESS" : "FAILED",
       txnRef: params.get("vnp_TxnRef"),
-      // vnp_SecureHash: params.get("vnp_SecureHash"),
     };
     setPayment(paymentResult);
     getBookingByTxnRef(paymentResult.txnRef).then((res) => {
       const booking = res[0];
-      createPayment(booking.id, paymentResult).then(res => console.log(res));
+      createPayment(booking.id, paymentResult)
+      // .then(res => console.log(res));
       setKol(booking.kol);
       if (paymentResult.status === "SUCCESS") {
-        updateBookingStatus(booking.id, "PAID");
-        sendPrivateNotification({
-          type: "BOOKING",
-          bookingId: paymentResult.txnRef,
-          content: `${user.firstName} đã thanh toán phí hợp tác cho bạn.`,
-          timestamp: formatDate(new Date()),
-          userId: booking.kol.userId,
-        });
+        updateBookingStatus(booking.id, "PAID")
+          .then(res => {
+            setTimeout(() => {
+              connect();
+              if (count === 0) {
+                sendPrivateNotification({
+                  type: "BOOKING",
+                  bookingId: booking.id,
+                  content: `${user.firstName} đã thanh toán phí hợp tác cho bạn.`,
+                  timestamp: formatDate(new Date()),
+                  userId: booking.kol.userId,
+                });
+                count++;
+              } else {
+                count = 0;
+              }
+              console.log('NOTIFICATION SENT')
+            }, 3000);
+          })
       }
     });
   }, []);
+
   return (
     <>
       <Header />
