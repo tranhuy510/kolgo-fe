@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Modal, Input, Select, Form, DatePicker, Upload, message, Col, Row } from "antd";
+import { Button, Modal, Input, Select, Image, DatePicker, Upload, message, Col, Row } from "antd";
 import { PlusOutlined } from '@ant-design/icons';
 import classes from '../../Campaign.module.css';
 import CampaignContext from '../../../../context/campaign.context';
@@ -18,13 +18,31 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     const userCtx = useContext(CampaignContext);
     const [messageApi, contextHolder] = message.useMessage();
 
-    const [campaignUpdate, setCampaignUpdate] = useState({});
+    const [campaignUpdate, setCampaignUpdate] = useState({
+        name: "",
+        timestamp: "",
+        startTime: "",
+        finishTime: "",
+        location: "",
+        description: "",
+        details: "",
+    });
     const [images, setImages] = useState([]);
     const [fieldIds, setFieldIds] = useState([]);
     const [dateCampaign, setDateCampaign] = useState();
 
     useEffect(() => {
-        setCampaignUpdate(campaign)
+        setCampaignUpdate({
+            name: campaign.name,
+            timestamp: campaign.timestamp,
+            startTime: campaign.startTime,
+            finishTime: campaign.finishTime,
+            location: campaign.location,
+            description: campaign.description,
+            details: campaign.details,
+        })
+        setFieldIds(campaign.fieldIds)
+        setImages(campaign.images)
         setDateCampaign({
             start: dayjs(campaign?.startTime, dateFormat),
             finish: dayjs(campaign?.finishTime, dateFormat),
@@ -40,15 +58,15 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
         });
     };
 
-    const onChangefieldIdsHandler = (value) => {
+    const onChangeFieldIdsHandler = (value) => {
         setFieldIds(value);
     };
 
-    const onChangeImagesHandler = (value) => {
+    const handleFileChange = (event) => {
         setImages((prev) => {
-            return [...prev, value.file.originFileObj];
+            return [...prev, ...event.target.files];
         });
-    }
+    };
 
     const onChangeDateHandler = (value) => {
         setCampaignUpdate(prev => { return { ...prev, startTime: formatDate(new Date(value[0])) } })
@@ -66,17 +84,20 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
     });
 
     const onUpdateCampaignHandler = () => {
-
-        updateCampaign(campaignUpdate.id, campaignUpdate)
+        updateCampaign(campaign.id, campaignUpdate, images, fieldIds)
             .then(res => {
-                messageApi.open({
-                    type: 'success',
-                    content: 'Tạo thành công',
-                });
+                if (res.error) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Cập nhập thất bại',
+                    });
+                }
+                else
+                    messageApi.open({
+                        type: 'success',
+                        content: 'Cập nhập thành công',
+                    });
             })
-
-        // updateCampaign(campaignUpdate.id, campaignUpdate, images, fieldIds)
-        //     .then(res => { console.log(res); })
     };
 
     return (
@@ -112,8 +133,8 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                             width: "100%",
                         }}
                         placeholder="Chọn lĩnh Vực"
-                        onChange={onChangefieldIdsHandler}
-                        value={campaignUpdate.fieldIds}
+                        onChange={onChangeFieldIdsHandler}
+                        value={fieldIds}
                         options={optionFields}
                     />
                 </Col>
@@ -158,7 +179,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Người tạo:</Col>
                 <Col span={18}>
-                    {campaignUpdate?.enterprise?.firstName} {campaignUpdate?.enterprise?.lastName}
+                    {campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}
                 </Col>
             </Row>
 
@@ -170,7 +191,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                         rows={2}
                         placeholder="Nhập địa chỉ"
                         onChange={inputChangeHandler}
-                        value={campaign.location}
+                        value={campaignUpdate?.location}
                         name="location"
                     />
                 </Col>
@@ -184,7 +205,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
                     <TextArea
                         rows={4}
                         placeholder="Nhập mô tả chiến dịch"
-                        value={campaign.description}
+                        value={campaignUpdate?.description}
                         onChange={inputChangeHandler}
                         name="description"
                     />
@@ -196,7 +217,7 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Chi tiết:</Col>
                 <Col span={18}>
-                    <FormatText details={campaign.details} inputChangeHandler={inputChangeHandler} />
+                    <FormatText details={campaignUpdate?.details} inputChangeHandler={inputChangeHandler} />
                 </Col>
             </Row>
 
@@ -204,27 +225,26 @@ const ModalUpdateCampaign = ({ campaign, open, onCancelShowHandler }) => {
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Ảnh:</Col>
                 <Col span={18}>
-                    {campaignUpdate.images && <ImageSlider images={campaignUpdate.images} />}
+                    <div className={classes['moTa-list-image']}>
+                        {campaign.images && campaign?.images?.map((image, index) => (
+                            <div key={index} className={classes['wrap-image']} >
+                                <Image src={`http://localhost:8080/api/images/${image}`} className={classes['list-image-item']} />
+                            </div>
+                        ))}
+                    </div>
                 </Col>
             </Row>
 
             {/* Thêm ảnh */}
             <Row style={{ margin: '20px 10px' }}>
                 <Col span={6}>Thêm ảnh:</Col>
-                <Col span={18}>
-                    <Upload listType="picture-card" value={campaignUpdate.images} onChange={onChangeImagesHandler}>
-                        <div>
-                            <PlusOutlined />
-                            <div
-                                style={{
-                                    marginTop: 8,
-                                }}
-                            >
-                                Thêm ảnh
-                            </div>
-                        </div>
-                    </Upload>
-                </Col>
+                <input
+                    className={classes['input-image']}
+                    type="file"
+                    multiple
+                    onChange={handleFileChange}
+                    accept="image/*"
+                />
             </Row>
 
             <Row style={{ margin: '20px 10px' }}>

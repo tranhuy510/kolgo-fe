@@ -50,21 +50,23 @@ export function createCampaign(data, images, fieldIds) {
   return postFormDataAuth(`ent/campaigns`, formData);
 }
 
-export function updateCampaign(campaignId, campaign) {
-  return putAuth(`ent/campaigns/${campaignId}`, campaign);
+export function updateCampaign(campaignId, campaign, images, fieldIds) {
+  const formData = new FormData();
+
+  for (let i = 0; i < images.length; i++) {
+    formData.append("images", images[i]);
+  }
+  Object.keys(campaign).map((key) => formData.append(key, campaign[key]));
+
+  for (let i = 0; i < fieldIds.length; i++) {
+    formData.append("fieldIds", fieldIds[i]);
+  }
+
+  console.log(campaignId);
+
+  for (const [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  return putAuth(`ent/campaigns/${campaignId}`, formData);
 }
-
-// export function updateCampaign(campaignId, campaign, images, fieldIds) {
-//   const formData = new FormData();
-
-//   for (let i = 0; i < images.length; i++) {
-//     formData.append("images", images[i]);
-//   }
-//   Object.keys(campaign).map((key) => formData.append(key, campaign[key]));
-
-//   for (let i = 0; i < fieldIds.length; i++) {
-//     formData.append("fieldIds", fieldIds[i]);
-//   }
-
-//   return putAuth(`ent/campaigns/${campaignId}`, formData);
-// }
