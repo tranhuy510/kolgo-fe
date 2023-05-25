@@ -8,7 +8,7 @@ import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { useContext } from "react";
 import { MessageContext } from "../../context/Message.context.js";
 import {
-  getBookingByBookingId,
+  getBookingByTxnRef,
   updateBookingStatus,
 } from "../../services/BookingService.js";
 import { formatDate } from "../../services/DateTimeUtil.js";
@@ -38,17 +38,18 @@ function PaymentResult() {
       // vnp_SecureHash: params.get("vnp_SecureHash"),
     };
     setPayment(paymentResult);
-    createPayment(paymentResult.txnRef, paymentResult);
-    getBookingByBookingId(paymentResult.txnRef).then((res) => {
-      setKol(res.kol);
+    getBookingByTxnRef(paymentResult.txnRef).then((res) => {
+      const booking = res[0];
+      createPayment(booking.id, paymentResult).then(res => console.log(res));
+      setKol(booking.kol);
       if (paymentResult.status === "SUCCESS") {
-        updateBookingStatus(paymentResult.txnRef, "PAID");
+        updateBookingStatus(booking.id, "PAID");
         sendPrivateNotification({
           type: "BOOKING",
           bookingId: paymentResult.txnRef,
           content: `${user.firstName} đã thanh toán phí hợp tác cho bạn.`,
           timestamp: formatDate(new Date()),
-          userId: res.kol.userId,
+          userId: booking.kol.userId,
         });
       }
     });
