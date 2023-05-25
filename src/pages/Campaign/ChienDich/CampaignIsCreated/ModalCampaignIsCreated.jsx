@@ -21,6 +21,8 @@ const ModalCampaignIsCreated = () => {
     const [current, setCurrent] = useState(1);
     const [total, setTotal] = useState(10);
 
+    const [campaignDelete, setCampaignDelete] = useState();
+
     useEffect(() => {
         getEntCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
     }, [])
@@ -29,7 +31,13 @@ const ModalCampaignIsCreated = () => {
         setCurrent(page);
     };
 
-    const resultSearch = campaigns?.filter((cp) => {
+    const listCampaignAffterDelete = campaigns?.filter((cp) => {
+        if (campaignDelete) {
+            return cp.id !== campaignDelete
+        }
+    })
+
+    const resultSearch = listCampaignAffterDelete?.filter((cp) => {
         return (inputSearch === "" ? cp : cp.name.includes(inputSearch))
             || (cp.fieldIds?.find(item => item.name === searchField))
     })
@@ -90,7 +98,7 @@ const ModalCampaignIsCreated = () => {
                 {changeRender() && changeRender().length > 0 &&
                     changeRender().map((campaign, index) => (
                         <div className={classes["listChienDich-item"]} key={campaign.id}>
-                            {<CampaignCreated campaign={campaign} />}
+                            {<CampaignCreated campaign={campaign} setCampaignDelete={setCampaignDelete} />}
                         </div>
                     ))}
             </div>
