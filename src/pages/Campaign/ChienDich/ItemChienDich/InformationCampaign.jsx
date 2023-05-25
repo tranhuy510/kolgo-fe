@@ -18,6 +18,8 @@ const InformationCampaign = (props) => {
     const [joined, setJoined] = useState(false)
     const userCtx = useContext(CampaignContext);
 
+    console.log(props.campaign);
+
     useEffect(() => {
         if (userCtx.user) {
             if (userCtx.user?.role === 'KOL') {
@@ -55,18 +57,13 @@ const InformationCampaign = (props) => {
 
     const onQuitCampaignHandler = () => {
         updateCampaignKolQuit(props.campaign.id)
-            .then(() => createSuccessNoti('Bạn đã hủy tham gia chiến dịch!'))
+            .then((res) => { console.log(res); createSuccessNoti('Bạn đã hủy tham gia chiến dịch!') })
     }
 
     const onJoinCampaignHandler = () => {
         updateCampaignKolJoin(props.campaign.id)
             .then(() => createSuccessNoti('Tham gia thành công!'))
     };
-
-    const onDeleteCampaignHandler = () => {
-        deleteCampaign(props.campaign?.id)
-            .then(() => { createSuccessNoti('Bạn đã xóa chiến dịch!'); })
-    }
 
     return (
         <Modal
@@ -147,7 +144,6 @@ const InformationCampaign = (props) => {
             < div className={classes["bottom-infor-btn"]} >
                 {joined !== "GUEST" && joined === "JOINED" && <Button className={classes["btn-tham-gia"]} onClick={onQuitCampaignHandler}>Hủy tham gia</Button>}
                 {joined !== "GUEST" && joined === "NOTJOIN" && <Button className={classes["btn-tham-gia"]} onClick={onJoinCampaignHandler}>Tham gia</Button>}
-                {joined !== "GUEST" && joined === "CREATED" && <Button className={classes["btn-tham-gia"]} onClick={onDeleteCampaignHandler}>Hủy chiến dịch</Button>}
             </ div>
         </Modal >
     )
