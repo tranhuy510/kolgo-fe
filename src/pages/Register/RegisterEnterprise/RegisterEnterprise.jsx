@@ -45,7 +45,7 @@ const RegisterEnterprise = (props) => {
     }
 
     const createSuccessNoti = (email) => {
-        setNoti({ status: true, title: 'success', email: email, message: 'for email verification' })
+        setNoti({ status: true, title: 'success', email: email, message: ' để xác thực tài khoản' })
     }
 
     const createWarningNoti = (msg) => {

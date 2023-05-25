@@ -11,7 +11,7 @@ import { getEntCampaigns } from '../../../../services/CampaignService';
 
 const { Search } = Input;
 
-const ModalCampaignIsParticipating = () => {
+const ModalCampaignIsParticipating = (props) => {
     const ctx = useContext(CampaignContext);
 
     const [campaigns, setCampaigns] = useState([])
@@ -28,7 +28,7 @@ const ModalCampaignIsParticipating = () => {
         if (ctx.user.role === "KOL") {
             getKol(ctx.idRole).then((res) => { setCampaigns(res.campaigns); setTotal(res.campaigns.length); })
         }
-    }, [])
+    }, [props.isCampaignAdded, ctx.isQuitCampaign])
 
     const onChangePage = (page) => {
         setCurrent(page);
@@ -98,7 +98,7 @@ const ModalCampaignIsParticipating = () => {
                     <div className={classes["doing-modal-list-campaign"]}>
                         {changeRender() && changeRender().length > 0 &&
                             changeRender().map((campaign, index) => (
-                                <ItemCampaign campaign={campaign} />
+                                <ItemCampaign campaign={campaign} setIsQuitCampaign={props.setIsQuitCampaign} />
                             ))}
                     </div>
                     <div className={classes["page-pagination"]}>

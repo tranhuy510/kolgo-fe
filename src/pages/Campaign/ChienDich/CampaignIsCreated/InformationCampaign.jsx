@@ -10,8 +10,6 @@ const InformationCampaign = (props) => {
     const [statusCampaign, setStatusCampaign] = useState("")
     const userCtx = useContext(CampaignContext);
 
-    console.log(props.campaign);
-
     useEffect(() => {
         if (props.campaign?.status === "UPCOMING") {
             setStatusCampaign({ status: "processing", name: 'Sắp diễn ra' })
