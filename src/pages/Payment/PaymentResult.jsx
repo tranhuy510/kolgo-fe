@@ -13,6 +13,8 @@ import {
 } from "../../services/BookingService.js";
 import { formatDate } from "../../services/DateTimeUtil.js";
 import { formatCurrency } from "../../services/CurrencyUtil.js";
+import Footer from "../../components/Footer/Footer.jsx";
+import Header from "../../components/Header/index.jsx";
 
 function PaymentResult() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -55,47 +57,51 @@ function PaymentResult() {
     });
   }, []);
   return (
-    <div className={classes.payment}>
-      <Row>
-        <Col offset={4}></Col>
-        <Col span={16}>
-          <div className={classes["payment-wrap"]}>
-            {payment.status === "SUCCESS" ? (
-              <CheckCircleFilled className={classes["icon-success"]} />
-            ) : (
-              <CloseCircleFilled className={classes["icon-failed"]} />
-            )}
+    <>
+      <Header />
+      <div className={classes.payment}>
+        <Row>
+          <Col offset={4}></Col>
+          <Col span={16}>
+            <div className={classes["payment-wrap"]}>
+              {payment.status === "SUCCESS" ? (
+                <CheckCircleFilled className={classes["icon-success"]} />
+              ) : (
+                <CloseCircleFilled className={classes["icon-failed"]} />
+              )}
 
-            <h3 class="text-muted">
-              {payment.status === "SUCCESS"
-                ? "Thanh toán thành công"
-                : "Thanh toán thất bại"}
-            </h3>
+              <h3 class="text-muted">
+                {payment.status === "SUCCESS"
+                  ? "Thanh toán thành công"
+                  : "Thanh toán thất bại"}
+              </h3>
 
-            {payment.status === "SUCCESS" && (
-              <p>
-                Quý doanh nghiệp đã thanh toán thành công{" "}
-                <b>{formatCurrency("vi-VN", "VND", payment.amount / 100)}</b>{" "}
-                cho KOL <b>{`${kol.firstName} ${kol.lastName}`}</b>. Mã giao
-                dịch <b>{payment.txnNo}</b>.
-              </p>
-            )}
+              {payment.status === "SUCCESS" && (
+                <p>
+                  Quý doanh nghiệp đã thanh toán thành công{" "}
+                  <b>{formatCurrency("vi-VN", "VND", payment.amount / 100)}</b>{" "}
+                  cho KOL <b>{`${kol.firstName} ${kol.lastName}`}</b>. Mã giao
+                  dịch <b>{payment.txnNo}</b>.
+                </p>
+              )}
 
-            {payment.status === "FAILED" && (
-              <p>
-                Giao dịch không thực hiện được. Vui lòng thử lại sau. Mã giao
-                dịch <b>{payment.txnNo}</b>
-              </p>
-            )}
+              {payment.status === "FAILED" && (
+                <p>
+                  Giao dịch không thực hiện được. Vui lòng thử lại sau. Mã giao
+                  dịch <b>{payment.txnNo}</b>
+                </p>
+              )}
 
-            <Link to="/">Trở về trang chủ</Link>
-            <footer class="footer">
-              <p>&copy; VNPAY 2023</p>
-            </footer>
-          </div>
-        </Col>
-      </Row>
-    </div>
+              <Link to="/">Trở về trang chủ</Link>
+              <footer class="footer">
+                <p>&copy; VNPAY 2023</p>
+              </footer>
+            </div>
+          </Col>
+        </Row>
+      </div>
+      <Footer />
+    </>
   );
 }
 

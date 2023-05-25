@@ -18,8 +18,7 @@ import { Col, Row, Tabs } from "antd";
 import ButtonFull from "../../../components/UI/Button/ButtonFull";
 import { getKol } from "../../../services/KolService";
 import { AuthContext } from "../../../context/auth.context";
-
-
+import Footer from "../../../components/Footer/Footer";
 
 const description =
   "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
@@ -63,7 +62,7 @@ const danhgia = [
 ];
 
 const PageKolDetail = () => {
-  const { user, setUser } = useContext(AuthContext)
+  const { user, setUser } = useContext(AuthContext);
 
   const { id } = useParams();
   const [kol, setKol] = useState();
@@ -256,6 +255,7 @@ const PageKolDetail = () => {
           <Feedback bookings={kol?.bookings} danhgia={danhgia} />
         </div>
       </main>
+      <Footer />
     </>
   );
 };

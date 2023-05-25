@@ -14,7 +14,8 @@ import { displayDateTime, formatDate } from "../../services/DateTimeUtil";
 import BookingCreate from "./BookingCreate";
 import { useContext } from "react";
 import { MessageContext } from "../../context/Message.context";
-import Header from '../../components/Header/index'
+import Header from "../../components/Header/index";
+import Footer from "../../components/Footer/Footer";
 
 const BookingDetails = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -158,12 +159,11 @@ const BookingDetails = () => {
             {booking.kol?.firstName} {booking.kol?.lastName}
           </Descriptions.Item>
 
-          <Descriptions.Item label="Lĩnh vực hoạt động" span={3} >
+          <Descriptions.Item label="Lĩnh vực hoạt động" span={3}>
             {booking.kol?.fieldNames?.map((field) => {
-              return `${field} ,`
+              return `${field} ,`;
             })}
           </Descriptions.Item>
-
 
           <Descriptions.Item label="Email" span={3}>
             {booking.kol?.email}
@@ -174,12 +174,12 @@ const BookingDetails = () => {
           </Descriptions.Item>
         </Descriptions>
 
-        <Descriptions title="Thông tin người đặt đơn" >
-          <Descriptions.Item label="Tên ENTERPRISE" span={3} >
+        <Descriptions title="Thông tin người đặt đơn">
+          <Descriptions.Item label="Tên ENTERPRISE" span={3}>
             {booking.user?.firstName} {booking.user?.lastName}
           </Descriptions.Item>
 
-          <Descriptions.Item label="Email" span={3} >
+          <Descriptions.Item label="Email" span={3}>
             {booking.user?.email}
           </Descriptions.Item>
         </Descriptions>
@@ -351,8 +351,8 @@ const BookingDetails = () => {
           onCancelOpenHandler={onCancelOpenHandler}
         />
       </div>
+      <Footer />
     </>
-
   );
 };
 
