@@ -3,6 +3,7 @@ import { Col, Row } from "antd";
 import MenuProfile from "./Menu/MenuProfile";
 import SubContext from "./SubContext/SubContext";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer/Footer";
 
 const Profile = () => {
   const [changeContent, setChangeContent] = useState({});
@@ -29,6 +30,7 @@ const Profile = () => {
           </Col>
         </Row>
       </div>
+      <Footer />
     </>
   );
 };

@@ -6,7 +6,8 @@ import { useLocation } from "react-router";
 import { formatDate } from "../../services/DateTimeUtil";
 import { MessageContext } from "../../context/Message.context";
 
-import Header from '../../components/Header/index'
+import Header from "../../components/Header/index";
+import Footer from "../../components/Footer/Footer";
 
 const Chat = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -16,13 +17,14 @@ const Chat = (props) => {
     privateChats,
     setPrivateChats,
     sendPublicMessage,
-    sendPrivateMessage } = useContext(MessageContext);
+    sendPrivateMessage,
+  } = useContext(MessageContext);
   const [tab, setTab] = useState("PUBLIC");
   const [chatId, setChatId] = useState(0);
   const [receivers, setReceivers] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatMessage, setChatMessage] = useState({
-    type: 'CHAT_MESSAGE',
+    type: "CHAT_MESSAGE",
     timestamp: "",
     content: "",
     userId: user.id,
@@ -33,74 +35,76 @@ const Chat = (props) => {
   });
 
   useEffect(() => {
-    getChats()
-      .then(res => {
-        const receiverList = getReceiverList(res);
-        validateChatExistence(state, receiverList);
-        setPrivateChats(res)
-      });
+    getChats().then((res) => {
+      const receiverList = getReceiverList(res);
+      validateChatExistence(state, receiverList);
+      setPrivateChats(res);
+    });
   }, []);
 
   useEffect(() => {
     if (privateChats && privateChats.length > 0) {
-      const chat = privateChats.find(c => c.id === chatId);
+      const chat = privateChats.find((c) => c.id === chatId);
       if (chat && chatId === chat.id) {
         setChatMessages(chat.chatMessages);
       }
     }
-  }, [privateChats])
+  }, [privateChats]);
 
   useEffect(() => {
-    console.log(tab)
-    if (tab !== 'PUBLIC' && privateChats.length > 0) {
-      const chat = privateChats.find(chat => chat.users[0].id === tab || chat.users[1].id === tab);
+    console.log(tab);
+    if (tab !== "PUBLIC" && privateChats.length > 0) {
+      const chat = privateChats.find(
+        (chat) => chat.users[0].id === tab || chat.users[1].id === tab
+      );
       setChatMessages(chat.chatMessages);
       setChatId(chat.id);
     }
-  }, [tab])
+  }, [tab]);
 
   const getReceiverList = (chats) => {
     let receiverList;
     if (chats.length > 0) {
-      receiverList = chats.map(chat => {
+      receiverList = chats.map((chat) => {
         if (chat.users[0].id !== user.id) return chat.users[0];
         return chat.users[1];
       });
       setReceivers(receiverList);
     }
     return receiverList;
-  }
+  };
 
   const validateChatExistence = (kol, receiverList) => {
-    console.log(kol)
+    console.log(kol);
     if (state) {
       let chat;
-      if (receiverList.length > 0) chat = receiverList.find(receiver => receiver.id === kol.userId);
+      if (receiverList.length > 0)
+        chat = receiverList.find((receiver) => receiver.id === kol.userId);
 
-      if (chat)
-        setTab(chat.id)
+      if (chat) setTab(chat.id);
       else
-        createChat({ type: 'PRIVATE', timestamp: formatDate(new Date()), userIds: [user.id, state.userId] })
-          .then(res => setPrivateChats(prev => [...prev, res]));
+        createChat({
+          type: "PRIVATE",
+          timestamp: formatDate(new Date()),
+          userIds: [user.id, state.userId],
+        }).then((res) => setPrivateChats((prev) => [...prev, res]));
     }
-
-  }
+  };
 
   const sendMessage = (e) => {
     e.preventDefault();
     chatMessage.timestamp = formatDate(new Date());
-    if (tab === 'PUBLIC') {
+    if (tab === "PUBLIC") {
       sendPublicMessage(chatMessage);
-    }
-    else {
-      console.log("send private message to user with id ", tab)
+    } else {
+      console.log("send private message to user with id ", tab);
 
       chatMessage.chatId = chatId;
       console.log(chatMessage);
       sendPrivateMessage(chatMessage);
     }
-    setChatMessage(prev => ({ ...prev, content: '', timestamp: '' }))
-  }
+    setChatMessage((prev) => ({ ...prev, content: "", timestamp: "" }));
+  };
 
   return (
     <>
@@ -113,22 +117,23 @@ const Chat = (props) => {
           {/* Public */}
           <li
             onClick={() => setTab("PUBLIC")}
-            className={`${classes["conversation-list-item"]} ${tab === "PUBLIC" && classes["active"]
-              }`}
+            className={`${classes["conversation-list-item"]} ${
+              tab === "PUBLIC" && classes["active"]
+            }`}
           >
             Public Chat
           </li>
           {/* Private Receivers */}
-          {receivers.length > 0 && receivers.map((usr, index) => (
-            <li
-              onClick={() => setTab(usr.id)}
-              className={`${classes["conversation-list-item"]}`}
-              key={index}
-            >
-              {usr.firstName} {usr.lastName}
-            </li>
-
-          ))}
+          {receivers.length > 0 &&
+            receivers.map((usr, index) => (
+              <li
+                onClick={() => setTab(usr.id)}
+                className={`${classes["conversation-list-item"]}`}
+                key={index}
+              >
+                {usr.firstName} {usr.lastName}
+              </li>
+            ))}
         </ul>
         {/* End Receiver List */}
         <div className={classes["message-content"]}>
@@ -141,11 +146,13 @@ const Chat = (props) => {
                   {msg.userFirstName} {msg.userLastName}: {msg.content}
                 </li>
               ))}
-            {tab !== 'PUBLIC' && chatMessages.length > 0 && chatMessages.map((msg, index) => (
-              <li className={classes["message-list-item"]} key={index}>
-                {msg.userFirstName} {msg.userLastName}: {msg.content}
-              </li>
-            ))}
+            {tab !== "PUBLIC" &&
+              chatMessages.length > 0 &&
+              chatMessages.map((msg, index) => (
+                <li className={classes["message-list-item"]} key={index}>
+                  {msg.userFirstName} {msg.userLastName}: {msg.content}
+                </li>
+              ))}
           </ul>
           {/* End Message List */}
           <form className={classes["send-message"]}>
@@ -168,6 +175,7 @@ const Chat = (props) => {
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
