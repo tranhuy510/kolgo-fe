@@ -39,6 +39,10 @@ const columns = [
         <Badge status="success" text="Hoàn thành" />
       ) : data.status === "CANCELED" ? (
         <Badge status="error" text="Đã hủy" />
+      ) : data.status === "ACCEPTED" ? (
+        <Badge status="processing" text="Đang tiến hành" />
+      ) : data.status === "REJECTED" ? (
+        <Badge status="warning" text="Đã từ chối" />
       ) : null,
   },
 ];
