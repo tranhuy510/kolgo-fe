@@ -26,7 +26,6 @@ const ModalCreateCampaign = (props) => {
     location: "",
     description: "",
     details: "",
-    enterprise: campaignCtx.profile,
   });
   const [images, setImages] = useState([]);
   const [fieldIds, setFieldIds] = useState([]);
@@ -124,21 +123,30 @@ const ModalCreateCampaign = (props) => {
   const onCreateCampaignHandler = (event) => {
     event.preventDefault();
     campaign.timestamp = formatDate(new Date());
+    console.log(campaign);
+    console.log(images);
+    console.log(fieldIds);
+
 
     if (!validateFormData(campaign)) return;
     createCampaign(campaign, images, fieldIds)
       .then((res) => {
-        messageApi.open({
-          type: 'success',
-          content: 'Tạo thành công',
-        });
+        console.log(res);
+        if (res.error) {
+          messageApi.open({
+            type: "warning",
+            content: "Tạo thất bại",
+          });
+        }
+        else {
+          props.setIsCampaignAdded(props.isCampaignAdded++)
+          messageApi.open({
+            type: 'success',
+            content: 'Tạo thành công',
+          });
+        }
+
       })
-      .catch(() => {
-        messageApi.open({
-          type: "warning",
-          content: "Tạo thất bại",
-        });
-      });
   };
 
   const optionFields = fields.map((c) => {
