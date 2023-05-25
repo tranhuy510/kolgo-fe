@@ -48,35 +48,15 @@ const Campaign = (props) => {
   }, []);
 
   useEffect(() => {
-    if (user?.role === "KOL") {
-      getKols().then((res) => {
-        setKols(res);
-      });
-    } else if (user?.role === "ENTERPRISE") {
-      getEnts().then((res) => {
-        setEnts(res);
-      });
-    }
+    if (user?.role === "KOL") { getKols().then((res) => { setKols(res); }); }
+    else if (user?.role === "ENTERPRISE") { getEnts().then((res) => { setEnts(res); }); }
   }, [user]);
 
-  useEffect(() => {
-    getIdRole();
-  }, [kols, ents]);
+  useEffect(() => { getIdRole(); }, [kols, ents]);
 
   const getIdRole = () => {
-    if (user.role === "KOL") {
-      kols?.map((kol) => {
-        if (kol.userId === user.id) {
-          setIdRole(kol.id);
-        }
-      });
-    } else if (user.role === "ENTERPRISE") {
-      ents.map((ent) => {
-        if (ent.userId === user.id) {
-          setIdRole(ent.id);
-        }
-      });
-    }
+    if (user.role === "KOL") { kols?.map((kol) => { if (kol.userId === user.id) { setIdRole(kol.id); } }); }
+    else if (user.role === "ENTERPRISE") { ents.map((ent) => { if (ent.userId === user.id) { setIdRole(ent.id); } }); }
   };
 
   useEffect(() => {
