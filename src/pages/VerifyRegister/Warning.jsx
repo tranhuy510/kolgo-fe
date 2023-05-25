@@ -5,7 +5,7 @@ const Warning = () => {
     return (
         <Result
             status="warning"
-            title="Đường dẫn này đã được sử dụng hoặc hến hạn sử dụng."
+            title="Đường dẫn này đã được sử dụng hoặc hết hạn sử dụng."
             extra={[]}
         />
     )
