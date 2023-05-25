@@ -24,6 +24,8 @@ const Campaign = (props) => {
   const [fields, setFields] = useState([])
   const [profile, setProfile] = useState({})
 
+  const [isQuitCampaign, setIsQuitCampaign] = useState(false);
+
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')))
     getFields().then((res) => setFields(res))
@@ -67,7 +69,7 @@ const Campaign = (props) => {
   };
 
   return (
-    <CampaignContext.Provider value={{ user: user, idRole: idRole, fields: fields, kols: kols, ents: ents, profile: profile }}>
+    <CampaignContext.Provider value={{ user: user, idRole: idRole, fields: fields, setIsQuitCampaign: setIsQuitCampaign, isQuitCampaign: isQuitCampaign, profile: profile }}>
       <Header />
       <div className={classes.campaign}>
         <Row className={classes['campaign-row-1']}>
