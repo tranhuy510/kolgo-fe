@@ -30,9 +30,6 @@ const InformationHeader = ({ infoEnt, onClickShowHandler }) => {
                 <div className={`${classes["wrap-bottom-btn"]} ${isActive === 0 ? classes.active : ""}`}>
                     <button className={classes['bottom-btn']} onClick={() => onActiveHandler(0)}>Giới thiệu</button>
                 </div>
-                <div className={`${classes["wrap-bottom-btn"]} ${isActive === 1 ? classes.active : ""}`} >
-                    <button className={classes['bottom-btn']} onClick={() => onActiveHandler(1)}>Hoạt động</button>
-                </div>
                 <div className={`${classes["wrap-bottom-btn"]} ${isActive === 2 ? classes.active : ""}`}>
                     <button className={classes['bottom-btn']} onClick={() => onActiveHandler(2)}>Chiến dịch</button>
                 </div>
