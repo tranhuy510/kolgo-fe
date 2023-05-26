@@ -25,11 +25,11 @@ const CampaignCreated = ({ campaign, setCampaignDelete }) => {
 
         deleteCampaign(campaign.id).then(res => {
             setCampaignDelete(campaign.id)
-            setOpenDeleteModal(false)
             messageApi.open({
                 type: 'success',
                 content: 'Xóa thành công!',
             });
+            setOpenDeleteModal(false)
         })
     }
 

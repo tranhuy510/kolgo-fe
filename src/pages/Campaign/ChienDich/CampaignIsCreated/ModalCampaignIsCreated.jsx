@@ -25,19 +25,19 @@ const ModalCampaignIsCreated = () => {
 
     useEffect(() => {
         getEntCampaigns().then((res) => { setCampaigns(res); setTotal(res.length); })
-    }, [])
+    }, [campaignDelete])
 
     const onChangePage = (page) => {
         setCurrent(page);
     };
 
-    const listCampaignAffterDelete = campaigns?.filter((cp) => {
+    const listCampaignAfterDelete = campaigns?.filter((cp) => {
         if (campaignDelete) {
             return cp.id !== campaignDelete
         }
     })
 
-    const resultSearch = listCampaignAffterDelete?.filter((cp) => {
+    const resultSearch = listCampaignAfterDelete?.filter((cp) => {
         return (inputSearch === "" ? cp : cp.name.includes(inputSearch))
             || (cp.fieldIds?.find(item => item.name === searchField))
     })
