@@ -272,7 +272,7 @@ const BookingDetails = () => {
               </Descriptions.Item>
             )}
           {booking.status === BookingStatus.PAID &&
-            booking.payment.status === "successful" &&
+            booking.payment.status === "SUCCESS" &&
             booking.feedback === null && (
               <Descriptions.Item label="Phản hồi" span={3}>
                 {renderFeedback ? (
@@ -287,7 +287,6 @@ const BookingDetails = () => {
                 ) : (
                   <>
                     <textarea
-                      onClick={handleReBooking}
                       rows={10}
                       placeholder="Nhập phản hồi"
                       className={classes["textarea-feedback"]}
@@ -300,49 +299,24 @@ const BookingDetails = () => {
             )}
           {!renderFeedback &&
             booking.status === BookingStatus.PAID &&
-            booking.payment.status === "successful" &&
+            booking.payment.status === "SUCCESS" &&
             booking.feedback === null && (
               <Descriptions.Item label="" span={3}>
                 <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
               </Descriptions.Item>
             )}
           {booking.status === BookingStatus.PAID &&
-            booking.payment.status === "successful" &&
+            booking.payment.status === "SUCCESS" &&
             booking.feedback !== null && (
               <Descriptions.Item label="Phản hồi" span={3}>
                 <textarea
                   readonly
-                  value={feedback.comment}
+                  value={booking.feedback.comment}
                   className={classes["textarea-feedback"]}
                 ></textarea>
-                <Rate disabled value={feedback.rate} />
+                <Rate disabled value={booking.feedback.rating} />
               </Descriptions.Item>
             )}
-
-          {/* <Descriptions.Item label="Phản hồi" span={3}>
-          {renderFeedback ?
-            <>
-              <textarea
-                readonly
-                value={feedback.comment}
-                className={classes['textarea-feedback']}
-              ></textarea>
-              <Rate disabled value={feedback.rate} />
-            </> :
-            <>
-              <textarea
-                rows={10}
-                placeholder="Nhập phản hồi"
-                className={classes['textarea-feedback']}
-                onChange={onChangeFeedbackMessage}
-              ></textarea>
-              <Rate onChange={onChangeFeedbackRate} />
-            </>}
-        </Descriptions.Item>
-
-        <Descriptions.Item label="" span={3}>
-          <Button onClick={onFeedbackHandler}>Gửi phản hồi</Button>
-        </Descriptions.Item> */}
         </Descriptions>
 
         <BookingCreate
