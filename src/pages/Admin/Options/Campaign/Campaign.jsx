@@ -25,7 +25,7 @@ const Campaign = () => {
       key: "status",
       render: (text) => (
         <div className="text-data">
-          {text === "true" ? "Đang diễn ra" : "Kết thúc"}
+          {text === "UPCOMING" ? "Chuẩn bị diễn ra" : text === "IN_PROGRESS" ? "Đang diễn ra" : "Đã kết thúc"}
         </div>
       ),
     },
