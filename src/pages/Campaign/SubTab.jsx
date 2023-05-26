@@ -7,7 +7,7 @@ import ModalCreateCampaign from './ChienDich/CreateCampaign/ModalCreateCampaign'
 
 const SubTab = (props) => {
     const [key, setKey] = useState(props.changeContent);
-    const [isCampaignAdded, setIsCampaignAdded] = useState();
+    const [isCampaignAdded, setIsCampaignAdded] = useState(false);
 
     if (key !== props.changeContent) {
         setKey(props.changeContent)
