@@ -21,20 +21,18 @@ const AccountEnterprises = () => {
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [isDeleted, setIsDeleted] = useState()
 
   const [dataProps, setDataProps] = useState({});
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    getKols().then((res) => {
-      setKols(res);
-    });
-    getKolFields().then((res) => {
-      setFieldList(res);
-    });
-    getCities().then((res) => {
-      setCityList(res);
-    });
+    getKols().then((res) => { setKols(res); });
+  }, [isDeleted]);
+
+  useEffect(() => {
+    getKolFields().then((res) => { setFieldList(res); });
+    getCities().then((res) => { setCityList(res); });
   }, []);
 
   const columns = [
@@ -136,7 +134,8 @@ const AccountEnterprises = () => {
   };
 
   const onDeleteUserHandler = (id) => {
-    deleteUser(id).then(() => {
+    deleteUser(id).then((res) => {
+      setIsDeleted(id)
       messageApi.open({
         type: "success",
         content: "Xóa thành công!",
@@ -177,11 +176,11 @@ const AccountEnterprises = () => {
             return inputSearch.toLowerCase() === ""
               ? kol
               : kol.user?.firstName
-                  .toLowerCase()
-                  .includes(inputSearch.toLowerCase()) ||
-                  kol.user?.lastName
-                    .toLowerCase()
-                    .includes(inputSearch.toLowerCase());
+                .toLowerCase()
+                .includes(inputSearch.toLowerCase()) ||
+              kol.user?.lastName
+                .toLowerCase()
+                .includes(inputSearch.toLowerCase());
           })}
           pagination={{
             defaultPageSize: 10,

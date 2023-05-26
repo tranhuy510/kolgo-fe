@@ -21,12 +21,16 @@ const AccountEnterprises = () => {
   const [openViewModal, setOpenViewModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [isDeleted, setIsDeleted] = useState()
 
   const [dataProps, setDataProps] = useState({})
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     getEnts().then((res) => { setEnts(res) })
+  }, [isDeleted])
+
+  useEffect(() => {
     getEntFields().then((res) => { setFieldList(res) })
     getCities().then((res) => { setCityList(res) })
   }, [])
@@ -131,7 +135,8 @@ const AccountEnterprises = () => {
   const onDeleteUserHandler = (id) => {
     console.log(id);
     deleteUser(id).then(
-      () => {
+      (res) => {
+        setIsDeleted(id)
         messageApi.open({
           type: 'success',
           content: "Xóa thành công!",
