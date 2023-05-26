@@ -33,7 +33,7 @@ const SubMenu = (props) => {
 
     const items = [
         getItem('Chiến dịch', '0', null, 'both'),
-        getItem('Chiến dịch đang tham gia', '1', null, 'both'),
+        getItem('Chiến dịch đang tham gia', '1', null, 'KOL'),
         getItem('Tạo chiến dịch', '2', null, 'ENTERPRISE'),
         getItem('Chiến dịch đã tạo', '3', null, 'ENTERPRISE'),
         getItem('Combo', '4', null, 'both'),
