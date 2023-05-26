@@ -2,30 +2,39 @@ import { Table } from "antd";
 import { useEffect, useState } from "react";
 import { getPaymentHistory } from "../../../services/getApiProfile";
 import { displayDateTime } from "../../../services/DateTimeUtil";
+import { formatCurrency } from "../../../services/CurrencyUtil";
 
 const columns = [
   {
     title: "Mã giao dịch",
-    dataIndex: "id",
-    key: "id",
+    dataIndex: "txnNo",
+    key: "txnNo",
     align: "center",
   },
   {
     title: "Người gửi",
-    dataIndex: "sender",
-    key: "sender",
+    dataIndex: "user",
+    key: "user",
     align: "center",
+    render: (text, data) => (
+      <div>
+        {data.user.firstName} {data.user.lastName}
+      </div>
+    ),
   },
   {
-    title: "Người nhận",
-    dataIndex: "receiver",
-    key: "receiver",
+    title: "Số tiền",
+    dataIndex: "amount",
+    key: "amount",
     align: "center",
+    render: (text, data) => (
+      <div>{formatCurrency("vi-VN", "VND", data.amount / 100)}</div>
+    ),
   },
   {
     title: "Nội dung",
-    dataIndex: "content",
-    key: "content",
+    dataIndex: "description",
+    key: "description",
     align: "center",
   },
   {
