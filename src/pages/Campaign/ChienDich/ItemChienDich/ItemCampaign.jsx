@@ -27,21 +27,13 @@ const ItemCampaign = ({ campaign }) => {
         setNoti({ status: false })
     }
 
-    const createSuccessNoti = () => {
-        setNoti({ status: true, title: 'success', content: 'Chiến dịch này bạn đã tham gia' })
-    }
-
-    const createErrorNoti = () => {
-        setNoti({ status: true, title: 'error', content: 'Hãy đăng nhập' })
-    }
-
     return (
         <div className={classes['wrap-campaign-card-item']}>
             <div className={classes['campaign-card-item']}>
                 {noti.status &&
                     <Modals status={noti.status} title={noti.title} content={noti.content} changeNotification={changeNotificationHandler} />
                 }
-                <img src={`http://localhost:8080/api/images/${campaign.images[0]}`} alt="" />
+                <img src={`http://localhost:8080/api/images/${campaign?.images[0]}`} alt="" />
                 <div className={classes['card-item-context']}>
                     <h2>{campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}</h2>
                     <p>{campaign?.name}</p>
