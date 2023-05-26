@@ -31,7 +31,6 @@ const ActivateChart = ({ filteredBookings }) => {
         dataBookings[activateMonth - 1].books = sumBooking(activateMonth);
     }
 
-    console.log(dataBookings);
     return <Chart dataBookings={dataBookings} />;
 }
 

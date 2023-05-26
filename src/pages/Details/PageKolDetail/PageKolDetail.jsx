@@ -23,44 +23,6 @@ import Footer from "../../../components/Footer/Footer";
 const description =
   "Xin chao \nMinh là trùm KOL trên tiktok \nrất vui được gặp mọi người \nMình giọng miền Bắc, ở nhà thường chơi game \nVui vẻ , nhiệt tình, thân thiện, hay cười, mình cũng dễ thương nữa =)) \nRất vui nếu được hợp tác cùng mọi người \n";
 
-const danhgia = [
-  {
-    enterpriseId: 1,
-    name: "Công ty TNHH 1 thành viên Thắng Trần",
-    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
-    date: new Date(2022, 5, 12),
-    rate: 3,
-  },
-  {
-    enterpriseId: 2,
-    name: "Công ty TNHH 1 thành viên Thắng Trần",
-    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
-    date: new Date(2022, 5, 12),
-    rate: 3,
-  },
-  {
-    enterpriseId: 3,
-    name: "Công ty TNHH 1 thành viên Thắng Trần",
-    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
-    date: new Date(2022, 5, 12),
-    rate: 3,
-  },
-  {
-    enterpriseId: 4,
-    name: "Công ty TNHH 1 thành viên Thắng Trần",
-    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
-    date: new Date(2022, 5, 12),
-    rate: 3,
-  },
-  {
-    enterpriseId: 5,
-    name: "Công ty TNHH 1 thành viên Thắng Trần",
-    content: "quang cao rat hay, phuong phap rat moi, ket qua dat duoc rat tot",
-    date: new Date(2022, 5, 12),
-    rate: 3,
-  },
-];
-
 const PageKolDetail = () => {
   const { user, setUser } = useContext(AuthContext);
 
@@ -206,7 +168,7 @@ const PageKolDetail = () => {
                 />
               </Row>
               <Row className="middle-row">
-                <IntroduceKOL description={description} />
+                <IntroduceKOL introduction={kol?.kol?.introduction} />
               </Row>
             </Col>
             <Col span={6}>
@@ -252,7 +214,7 @@ const PageKolDetail = () => {
           />
         </div>
         <div className="bottom-details">
-          <Feedback bookings={kol?.bookings} danhgia={danhgia} />
+          <Feedback bookings={kol?.bookings} />
         </div>
       </main>
       <Footer />

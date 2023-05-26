@@ -5,7 +5,7 @@ const IntroduceKOL = (props) => {
         <div>
             <h1 style={{ opacity: '0.8' }}>Giới thiệu</h1>
             <span style={{ fontSize: '20px', opacity: '0.8', whiteSpace: 'pre-wrap', }}>
-                <FormatText details={props.description} />
+                <FormatText details={props.introduction} />
             </span>
         </div>
     )

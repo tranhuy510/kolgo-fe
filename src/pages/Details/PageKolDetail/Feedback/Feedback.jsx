@@ -36,9 +36,9 @@ const Feedback = (props) => {
                                         <div style={{ color: color }}>{spreadDate(booking.timestamp)}</div>
                                     </div>
 
-                                    <Rate disabled value={booking.feedback?.rate} />
+                                    <Rate disabled value={booking.feedback?.rating} />
                                     <div className="content-is-rated">
-                                        {booking.feedback?.description}
+                                        {booking.feedback?.comment}
                                     </div>
                                 </div>
                             </div>
