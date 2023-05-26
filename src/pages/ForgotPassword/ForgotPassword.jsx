@@ -18,8 +18,8 @@ const ForgotPassword = () => {
         content: ''
     });
 
-    const createSuccessNoti = (email, content) => {
-        setNoti({ status: true, title: 'success', email: email, message: 'to proceed to change the password', content: content })
+    const createSuccessNoti = (content) => {
+        setNoti({ status: true, title: 'success', content: content })
     }
 
     const createWarningNoti = (msg) => {
@@ -58,7 +58,7 @@ const ForgotPassword = () => {
             })
             .then(data => {
                 if (demo === 1) {
-                    createSuccessNoti(userInput.email, data.message)
+                    createSuccessNoti(data.message)
                 }
                 if (demo === 2) {
                     createErrorNoti(data.message)

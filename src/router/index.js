@@ -105,6 +105,7 @@ const Router = () => {
         <Route path="/field/:id" element={<Fields />} />
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/reset_password" element={<ResetPassword />} />
         <Route
           path="ents/:id"
           element=<ProtectedRoute Component={PageEntDetail} />
@@ -112,10 +113,6 @@ const Router = () => {
         <Route
           path="/admin"
           element=<ProtectedRoute Component={HomeAdmin} role={"ADMIN"} />
-        />
-        <Route
-          path="/reset_password"
-          element={<ProtectedRoute Component={ResetPassword} />}
         />
         <Route path="/chat" element={<ProtectedRoute Component={Chat} />} />
         <Route
