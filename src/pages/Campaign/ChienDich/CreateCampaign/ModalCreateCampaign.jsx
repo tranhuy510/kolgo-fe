@@ -123,29 +123,23 @@ const ModalCreateCampaign = (props) => {
   const onCreateCampaignHandler = (event) => {
     event.preventDefault();
     campaign.timestamp = formatDate(new Date());
-    console.log(campaign);
-    console.log(images);
-    console.log(fieldIds);
-
 
     if (!validateFormData(campaign)) return;
     createCampaign(campaign, images, fieldIds)
       .then((res) => {
-        console.log(res);
-        if (res.error) {
-          messageApi.open({
-            type: "warning",
-            content: "Tạo thất bại",
-          });
-        }
-        else {
-          props.setIsCampaignAdded(props.isCampaignAdded++)
+        if (res.id !== null) {
+          props.setIsCampaignAdded(!props.isCampaignAdded)
           messageApi.open({
             type: 'success',
             content: 'Tạo thành công',
           });
         }
-
+        else if (res.error) {
+          messageApi.open({
+            type: "warning",
+            content: "Tạo thất bại",
+          });
+        }
       })
   };
 

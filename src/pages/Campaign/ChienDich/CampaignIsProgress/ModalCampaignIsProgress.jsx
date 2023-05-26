@@ -33,9 +33,13 @@ const ModalCampaignIsProgress = (props) => {
             || (cp.fieldIds?.find(item => item.name === searchField))
     }) : []
 
+    const resultSearchField = searchField ? resultSearch?.filter((campaign) => {
+        return campaign.fieldNames.includes(searchField)
+    }) : resultSearch;
+
     const changeRender = () => {
-        if (resultSearch.length > 0) {
-            return resultSearch?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
+        if (resultSearchField.length > 0) {
+            return resultSearchField?.slice((current - 1) * 6, (((current - 1) * 6) + 6));
         }
         return campaigns.length > 0 ? campaigns?.slice((current - 1) * 6, (((current - 1) * 6) + 6)) : []
     }
@@ -51,6 +55,7 @@ const ModalCampaignIsProgress = (props) => {
     };
 
     const onSearchHandler = (value) => {
+        console.log(value);
         setInputSearch(value);
     }
 
@@ -78,7 +83,7 @@ const ModalCampaignIsProgress = (props) => {
                     {ctx?.fields &&
                         ctx?.fields.length > 0 &&
                         ctx?.fields.map((field) => (
-                            <option key={field.id} value={field.name}>
+                            <option key={field?.id} value={field.name}>
                                 {field?.name}
                             </option>
                         ))}
@@ -87,7 +92,7 @@ const ModalCampaignIsProgress = (props) => {
             <div className={classes["doing-modal-list-campaign"]}>
                 {changeRender() && changeRender().length > 0 &&
                     changeRender().map((campaign, index) => (
-                        <ItemCampaign campaign={campaign} key={campaign.id} />
+                        <ItemCampaign campaign={campaign} key={campaign?.id} />
                     ))}
             </div>
             <div className={classes["page-pagination"]}>
