@@ -22,7 +22,6 @@ const Name = styled.p`
 const DivWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   box-sizing: border-box;
 `;
 
@@ -44,20 +43,6 @@ const PageField = (props) => {
     }
 
     return (
-        // <DivWrap key={'fieldPage'} className='page-field'>
-        //     {changeRender()?.map((kol) => {
-        //         const firstName = arrUpperCase(kol?.firstName)
-        //         return (
-        //             <Link key={kol.id} to={`/kols/${kol.id}`} style={linkStyle}>
-        //                 <IMG src={`http://localhost:8080/api/images/${kol?.avatar}`} />
-        //                 <div style={{ display: 'flex' }}>
-        //                     <Name>{firstName}</Name>
-        //                     <Name>{kol?.lastName}</Name>
-        //                 </div>
-        //             </Link>
-        //         )
-        //     })}
-        // </DivWrap >
         <DivWrap key={"outstandingKol"}>
             {changeRender()?.map((kol) => {
                 const firstName = arrUpperCase(kol.firstName);

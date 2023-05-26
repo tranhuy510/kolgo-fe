@@ -22,7 +22,6 @@ const Name = styled.p`
 const DivWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   box-sizing: border-box;
 `;
 
