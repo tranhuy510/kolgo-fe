@@ -134,7 +134,7 @@ const RegisterEnterprise = (props) => {
       event.preventDefault();
     }
     validateUserInput(userInput)
-    registerWithCredentials(userInput)
+    if (validateUserInput(userInput)) { registerWithCredentials(userInput) }
   }
 
   return (
