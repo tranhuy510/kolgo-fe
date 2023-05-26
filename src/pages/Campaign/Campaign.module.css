@@ -311,11 +311,13 @@
 
 .moTa-list-image .wrap-image {
   margin: 0 5px;
+  width: 25%;
 }
 
 .list-image-item {
   /* width: 100%; */
-  flex: 1; 
+  /* flex: 1;  */
+  /* object-fit: contain; */
 }
 .list-image-item:hover {
   flex: 5;
