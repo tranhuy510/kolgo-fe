@@ -18,7 +18,7 @@ function getItem(label, key, icon, children, type) {
     type,
   };
 }
-const itemKOL = [
+const item = [
   getItem("Thông tin cá nhân", "1", <UserOutlined />),
   getItem("Cài đặt tài khoản", "2", <SettingOutlined />, [
     getItem("Email", "sub1"),
@@ -28,14 +28,6 @@ const itemKOL = [
   getItem("Lịch sử thanh toán", "4", <HistoryOutlined />),
 ];
 
-const itemEnt = [
-  getItem("Thông tin cá nhân", "1", <UserOutlined />),
-  getItem("Cài đặt tài khoản", "2", <SettingOutlined />, [
-    getItem("Email", "sub1"),
-    getItem("Tài khoản và mật khẩu", "sub2"),
-  ]),
-  getItem("Lịch sử thanh toán", "3", <HistoryOutlined />),
-];
 const MenuProfile = (props) => {
   const onClick = (e) => {
     props.onChangeContentHandler(e.key);
@@ -47,7 +39,7 @@ const MenuProfile = (props) => {
       onSelect={onClick}
       defaultSelectedKeys={"1"}
       mode="inline"
-      items={props.user.role === "KOL" ? itemKOL : itemEnt}
+      items={item}
     />
   );
 };
