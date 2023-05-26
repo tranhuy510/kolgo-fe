@@ -36,25 +36,28 @@ const ItemCampaign = ({ campaign }) => {
     }
 
     return (
-        <div className={classes['campaign-card-item']}>
-            {noti.status &&
-                <Modals status={noti.status} title={noti.title} content={noti.content} changeNotification={changeNotificationHandler} />
-            }
-            <img src={`http://localhost:8080/api/images/${campaign.images[0]}`} alt="" />
-            <div className={classes['card-item-context']}>
-                <h2>{campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}</h2>
-                <p>{campaign?.name}</p>
-                <div>
-                    <Button onClick={onOpenModalHandler} className={classes['context-btn']}>Xem thêm</Button>
+        <div className={classes['wrap-campaign-card-item']}>
+            <div className={classes['campaign-card-item']}>
+                {noti.status &&
+                    <Modals status={noti.status} title={noti.title} content={noti.content} changeNotification={changeNotificationHandler} />
+                }
+                <img src={`http://localhost:8080/api/images/${campaign.images[0]}`} alt="" />
+                <div className={classes['card-item-context']}>
+                    <h2>{campaign?.enterprise?.firstName} {campaign?.enterprise?.lastName}</h2>
+                    <p>{campaign?.name}</p>
+                    <div>
+                        <Button onClick={onOpenModalHandler} className={classes['context-btn']}>Xem thêm</Button>
+                    </div>
                 </div>
-            </div>
 
-            <InformationCampaign
-                openModal={openModal}
-                onCloseModalhandler={onCloseModalhandler}
-                campaign={campaign}
-            />
+                <InformationCampaign
+                    openModal={openModal}
+                    onCloseModalhandler={onCloseModalhandler}
+                    campaign={campaign}
+                />
+            </div>
         </div>
+
     )
 }
 

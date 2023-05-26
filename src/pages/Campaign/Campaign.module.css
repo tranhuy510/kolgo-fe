@@ -535,13 +535,17 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content:space-between;
+
   padding: 0 20px;
 
 }
 
 .page-pagination {
   text-align: center;
+}
+
+.wrap-campaign-card-item {
+  width: 33%;
 }
 
 .campaign-card-item {
@@ -556,7 +560,7 @@
   justify-content: center;
   transition: all .25s ease;
   backface-visibility: hidden;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 
 .campaign-card-item:hover {
