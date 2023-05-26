@@ -61,13 +61,13 @@ const AccountEnterprises = () => {
       title: "Lĩnh vực",
       dataIndex: "field.name",
       key: "field",
-      render: (text, data) => <div className="name-title-table">{data.field?.name}</div>,
+      render: (text, data) => <div className="name-title-table">{data.fieldNames?.map((field) => { return `${field} ,` })}</div>,
     },
     {
       title: "Địa chỉ",
       dataIndex: "address",
       key: "address",
-      render: (text, data) => <div className="name-title-table">{data.address?.city?.name} - {data.address?.details}</div>,
+      render: (text, data) => <div className="name-title-table">{data.cityName} - {data.addressDetails}</div>,
     },
     {
       title: "Điện thoại",

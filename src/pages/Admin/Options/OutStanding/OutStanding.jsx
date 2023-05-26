@@ -88,17 +88,17 @@ const OutStanding = () => {
       </div>
       <Table
         columns={columns}
-        dataSource={outStanding
-          .filter((item) => {
-            return statusSelect === ""
-              ? item
-              : item.trangthai.includes(statusSelect);
-          })
-          .filter((item) => {
-            return nameKOL.toLowerCase() === ""
-              ? item
-              : item.tenKOL.toLowerCase().includes(nameKOL.toLowerCase());
-          })}
+        // dataSource={outStanding
+        //   .filter((item) => {
+        //     return statusSelect === ""
+        //       ? item
+        //       : item.trangthai.includes(statusSelect);
+        //   })
+        //   .filter((item) => {
+        //     return nameKOL.toLowerCase() === ""
+        //       ? item
+        //       : item.tenKOL.toLowerCase().includes(nameKOL.toLowerCase());
+        //   })}
         pagination={{
           defaultPageSize: 8,
           showSizeChanger: false,

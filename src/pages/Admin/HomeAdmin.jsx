@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AccountEnterprises from "./Options/Enterprises/AccountEnterprises";
 import AccountKOL from "./Options/Kols/AccountKOL";
 import Booking from "./Options/Book/Booking";
-import ChienDich from "./Options/Campaign/ChienDich";
+import Campaign from "./Options/Campaign/Campaign";
 import ListCombo from "./Options/Combo/ListCombo";
 import OutStanding from "./Options/OutStanding/OutStanding";
 import CreateCombo from "./Options/Combo/CreateCombo";
@@ -53,7 +53,7 @@ const HomeAdmin = () => {
               <Menu.Item key="4">Tạo Combo</Menu.Item>
             </Menu.SubMenu>
             <Menu.Item key="5">Chiến Dịch</Menu.Item>
-            <Menu.Item key="6">Booking</Menu.Item>
+            {/* <Menu.Item key="6">Booking</Menu.Item> */}
             <Menu.Item key="7">Nổi Bật</Menu.Item>
             <Menu.Item key="8">Lĩnh vực</Menu.Item>
           </Menu>
@@ -68,7 +68,7 @@ const HomeAdmin = () => {
             {selectedMenuItem === "2" && <AccountKOL />}
             {selectedMenuItem === "3" && <ListCombo />}
             {selectedMenuItem === "4" && <CreateCombo />}
-            {selectedMenuItem === "5" && <ChienDich />}
+            {selectedMenuItem === "5" && <Campaign />}
             {selectedMenuItem === "6" && <Booking />}
             {selectedMenuItem === "7" && <OutStanding />}
             {selectedMenuItem === "8" && <Fields />}

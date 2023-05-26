@@ -138,11 +138,11 @@ const ListCombo = () => {
       <div style={{ height: 300 }}>
         <Table
           columns={columns}
-          dataSource={listCombo.filter((item) => {
-            return inputSearch.toLowerCase() === ""
-              ? item
-              : item.name.toLowerCase().includes(inputSearch.toLowerCase());
-          })}
+          // dataSource={listCombo.filter((item) => {
+          //   return inputSearch.toLowerCase() === ""
+          //     ? item
+          //     : item.name.toLowerCase().includes(inputSearch.toLowerCase());
+          // })}
           pagination={{
             defaultPageSize: 10,
             showSizeChanger: true,
